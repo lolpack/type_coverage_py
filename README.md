@@ -4,7 +4,7 @@ Calculate the Type Coverage for top Python packages.
 
 Take the top pypi packages pulled from this project [https://github.com/hugovk/top-pypi-packages](https://github.com/hugovk/top-pypi-packages)
 
-View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html)
+View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/main/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/main/index.html)
 
 ## Methodology
 
@@ -19,6 +19,7 @@ This section outlines how the script analyzes Python packages, checks for typesh
 
 - **Typeshed Directory**: The script checks if a corresponding stub exists in the `typeshed` repository, which contains type stubs for standard library modules and popular third-party packages.
 - **Existence Check**: If a typeshed stub exists, it is recorded as `HasTypeShed: Yes`; otherwise, it is marked as `HasTypeShed: No`.
+- **Typeshed Merge**: Pull available typestubs from typeshed with the same package name. If a local `.pyi` file exists, prefer it over typeshed. 
 
 ### **Type Coverage Calculation**
 
@@ -49,7 +50,18 @@ This methodology ensures an accurate and detailed analysis of type coverage for 
 
 ## Usage
 
-Call the main function with the top number of packages to analyze, the max is 8,000.
+Clone the typeshed repo into the root of the project
 
-`python3 main.py 100`
+`git clone git@github.com:python/typeshed.git`
 
+Call the main function with the top N packages to analyze, the max is 8,000.
+
+`python main.py 100`
+
+Alternatively call with a single package
+
+`python main.py --package-name flask`
+
+Analyze the top N packages and generate both JSON and HTML reports:
+
+`python main.py 100 --write-json --write-html`

@@ -5,17 +5,19 @@ from analyzer.typeshed_checker import (
     find_stub_files,
     merge_files_with_stubs
 )
+from pathlib import Path
 
 @pytest.fixture
-def mock_typeshed(tmpdir):
+def mock_typeshed(tmp_path: Path) -> str:
     """Fixture to set up a mock typeshed directory."""
-    stubs_dir = tmpdir.mkdir("typeshed").mkdir("stubs")
-    package_dir = stubs_dir.mkdir("mock_package")
-    package_dir.join("__init__.pyi").write("# mock init file")
-    package_dir.join("module.pyi").write("# mock module file")
-    return str(tmpdir)
+    stubs_dir = tmp_path / "typeshed" / "stubs"
+    package_dir = stubs_dir / "mock_package"
+    package_dir.mkdir(parents=True, exist_ok=True)
+    (package_dir / "__init__.pyi").write_text("# mock init file")
+    (package_dir / "module.pyi").write_text("# mock module file")
+    return str(tmp_path)
 
-def test_check_typeshed(mock_typeshed, monkeypatch):
+def test_check_typeshed(mock_typeshed: str, monkeypatch: pytest.MonkeyPatch) -> None:
     """Test check_typeshed function."""
     # Ensure the mock_typeshed includes the 'typeshed' directory
     corrected_typeshed_dir = os.path.join(mock_typeshed, 'typeshed')
@@ -30,9 +32,9 @@ def test_check_typeshed(mock_typeshed, monkeypatch):
     result = check_typeshed("mock_package")
     print(f"check_typeshed result for 'mock_package': {result}")
     
-    assert result == True
+    assert result is True
 
-def test_find_stub_files(mock_typeshed, monkeypatch):
+def test_find_stub_files(mock_typeshed: str, monkeypatch: pytest.MonkeyPatch) -> None:
     """Test find_stub_files function."""
     # Ensure the mock_typeshed includes the 'typeshed' directory
     corrected_typeshed_dir = os.path.join(mock_typeshed, 'typeshed')
@@ -49,7 +51,7 @@ def test_find_stub_files(mock_typeshed, monkeypatch):
     assert os.path.join(corrected_typeshed_dir, "stubs/mock_package/__init__.pyi") in stubs
     assert os.path.join(corrected_typeshed_dir, "stubs/mock_package/module.pyi") in stubs
 
-def test_merge_files_with_stubs():
+def test_merge_files_with_stubs() -> None:
     """Test merge_files_with_stubs function."""
     package_files = [
         "/path/to/package/__init__.py",
@@ -70,20 +72,22 @@ def test_merge_files_with_stubs():
     # The .py file should be included if there's no corresponding .pyi in the package itself
     assert "/path/to/package/module.py" in merged_files
 
-def test_integration_with_coverage_calculation(monkeypatch, mock_typeshed, tmpdir):
+def test_integration_with_coverage_calculation(monkeypatch: pytest.MonkeyPatch, mock_typeshed: str, tmp_path: Path) -> None:
     """Test full integration with coverage calculation."""
     from analyzer.coverage_calculator import calculate_overall_coverage
 
     # Create mock package files
-    package_dir = tmpdir.mkdir("package")
-    init_file = package_dir.join("__init__.py")
-    init_file.write("def function(): pass")
+    package_dir = tmp_path / "package"
+    package_dir.mkdir()
+
+    init_file = package_dir / "__init__.py"
+    init_file.write_text("def function(): pass")
     
-    module_file = package_dir.join("module.py")
-    module_file.write("def function(): pass")
+    module_file = package_dir / "module.py"
+    module_file.write_text("def function(): pass")
     
-    module_pyi = package_dir.join("module.pyi")
-    module_pyi.write("def function() -> int: ...")
+    module_pyi = package_dir / "module.pyi"
+    module_pyi.write_text("def function() -> int: ...")
     
     package_files = [str(init_file), str(module_file), str(module_pyi)]
     
@@ -100,4 +104,3 @@ def test_integration_with_coverage_calculation(monkeypatch, mock_typeshed, tmpdi
     assert "parameter_coverage" in coverage_data_with_stubs
     assert "return_type_coverage" in coverage_data_with_stubs
     print(f"Coverage data: {coverage_data_with_stubs}")
-    

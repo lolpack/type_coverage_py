@@ -1,14 +1,14 @@
 import ast
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
-def calculate_parameter_coverage(files: List[str]) -> Tuple[float, int]:
-    total_params = 0
-    annotated_params = 0
-    skipped_files = 0
+def calculate_parameter_coverage(files: List[str]) -> Tuple[int, int, int]:
+    total_params: int = 0
+    annotated_params: int = 0
+    skipped_files: int = 0
 
     # To track annotations and parameters per function
-    function_param_counts = {}
-    functions_covered_by_pyi = set()
+    function_param_counts: Dict[str, Tuple[int, int]] = {}
+    functions_covered_by_pyi: set[str] = set()
     
     for file in files:
         try:
@@ -16,12 +16,12 @@ def calculate_parameter_coverage(files: List[str]) -> Tuple[float, int]:
                 tree = ast.parse(f.read(), filename=file)
                 for node in ast.walk(tree):
                     if isinstance(node, ast.FunctionDef):
-                        func_name = node.name
+                        func_name: str = node.name
                         
                         # Exclude 'self' and 'cls' from parameters
                         params = [arg for arg in node.args.args if arg.arg not in ('self', 'cls')]
-                        param_count = len(params)
-                        annotation_count = sum(1 for arg in params if arg.annotation is not None)
+                        param_count: int = len(params)
+                        annotation_count: int = sum(1 for arg in params if arg.annotation is not None)
 
                         # If this function is covered by a .pyi file, overwrite counts
                         if file.endswith(".pyi"):
@@ -42,22 +42,16 @@ def calculate_parameter_coverage(files: List[str]) -> Tuple[float, int]:
     # Sum up the final counts
     total_params = sum(counts[0] for counts in function_param_counts.values())
     annotated_params = sum(counts[1] for counts in function_param_counts.values())
-    
-    if total_params == 0:
-        return 100.0, skipped_files
+    return total_params, annotated_params, skipped_files
 
-    coverage = (annotated_params / total_params) * 100.0
-
-    return coverage, skipped_files
-
-def calculate_return_type_coverage(files: List[str]) -> Tuple[float, int]:
-    total_functions = 0
-    annotated_functions = 0
-    skipped_files = 0
+def calculate_return_type_coverage(files: List[str]) -> Tuple[int, int, int]:
+    total_functions: int = 0
+    annotated_functions: int = 0
+    skipped_files: int = 0
 
     # To track return type annotations per function
-    function_return_counts = {}
-    functions_covered_by_pyi = set()
+    function_return_counts: Dict[str, Tuple[int, int]] = {}
+    functions_covered_by_pyi: set[str] = set()
 
     for file in files:
         try:
@@ -65,7 +59,11 @@ def calculate_return_type_coverage(files: List[str]) -> Tuple[float, int]:
                 tree = ast.parse(f.read(), filename=file)
                 for node in ast.walk(tree):
                     if isinstance(node, ast.FunctionDef):
-                        func_name = node.name
+                        func_name: str = node.name
+
+                        # Skip the __init__ method
+                        if func_name == "__init__":
+                            continue
 
                         # If this function is covered by a .pyi file, overwrite counts
                         if file.endswith(".pyi"):
@@ -87,21 +85,19 @@ def calculate_return_type_coverage(files: List[str]) -> Tuple[float, int]:
     total_functions = sum(counts[0] for counts in function_return_counts.values())
     annotated_functions = sum(counts[1] for counts in function_return_counts.values())
 
-    if total_functions == 0:
-        return 100.0, skipped_files
+    return total_functions, annotated_functions, skipped_files
 
-    coverage = (annotated_functions / total_functions) * 100.0
+def calculate_overall_coverage(files: List[str]) -> Dict[str, float]:
+    total_params, annotated_params, param_skipped = calculate_parameter_coverage(files)
+    total_functions, annotated_functions, return_skipped = calculate_return_type_coverage(files)
 
-    return coverage, skipped_files
-
-def calculate_overall_coverage(files: List[str]) -> dict:
-    param_coverage, param_skipped = calculate_parameter_coverage(files)
-    return_type_coverage, return_skipped = calculate_return_type_coverage(files)
-
-    total_skipped = max(param_skipped, return_skipped)
+    total_skipped: int = max(param_skipped, return_skipped)
 
     return {
-        "parameter_coverage": param_coverage,
-        "return_type_coverage": return_type_coverage,
+        "parameter_coverage": calculuate_coverage(annotated_params, total_params),
+        "return_type_coverage": calculuate_coverage(annotated_functions, total_functions),
         "skipped_files": total_skipped
     }
+
+def calculuate_coverage(covered: int, total: int) -> float:
+    return (covered / total) * 100 if total > 0 else -1.0

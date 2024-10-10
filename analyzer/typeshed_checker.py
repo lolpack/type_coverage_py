@@ -1,5 +1,3 @@
-# typeshed_checker.py
-
 import os
 from typing import List
 
@@ -20,7 +18,7 @@ def check_typeshed(package_name: str) -> bool:
 def find_stub_files(package_name: str) -> List[str]:
     """Finds the .pyi stub files for the given package in the typeshed directory."""
     typeshed_path = os.path.join(TYPESHED_DIR, 'stubs', package_name)
-    stub_files = []
+    stub_files: List[str] = []  # Explicitly type the list as List[str]
     for root, _, files in os.walk(typeshed_path):
         for file in files:
             if file.endswith('.pyi'):
@@ -29,7 +27,7 @@ def find_stub_files(package_name: str) -> List[str]:
 
 def merge_files_with_stubs(package_files: List[str], typeshed_stubs: List[str]) -> List[str]:
     """Merge package files with typeshed stubs, preferring .pyi files from the package itself."""
-    merged_files = []
+    merged_files: List[str] = []  # Explicitly type the list as List[str]
     typeshed_stub_dict = {os.path.basename(stub): stub for stub in typeshed_stubs}
 
     for file in package_files:
