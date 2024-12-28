@@ -1,6 +1,58 @@
 from typing import Dict, Union
+import os
+import datetime
 
 HTML_REPORT_FILE = "index.html"
+JSON_REPORT_FILE = "package_report.json"
+HISTORICAL_DATA_DIR = "historical_data"
+HISTORICAL_HTML_DIR = os.path.join(HISTORICAL_DATA_DIR, "html")
+HISTORICAL_JSON_DIR = os.path.join(HISTORICAL_DATA_DIR, "json")
+
+def archive_old_reports() -> None:
+    """Move the old reports to the historical_data directory with a timestamp."""
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
+    os.makedirs(HISTORICAL_HTML_DIR, exist_ok=True)
+    os.makedirs(HISTORICAL_JSON_DIR, exist_ok=True)
+
+    # Archive old HTML report
+    if os.path.exists(HTML_REPORT_FILE):
+        new_html_name = os.path.join(HISTORICAL_HTML_DIR, f"index-{timestamp}.html")
+        os.rename(HTML_REPORT_FILE, new_html_name)
+        print(f"Archived {HTML_REPORT_FILE} to {new_html_name}")
+
+    # Archive old JSON report
+    if os.path.exists(JSON_REPORT_FILE):
+        new_json_name = os.path.join(HISTORICAL_JSON_DIR, f"package_report-{timestamp}.json")
+        os.rename(JSON_REPORT_FILE, new_json_name)
+        print(f"Archived {JSON_REPORT_FILE} to {new_json_name}")
+
+def update_main_html_with_links() -> None:
+    """Update the main HTML file with a link to view historical data."""
+    if not os.path.exists(HISTORICAL_HTML_DIR):
+        return
+
+    historical_links = []
+    for file_name in sorted(os.listdir(HISTORICAL_HTML_DIR)):
+        if file_name.endswith(".html"):
+            link = f"<li><a href='{os.path.join(HISTORICAL_HTML_DIR, file_name)}'>{file_name}</a></li>"
+            historical_links.append(link)
+
+    # Add the links to the main HTML
+    historical_section = f"""
+    <h2>Historical Data</h2>
+    <ul>
+        {''.join(historical_links)}
+    </ul>
+    """
+    with open(HTML_REPORT_FILE, "r") as file:
+        html_content = file.read()
+
+    updated_html_content = html_content.replace(
+        "</body>", historical_section + "\n</body>"
+    )
+    with open(HTML_REPORT_FILE, "w") as file:
+        file.write(updated_html_content)
+    print("Updated main HTML with historical data links.")
 
 def generate_report(package_data: Dict[str, Dict[str, float]], package_name: str) -> None:
     """Generates a report of the coverage data."""

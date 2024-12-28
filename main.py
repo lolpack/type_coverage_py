@@ -3,11 +3,12 @@ import shutil
 import json
 import sys
 import argparse
+
 from typing import Optional, Any, Dict, List
 from analyzer.package_analyzer import extract_files
 from analyzer.typeshed_checker import check_typeshed, find_stub_files, merge_files_with_stubs
 from analyzer.coverage_calculator import calculate_overall_coverage
-from analyzer.report_generator import generate_report, generate_report_html
+from analyzer.report_generator import generate_report, generate_report_html, update_main_html_with_links, archive_old_reports
 from coverage_sources.typeshed_coverage import download_typeshed_csv
 
 JSON_REPORT_FILE = 'package_report.json'
@@ -106,7 +107,13 @@ def analyze_package(package_name: str, rank: Optional[int] = None, download_coun
 
     return package_report
 
-def main(top_n: Optional[int] = None, package_name: Optional[str] = None, write_json: bool = False, write_html: bool = False) -> None:
+def main(
+    top_n: Optional[int] = None, 
+    package_name: Optional[str] = None, 
+    write_json: bool = False, 
+    write_html: bool = False, 
+    create_daily: bool = False  # Add this parameter
+) -> None:
     package_report: Dict[str, Any] = {}
 
     # Download the CSV file with typeshed stats
@@ -128,6 +135,10 @@ def main(top_n: Optional[int] = None, package_name: Optional[str] = None, write_
             if package_name:  # Ensure package_name is not None
                 package_report[package_name] = analyze_package(package_name, rank=rank, download_count=download_count, typeshed_data=typeshed_data)
 
+    # Archive old report in data section    
+    if create_daily:
+        archive_old_reports()
+
     # Conditionally write the JSON report
     if write_json:
         with open(JSON_REPORT_FILE, "w") as json_file:
@@ -139,16 +150,23 @@ def main(top_n: Optional[int] = None, package_name: Optional[str] = None, write_
         generate_report_html(package_report)
         print("HTML report generated.")
 
+    if create_daily:
+        update_main_html_with_links()
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze Python package type coverage.")
     parser.add_argument('top_n', type=int, nargs='?', help="Analyze the top N PyPI packages.")
     parser.add_argument('--package-name', type=str, help="Analyze a specific package by name.")
     parser.add_argument('--write-json', action='store_true', help="Write the output to a JSON report.")
     parser.add_argument('--write-html', action='store_true', help="Generate an HTML report.")
+    parser.add_argument('--create-daily', action='store_true', help="Create a daily report and archive previous data.")
+
 
     args = parser.parse_args()
 
-    if args.package_name:
+    if args.create_daily:
+        main(top_n=(args.top_n or 8000), package_name=args.package_name, write_json=True, write_html=True, create_daily=True)
+    elif args.package_name:
         main(package_name=args.package_name, write_json=args.write_json, write_html=args.write_html)
     elif args.top_n:
         if not (1 <= args.top_n <= 8000):
