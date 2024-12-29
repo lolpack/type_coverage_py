@@ -1,5 +1,16 @@
 import ast
+import os
 from typing import List, Tuple, Dict
+
+def get_fully_qualified_name(node: ast.FunctionDef, module: str) -> str:
+    if isinstance(node.parent, ast.ClassDef):
+        return f"{module}.{node.parent.name}.{node.name}"
+    return f"{module}.{node.name}"
+
+def annotate_parents(tree: ast.AST):
+    for node in ast.walk(tree):
+        for child in ast.iter_child_nodes(node):
+            child.parent = node
 
 def calculate_parameter_coverage(files: List[str]) -> Tuple[int, int, int]:
     total_params: int = 0
@@ -12,29 +23,27 @@ def calculate_parameter_coverage(files: List[str]) -> Tuple[int, int, int]:
     
     for file in files:
         try:
+            module_name = os.path.splitext(os.path.basename(file))[0]
             with open(file, 'r', encoding='utf-8', errors='ignore') as f:
                 tree = ast.parse(f.read(), filename=file)
+                annotate_parents(tree)  # Annotate the AST with parent references
+
                 for node in ast.walk(tree):
                     if isinstance(node, ast.FunctionDef):
-                        func_name: str = node.name
-                        
+                        func_name = get_fully_qualified_name(node, module_name)
+
                         # Exclude 'self' and 'cls' from parameters
                         params = [arg for arg in node.args.args if arg.arg not in ('self', 'cls')]
-                        param_count: int = len(params)
-                        annotation_count: int = sum(1 for arg in params if arg.annotation is not None)
+                        param_count = len(params)
+                        annotation_count = sum(1 for arg in params if arg.annotation is not None)
 
-                        # If this function is covered by a .pyi file, overwrite counts
+                        # Handle .pyi files and function overwriting
                         if file.endswith(".pyi"):
                             functions_covered_by_pyi.add(func_name)
                             function_param_counts[func_name] = (param_count, annotation_count)
                         elif func_name not in functions_covered_by_pyi:
-                            # Only add counts from .py if not already covered by .pyi
-                            if func_name in function_param_counts:
-                                continue
-                            function_param_counts[func_name] = (
-                                param_count,
-                                annotation_count
-                            )
+                            if func_name not in function_param_counts:
+                                function_param_counts[func_name] = (param_count, annotation_count)
 
         except (SyntaxError, UnicodeDecodeError):
             skipped_files += 1
@@ -55,28 +64,29 @@ def calculate_return_type_coverage(files: List[str]) -> Tuple[int, int, int]:
 
     for file in files:
         try:
+            module_name = os.path.splitext(os.path.basename(file))[0]
             with open(file, 'r', encoding='utf-8', errors='ignore') as f:
                 tree = ast.parse(f.read(), filename=file)
+                annotate_parents(tree)  # Annotate the AST with parent references
+
                 for node in ast.walk(tree):
                     if isinstance(node, ast.FunctionDef):
-                        func_name: str = node.name
+                        func_name = get_fully_qualified_name(node, module_name)
 
                         # Skip the __init__ method
-                        if func_name == "__init__":
+                        if node.name == "__init__":
                             continue
 
-                        # If this function is covered by a .pyi file, overwrite counts
+                        # Handle .pyi files and function overwriting
                         if file.endswith(".pyi"):
                             functions_covered_by_pyi.add(func_name)
                             function_return_counts[func_name] = (1, 1 if node.returns is not None else 0)
                         elif func_name not in functions_covered_by_pyi:
-                            # Only add counts from .py if not already covered by .pyi
-                            if func_name in function_return_counts:
-                                continue
-                            function_return_counts[func_name] = (
-                                1,
-                                1 if node.returns is not None else 0
-                            )
+                            if func_name not in function_return_counts:
+                                function_return_counts[func_name] = (
+                                    1,
+                                    1 if node.returns is not None else 0
+                                )
 
         except (SyntaxError, UnicodeDecodeError):
             skipped_files += 1
