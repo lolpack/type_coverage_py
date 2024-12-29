@@ -31,7 +31,7 @@ def update_main_html_with_links() -> None:
     if not os.path.exists(HISTORICAL_HTML_DIR):
         return
 
-    historical_links = []
+    historical_links: list[str] = []
     for file_name in sorted(os.listdir(HISTORICAL_HTML_DIR)):
         if file_name.endswith(".html"):
             link = f"<li><a href='{os.path.join(HISTORICAL_HTML_DIR, file_name)}'>{file_name}</a></li>"
@@ -62,6 +62,7 @@ def generate_report(package_data: Dict[str, Dict[str, float]], package_name: str
     # Print package coverage
     print(f"Coverage Report for {package_name}:")
     print(f"Has typeshed stubs: {package_data['HasTypeShed']}")
+    print(f"Non typeshed stubs package: {package_data['non_typeshed_stubs']}")
     print(f"Parameter Type Coverage: {coverage_data['parameter_coverage']:.2f}%")
     print(f"Return Type Coverage: {coverage_data['return_type_coverage']:.2f}%")
     print(f"Parameter Type Coverage With Stubs: {coverage_data['parameter_coverage_with_stubs']:.2f}%")
@@ -181,6 +182,7 @@ def generate_report_html(package_report: Dict[str, Dict[str, Dict[str, float]]])
                 <th>Package Name</th>
                 <th>Download Count</th>
                 <th>Has Typeshed</th>
+                <th>Non-Typeshed Stubs</th>
                 <th>Parameter Type Coverage</th>
                 <th>Return Type Coverage</th>
                 <th>Parameter Coverage with Typeshed</th>
@@ -213,12 +215,17 @@ def generate_report_html(package_report: Dict[str, Dict[str, Dict[str, float]]])
         typshed_return_percent = typeshed_data.get('% param', 'N/A')
         typshed_param_percent = typeshed_data.get('% return', 'N/A')
 
+        non_typeshed_stubs = details.get("non_typeshed_stubs", "N/A")
+        if non_typeshed_stubs != "N/A":
+            non_typeshed_stubs = f'<a href="{non_typeshed_stubs}" target="_blank">{package_name}-stubs</a>'
+
         html_content += f"""
             <tr>
                 <td>{details['DownloadRanking']}</td>
                 <td>{package_name}</td>
                 <td>{details['DownloadCount']}</td>
                 <td>{'Yes' if details['HasTypeShed'] else 'No'}</td>
+                <td>{non_typeshed_stubs}</td>
                 {create_percentage_row(parameter_coverage)}
                 {create_percentage_row(return_coverage)}
                 {create_percentage_row(parameter_coverage_with_stubs)}
