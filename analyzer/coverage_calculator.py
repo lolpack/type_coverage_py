@@ -28,9 +28,18 @@ def calculate_parameter_coverage(files: List[str]) -> Tuple[int, int, int]:
                 tree = ast.parse(f.read(), filename=file)
                 annotate_parents(tree)  # Annotate the AST with parent references
 
+                # Use a set to track already analyzed functions
+                analyzed_functions = set()
+
                 for node in ast.walk(tree):
                     if isinstance(node, ast.FunctionDef):
                         func_name = get_fully_qualified_name(node, module_name)
+
+                        # Skip if already analyzed
+                        if func_name in analyzed_functions:
+                            continue
+
+                        analyzed_functions.add(func_name)
 
                         # Exclude 'self' and 'cls' from parameters
                         params = [arg for arg in node.args.args if arg.arg not in ('self', 'cls')]
@@ -51,6 +60,7 @@ def calculate_parameter_coverage(files: List[str]) -> Tuple[int, int, int]:
     # Sum up the final counts
     total_params = sum(counts[0] for counts in function_param_counts.values())
     annotated_params = sum(counts[1] for counts in function_param_counts.values())
+
     return total_params, annotated_params, skipped_files
 
 def calculate_return_type_coverage(files: List[str]) -> Tuple[int, int, int]:
@@ -69,9 +79,18 @@ def calculate_return_type_coverage(files: List[str]) -> Tuple[int, int, int]:
                 tree = ast.parse(f.read(), filename=file)
                 annotate_parents(tree)  # Annotate the AST with parent references
 
+                # Use a set to track already analyzed functions
+                analyzed_functions = set()
+
                 for node in ast.walk(tree):
                     if isinstance(node, ast.FunctionDef):
                         func_name = get_fully_qualified_name(node, module_name)
+
+                        # Skip if already analyzed
+                        if func_name in analyzed_functions:
+                            continue
+
+                        analyzed_functions.add(func_name)
 
                         # Skip the __init__ method
                         if node.name == "__init__":
