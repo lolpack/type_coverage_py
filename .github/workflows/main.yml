@@ -29,16 +29,11 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
           eval `ssh-agent -s`
           ssh-add ~/.ssh/id_ed25519
           ssh -T git@github.com || true
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      
-      - name: Debug SSH Key
-        run: |
-          echo "$SSH_PRIVATE_KEY" | tr -d '\n' | head -c 100
           
       - name: Debug SSH
         run: |
