@@ -74,7 +74,7 @@ Analyze the top N packages and generate both JSON and HTML reports:
 
 Run daily command for Github Actions
 
-`python main.py`
+`python main.py 2000 --create-daily`
 
 ### Type check the project (of course!)
 
