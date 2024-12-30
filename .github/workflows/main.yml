@@ -3,6 +3,7 @@ name: Daily Package Data Update
 on:
   schedule:
     - cron: '0 13 * * *' # Runs at 8am EST
+  workflow_dispatch: # Allows manual triggers
 
 jobs:
   update-data:
