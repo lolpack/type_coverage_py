@@ -14,7 +14,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          
+      - name: Verify SSH Key
+        run: |
+          echo "$SSH_PRIVATE_KEY" | tr -d '\n' | head -c 100 || true
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-add ~/.ssh/id_rsa
+          ssh -T git@github.com || true
+          
       - name: Debug SSH
         run: |
           ssh -vT git@github.com || true
