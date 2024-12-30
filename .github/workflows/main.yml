@@ -60,6 +60,10 @@ jobs:
       - name: Run Main Script
         run: python main.py 2000 --create-daily
 
+      # Pull latest changes incase it diverged from when process started  
+      - name: Pull Latest Changes
+        run: git pull origin main --rebase
+
       # Automatically commit and push changes
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v4
