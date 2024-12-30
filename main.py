@@ -5,7 +5,7 @@ import sys
 import argparse
 
 from typing import Optional, Any, Dict, List
-from analyzer.package_analyzer import extract_files
+from analyzer.package_analyzer import extract_files, find_stub_package
 from analyzer.typeshed_checker import check_typeshed, find_stub_files, merge_files_with_stubs
 from analyzer.coverage_calculator import calculate_overall_coverage
 from analyzer.report_generator import generate_report, generate_report_html, update_main_html_with_links, archive_old_reports
@@ -70,6 +70,7 @@ def analyze_package(package_name: str, rank: Optional[int] = None, download_coun
         # Merge non-test files with typeshed stubs
         typeshed_exists = check_typeshed(package_name)
         package_report["HasTypeShed"] = typeshed_exists
+        package_report["non_typeshed_stubs"] = 'N/A'
         if typeshed_exists:
             print(f"Typeshed exists for {package_name}. Including it in analysis.")
             stub_files = find_stub_files(package_name)
@@ -81,9 +82,33 @@ def analyze_package(package_name: str, rank: Optional[int] = None, download_coun
             return_type_coverage_with_stubs = total_test_coverage_stubs["return_type_coverage"]
             skipped_files_with_stubs = total_test_coverage["skipped_files"]
         else:
-            parameter_coverage_with_stubs = parameter_coverage
-            return_type_coverage_with_stubs = return_type_coverage
-            skipped_files_with_stubs = skipped_files_non_tests
+            # Check for PyPI stub package if no Typeshed stubs exist
+            stub_package_url = find_stub_package(package_name)
+            if stub_package_url:
+                print(f"Found non-typeshed stub package: {stub_package_url}")
+                package_report["non_typeshed_stubs"] = stub_package_url
+
+                # Download and merge PyPI stub files
+                stub_temp_dir = tempfile.mkdtemp()
+                try:
+                    stub_files = extract_files(f"{package_name}-stubs", stub_temp_dir)
+                    merged_files = merge_files_with_stubs(non_test_files, stub_files)
+
+
+                    # Calculate coverage with stubs
+                    total_test_coverage_stubs = calculate_overall_coverage(merged_files)
+                    parameter_coverage_with_stubs = total_test_coverage_stubs["parameter_coverage"]
+                    return_type_coverage_with_stubs = total_test_coverage_stubs["return_type_coverage"]
+                    skipped_files_with_stubs = total_test_coverage["skipped_files"]
+                finally:
+                    print('temp file removed', stub_temp_dir)
+                    shutil.rmtree(stub_temp_dir)
+            else:
+                print(f"No stubs found for {package_name} in Typeshed or PyPI.")
+
+                parameter_coverage_with_stubs = parameter_coverage
+                return_type_coverage_with_stubs = return_type_coverage
+                skipped_files_with_stubs = skipped_files_non_tests
 
         # Add typeshed data if available
         if typeshed_data and package_name in typeshed_data:

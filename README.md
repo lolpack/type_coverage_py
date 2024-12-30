@@ -1,11 +1,13 @@
 # type_coverage_py
 
-Calculate the Type Coverage for top Python packages.
+Calculate the Type Coverage for top Python packages. This analysis aims to determine how well typed popular packages are. 
+
 
 Take the top pypi packages pulled from this project [https://github.com/hugovk/top-pypi-packages](https://github.com/hugovk/top-pypi-packages)
 
 View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/main/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/main/index.html)
 
+[PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files). 
 ## Methodology
 
 This section outlines how the script analyzes Python packages, checks for typeshed availability, and calculates type coverage. The process involves three key steps: package extraction, typeshed check, and type coverage calculation.
@@ -20,6 +22,10 @@ This section outlines how the script analyzes Python packages, checks for typesh
 - **Typeshed Directory**: The script checks if a corresponding stub exists in the `typeshed` repository, which contains type stubs for standard library modules and popular third-party packages.
 - **Existence Check**: If a typeshed stub exists, it is recorded as `HasTypeShed: Yes`; otherwise, it is marked as `HasTypeShed: No`.
 - **Typeshed Merge**: Pull available typestubs from typeshed with the same package name. If a local `.pyi` file exists, prefer it over typeshed. 
+
+### **Stubs package Check**
+
+- Check pypi for a package called {package}-stubs like https://pypi.org/project/pandas-stubs/ for stubs hosted outside of typeshed.
 
 ### **Type Coverage Calculation**
 
@@ -65,3 +71,19 @@ Alternatively call with a single package
 Analyze the top N packages and generate both JSON and HTML reports:
 
 `python main.py 100 --write-json --write-html`
+
+Run daily command for Github Actions
+
+`python main.py`
+
+### Type check the project (of course!)
+
+Pyright
+
+`$ node node_modules/pyright/index.js`
+
+Or simply install globally
+
+`$ npm i -g pyright`
+`$ pyright`
+

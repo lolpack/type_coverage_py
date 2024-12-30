@@ -64,8 +64,8 @@ def test_partially_annotated_with_stubs():
     files = ["tests/test_files/partially_annotated.py"]
     coverage_data = calculate_overall_coverage(files)
 
-    assert coverage_data["parameter_coverage"] == pytest.approx(33.33, rel=1e-2) # type: ignore
-    assert coverage_data["return_type_coverage"] == pytest.approx(66.67, rel=1e-2) # type: ignore
+    assert coverage_data["parameter_coverage"] == pytest.approx(33.33, rel=1e-2)  # type: ignore[reportUnknownMemberType]
+    assert coverage_data["return_type_coverage"] == pytest.approx(66.67, rel=1e-2)  # type: ignore[reportUnknownMemberType]
     assert coverage_data["skipped_files"] == 0
 
 def test_complex_types_with_stubs():
@@ -89,12 +89,12 @@ def test_skip_init_method_in_class():
 
     # Parameter coverage should ignore the __init__ method
     param_total, params_annotated, skipped_files = calculate_parameter_coverage(files)
-    assert params_annotated == 2
-    assert param_total == 2  # Assuming other methods in the class are fully annotated
+    assert params_annotated == 2  # Methods other than __init__ fully annotated
+    assert param_total == 2
     assert skipped_files == 0
 
     # Return type coverage should also ignore the __init__ method
     return_total, return_annotated, _ = calculate_return_type_coverage(files)
-    assert return_total == 1
-    assert return_annotated == 1  # Assuming other methods are fully annotated
+    assert return_total == 1  # Other methods are considered
+    assert return_annotated == 1
     assert skipped_files == 0

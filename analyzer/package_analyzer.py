@@ -2,7 +2,17 @@ import os
 import requests
 import zipfile
 import tarfile
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
+
+def find_stub_package(package_name: str) -> Optional[str]:
+    """Checks if a stub package exists for the given package on PyPI."""
+    stub_package_name = f"{package_name}-stubs"
+    pypi_url = f"https://pypi.org/pypi/{stub_package_name}/json"
+    response = requests.get(pypi_url)
+
+    if response.status_code == 200:
+        return f"https://pypi.org/project/{stub_package_name}/"
+    return None
 
 def download_package(package_name: str, temp_dir: str) -> str:
     """Downloads the specified package from PyPI and extracts it to a temporary directory."""

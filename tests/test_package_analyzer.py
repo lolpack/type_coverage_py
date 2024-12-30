@@ -4,7 +4,8 @@ import tempfile
 import os
 from typing import Any
 import pytest
-from analyzer.package_analyzer import download_package, extract_files
+from unittest.mock import Mock, patch
+from analyzer.package_analyzer import download_package, extract_files, find_stub_package
 
 def test_download_package(monkeypatch: pytest.MonkeyPatch) -> None:
     def create_mock_tar_gz() -> bytes:
@@ -55,3 +56,30 @@ def test_extract_files(monkeypatch: pytest.MonkeyPatch) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         files = extract_files("fake_package", temp_dir)
         assert len(files) > 0  # Expect at least one file to be extracted
+
+def test_find_stub_package_success() -> None:
+    # Mock a successful response for an existing stub package
+    with patch("requests.get") as mock_get:
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_get.return_value = mock_response
+
+        package_name = "example_package"
+        stub_url = find_stub_package(package_name)
+        expected_url = f"https://pypi.org/project/{package_name}-stubs/"
+
+        assert stub_url == expected_url
+        mock_get.assert_called_once_with(f"https://pypi.org/pypi/{package_name}-stubs/json")
+
+def test_find_stub_package_not_found() -> None:
+    # Mock a 404 response for a non-existing stub package
+    with patch("requests.get") as mock_get:
+        mock_response = Mock()
+        mock_response.status_code = 404
+        mock_get.return_value = mock_response
+
+        package_name = "nonexistent_package"
+        stub_url = find_stub_package(package_name)
+
+        assert stub_url is None
+        mock_get.assert_called_once_with(f"https://pypi.org/pypi/{package_name}-stubs/json")
