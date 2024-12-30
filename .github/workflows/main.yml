@@ -21,13 +21,6 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-      
-      - name: Debug SSH Key
-        run: |
-          echo "$SSH_PRIVATE_KEY" | tr -d '\n' | head -c 100
-          eval `ssh-agent -s`
-          ssh-keyscan github.com
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
           
       - name: Verify Known Hosts
         run: cat ~/.ssh/known_hosts
@@ -40,6 +33,12 @@ jobs:
           eval `ssh-agent -s`
           ssh-add ~/.ssh/id_ed25519
           ssh -T git@github.com || true
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+      - name: Debug SSH Key
+        run: |
+          echo "$SSH_PRIVATE_KEY" | tr -d '\n' | head -c 100
           
       - name: Debug SSH
         run: |
@@ -60,7 +59,7 @@ jobs:
 
       # Clone the typeshed repository
       - name: Clone Typeshed Repository
-        run: git clone git@github.com:python/typeshed.git
+        run: git clone https://github.com/python/typeshed.git
 
       # Run the main script
       - name: Run Main Script
