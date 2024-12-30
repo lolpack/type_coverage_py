@@ -15,6 +15,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+      - name: Debug SSH Key
+        run: |
+          echo "$SSH_PRIVATE_KEY" | tr -d '\n' | head -c 100
+          ssh-add -l
+          ssh-keyscan github.com
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          
+      - name: Verify Known Hosts
+        run: cat ~/.ssh/known_hosts
           
       - name: Verify SSH Key
         run: |
