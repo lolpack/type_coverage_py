@@ -19,6 +19,7 @@ jobs:
       - name: Debug SSH Key
         run: |
           echo "$SSH_PRIVATE_KEY" | tr -d '\n' | head -c 100
+          eval `ssh-agent -s`
           ssh-add -l
           ssh-keyscan github.com
           ssh-keyscan github.com >> ~/.ssh/known_hosts
