@@ -21,7 +21,13 @@ This section outlines how the script analyzes Python packages, checks for typesh
 
 - **Typeshed Directory**: The script checks if a corresponding stub exists in the `typeshed` repository, which contains type stubs for standard library modules and popular third-party packages.
 - **Existence Check**: If a typeshed stub exists, it is recorded as `HasTypeShed: Yes`; otherwise, it is marked as `HasTypeShed: No`.
-- **Typeshed Merge**: Pull available typestubs from typeshed with the same package name. If a local `.pyi` file exists, prefer it over typeshed. 
+- **Typeshed Merge**: Pull available typestubs from typeshed with the same package name. If a local `.pyi` file exists, prefer it over typeshed.
+
+### **Stubs Package Check**
+
+If a package has a corresponding stubs package (`[package name]-stubs`), then we pull the stubs package and merge it with the source files the same way we would for typeshed stubs. This happens before typeshed stubs are merged, so in any conflict the stubs package would take priority.
+
+If a stubs package exists, it is recorded as `HasStubsPackage: Yes`; otherwise, it is marked as `HasStubsPackage: No`.
 
 ### **Stubs package Check**
 
@@ -29,7 +35,7 @@ This section outlines how the script analyzes Python packages, checks for typesh
 
 ### **Type Coverage Calculation**
 
-- **Parameter Coverage**: 
+- **Parameter Coverage**:
   - The script analyzes function definitions in the extracted files and calculates the percentage of function parameters that have type annotations.
   - **Handling `.pyi` files**: If a function is defined in a `.pyi` file, it takes precedence over any corresponding function in a `.py` file. The parameter counts from `.pyi` files will overwrite those from `.py` files for the same function.
   - The formula used:

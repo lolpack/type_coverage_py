@@ -80,10 +80,10 @@ def test_partially_annotated_with_stubs():
     files = ["tests/test_files/partially_annotated.py"]
     coverage_data = calculate_overall_coverage(files)
 
-    assert coverage_data["parameter_coverage"] == pytest.approx(
-        33.33, rel=1e-2)  # type: ignore[reportUnknownMemberType]
-    assert coverage_data["return_type_coverage"] == pytest.approx(
-        66.67, rel=1e-2)  # type: ignore[reportUnknownMemberType]
+    assert coverage_data["parameter_coverage"] == pytest.approx(  # type: ignore[reportUnknownMemberType]
+        33.33, rel=1e-2)
+    assert coverage_data["return_type_coverage"] == pytest.approx(  # type: ignore[reportUnknownMemberType]
+        66.67, rel=1e-2)
     assert coverage_data["skipped_files"] == 0
 
 

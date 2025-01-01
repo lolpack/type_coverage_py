@@ -1,30 +1,29 @@
 import ast
 import os
-from typing import List, Tuple, Dict
 
 
-def get_fully_qualified_name(node: ast.FunctionDef, module: str, parent_map: Dict[ast.AST, ast.AST]) -> str:
+def get_fully_qualified_name(node: ast.FunctionDef, module: str, parent_map: dict[ast.AST, ast.AST]) -> str:
     parent = parent_map.get(node)
     if isinstance(parent, ast.ClassDef):
         return f"{module}.{parent.name}.{node.name}"
     return f"{module}.{node.name}"
 
 
-def build_parent_map(tree: ast.AST) -> Dict[ast.AST, ast.AST]:
-    parent_map: Dict[ast.AST, ast.AST] = {}
+def build_parent_map(tree: ast.AST) -> dict[ast.AST, ast.AST]:
+    parent_map: dict[ast.AST, ast.AST] = {}
     for node in ast.walk(tree):
         for child in ast.iter_child_nodes(node):
             parent_map[child] = node
     return parent_map
 
 
-def calculate_parameter_coverage(files: List[str]) -> Tuple[int, int, int]:
+def calculate_parameter_coverage(files: list[str]) -> tuple[int, int, int]:
     total_params: int = 0
     annotated_params: int = 0
     skipped_files: int = 0
 
     # To track annotations and parameters per function
-    function_param_counts: Dict[str, Tuple[int, int]] = {}
+    function_param_counts: dict[str, tuple[int, int]] = {}
     functions_covered_by_pyi: set[str] = set()
 
     for file in files:
@@ -76,13 +75,13 @@ def calculate_parameter_coverage(files: List[str]) -> Tuple[int, int, int]:
     return total_params, annotated_params, skipped_files
 
 
-def calculate_return_type_coverage(files: List[str]) -> Tuple[int, int, int]:
+def calculate_return_type_coverage(files: list[str]) -> tuple[int, int, int]:
     total_functions: int = 0
     annotated_functions: int = 0
     skipped_files: int = 0
 
     # To track return type annotations per function
-    function_return_counts: Dict[str, Tuple[int, int]] = {}
+    function_return_counts: dict[str, tuple[int, int]] = {}
     functions_covered_by_pyi: set[str] = set()
 
     for file in files:
@@ -134,7 +133,7 @@ def calculate_return_type_coverage(files: List[str]) -> Tuple[int, int, int]:
     return total_functions, annotated_functions, skipped_files
 
 
-def calculate_overall_coverage(files: List[str]) -> Dict[str, float]:
+def calculate_overall_coverage(files: list[str]) -> dict[str, float]:
     total_params, annotated_params, param_skipped = calculate_parameter_coverage(
         files)
     total_functions, annotated_functions, return_skipped = calculate_return_type_coverage(
@@ -144,8 +143,11 @@ def calculate_overall_coverage(files: List[str]) -> Dict[str, float]:
 
     return {
         "parameter_coverage": calculuate_coverage(annotated_params, total_params),
-        "return_type_coverage": calculuate_coverage(annotated_functions, total_functions),
-        "skipped_files": total_skipped
+        "return_type_coverage": calculuate_coverage(
+            annotated_functions, total_functions
+        ),
+        "skipped_files": total_skipped,
+        "surface_area": total_params + total_functions,
     }
 
 

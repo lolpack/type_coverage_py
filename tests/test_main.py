@@ -7,14 +7,14 @@ import tempfile
 import os
 import sys
 import requests
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 # Add the directory containing main.py to sys.path
 sys.path.insert(0, os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..')))
 
 
-def mock_download_typeshed_csv() -> Dict[str, Any]:
+def mock_download_typeshed_csv() -> dict[str, Any]:
     # Return a mock dictionary that would simulate the CSV data
     return {
         "package_a": {"typeshed_coverage": 85.0},
@@ -48,7 +48,7 @@ def mock_get(url: str, *args: Any, **kwargs: Any) -> Any:
                 raise requests.exceptions.HTTPError(
                     f"HTTP {self.status_code} Error: {self.url}")
 
-        def json(self) -> Dict[str, Any]:
+        def json(self) -> dict[str, Any]:
             if "package_a-stubs" in self.url:
                 return {
                     "info": {"name": "package_a-stubs"},
@@ -66,7 +66,7 @@ def mock_get(url: str, *args: Any, **kwargs: Any) -> Any:
 
 
 def test_main_with_write_json_and_write_html(monkeypatch: pytest.MonkeyPatch) -> None:
-    def mock_load_and_sort_top_packages(json_file: str) -> list[Dict[str, Any]]:
+    def mock_load_and_sort_top_packages(json_file: str) -> list[dict[str, Any]]:
         return [
             {"download_count": 1000, "project": "package_a"},
             {"download_count": 500, "project": "package_b"},
@@ -98,7 +98,7 @@ def test_main_with_write_json_and_write_html(monkeypatch: pytest.MonkeyPatch) ->
 
 
 def test_main_without_write_json_and_write_html(monkeypatch: pytest.MonkeyPatch) -> None:
-    def mock_load_and_sort_top_packages(json_file: str) -> list[Dict[str, Any]]:
+    def mock_load_and_sort_top_packages(json_file: str) -> list[dict[str, Any]]:
         return [
             {"download_count": 1000, "project": "package_a"},
             {"download_count": 500, "project": "package_b"},
@@ -131,11 +131,11 @@ def test_main_without_write_json_and_write_html(monkeypatch: pytest.MonkeyPatch)
 
 def test_main_analyze_package(monkeypatch: pytest.MonkeyPatch) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:  # Create a temp directory here
-        def mock_extract_files(package_name: str, temp_dir: str) -> list[str]:
+        def mock_extract_files(package_name: str, temp_dir: str) -> tuple[list[str], bool]:
             return [
                 f"{temp_dir}/package_a/module.py",
                 f"{temp_dir}/package_a/tests/test_module.py"
-            ]
+            ], True
 
         def mock_check_typeshed(package_name: str) -> bool:
             return True
@@ -146,19 +146,21 @@ def test_main_analyze_package(monkeypatch: pytest.MonkeyPatch) -> None:
         def mock_merge_files_with_stubs(non_test_files: list[str], stub_files: list[str]) -> list[str]:
             return non_test_files + stub_files
 
-        def mock_calculate_overall_coverage(files: list[str]) -> Dict[str, float]:
+        def mock_calculate_overall_coverage(files: list[str]) -> dict[str, float]:
             # Check if the files are test or non-test files based on path
             if any("tests" in file for file in files):
                 return {
                     "parameter_coverage": 50.0,  # Test files have lower coverage
                     "return_type_coverage": 50.0,
-                    "skipped_files": 1
+                    "skipped_files": 1,
+                    "surface_area": 100,
                 }
             else:
                 return {
                     "parameter_coverage": 80.0,  # Non-test files have higher coverage
                     "return_type_coverage": 80.0,
-                    "skipped_files": 1
+                    "skipped_files": 1,
+                    "surface_area": 100,
                 }
         mock_generate_report = Mock()
 
@@ -188,14 +190,14 @@ def test_main_analyze_package(monkeypatch: pytest.MonkeyPatch) -> None:
 
 def test_main_analyze_package_with_non_typeshed_stubs(monkeypatch: pytest.MonkeyPatch) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
-        def mock_extract_files(package_name: str, temp_dir: str) -> list[str]:
+        def mock_extract_files(package_name: str, temp_dir: str) -> tuple[list[str], bool]:
             if package_name == "package_a-stubs":
-                return [f"{temp_dir}/package_a/module.pyi"]
+                return [f"{temp_dir}/package_a/module.pyi"], True
             else:
                 return [
                     f"{temp_dir}/package_a/module.py",
                     f"{temp_dir}/package_a/tests/test_module.py"
-                ]
+                ], True
 
         def mock_check_typeshed(package_name: str) -> bool:
             return False  # Simulate no Typeshed stubs available
@@ -211,13 +213,14 @@ def test_main_analyze_package_with_non_typeshed_stubs(monkeypatch: pytest.Monkey
         def mock_merge_files_with_stubs(non_test_files: list[str], stub_files: list[str]) -> list[str]:
             return non_test_files + stub_files
 
-        def mock_calculate_overall_coverage(files: list[str]) -> Dict[str, float]:
+        def mock_calculate_overall_coverage(files: list[str]) -> dict[str, float]:
             if any("tests" in file for file in files):
                 # Test files coverage
                 return {
                     "parameter_coverage": 50.0,
                     "return_type_coverage": 50.0,
                     "skipped_files": 1,
+                    "surface_area": 100,
                 }
             elif any("module.pyi" in file for file in files):
                 # Stub files coverage
@@ -225,6 +228,7 @@ def test_main_analyze_package_with_non_typeshed_stubs(monkeypatch: pytest.Monkey
                     "parameter_coverage": 80.0,
                     "return_type_coverage": 80.0,
                     "skipped_files": 0,
+                    "surface_area": 100,
                 }
             else:
                 # Non-test files without stubs
@@ -232,6 +236,7 @@ def test_main_analyze_package_with_non_typeshed_stubs(monkeypatch: pytest.Monkey
                     "parameter_coverage": 70.0,
                     "return_type_coverage": 70.0,
                     "skipped_files": 0,
+                    "surface_area": 100,
                 }
 
         mock_generate_report = Mock()
