@@ -10,6 +10,7 @@ from analyzer.typeshed_checker import check_typeshed, find_stub_files, merge_fil
 from analyzer.coverage_calculator import calculate_overall_coverage
 from analyzer.report_generator import generate_report, generate_report_html, update_main_html_with_links, archive_old_reports
 from coverage_sources.typeshed_coverage import download_typeshed_csv
+import analyzer.historical_view_generator 
 
 JSON_REPORT_FILE = 'package_report.json'
 TOP_PYPI_PACKAGES = 'top-pypi-packages-30-days.min.json'
@@ -177,6 +178,7 @@ def main(
 
     if create_daily:
         update_main_html_with_links()
+        analyzer.historical_view_generator.main()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze Python package type coverage.")
@@ -185,11 +187,14 @@ if __name__ == "__main__":
     parser.add_argument('--write-json', action='store_true', help="Write the output to a JSON report.")
     parser.add_argument('--write-html', action='store_true', help="Generate an HTML report.")
     parser.add_argument('--create-daily', action='store_true', help="Create a daily report and archive previous data.")
+    parser.add_argument("--create-historical-view", action="store_true", help="Generate historical view HTML and plots.")
 
 
     args = parser.parse_args()
 
-    if args.create_daily:
+    if args.create_historical_view:
+        analyzer.historical_view_generator.main()
+    elif args.create_daily:
         main(top_n=(args.top_n or 8000), package_name=args.package_name, write_json=True, write_html=True, create_daily=True)
     elif args.package_name:
         main(package_name=args.package_name, write_json=args.write_json, write_html=args.write_html)
