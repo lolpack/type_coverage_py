@@ -38,7 +38,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]]) -> None:
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Type Coverage Visualization</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="chart.min.js"></script>
         <style>
             body {
                 font-family: Arial, sans-serif;
