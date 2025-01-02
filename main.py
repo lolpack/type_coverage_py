@@ -15,6 +15,7 @@ from analyzer.typeshed_checker import (
     merge_files_with_stubs,
 )
 from coverage_sources.typeshed_coverage import download_typeshed_csv
+import analyzer.historical_view_generator 
 
 JSON_REPORT_FILE = "package_report.json"
 TOP_PYPI_PACKAGES = "top-pypi-packages-30-days.min.json"
@@ -292,6 +293,7 @@ def main(
         print("HTML report generated.")
     if create_daily:
         update_main_html_with_links()
+        analyzer.historical_view_generator.main()
 
 
 if __name__ == "__main__":
@@ -307,12 +309,17 @@ if __name__ == "__main__":
                         help="Generate an HTML report.")
     parser.add_argument('--create-daily', action='store_true',
                         help="Create a daily report and archive previous data.")
-    parser.add_argument(
-        "--parallel", action="store_true", help="Analyze packages in parallel."
+    parser.add_argument("--parallel", action="store_true",
+                         help="Analyze packages in parallel."
     )
+
+    parser.add_argument("--create-historical-view", action="store_true", help="Generate historical view HTML and plots.")
+
     args = parser.parse_args()
 
-    if args.create_daily:
+    if args.create_historical_view:
+        analyzer.historical_view_generator.main()
+    elif args.create_daily:
         main(top_n=(args.top_n or 8000), package_name=args.package_name,
              write_json=True, write_html=True, create_daily=True)
     elif args.package_name:

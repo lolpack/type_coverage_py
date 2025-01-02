@@ -7,6 +7,9 @@ Take the top pypi packages pulled from this project [https://github.com/hugovk/t
 
 View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html)
 
+View coverage and download rank trend graphs here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html)
+
+
 [PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files). 
 ## Methodology
 
@@ -81,6 +84,10 @@ Analyze the top N packages and generate both JSON and HTML reports:
 Run daily command for Github Actions
 
 `python main.py 2000 --create-daily`
+
+Generate historical coverage report to create the file historical_data/coverage-trends.html
+
+`python main.py --create-historical-view`
 
 ### Type check the project (of course!)
 
