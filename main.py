@@ -105,6 +105,7 @@ def analyze_package(
         typeshed_exists = check_typeshed(package_name)
         package_report["HasTypeShed"] = typeshed_exists
         package_report["HasStubsPackage"] = has_stub_package
+        package_report["non_typeshed_stubs"] = "N/A"
         if typeshed_exists:
             if not parallel:
                 print(f"Typeshed exists for {package_name}. Including it in analysis.")
