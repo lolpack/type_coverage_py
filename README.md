@@ -5,7 +5,10 @@ Calculate the Type Coverage for top Python packages. This analysis aims to deter
 
 Take the top pypi packages pulled from this project [https://github.com/hugovk/top-pypi-packages](https://github.com/hugovk/top-pypi-packages)
 
-View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/main/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/main/index.html)
+View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html)
+
+View coverage and download rank trend graphs here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html)
+
 
 [PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files). 
 ## Methodology
@@ -21,7 +24,13 @@ This section outlines how the script analyzes Python packages, checks for typesh
 
 - **Typeshed Directory**: The script checks if a corresponding stub exists in the `typeshed` repository, which contains type stubs for standard library modules and popular third-party packages.
 - **Existence Check**: If a typeshed stub exists, it is recorded as `HasTypeShed: Yes`; otherwise, it is marked as `HasTypeShed: No`.
-- **Typeshed Merge**: Pull available typestubs from typeshed with the same package name. If a local `.pyi` file exists, prefer it over typeshed. 
+- **Typeshed Merge**: Pull available typestubs from typeshed with the same package name. If a local `.pyi` file exists, prefer it over typeshed.
+
+### **Stubs Package Check**
+
+If a package has a corresponding stubs package (`[package name]-stubs`), then we pull the stubs package and merge it with the source files the same way we would for typeshed stubs. This happens before typeshed stubs are merged, so in any conflict the stubs package would take priority.
+
+If a stubs package exists, it is recorded as `HasStubsPackage: Yes`; otherwise, it is marked as `HasStubsPackage: No`.
 
 ### **Stubs package Check**
 
@@ -29,7 +38,7 @@ This section outlines how the script analyzes Python packages, checks for typesh
 
 ### **Type Coverage Calculation**
 
-- **Parameter Coverage**: 
+- **Parameter Coverage**:
   - The script analyzes function definitions in the extracted files and calculates the percentage of function parameters that have type annotations.
   - **Handling `.pyi` files**: If a function is defined in a `.pyi` file, it takes precedence over any corresponding function in a `.py` file. The parameter counts from `.pyi` files will overwrite those from `.py` files for the same function.
   - The formula used:
@@ -75,6 +84,10 @@ Analyze the top N packages and generate both JSON and HTML reports:
 Run daily command for Github Actions
 
 `python main.py 2000 --create-daily`
+
+Generate historical coverage report to create the file historical_data/coverage-trends.html
+
+`python main.py --create-historical-view`
 
 ### Type check the project (of course!)
 

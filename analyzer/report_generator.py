@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Any
 import os
 import datetime
 
@@ -8,6 +8,7 @@ HISTORICAL_DATA_DIR = "historical_data"
 HISTORICAL_HTML_DIR = os.path.join(HISTORICAL_DATA_DIR, "html")
 HISTORICAL_JSON_DIR = os.path.join(HISTORICAL_DATA_DIR, "json")
 
+
 def archive_old_reports() -> None:
     """Move the old reports to the historical_data directory with a timestamp."""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -16,15 +17,18 @@ def archive_old_reports() -> None:
 
     # Archive old HTML report
     if os.path.exists(HTML_REPORT_FILE):
-        new_html_name = os.path.join(HISTORICAL_HTML_DIR, f"index-{timestamp}.html")
+        new_html_name = os.path.join(
+            HISTORICAL_HTML_DIR, f"index-{timestamp}.html")
         os.rename(HTML_REPORT_FILE, new_html_name)
         print(f"Archived {HTML_REPORT_FILE} to {new_html_name}")
 
     # Archive old JSON report
     if os.path.exists(JSON_REPORT_FILE):
-        new_json_name = os.path.join(HISTORICAL_JSON_DIR, f"package_report-{timestamp}.json")
+        new_json_name = os.path.join(
+            HISTORICAL_JSON_DIR, f"package_report-{timestamp}.json")
         os.rename(JSON_REPORT_FILE, new_json_name)
         print(f"Archived {JSON_REPORT_FILE} to {new_json_name}")
+
 
 def update_main_html_with_links() -> None:
     """Update the main HTML file with a link to view historical data."""
@@ -34,7 +38,8 @@ def update_main_html_with_links() -> None:
     historical_links: list[str] = []
     for file_name in sorted(os.listdir(HISTORICAL_HTML_DIR)):
         if file_name.endswith(".html"):
-            link = f"<li><a href='{os.path.join(HISTORICAL_HTML_DIR, file_name)}'>{file_name}</a></li>"
+            link = f"<li><a href='{os.path.join(HISTORICAL_HTML_DIR, file_name)}'>{
+                file_name}</a></li>"
             historical_links.append(link)
 
     # Add the links to the main HTML
@@ -54,34 +59,64 @@ def update_main_html_with_links() -> None:
         file.write(updated_html_content)
     print("Updated main HTML with historical data links.")
 
-def generate_report(package_data: Dict[str, Dict[str, float]], package_name: str) -> None:
+
+def generate_report(
+    package_data: dict[str, dict[str, float]], package_name: str
+) -> None:
     """Generates a report of the coverage data."""
     coverage_data = package_data["CoverageData"]
     typeshed_data = package_data.get("TypeshedData", {})
-    
+
     # Print package coverage
     print(f"Coverage Report for {package_name}:")
+    print(f"Has stubs package: {package_data['HasStubsPackage']}")
     print(f"Has typeshed stubs: {package_data['HasTypeShed']}")
+    print(f"Has py.typed: {package_data['HasPyTypedFile']}")
     print(f"Non typeshed stubs package: {package_data['non_typeshed_stubs']}")
-    print(f"Parameter Type Coverage: {coverage_data['parameter_coverage']:.2f}%")
-    print(f"Return Type Coverage: {coverage_data['return_type_coverage']:.2f}%")
-    print(f"Parameter Type Coverage With Stubs: {coverage_data['parameter_coverage_with_stubs']:.2f}%")
-    print(f"Return Type Coverage With Stubs: {coverage_data['return_type_coverage_with_stubs']:.2f}%")
-    print(f"Parameter Type Coverage With Tests: {coverage_data['param_coverage_with_tests']:.2f}%")
-    print(f"Return Type Coverage With Tests: {coverage_data['return_coverage_with_tests']:.2f}%")
-    
+    print(f"Parameter Type Coverage: {
+          coverage_data['parameter_coverage']:.2f}%")
+    print(f"Return Type Coverage: {
+          coverage_data['return_type_coverage']:.2f}%")
+    print(
+        f"Parameter Type Coverage With Stubs: {
+            coverage_data['parameter_coverage_with_stubs']:.2f}%"
+    )
+    print(
+        f"Return Type Coverage With Stubs: {
+            coverage_data['return_type_coverage_with_stubs']:.2f}%"
+    )
+    print(
+        f"Parameter Type Coverage With Tests: {
+            coverage_data['param_coverage_with_tests']:.2f}%"
+    )
+    print(
+        f"Return Type Coverage With Tests: {
+            coverage_data['return_coverage_with_tests']:.2f}%"
+    )
+
     # Print Typeshed data if available
     if typeshed_data:
         print("\nTypeshed Coverage Stats:")
-        print(f"Completeness Level: {typeshed_data.get('completeness_level', 'N/A')}")
-        print(f"Annotated Parameters: {typeshed_data.get('annotated_parameters', 'N/A')}")
-        print(f"Unannotated Parameters: {typeshed_data.get('unannotated_parameters', 'N/A')}")
+        print(f"Completeness Level: {
+              typeshed_data.get('completeness_level', 'N/A')}")
+        print(
+            f"Annotated Parameters: {typeshed_data.get(
+                'annotated_parameters', 'N/A')}"
+        )
+        print(
+            f"Unannotated Parameters: {typeshed_data.get(
+                'unannotated_parameters', 'N/A')}"
+        )
         print(f"Parameter Coverage: {typeshed_data.get('% param')}")
-        print(f"Annotated Returns: {typeshed_data.get('annotated_returns', 'N/A')}")
-        print(f"Unannotated Returns: {typeshed_data.get('unannotated_returns', 'N/A')}")
+        print(f"Annotated Returns: {
+              typeshed_data.get('annotated_returns', 'N/A')}")
+        print(f"Unannotated Returns: {
+              typeshed_data.get('unannotated_returns', 'N/A')}")
         print(f"Return Coverage: {typeshed_data.get('% return')}")
-        print(f"Stubtest Strictness: {typeshed_data.get('stubtest_strictness', 'N/A')}")
-        print(f"Stubtest Platforms: {typeshed_data.get('stubtest_platforms', 'N/A')}")
+        print(f"Stubtest Strictness: {
+              typeshed_data.get('stubtest_strictness', 'N/A')}")
+        print(f"Stubtest Platforms: {
+              typeshed_data.get('stubtest_platforms', 'N/A')}")
     print("-" * 40)
 
 
@@ -95,18 +130,26 @@ def get_color(percentage: float) -> str:
         # Transition from light yellow to light green for 50% to 100%
         red = int(255 * ((100 - percentage) / 50))
         green = 255
-    
+
     blue = 200  # A small amount of blue for a softer, more pleasant color
     return f"rgb({red},{green},{blue})"
 
-def create_percentage_row(percentage: Union[str, float]) -> str:
-    if type(percentage) == str:
+
+def create_percentage_row(percentage: str | float) -> str:
+    if isinstance(percentage, str):
         return f"<td class=\"coverage-cell\">{percentage}</td>"
 
     percentage_color = get_color(float(percentage))
-    return f"<td class=\"coverage-cell\" style=\"background-color: {percentage_color};\">{percentage:.2f}%</td>"
+    return f'<td class="coverage-cell" style="background-color: {percentage_color};">{percentage:.2f}%</td>'
 
-def generate_report_html(package_report: Dict[str, Dict[str, Dict[str, float]]]) -> None:
+
+def create_boolean_row(value: bool) -> str:
+    color = "green" if value else "red"
+    text = "Yes" if value else "No"
+    return f'<td style="background-color: {color};">{text}</td>'
+
+
+def generate_report_html(package_report: dict[str, Any]) -> None:
     """Generates an HTML report of the package coverage data."""
     html_content = """
     <!DOCTYPE html>
@@ -171,7 +214,7 @@ def generate_report_html(package_report: Dict[str, Dict[str, Dict[str, float]]])
     </head>
     <body>
         <h1>Package Type Coverage Report</h1>
-        <p class="github-link">See code and methodology here: 
+        <p class="github-link">See code and methodology here:
             <a href="https://github.com/lolpack/type_coverage_py" target="_blank">
                 https://github.com/lolpack/type_coverage_py
             </a>
@@ -182,59 +225,57 @@ def generate_report_html(package_report: Dict[str, Dict[str, Dict[str, float]]])
                 <th>Package Name</th>
                 <th>Download Count</th>
                 <th>Has Typeshed</th>
+                <th>Has Stubs Package</th>
+                <th>Has py.typed File</th>
                 <th>Non-Typeshed Stubs</th>
                 <th>Parameter Type Coverage</th>
                 <th>Return Type Coverage</th>
-                <th>Parameter Coverage with Typeshed</th>
-                <th>Return Type Coverage with Typeshed</th>
-                <th>Parameter Coverage with Test</th>
-                <th>Return Type Coverage with Test</th>
-                <th>Typeshed Parameter Type Coverage</th>
-                <th>Typeshed Return Type Coverage</th>
-                <th>Skipped Files</th>
-                <th>Typeshed Completeness Level</th>
-                <th>Typeshed Stubtest Strictness</th>
+                <th>Parameter Coverage w/ Typeshed</th>
+                <th>Return Type Coverage w/ Typeshed</th>
+                <th>Typeshed-stats Parameter Type Coverage</th>
+                <th>Typeshed-stats Return Type Coverage</th>
+                <th>Typeshed-stats Completeness Level</th>
+                <th>Typeshed-stats Stubtest Strictness</th>
             </tr>
     """
-
     for package_name, details in package_report.items():
-        coverage_data = details['CoverageData']
-        typeshed_data = details.get('TypeshedData', {})
-        parameter_coverage = round(coverage_data['parameter_coverage'], 2)
-        return_coverage = round(coverage_data['return_type_coverage'], 2)
+        coverage_data = details["CoverageData"]
+        typeshed_data = details.get("TypeshedData", {})
+        parameter_coverage = round(coverage_data["parameter_coverage"], 2)
+        return_coverage = round(coverage_data["return_type_coverage"], 2)
 
-        parameter_coverage_with_stubs = round(coverage_data.get('parameter_coverage_with_stubs', 0), 2)
-        return_coverage_with_stubs = round(coverage_data.get('return_type_coverage_with_stubs', 0), 2)
-        param_coverage_with_tests = round(coverage_data.get('param_coverage_with_tests', 0), 2)
-        return_coverage_with_tests = round(coverage_data.get('return_coverage_with_tests', 0), 2)    
+        parameter_coverage_with_stubs = round(
+            coverage_data.get("parameter_coverage_with_stubs", 0), 2
+        )
+        return_coverage_with_stubs = round(
+            coverage_data.get("return_type_coverage_with_stubs", 0), 2
+        )
 
-        skipped_files = f"{coverage_data['skipped_files']}"
-        
-        completeness_level = typeshed_data.get('completeness_level', 'N/A')
-        stubtest_strictness = typeshed_data.get('stubtest_strictness', 'N/A')
-        typshed_return_percent = typeshed_data.get('% param', 'N/A')
-        typshed_param_percent = typeshed_data.get('% return', 'N/A')
+        completeness_level = typeshed_data.get("completeness_level", "N/A")
+        stubtest_strictness = typeshed_data.get("stubtest_strictness", "N/A")
+        typshed_return_percent = typeshed_data.get("% param", "N/A")
+        typshed_param_percent = typeshed_data.get("% return", "N/A")
 
         non_typeshed_stubs = details.get("non_typeshed_stubs", "N/A")
         if non_typeshed_stubs != "N/A":
-            non_typeshed_stubs = f'<a href="{non_typeshed_stubs}" target="_blank">{package_name}-stubs</a>'
+            non_typeshed_stubs = f'<a href="{
+                non_typeshed_stubs}" target="_blank">{package_name}-stubs</a>'
 
         html_content += f"""
             <tr>
                 <td>{details['DownloadRanking']}</td>
                 <td>{package_name}</td>
                 <td>{details['DownloadCount']}</td>
-                <td>{'Yes' if details['HasTypeShed'] else 'No'}</td>
+                {create_boolean_row(details['HasTypeShed'])}
+                {create_boolean_row(details['HasStubsPackage'])}
+                {create_boolean_row(details['HasPyTypedFile'])}
                 <td>{non_typeshed_stubs}</td>
                 {create_percentage_row(parameter_coverage)}
                 {create_percentage_row(return_coverage)}
                 {create_percentage_row(parameter_coverage_with_stubs)}
                 {create_percentage_row(return_coverage_with_stubs)}
-                {create_percentage_row(param_coverage_with_tests)}
-                {create_percentage_row(return_coverage_with_tests)}
                 {create_percentage_row(typshed_param_percent)}
                 {create_percentage_row(typshed_return_percent)}
-                <td class="skipped-cell">{skipped_files}</td>
                 <td>{completeness_level}</td>
                 <td>{stubtest_strictness}</td>
             </tr>
@@ -251,4 +292,3 @@ def generate_report_html(package_report: Dict[str, Dict[str, Dict[str, float]]])
         file.write(html_content)
 
     print(f"HTML report generated: {HTML_REPORT_FILE}")
-
