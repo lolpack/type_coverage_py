@@ -24,8 +24,8 @@ def check_typed_classifier(package_name: str) -> tuple[bool, bool]:
 badge_total = 0
 stubs_only_total = 0
 
-non_badge: defaultdict[tuple[bool, bool, bool, bool, bool], int] = defaultdict(int)
-badge: defaultdict[tuple[bool, bool, bool, bool, bool], int] = defaultdict(int)
+non_badge: defaultdict[tuple[bool, bool, bool, bool, bool], list[str]] = defaultdict(list)
+badge: defaultdict[tuple[bool, bool, bool, bool, bool], list[str]] = defaultdict(list)
 for package, package_info in package_report.items():
     has_typed_classifier, has_stubs_only_classifier = check_typed_classifier(package)
     key = (package_info["HasPyTypedFile"], package_info["HasTypeShed"], package_info["HasStubsPackage"], package.startswith("types-") or package.endswith("-stubs"), has_stubs_only_classifier)
@@ -33,21 +33,34 @@ for package, package_info in package_report.items():
         stubs_only_total += 1
     if has_typed_classifier:
         badge_total += 1
-        badge[key] += 1
+        badge[key].append(package)
     else:
-        non_badge[key] += 1
+        non_badge[key].append(package)
 
 print("Has Typing :: Typed", badge_total)
 print("Has Typing :: Stubs Only", stubs_only_total)
 
 print("Has Badge")
+table = False
 rows: list[list[bool | int]] = []
-for ((py_typed, typeshed, stubs, stubs_name, stubs_classifier), count) in badge.items():
-    rows.append([count, py_typed, typeshed, stubs, stubs_name, stubs_classifier])
-print(tabulate(rows, headers=['Count', "Has py.typed", "Has typeshed", "Has stubs", "-stubs or types-", "Typing :: Stubs Only"]))
+for ((py_typed, typeshed, stubs, stubs_name, stubs_classifier), pkgs) in badge.items():
+    rows.append([len(pkgs), py_typed, typeshed, stubs, stubs_name, stubs_classifier])
+    if table:
+        continue
+    print(True, *rows[-1])
+    for pkg in pkgs:
+        print(pkg)
+if table:
+    print(tabulate(rows, headers=['Count', "Has py.typed", "Has typeshed", "Has stubs", "-stubs or types-", "Typing :: Stubs Only"]))
 
 print("No Badge")
 rows = []
-for ((py_typed, typeshed, stubs, stubs_name, stubs_classifier), count) in non_badge.items():
-    rows.append([count, py_typed, typeshed, stubs, stubs_name, stubs_classifier])
-print(tabulate(rows, headers=['Count', "Has py.typed", "Has typeshed", "Has stubs", "-stubs or types-", "Typing :: Stubs Only"]))
+for ((py_typed, typeshed, stubs, stubs_name, stubs_classifier), pkgs) in non_badge.items():
+    rows.append([len(pkgs), py_typed, typeshed, stubs, stubs_name, stubs_classifier])
+    if table:
+        continue
+    print(False, *rows[-1])
+    for pkg in pkgs:
+        print(pkg)
+if table:
+    print(tabulate(rows, headers=['Count', "Has py.typed", "Has typeshed", "Has stubs", "-stubs or types-", "Typing :: Stubs Only"]))
