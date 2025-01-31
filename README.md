@@ -1,16 +1,18 @@
 # type_coverage_py
 
-Calculate the Type Coverage for top Python packages. This analysis aims to determine how well typed popular packages are. 
+Calculate the Type Coverage for top Python packages. This analysis aims to determine how well typed popular packages are.
 
 
 Take the top pypi packages pulled from this project [https://github.com/hugovk/top-pypi-packages](https://github.com/hugovk/top-pypi-packages)
 
 View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html)
 
+View priortized [list](https://github.com/lolpack/type_coverage_py/included_packages.txt) and generated [report](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/prioritized/index.html)
+
 View coverage and download rank trend graphs here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html)
 
 
-[PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files). 
+[PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files).
 ## Methodology
 
 This section outlines how the script analyzes Python packages, checks for typeshed availability, and calculates type coverage. The process involves three key steps: package extraction, typeshed check, and type coverage calculation.
@@ -62,6 +64,10 @@ If a stubs package exists, it is recorded as `HasStubsPackage: Yes`; otherwise, 
 
 This methodology ensures an accurate and detailed analysis of type coverage for popular Python packages, taking into account the presence of type stub files (`.pyi`) which are prioritized over implementation files (`.py`) for the same functions.
 
+### Pyright Stats Integration
+- **Pyright Analysis:** The script can optionally run Pyright to gather additional type information statistics for each package.
+- **Stats Structure:** Pyright stats include counts of known, ambiguous, and unknown types for each package.
+- **Integration:** These stats are merged into the package report under a new object called `pyright
 
 ## Usage
 
@@ -89,6 +95,10 @@ Generate historical coverage report to create the file historical_data/coverage-
 
 `python main.py --create-historical-view`
 
+Generate report from a specific list of packages
+
+`python main.py --pyright-stats --package-list included_packages.txt --write-json --write-html --output-list-only`
+
 ### Type check the project (of course!)
 
 Pyright
@@ -99,4 +109,3 @@ Or simply install globally
 
 `$ npm i -g pyright`
 `$ pyright`
-

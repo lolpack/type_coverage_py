@@ -1,23 +1,32 @@
 import argparse
 import concurrent.futures
 import json
+import os
 import shutil
 import sys
 import tempfile
 from typing import Any, Optional
 
+import analyzer.historical_view_generator
+
 from analyzer.coverage_calculator import calculate_overall_coverage
 from analyzer.package_analyzer import extract_files, find_stub_package
-from analyzer.report_generator import generate_report, generate_report_html, update_main_html_with_links, archive_old_reports
+from analyzer.report_generator import (
+    archive_old_reports,
+    generate_report,
+    generate_report_html,
+    update_main_html_with_links,
+)
 from analyzer.typeshed_checker import (
     check_typeshed,
     find_stub_files,
     merge_files_with_stubs,
 )
+from coverage_sources.get_pyright_stats import main as get_pyright_stats
 from coverage_sources.typeshed_coverage import download_typeshed_csv
-import analyzer.historical_view_generator 
 
 JSON_REPORT_FILE = "package_report.json"
+HTML_REPORT_FILE = "index.html"
 TOP_PYPI_PACKAGES = "top-pypi-packages-30-days.min.json"
 STUB_PACKAGES = "stub_packages.json"
 
@@ -27,8 +36,7 @@ def load_and_sort_top_packages(json_file: str) -> list[dict[str, Any]]:
     with open(json_file, "r") as f:
         data = json.load(f)
 
-    sorted_rows = sorted(
-        data["rows"], key=lambda x: x["download_count"], reverse=True)
+    sorted_rows = sorted(data["rows"], key=lambda x: x["download_count"], reverse=True)
     return sorted_rows
 
 
@@ -77,8 +85,7 @@ def analyze_package(
                 package_name + "-stubs", stub_package_dir
             )
             files = merge_files_with_stubs(files, stub_package_files)
-            non_test_files = merge_files_with_stubs(
-                non_test_files, stub_package_files)
+            non_test_files = merge_files_with_stubs(non_test_files, stub_package_files)
 
         package_report["HasPyTypedFile"] = has_py_typed_file or stub_has_py_typed_file
 
@@ -113,8 +120,7 @@ def analyze_package(
             merged_files = merge_files_with_stubs(non_test_files, stub_files)
 
             # Calculate coverage with stubs
-            total_test_coverage_stubs = calculate_overall_coverage(
-                merged_files)
+            total_test_coverage_stubs = calculate_overall_coverage(merged_files)
             parameter_coverage_with_stubs = total_test_coverage_stubs[
                 "parameter_coverage"
             ]
@@ -133,19 +139,21 @@ def analyze_package(
                 stub_temp_dir = tempfile.mkdtemp()
                 try:
                     stub_files, _ = extract_files(
-                        f"{package_name}-stubs", stub_temp_dir)
-                    merged_files = merge_files_with_stubs(
-                        non_test_files, stub_files)
+                        f"{package_name}-stubs", stub_temp_dir
+                    )
+                    merged_files = merge_files_with_stubs(non_test_files, stub_files)
 
                     # Calculate coverage with stubs
-                    total_test_coverage_stubs = calculate_overall_coverage(
-                        merged_files)
-                    parameter_coverage_with_stubs = total_test_coverage_stubs["parameter_coverage"]
+                    total_test_coverage_stubs = calculate_overall_coverage(merged_files)
+                    parameter_coverage_with_stubs = total_test_coverage_stubs[
+                        "parameter_coverage"
+                    ]
                     return_type_coverage_with_stubs = total_test_coverage_stubs[
-                        "return_type_coverage"]
+                        "return_type_coverage"
+                    ]
                     skipped_files_with_stubs = total_test_coverage["skipped_files"]
                 finally:
-                    print('temp file removed', stub_temp_dir)
+                    print("temp file removed", stub_temp_dir)
                     shutil.rmtree(stub_temp_dir)
             else:
                 print(f"No stubs found for {package_name} in Typeshed or PyPI.")
@@ -238,19 +246,32 @@ def parallel_analyze_packages(
     return package_report
 
 
+def read_packages(file_path: str) -> list[str]:
+    try:
+        with open(file_path, "r") as f:
+            return [line.strip() for line in f.readlines()]
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+        return []
+
+
 def main(
     top_n: Optional[int] = None,
     package_name: Optional[str] = None,
     write_json: bool = False,
     write_html: bool = False,
     parallel: bool = False,
-    create_daily: bool = False  # Add this parameter
+    create_daily: bool = False,
+    package_list: Optional[str] = None,
+    pyright_stats: Optional[bool] = False,
+    output_list_only: Optional[bool] = False,
 ) -> None:
     package_report: dict[str, Any] = {}
 
     # Download the CSV file with typeshed stats
     typeshed_data = download_typeshed_csv()
     packages_with_stubs = get_packages_with_stubs()
+    top_packages: list[dict[str, Any]] = []
 
     if package_name:
         # Analyze a specific package
@@ -260,10 +281,20 @@ def main(
             typeshed_data=typeshed_data,
             has_stub_package=package_name in packages_with_stubs,
         )
+        top_packages = [package_report[package_name]]
     else:
         # Analyze top N packages
         sorted_packages = load_and_sort_top_packages(TOP_PYPI_PACKAGES)
         top_packages = sorted_packages[:top_n]
+
+        if package_list:
+            included_packages: list[str] = read_packages(package_list)
+            top_packages = [
+                package
+                for package in top_packages
+                if package["project"] in included_packages
+            ]
+
         if parallel:
             package_report = parallel_analyze_packages(
                 top_packages, typeshed_data, packages_with_stubs
@@ -274,58 +305,108 @@ def main(
                 download_count = package_data["download_count"]
                 package_report[name] = analyze_package(
                     name,
-                    rank=rank, download_count=download_count,
+                    rank=rank,
+                    download_count=download_count,
                     typeshed_data=typeshed_data,
                     has_stub_package=package_name in packages_with_stubs,
                 )
+
+    # Call pyright stats and merge data
+    if pyright_stats:
+        pyright_package_stats: dict[str, Any] = get_pyright_stats(
+            [package_data["project"] for package_data in top_packages]
+        )
+        for package, stats in pyright_package_stats.items():
+            if package in package_report:
+                package_report[package]["pyright_stats"] = stats
+
+    html_report_file = HTML_REPORT_FILE
+    json_report_file = JSON_REPORT_FILE
+
     # Archive old report in data section
     if create_daily:
-        archive_old_reports()
+        archive_old_reports(html_report_file)
+
+    if output_list_only:
+        os.makedirs("prioritized", exist_ok=True)
+        html_report_file: str = os.path.join("prioritized", "index.html")
+        json_report_file: str = os.path.join("prioritized", "package_report.json")
 
     # Conditionally write the JSON report
     if write_json:
-        with open(JSON_REPORT_FILE, "w") as json_file:
+        with open(json_report_file, "w") as json_file:
             json.dump(package_report, json_file, indent=4)
-        print("package_report.json file generated.")
+        print(f"{json_report_file} file generated.")
 
     # Conditionally generate the HTML report
     if write_html:
-        generate_report_html(package_report)
+        generate_report_html(package_report, html_report_file)
         print("HTML report generated.")
+
     if create_daily:
-        update_main_html_with_links()
+        update_main_html_with_links(html_report_file)
         analyzer.historical_view_generator.main()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Analyze Python package type coverage.")
-    parser.add_argument('top_n', type=int, nargs='?',
-                        help="Analyze the top N PyPI packages.")
-    parser.add_argument('--package-name', type=str,
-                        help="Analyze a specific package by name.")
-    parser.add_argument('--write-json', action='store_true',
-                        help="Write the output to a JSON report.")
-    parser.add_argument('--write-html', action='store_true',
-                        help="Generate an HTML report.")
-    parser.add_argument('--create-daily', action='store_true',
-                        help="Create a daily report and archive previous data.")
-    parser.add_argument("--parallel", action="store_true",
-                         help="Analyze packages in parallel."
+        description="Analyze Python package type coverage."
+    )
+    parser.add_argument(
+        "top_n", type=int, nargs="?", help="Analyze the top N PyPI packages."
+    )
+    parser.add_argument(
+        "--package-name", type=str, help="Analyze a specific package by name."
+    )
+    parser.add_argument(
+        "--write-json", action="store_true", help="Write the output to a JSON report."
+    )
+    parser.add_argument(
+        "--write-html", action="store_true", help="Generate an HTML report."
+    )
+    parser.add_argument(
+        "--create-daily",
+        action="store_true",
+        help="Create a daily report and archive previous data.",
+    )
+    parser.add_argument(
+        "--parallel", action="store_true", help="Analyze packages in parallel."
+    )
+    parser.add_argument(
+        "--pyright-stats", action="store_true", help="Run pyright stats."
+    )
+    parser.add_argument(
+        "--package-list", type=str, help="Path to a file containing a list of packages."
     )
 
-    parser.add_argument("--create-historical-view", action="store_true", help="Generate historical view HTML and plots.")
+    parser.add_argument(
+        "--create-historical-view",
+        action="store_true",
+        help="Generate historical view HTML and plots.",
+    )
+
+    parser.add_argument(
+        "--output-list-only", action="store_true", help="Run pyright stats."
+    )
 
     args = parser.parse_args()
 
     if args.create_historical_view:
         analyzer.historical_view_generator.main()
     elif args.create_daily:
-        main(top_n=(args.top_n or 8000), package_name=args.package_name,
-             write_json=True, write_html=True, create_daily=True)
+        main(
+            top_n=(args.top_n or 8000),
+            package_name=args.package_name,
+            write_json=True,
+            write_html=True,
+            create_daily=True,
+        )
     elif args.package_name:
-        main(package_name=args.package_name,
-             write_json=args.write_json, write_html=args.write_html)
+        main(
+            package_name=args.package_name,
+            write_json=args.write_json,
+            write_html=args.write_html,
+        )
     elif args.top_n:
         if not (1 <= args.top_n <= 8000):
             print("Error: <top_n> must be an integer between 1 and 8000.")
@@ -335,6 +416,16 @@ if __name__ == "__main__":
             write_json=args.write_json,
             write_html=args.write_html,
             parallel=args.parallel,
+            pyright_stats=args.pyright_stats,
+        )
+    elif args.package_list:
+        main(
+            package_list=args.package_list,
+            write_json=args.write_json,
+            write_html=args.write_html,
+            parallel=args.parallel,
+            pyright_stats=args.pyright_stats,
+            output_list_only=args.output_list_only,
         )
     else:
         print("Error: Either provide a top N number or a package name.")
