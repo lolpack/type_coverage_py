@@ -59,8 +59,7 @@ def download_package(package_name: str, temp_dir: str) -> str:
         with open(archive_path, "wb") as archive_file:
             archive_file.write(sdist_response.content)
         with tarfile.open(archive_path, "r:gz") as tar_ref:
-            # type: ignore reportDeprecated python 3.14
-            tar_ref.extractall(temp_dir)
+            tar_ref.extractall(temp_dir, filter='data')
     else:
         raise ValueError(f"Unsupported archive format for {sdist_url}.")
 
