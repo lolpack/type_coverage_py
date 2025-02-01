@@ -7,7 +7,7 @@ Take the top pypi packages pulled from this project [https://github.com/hugovk/t
 
 View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html)
 
-View priortized [list](https://github.com/lolpack/type_coverage_py/blob/published-report/included_packages.txt) and generated [report](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/prioritized/index.html)
+View priortized [list](https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt) and generated [report](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/prioritized/index.html)
 
 View coverage and download rank trend graphs here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html)
 
