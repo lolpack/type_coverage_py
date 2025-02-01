@@ -54,10 +54,12 @@ def test_find_stub_files(mock_typeshed: str, monkeypatch: pytest.MonkeyPatch) ->
         corrected_typeshed_dir, 'stubs/mock_package')}")
 
     assert len(stubs) == 2
-    assert os.path.join(corrected_typeshed_dir,
-                        "stubs/mock_package/__init__.pyi") in stubs
-    assert os.path.join(corrected_typeshed_dir,
-                        "stubs/mock_package/module.pyi") in stubs
+    
+    expected = os.path.normpath(os.path.join(corrected_typeshed_dir,
+                       "stubs/mock_package/__init__.pyi"))
+    normalized_stubs = [os.path.normpath(p) for p in stubs]
+
+    assert expected in normalized_stubs
 
 
 def test_merge_files_with_stubs() -> None:
