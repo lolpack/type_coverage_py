@@ -1,7 +1,7 @@
 import json
 import os
 import subprocess
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 
 def create_output_directory(output_dir: str) -> None:
@@ -48,28 +48,25 @@ def run_pyright(venv_name: str, package: str, output_file: str) -> None:
         print(f"Output: {e.output}")
 
 
-def parse_output_json(output_file: str) -> Dict[str, int]:
+def parse_output_json(output_file: str) -> Dict[str, Union[int, float]]:
     try:
         with open(output_file, "r") as f:
             output_data = json.load(f)
-            return output_data["typeCompleteness"]["exportedSymbolCounts"]
+            pyright_data: Dict[str, Union[int, float]] = {}
+            symbol_count = output_data["typeCompleteness"]["exportedSymbolCounts"]
+            coverage: float = output_data["typeCompleteness"]["completenessScore"] * 100.0
+            
+            pyright_data = symbol_count
+            pyright_data["coverage"] = coverage
+            
+            return pyright_data
+
     except FileNotFoundError:
         print(f"Error: File '{output_file}' not found.")
         return {}
     except json.JSONDecodeError as e:
         print(f"Error parsing JSON: {e}")
         return {}
-
-
-def calculate_pyright_coverage(exported_symbol_counts: Dict[str, int]) -> float:
-    total_symbols = sum(exported_symbol_counts.values())
-    if total_symbols == 0:
-        return 0.0
-    covered_symbols = (
-        exported_symbol_counts["withKnownType"]
-        + exported_symbol_counts["withAmbiguousType"]
-    )
-    return covered_symbols / total_symbols * 100.0
 
 
 def main(packages: list[str]) -> Dict[str, Any]:
@@ -82,14 +79,16 @@ def main(packages: list[str]) -> Dict[str, Any]:
         venv_name = f".pyright_env_{package}"
         create_virtual_environment(venv_name)
         activate_and_install_package(venv_name, package)
+        
+        # Pyright requires a py.typed file to be present to calculate type coverage
         py_typed_path = f"{venv_name}/lib/python3.12/site-packages/{package}/py.typed"
         create_py_typed_file(py_typed_path)
+        
         output_file = f"{output_dir}/{package}_output.json"
         run_pyright(venv_name, package, output_file)
-        exported_symbol_counts = parse_output_json(output_file)
+        pyright_data = parse_output_json(output_file)
 
-        stats[package] = exported_symbol_counts
-        stats[package]["coverage"] = calculate_pyright_coverage(exported_symbol_counts)
+        stats[package] = pyright_data
 
         print(f"Package: {package}")
         print(f"Exported Pyright Symbol Counts: {stats[package]}")
