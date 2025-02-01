@@ -254,6 +254,9 @@ def read_packages(file_path: str) -> list[str]:
         print(f"Error: File '{file_path}' not found.")
         return []
 
+def foo():
+    t: str = 0
+
 
 def main(
     top_n: Optional[int] = None,
