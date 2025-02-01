@@ -7,7 +7,7 @@ Take the top pypi packages pulled from this project [https://github.com/hugovk/t
 
 View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html)
 
-View priortized [list](https://github.com/lolpack/type_coverage_py/included_packages.txt) and generated [report](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/prioritized/index.html)
+View priortized [list](https://github.com/lolpack/type_coverage_py/blob/published-report/included_packages.txt) and generated [report](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/prioritized/index.html)
 
 View coverage and download rank trend graphs here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html)
 
@@ -67,7 +67,6 @@ This methodology ensures an accurate and detailed analysis of type coverage for 
 ### Pyright Stats Integration
 - **Pyright Analysis:** The script can optionally run Pyright to gather additional type information statistics for each package.
 - **Stats Structure:** Pyright stats include counts of known, ambiguous, and unknown types for each package.
-- **Integration:** These stats are merged into the package report under a new object called `pyright
 
 ## Usage
 
