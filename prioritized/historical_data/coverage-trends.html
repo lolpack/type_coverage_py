@@ -1,33 +1,4 @@
-import os
-import json
-from datetime import datetime
-from typing import Dict, List, Any
-from jinja2 import Template
 
-def collect_historical_data(data_dir: str) -> Dict[str, List[Dict[str, Any]]]:
-    historical_data: Dict[str, List[Dict[str, Any]]] = {}
-    for filename in sorted(os.listdir(data_dir)):
-        if filename.endswith(".json"):
-            # Adjust the logic to extract the date
-            date_str = filename.replace("package_report-", "").replace(".json", "")
-            try:
-                date = datetime.strptime(date_str, "%Y-%m-%d")
-            except ValueError:
-                print(f"Skipping file with invalid date format: {filename}")
-                continue
-            with open(os.path.join(data_dir, filename), "r") as f:
-                data: Dict[str, Any] = json.load(f)
-                for package, details in data.items():
-                    if package not in historical_data:
-                        historical_data[package] = []
-                    # Format the date as a string
-                    formatted_date = date.strftime("%Y-%m-%d")
-                    historical_data[package].append({"date": formatted_date, **details})
-    print(f"Collected data for {len(historical_data)} packages.")
-    return historical_data
-
-def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output: str) -> None:
-    html_template = """
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -84,53 +55,53 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                     </tr>
                 </thead>
                 <tbody>
-                    {% for package, records in historical_data.items() %}
+                    
                     <tr>
-                        <td>{{ package }}</td>
-                        <td>{{ records[-1]['DownloadRanking'] }}</td>
+                        <td>scapy</td>
+                        <td>1</td>
                         <td>
-                            <div class="chart-container" id="chart-container-{{ package }}">
-                                <canvas id="chart-{{ package }}"></canvas>
+                            <div class="chart-container" id="chart-container-scapy">
+                                <canvas id="chart-scapy"></canvas>
                             </div>
                             <script>
                                 (function() {
-                                    const ctx = document.getElementById('chart-{{ package }}').getContext('2d');
+                                    const ctx = document.getElementById('chart-scapy').getContext('2d');
                                     new Chart(ctx, {
                                         type: 'line',
                                         data: {
-                                            labels: {{ records | map(attribute='date') | list | safe }},
+                                            labels: ['2025-02-02', '2025-02-03'],
                                             datasets: [
                                                 {
                                                     label: 'Download Ranking',
-                                                    data: {{ records | map(attribute='DownloadRanking') | list | safe }},
+                                                    data: [1, 1],
                                                     borderColor: 'rgb(255, 99, 132)',
                                                     yAxisID: 'y2',
                                                     tension: 0.1
                                                 },
                                                 {
                                                     label: 'Param Coverage with Stubs',
-                                                    data: {{ records | map(attribute='CoverageData.parameter_coverage_with_stubs') | list | safe }},
+                                                    data: [2.371499087884966, 2.371499087884966],
                                                     borderColor: 'rgb(54, 162, 235)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1
                                                 },
                                                 {
                                                     label: 'Return Coverage with Stubs',
-                                                    data: {{ records | map(attribute='CoverageData.return_type_coverage_with_stubs') | list | safe }},
+                                                    data: [1.846679081315953, 1.846679081315953],
                                                     borderColor: 'rgb(75, 192, 192)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1
                                                 },
                                                 {
                                                     label: 'Parameter Coverage',
-                                                    data: {{ records | map(attribute='CoverageData.parameter_coverage') | list | safe }},
+                                                    data: [2.371499087884966, 2.371499087884966],
                                                     borderColor: 'rgb(153, 102, 255)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1
                                                 },
                                                 {
                                                     label: 'Return Coverage',
-                                                    data: {{ records | map(attribute='CoverageData.return_type_coverage') | list | safe }},
+                                                    data: [1.846679081315953, 1.846679081315953],
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1
@@ -182,22 +153,10 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                             </script>
                         </td>
                     </tr>
-                    {% endfor %}
+                    
                 </tbody>
             </table>
         </div>
     </body>
     </html>
-    """
-    template = Template(html_template)
-    html_content = template.render(historical_data=historical_data)
-
-    with open(html_output, "w") as f:
-        f.write(html_content)
-
-    print("HTML generated successfully.")
-
-def generate_historical_graphs(historical_data_dir: str, html_output: str) -> None:
-    historical_data = collect_historical_data(historical_data_dir)
-    generate_html(historical_data, html_output)
-
+    
