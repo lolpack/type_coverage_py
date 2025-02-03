@@ -20,11 +20,15 @@ def collect_historical_data(data_dir: str) -> Dict[str, List[Dict[str, Any]]]:
                 for package, details in data.items():
                     if package not in historical_data:
                         historical_data[package] = []
-                    # Format the date as a string
                     formatted_date = date.strftime("%Y-%m-%d")
-                    historical_data[package].append({"date": formatted_date, **details})
+                    record: dict[str, Any] = {"date": formatted_date}
+                    record.update({k: v for k, v in details.items() if k != 'pyright_stats'})
+                    pyright_stats = details.get('pyright_stats', {})
+                    record['pyright_coverage'] = pyright_stats.get('coverage') or 0.0
+                    historical_data[package].append(record)
     print(f"Collected data for {len(historical_data)} packages.")
     return historical_data
+
 
 def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output: str) -> None:
     html_template = """
@@ -134,6 +138,13 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Pyright Coverage',
+                                                    data: {{ records | map(attribute='pyright_coverage') | list | safe }},
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
                                                 }
                                             ]
                                         },
@@ -200,4 +211,3 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
 def generate_historical_graphs(historical_data_dir: str, html_output: str) -> None:
     historical_data = collect_historical_data(historical_data_dir)
     generate_html(historical_data, html_output)
-
