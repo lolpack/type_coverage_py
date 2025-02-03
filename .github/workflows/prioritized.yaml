@@ -44,6 +44,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      
+      # Set up Node.js (needed for Pyright)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Install Pyright globally using npm
+      - name: Install Pyright
+        run: npm install -g pyright
 
       # Clone the typeshed repository
       - name: Clone Typeshed Repository
@@ -51,6 +61,7 @@ jobs:
 
       # Run the main script
       - name: Run Main Script
+        shell: bash
         run: python main.py --archive-prioritized --package-list included_packages.txt 
 
       # Stash any unstaged changes before pulling
