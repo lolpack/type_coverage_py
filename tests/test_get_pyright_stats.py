@@ -34,7 +34,7 @@ def test_activate_and_install_package() -> None:
     if os.name == "posix":
         activate_cmd: str = f"source {venv_name}/bin/activate && python3.12 -m pip install {package}"
     else:
-        activate_cmd = f"{venv_name}\\Scripts\\activate && python3.12 -m pip install {package}"
+        activate_cmd = f"{venv_name}\\Scripts\\activate && python -m pip install {package}"
     with patch("subprocess.run") as mock_run:
         activate_and_install_package(venv_name, package)
         mock_run.assert_called_with(activate_cmd, shell=True, check=True)
@@ -50,9 +50,10 @@ def test_run_pyright() -> None:
     venv_name: str = ".test_env"
     package: str = "test_package"
     output_file: str = ".pyright_output/test_package_output.json"
-    run_pyright_cmd: str = (
-        f"source {venv_name}/bin/activate && pyright --verifytypes {package} --outputjson > {output_file}"
-    )
+    if os.name == "posix":
+        run_pyright_cmd: str = f"source {venv_name}/bin/activate && pyright --verifytypes {package} --outputjson > {output_file}"
+    else:
+        run_pyright_cmd = f"{venv_name}\\Scripts\\activate && pyright --verifytypes {package} --outputjson > {output_file}"
     with patch("subprocess.run") as mock_run:
         run_pyright(venv_name, package, output_file)
         mock_run.assert_called_with(run_pyright_cmd, shell=True, check=True)
@@ -108,3 +109,4 @@ def test_main(tmp_path: Path) -> None:
         mock_run_pyright.assert_called_once_with(expected_venv, "test_package", expected_output_file)
         mock_parse_json.assert_called_once_with(expected_output_file)
         mock_subprocess_run.assert_called()
+
