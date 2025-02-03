@@ -315,9 +315,13 @@ def main(
 
     # Call pyright stats and merge data
     if pyright_stats:
-        pyright_package_stats: dict[str, Any] = get_pyright_stats(
-            [package_data["project"] for package_data in top_packages]
-        )
+        pyright_package_stats: dict[str, Any] = get_pyright_stats([
+            {
+                "package_name": package_data["project"],
+                "has_py_typed": package_report[package_data["project"]]["HasPyTypedFile"]
+            } for package_data in top_packages
+        ])
+
         for package, stats in pyright_package_stats.items():
             if package in package_report:
                 package_report[package]["pyright_stats"] = stats

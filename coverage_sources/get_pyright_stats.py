@@ -71,21 +71,26 @@ def parse_output_json(output_file: str) -> Dict[str, Union[int, float]]:
         return {}
 
 
-def main(packages: list[str]) -> Dict[str, Any]:
+def main(packages: list[dict[str, Any]]) -> Dict[str, Any]:
     output_dir = ".pyright_output"
     create_output_directory(output_dir)
 
     stats: Dict[str, Any] = {}
 
-    for package in packages:
+    for package_data in packages:
+        package = package_data["package_name"]
+        has_py_typed = package_data["has_py_typed"]
+
         venv_name = f".pyright_env_{package}"
         create_virtual_environment(venv_name)
         activate_and_install_package(venv_name, package)
-        
+
         # Pyright requires a py.typed file to be present to calculate type coverage
-        py_typed_path = f"{venv_name}/lib/python3.12/site-packages/{package}/py.typed"
-        create_py_typed_file(py_typed_path)
-        
+        if not has_py_typed:
+            print(f"Package {package} does not have a py.typed file. Creating one. {venv_name}/lib/python3.12/site-packages/{package}/py.typed")
+            py_typed_path = f"{venv_name}/lib/python3.12/site-packages/{package}/py.typed"
+            create_py_typed_file(py_typed_path)
+
         output_file = f"{output_dir}/{package}_output.json"
         run_pyright(venv_name, package, output_file)
         pyright_data = parse_output_json(output_file)

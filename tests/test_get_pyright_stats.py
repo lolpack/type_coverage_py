@@ -32,7 +32,7 @@ def test_activate_and_install_package() -> None:
     venv_name: str = ".test_env"
     package: str = "test_package"
     if os.name == "posix":
-        activate_cmd: str = f"source {venv_name}/bin/activate && python3.12 -m pip install {package}"
+        activate_cmd: str = f". {venv_name}/bin/activate && python3.12 -m pip install {package}"
     else:
         activate_cmd = f"{venv_name}\\Scripts\\activate && python -m pip install {package}"
     with patch("subprocess.run") as mock_run:
@@ -51,7 +51,7 @@ def test_run_pyright() -> None:
     package: str = "test_package"
     output_file: str = ".pyright_output/test_package_output.json"
     if os.name == "posix":
-        run_pyright_cmd: str = f"source {venv_name}/bin/activate && pyright --verifytypes {package} --outputjson > {output_file}"
+        run_pyright_cmd: str = f". {venv_name}/bin/activate && pyright --verifytypes {package} --outputjson > {output_file}"
     else:
         run_pyright_cmd = f"{venv_name}\\Scripts\\activate && pyright --verifytypes {package} --outputjson > {output_file}"
     with patch("subprocess.run") as mock_run:
@@ -75,7 +75,7 @@ def test_parse_output_json() -> None:
 
 
 def test_main(tmp_path: Path) -> None:
-    packages: list[str] = ["test_package"]
+    packages = [{"package_name": "test_package", "has_py_typed": False}]
     output_dir: Path = tmp_path / ".pyright_output"
     venv_name: Path = tmp_path / ".pyright_env_test_package"
     py_typed_path: Path = venv_name / "lib/python3.12/site-packages/test_package/py.typed"
@@ -109,4 +109,3 @@ def test_main(tmp_path: Path) -> None:
         mock_run_pyright.assert_called_once_with(expected_venv, "test_package", expected_output_file)
         mock_parse_json.assert_called_once_with(expected_output_file)
         mock_subprocess_run.assert_called()
-
