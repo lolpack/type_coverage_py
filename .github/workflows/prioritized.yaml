@@ -61,6 +61,7 @@ jobs:
 
       # Run the main script
       - name: Run Main Script
+        shell: bash
         run: python main.py --archive-prioritized --package-list included_packages.txt 
 
       # Stash any unstaged changes before pulling
