@@ -19,7 +19,7 @@ def create_virtual_environment(venv_name: str) -> None:
 def activate_and_install_package(venv_name: str, package: str) -> None:
     try:
         if os.name == "posix":
-            activate_cmd = f"source {venv_name}/bin/activate && python3.12 -m pip install {package}"
+            activate_cmd = f". {venv_name}/bin/activate && python3.12 -m pip install {package}"
         else:
             activate_cmd = f"{venv_name}\\Scripts\\activate && python -m pip install {package}"
         subprocess.run(activate_cmd, shell=True, check=True)
@@ -37,7 +37,7 @@ def create_py_typed_file(py_typed_path: str) -> None:
 
 def run_pyright(venv_name: str, package: str, output_file: str) -> None:
     if os.name == "posix":
-        run_pyright_cmd = f"source {venv_name}/bin/activate && pyright --verifytypes {package} --outputjson > {output_file}"
+        run_pyright_cmd = f". {venv_name}/bin/activate && pyright --verifytypes {package} --outputjson > {output_file}"
     else:
         run_pyright_cmd = f"{venv_name}\\Scripts\\activate && pyright --verifytypes {package} --outputjson > {output_file}"
 
