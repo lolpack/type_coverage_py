@@ -2,43 +2,43 @@ import datetime
 import os
 from typing import Any
 
-html_report_file = "index.html"
-JSON_REPORT_FILE = "package_report.json"
-HISTORICAL_DATA_DIR = "historical_data"
-HISTORICAL_HTML_DIR = os.path.join(HISTORICAL_DATA_DIR, "html")
-HISTORICAL_JSON_DIR = os.path.join(HISTORICAL_DATA_DIR, "json")
 
-
-def archive_old_reports(html_report_file: str) -> None:
+def archive_old_reports(
+        html_report_file: str,
+        historical_html_dir: str,
+        historical_json_dir: str,
+        json_report_file: str) -> None:
     """Move the old reports to the historical_data directory with a timestamp."""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
-    os.makedirs(HISTORICAL_HTML_DIR, exist_ok=True)
-    os.makedirs(HISTORICAL_JSON_DIR, exist_ok=True)
+    os.makedirs(historical_html_dir, exist_ok=True)
+    os.makedirs(historical_json_dir, exist_ok=True)
 
     # Archive old HTML report
     if os.path.exists(html_report_file):
-        new_html_name = os.path.join(HISTORICAL_HTML_DIR, f"index-{timestamp}.html")
+        new_html_name = os.path.join(historical_html_dir, f"index-{timestamp}.html")
         os.rename(html_report_file, new_html_name)
         print(f"Archived {html_report_file} to {new_html_name}")
 
     # Archive old JSON report
-    if os.path.exists(JSON_REPORT_FILE):
+    if os.path.exists(json_report_file):
         new_json_name = os.path.join(
-            HISTORICAL_JSON_DIR, f"package_report-{timestamp}.json"
+            historical_json_dir, f"package_report-{timestamp}.json"
         )
-        os.rename(JSON_REPORT_FILE, new_json_name)
-        print(f"Archived {JSON_REPORT_FILE} to {new_json_name}")
+        os.rename(json_report_file, new_json_name)
+        print(f"Archived {json_report_file} to {new_json_name}")
 
 
-def update_main_html_with_links(html_report_file: str) -> None:
+def update_main_html_with_links(
+        html_report_file: str,
+        historical_html_dir: str) -> None:
     """Update the main HTML file with a link to view historical data."""
-    if not os.path.exists(HISTORICAL_HTML_DIR):
+    if not os.path.exists(historical_html_dir):
         return
 
     historical_links: list[str] = []
-    for file_name in sorted(os.listdir(HISTORICAL_HTML_DIR)):
+    for file_name in sorted(os.listdir(historical_html_dir)):
         if file_name.endswith(".html"):
-            link = f"<li><a href='{os.path.join(HISTORICAL_HTML_DIR, file_name)}'>{
+            link = f"<li><a href='{os.path.join(historical_html_dir, file_name)}'>{
                 file_name}</a></li>"
             historical_links.append(link)
 

@@ -1,0 +1,75 @@
+name: Daily Prioritized List Runner
+
+on:
+  schedule:
+    - cron: '0 15 * * *' # Runs at 10am EST
+  workflow_dispatch: # Allows manual triggers
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ref: published-report # Checkout the published-report branch
+      
+      - name: Setup SSH Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          
+      - name: Verify SSH Key
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          eval `ssh-agent -s`
+          ssh-add ~/.ssh/id_ed25519
+          ssh -T git@github.com || true
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Clone the typeshed repository
+      - name: Clone Typeshed Repository
+        run: git clone https://github.com/python/typeshed.git
+
+      # Run the main script
+      - name: Run Main Script
+        run: python main.py --archive-prioritized --package-list included_packages.txt 
+
+      # Stash any unstaged changes before pulling
+      - name: Stash Changes
+        run: |
+          git add .
+          git stash
+
+      # Pull latest changes in case the repository diverged
+      - name: Pull Latest Changes
+        run: git pull origin published-report --rebase
+
+      # Apply the stashed changes
+      - name: Apply Stashed Changes
+        run: git stash pop
+
+      # Automatically commit and push changes
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "add latest data"
+          branch: published-report

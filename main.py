@@ -7,8 +7,6 @@ import sys
 import tempfile
 from typing import Any, Optional
 
-import analyzer.historical_view_generator
-
 from analyzer.coverage_calculator import calculate_overall_coverage
 from analyzer.package_analyzer import extract_files, find_stub_package
 from analyzer.report_generator import (
@@ -22,6 +20,7 @@ from analyzer.typeshed_checker import (
     find_stub_files,
     merge_files_with_stubs,
 )
+from analyzer.historical_view_generator import generate_historical_graphs
 from coverage_sources.get_pyright_stats import main as get_pyright_stats
 from coverage_sources.typeshed_coverage import download_typeshed_csv
 
@@ -29,6 +28,9 @@ JSON_REPORT_FILE = "package_report.json"
 HTML_REPORT_FILE = "index.html"
 TOP_PYPI_PACKAGES = "top-pypi-packages-30-days.min.json"
 STUB_PACKAGES = "stub_packages.json"
+
+HISTORICAL_DATA_DIR = "historical_data"
+
 
 
 def load_and_sort_top_packages(json_file: str) -> list[dict[str, Any]]:
@@ -322,15 +324,31 @@ def main(
 
     html_report_file = HTML_REPORT_FILE
     json_report_file = JSON_REPORT_FILE
-
-    # Archive old report in data section
-    if create_daily:
-        archive_old_reports(html_report_file)
+    historical_data_dir = HISTORICAL_DATA_DIR
+    historical_html_dir = os.path.join(HISTORICAL_DATA_DIR, "html")
+    historical_json_dir = os.path.join(HISTORICAL_DATA_DIR, "json")
+    coverag_trends_html = os.path.join(HISTORICAL_DATA_DIR, "coverage-trends.html")
 
     if output_list_only:
         os.makedirs("prioritized", exist_ok=True)
         html_report_file: str = os.path.join("prioritized", "index.html")
         json_report_file: str = os.path.join("prioritized", "package_report.json")
+
+        historical_data_dir = os.path.join("prioritized", historical_data_dir)
+        historical_html_dir: str = os.path.join("prioritized", historical_html_dir)
+        historical_json_dir: str = os.path.join("prioritized", historical_json_dir)
+        coverag_trends_html: str = os.path.join("prioritized", coverag_trends_html)
+
+
+
+    # Archive old report in data section
+    if create_daily:
+        archive_old_reports(
+            html_report_file,
+            historical_html_dir,
+            historical_json_dir,
+            json_report_file
+        )
 
     # Conditionally write the JSON report
     if write_json:
@@ -344,8 +362,8 @@ def main(
         print("HTML report generated.")
 
     if create_daily:
-        update_main_html_with_links(html_report_file)
-        analyzer.historical_view_generator.main()
+        update_main_html_with_links(html_report_file, historical_html_dir)
+        generate_historical_graphs(historical_json_dir, coverag_trends_html)
 
 
 if __name__ == "__main__":
@@ -380,20 +398,16 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--create-historical-view",
-        action="store_true",
-        help="Generate historical view HTML and plots.",
+        "--output-list-only", action="store_true", help="Run pyright stats."
     )
 
     parser.add_argument(
-        "--output-list-only", action="store_true", help="Run pyright stats."
+        "--archive-prioritized", action="store_true", help="Run pyright stats."
     )
 
     args = parser.parse_args()
 
-    if args.create_historical_view:
-        analyzer.historical_view_generator.main()
-    elif args.create_daily:
+    if args.create_daily:
         main(
             top_n=(args.top_n or 8000),
             package_name=args.package_name,
@@ -417,6 +431,19 @@ if __name__ == "__main__":
             write_html=args.write_html,
             parallel=args.parallel,
             pyright_stats=args.pyright_stats,
+        )
+    elif args.archive_prioritized:
+        if not args.package_list:
+            print("Error: Please provide a package list.")
+            sys.exit(1)
+        main(
+            package_list=args.package_list,
+            write_json=True,
+            write_html=True,
+            parallel=args.parallel,
+            pyright_stats=True,
+            output_list_only=True,
+            create_daily=True
         )
     elif args.package_list:
         main(

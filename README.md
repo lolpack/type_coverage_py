@@ -7,7 +7,7 @@ Take the top pypi packages pulled from this project [https://github.com/hugovk/t
 
 View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html)
 
-View priortized [list](https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt) and generated [report](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/prioritized/index.html)
+View priortized [list](https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt) and generated [report](http://lolpack.me/type_coverage_py/prioritized/index.html)
 
 View coverage and download rank trend graphs here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html)
 
@@ -86,17 +86,17 @@ Analyze the top N packages and generate both JSON and HTML reports:
 
 `python main.py 100 --write-json --write-html`
 
-Run daily command for Github Actions
+Run daily command for Github Actions: Generate historical coverage report to create the file historical_data/coverage-trends.html
 
 `python main.py 2000 --create-daily`
-
-Generate historical coverage report to create the file historical_data/coverage-trends.html
-
-`python main.py --create-historical-view`
 
 Generate report from a specific list of packages
 
 `python main.py --pyright-stats --package-list included_packages.txt --write-json --write-html --output-list-only`
+
+Run daily command for prioritized list:
+
+`python main.py --package-list included_packages.txt  --archive-prioritize`
 
 ### Type check the project (of course!)
 
