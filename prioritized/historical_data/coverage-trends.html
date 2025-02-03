@@ -58,7 +58,7 @@
                     
                     <tr>
                         <td>scapy</td>
-                        <td>1</td>
+                        <td>9</td>
                         <td>
                             <div class="chart-container" id="chart-container-scapy">
                                 <canvas id="chart-scapy"></canvas>
@@ -73,7 +73,7 @@
                                             datasets: [
                                                 {
                                                     label: 'Download Ranking',
-                                                    data: [1, 1],
+                                                    data: [1, 9],
                                                     borderColor: 'rgb(255, 99, 132)',
                                                     yAxisID: 'y2',
                                                     tension: 0.1
@@ -102,6 +102,888 @@
                                                 {
                                                     label: 'Return Coverage',
                                                     data: [1.846679081315953, 1.846679081315953],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>requests</td>
+                        <td>1</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-requests">
+                                <canvas id="chart-requests"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-requests').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [1],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [51.419558359621455],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [52.58620689655172],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [1.2698412698412698],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [0.43668122270742354],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>numpy</td>
+                        <td>2</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-numpy">
+                                <canvas id="chart-numpy"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-numpy').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [2],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [60.265063197938396],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [57.828102710413695],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [60.265063197938396],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [57.828102710413695],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>pandas</td>
+                        <td>3</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-pandas">
+                                <canvas id="chart-pandas"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-pandas').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [3],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [71.60303097182373],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [71.75843694493783],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [69.5031055900621],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [70.67223494543985],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>click</td>
+                        <td>4</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-click">
+                                <canvas id="chart-click"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-click').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [4],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [98.7228607918263],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [97.65258215962442],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [98.7228607918263],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [97.65258215962442],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>pytest</td>
+                        <td>5</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-pytest">
+                                <canvas id="chart-pytest"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-pytest').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [5],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [77.32466162770258],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [77.86244626807347],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [77.32466162770258],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [77.86244626807347],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>transformers</td>
+                        <td>6</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-transformers">
+                                <canvas id="chart-transformers"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-transformers').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [6],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [59.04713191446892],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [34.86040200542753],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [59.04713191446892],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [34.86040200542753],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>torch</td>
+                        <td>7</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-torch">
+                                <canvas id="chart-torch"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-torch').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [7],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [-1.0],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [-1.0],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [-1.0],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [-1.0],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>ansible</td>
+                        <td>8</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-ansible">
+                                <canvas id="chart-ansible"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-ansible').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [8],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [3.469416548026729],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [1.9138469819530208],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [3.469416548026729],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [1.9138469819530208],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>pyopengl</td>
+                        <td>10</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-pyopengl">
+                                <canvas id="chart-pyopengl"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-pyopengl').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-03'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [10],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [0.0],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [0.0],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [0.0],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [0.0],
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1
