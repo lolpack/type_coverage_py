@@ -38,6 +38,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Type Coverage Visualization</title>
+        <link rel="icon" href="https://raw.githubusercontent.com/jdecked/twemoji/master/assets/svg/2705.svg" type="image/svg+xml">
         <script src="chart.min.js"></script>
         <style>
             body {

@@ -1,4 +1,4 @@
-# type_coverage_py
+# type_coverage_py ✅
 
 Calculate the Type Coverage for top Python packages. This analysis aims to determine how well typed popular Python packages are and compares the coverage of exported APIs and the whole package (including tests). [PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files). Indicate that your package is type checked, by including a `py.typed` file in distribution.
 
