@@ -58,7 +58,7 @@
                     
                     <tr>
                         <td>scapy</td>
-                        <td>9</td>
+                        <td>10</td>
                         <td>
                             <div class="chart-container" id="chart-container-scapy">
                                 <canvas id="chart-scapy"></canvas>
@@ -73,7 +73,7 @@
                                             datasets: [
                                                 {
                                                     label: 'Download Ranking',
-                                                    data: [1, 9, 9],
+                                                    data: [1, 9, 10],
                                                     borderColor: 'rgb(255, 99, 132)',
                                                     yAxisID: 'y2',
                                                     tension: 0.1
@@ -948,7 +948,7 @@
                                                 },
                                                 {
                                                     label: 'Pyright Coverage',
-                                                    data: [0.0, 27.230203808887403],
+                                                    data: [0.0, 0.0],
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1
@@ -1003,7 +1003,7 @@
                     
                     <tr>
                         <td>pyopengl</td>
-                        <td>10</td>
+                        <td>11</td>
                         <td>
                             <div class="chart-container" id="chart-container-pyopengl">
                                 <canvas id="chart-pyopengl"></canvas>
@@ -1018,7 +1018,7 @@
                                             datasets: [
                                                 {
                                                     label: 'Download Ranking',
-                                                    data: [10, 10],
+                                                    data: [10, 11],
                                                     borderColor: 'rgb(255, 99, 132)',
                                                     yAxisID: 'y2',
                                                     tension: 0.1
@@ -1054,6 +1054,111 @@
                                                 {
                                                     label: 'Pyright Coverage',
                                                     data: [0.0, 0.0],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                }
+                                            ]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top'
+                                                }
+                                            },
+                                            scales: {
+                                                y1: {
+                                                    type: 'linear',
+                                                    position: 'left',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Coverage Percent'
+                                                    },
+                                                    ticks: {
+                                                        callback: function(value) {
+                                                            return value + '%';
+                                                        }
+                                                    }
+                                                },
+                                                y2: {
+                                                    type: 'linear',
+                                                    position: 'right',
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Download Rank'
+                                                    },
+                                                    reverse: true
+                                                },
+                                                x: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Date'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                })();
+                            </script>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>pandas-stubs</td>
+                        <td>9</td>
+                        <td>
+                            <div class="chart-container" id="chart-container-pandas-stubs">
+                                <canvas id="chart-pandas-stubs"></canvas>
+                            </div>
+                            <script>
+                                (function() {
+                                    const ctx = document.getElementById('chart-pandas-stubs').getContext('2d');
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['2025-02-04'],
+                                            datasets: [
+                                                {
+                                                    label: 'Download Ranking',
+                                                    data: [9],
+                                                    borderColor: 'rgb(255, 99, 132)',
+                                                    yAxisID: 'y2',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Param Coverage with Stubs',
+                                                    data: [78.14761215629522],
+                                                    borderColor: 'rgb(54, 162, 235)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage with Stubs',
+                                                    data: [80.39692183070069],
+                                                    borderColor: 'rgb(75, 192, 192)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Parameter Coverage',
+                                                    data: [78.14761215629522],
+                                                    borderColor: 'rgb(153, 102, 255)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Return Coverage',
+                                                    data: [80.39692183070069],
+                                                    borderColor: 'rgb(255, 159, 64)',
+                                                    yAxisID: 'y1',
+                                                    tension: 0.1
+                                                },
+                                                {
+                                                    label: 'Pyright Coverage',
+                                                    data: [26.99228791773779],
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1
