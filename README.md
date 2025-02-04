@@ -1,18 +1,18 @@
 # type_coverage_py
 
-Calculate the Type Coverage for top Python packages. This analysis aims to determine how well typed popular packages are.
+Calculate the Type Coverage for top Python packages. This analysis aims to determine how well typed popular Python packages are and compares the coverage of exported APIs and the whole package (including tests). [PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files). Indicate that your package is type checked, by including a `py.typed` file in distribution.
+
+## Coverage Reports
+
+- Daily coverage calculator: [https://python-type-checking.com](https://python-type-checking.com/)
+- Coverage Trends: [https://python-type-checking.com/historical_data/coverage-trends.html](https://python-type-checking.com/historical_data/coverage-trends.html)
 
 
-Take the top pypi packages pulled from this project [https://github.com/hugovk/top-pypi-packages](https://github.com/hugovk/top-pypi-packages)
+- Prioritized list of packages included in analysis with Pyright: (https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt)[https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt] and [report]((https://python-type-checking.com/type_coverage_py/prioritized/index.html)
+- Coverage trends for prioritized list: [https://python-type-checking.com/prioritized/historical_data/coverage-trends.html](https://python-type-checking.com/prioritized/historical_data/coverage-trends.html))
 
-View report here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/index.html)
+Top pypi packages pulled from this project [https://github.com/hugovk/top-pypi-packages](https://github.com/hugovk/top-pypi-packages)
 
-View priortized [list](https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt) and generated [report](http://lolpack.me/type_coverage_py/prioritized/index.html)
-
-View coverage and download rank trend graphs here: [https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html](https://html-preview.github.io/?url=https://github.com/lolpack/type_coverage_py/blob/published-report/historical_data/coverage-trends.html)
-
-
-[PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files).
 ## Methodology
 
 This section outlines how the script analyzes Python packages, checks for typeshed availability, and calculates type coverage. The process involves three key steps: package extraction, typeshed check, and type coverage calculation.
@@ -65,10 +65,11 @@ If a stubs package exists, it is recorded as `HasStubsPackage: Yes`; otherwise, 
 This methodology ensures an accurate and detailed analysis of type coverage for popular Python packages, taking into account the presence of type stub files (`.pyi`) which are prioritized over implementation files (`.py`) for the same functions.
 
 ### Pyright Stats Integration
+- **Exposed package APIs:** Pyright will calculatue coverage for stubs and packages installed with pip or other package managers looking at just the exposed APIs. Include `py.typed` in your package to calculate coverage: `pyright --verifytypes {package}
 - **Pyright Analysis:** The script can optionally run Pyright to gather additional type information statistics for each package.
 - **Stats Structure:** Pyright stats include counts of known, ambiguous, and unknown types for each package.
 
-## Usage
+## Development
 
 Clone the typeshed repo into the root of the project
 
