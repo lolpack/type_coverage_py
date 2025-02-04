@@ -172,6 +172,7 @@ def generate_report_html(package_report: dict[str, Any], output_file: str) -> No
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Package Type Coverage Report</title>
+        <link rel="icon" href="https://raw.githubusercontent.com/jdecked/twemoji/master/assets/svg/2705.svg" type="image/svg+xml">
         <style>
             body {
                 font-family: Arial, sans-serif;
