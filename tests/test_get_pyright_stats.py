@@ -51,9 +51,9 @@ def test_run_pyright() -> None:
     package: str = "test_package"
     output_file: str = ".pyright_output/test_package_output.json"
     if os.name == "posix":
-        run_pyright_cmd: str = f". {venv_name}/bin/activate && pyright --verifytypes {package} --outputjson > {output_file}"
+        run_pyright_cmd: str = f". {venv_name}/bin/activate && pyright --ignoreexternal --verifytypes {package} --outputjson > {output_file}"
     else:
-        run_pyright_cmd = f"{venv_name}\\Scripts\\activate && pyright --verifytypes {package} --outputjson > {output_file}"
+        run_pyright_cmd = f"{venv_name}\\Scripts\\activate && pyright --ignoreexternal --verifytypes {package} --outputjson > {output_file}"
     with patch("subprocess.run") as mock_run:
         run_pyright(venv_name, package, output_file)
         mock_run.assert_called_with(run_pyright_cmd, shell=True, check=True)

@@ -65,7 +65,7 @@ If a stubs package exists, it is recorded as `HasStubsPackage: Yes`; otherwise, 
 This methodology ensures an accurate and detailed analysis of type coverage for popular Python packages, taking into account the presence of type stub files (`.pyi`) which are prioritized over implementation files (`.py`) for the same functions.
 
 ### Pyright Stats Integration
-- **Exposed package APIs:** Pyright will calculatue coverage for stubs and packages installed with pip or other package managers looking at just the exposed APIs. Include `py.typed` in your package to calculate coverage: `pyright --verifytypes {package}
+- **Exposed package APIs:** Pyright will calculatue coverage for stubs and packages installed with pip or other package managers looking at just the exposed APIs. Include `py.typed` in your package to calculate coverage: `pyright --ignoreexternal --verifytypes {package}
 - **Pyright Analysis:** The script can optionally run Pyright to gather additional type information statistics for each package.
 - **Stats Structure:** Pyright stats include counts of known, ambiguous, and unknown types for each package.
 
