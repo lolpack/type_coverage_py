@@ -36,10 +36,14 @@ def create_py_typed_file(py_typed_path: str) -> None:
 
 
 def run_pyright(venv_name: str, package: str, output_file: str) -> None:
+    # NOTE: we use `--ignoreexternal` to ignore partially unknown symbols imported from
+    # other libraries (e.g. if pandas annotates a variable using an incomplete NumPy Dtype, then
+    # we don't want that to count against pandas' completeness metric).
+    # https://github.com/microsoft/pyright/discussions/9911
     if os.name == "posix":
-        run_pyright_cmd = f". {venv_name}/bin/activate && pyright --verifytypes {package} --outputjson > {output_file}"
+        run_pyright_cmd = f". {venv_name}/bin/activate && pyright --ignoreexternal --verifytypes {package} --outputjson > {output_file}"
     else:
-        run_pyright_cmd = f"{venv_name}\\Scripts\\activate && pyright --verifytypes {package} --outputjson > {output_file}"
+        run_pyright_cmd = f"{venv_name}\\Scripts\\activate && pyright --ignoreexternal --verifytypes {package} --outputjson > {output_file}"
 
     try:
         subprocess.run(run_pyright_cmd, shell=True, check=True)
