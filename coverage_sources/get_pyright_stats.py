@@ -1,4 +1,6 @@
 import json
+import shutil
+from pathlib import Path
 import os
 import subprocess
 from typing import Any, Dict, Union
@@ -22,6 +24,16 @@ def activate_and_install_package(venv_name: str, package: str) -> None:
             activate_cmd = f". {venv_name}/bin/activate && python3.12 -m pip install {package}"
         else:
             activate_cmd = f"{venv_name}\\Scripts\\activate && python -m pip install {package}"
+        subprocess.run(activate_cmd, shell=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing package: {e}")
+
+def activate_and_uninstall_package(venv_name: str, package: str) -> None:
+    try:
+        if os.name == "posix":
+            activate_cmd = f". {venv_name}/bin/activate && python3.12 -m pip uninstall {package} -y"
+        else:
+            activate_cmd = f"{venv_name}\\Scripts\\activate && python -m pip uninstall {package} -y"
         subprocess.run(activate_cmd, shell=True, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error installing package: {e}")
@@ -74,6 +86,28 @@ def parse_output_json(output_file: str) -> Dict[str, Union[int, float]]:
         print(f"Error parsing JSON: {e}")
         return {}
 
+def inline_pandas_stubs(venv_name: str) -> None:
+    # pandas publishes a separate stubs package called `pandas-stubs`.
+    # To get PyRight to accurately report on pandas' coverage using
+    # the stubs, we need to inline the stub files manually and make
+    # sure `pandas-stubs` is uninstalled.
+    activate_and_install_package(venv_name, 'pandas-stubs')
+    if os.name == "posix":
+        cmd = f". {venv_name}/bin/activate && python3.12 -c 'import pandas; print(pandas.__file__)'"
+    else:
+        cmd = f"{venv_name}\\Scripts\\activate && python3.12 -c 'import pandas; print(pandas.__file__)'"
+    pandas_file = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True).stdout
+    pandas_dir = Path(pandas_file).parent
+    pandas_stubs_dir = pandas_dir.parent / 'pandas-stubs'
+    for item in pandas_stubs_dir.iterdir():
+        s = pandas_stubs_dir / item.name
+        d = pandas_dir / item.name
+        if s.is_dir():
+            shutil.copytree(s, d, dirs_exist_ok=True)
+        else:
+            shutil.copy2(s, d)
+    activate_and_uninstall_package(venv_name, 'pandas-stubs')
+
 
 def main(packages: list[dict[str, Any]]) -> Dict[str, Any]:
     output_dir = ".pyright_output"
@@ -88,6 +122,8 @@ def main(packages: list[dict[str, Any]]) -> Dict[str, Any]:
         venv_name = f".pyright_env_{package}"
         create_virtual_environment(venv_name)
         activate_and_install_package(venv_name, package)
+        if package == 'pandas':
+            inline_pandas_stubs(venv_name)
 
         # Pyright requires a py.typed file to be present to calculate type coverage
         if not has_py_typed:
