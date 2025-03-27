@@ -1,0 +1,25 @@
+# pyre.toml
+
+project_includes = ["./**/*.py"]
+
+project_excludes = [
+  "**/node_modules/**",
+  "**/__pycache__/**",
+  "**/.git/**",
+  "**/venv/**",
+  "**/.venv/**",
+  "typeshed/**",
+  "tests/test_files/**"
+]
+
+site_package_path = [
+  ".venv/Lib/site-packages"
+]
+
+[errors]
+bad_assignment = false
+missing_attribute = false
+bad_specialization = false
+bad_argument_type = false
+internal_error = false
+bad_return = false
