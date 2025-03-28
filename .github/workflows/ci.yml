@@ -4,10 +4,10 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  typecheck_pyright:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,3 +43,11 @@ jobs:
       # Run Pyright type checking
       - name: Run Pyright
         run: pyright
+  typecheck_pyrefly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - run: pip install pyrefly
+      - name: Typecheck with Pyrefly
+        run: pyrefly check -c pyrefly.toml
