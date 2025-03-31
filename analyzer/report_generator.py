@@ -158,7 +158,7 @@ def create_percentage_row(percentage: str | float) -> str:
 
 
 def create_boolean_row(value: bool) -> str:
-    color = "green" if value else "red"
+    color = "green" if value else "transparent"
     text = "Yes" if value else "No"
     return f'<td style="background-color: {color};">{text}</td>'
 
@@ -167,56 +167,51 @@ def generate_report_html(package_report: dict[str, Any], output_file: str) -> No
     """Generates an HTML report of the package coverage data."""
     html_content = """
     <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Package Type Coverage Report</title>
-        <link rel="icon" href="https://raw.githubusercontent.com/jdecked/twemoji/master/assets/svg/2705.svg" type="image/svg+xml">
+        <link rel="icon" href="https://raw.githubusercontent.com/jdecked/twemoji/master/assets/svg/2705.svg" type="image/svg+xml"/>
         <style>
             body {
-                font-family: Arial, sans-serif;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 margin: 40px;
-                background-color: #f4f4f4;
+                background-color: #f9fbfc;
+                color: #333;
             }
             h1 {
                 text-align: center;
-                color: #333;
+                color: #1a73e8;
+                font-size: 2.5em;
+                margin-bottom: 30px;
             }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-                font-size: 18px;
-                text-align: left;
+            .preamble {
+                background: #fff;
+                padding: 25px;
+                border-radius: 12px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                margin-bottom: 40px;
+                font-size: 1rem;
             }
-            table th, table td {
-                padding: 12px;
-                border: 1px solid #ddd;
+            .preamble ul {
+                padding-left: 1.5rem;
             }
-            table th {
-                background-color: #f2f2f2;
-                color: #333;
+            .preamble li {
+                margin-bottom: 12px;
             }
-            table tr:nth-child(even) {
-                background-color: #f9f9f9;
+            .preamble a {
+                color: #1a73e8;
+                font-weight: bold;
+                text-decoration: none;
             }
-            table tr:hover {
-                background-color: #f1f1f1;
-            }
-            .coverage-cell {
-                text-align: right;
-                padding-right: 10px;
-                color: #333;  /* Darker text color for better readability */
-            }
-            .skipped-cell {
-                text-align: center;
-                color: #d9534f; /* Red color for skipped text */
+            .preamble a:hover {
+                text-decoration: underline;
             }
             .github-link {
                 text-align: center;
                 margin-top: 20px;
-                font-size: 16px;
+                font-size: 1rem;
             }
             .github-link a {
                 color: #0066cc;
@@ -225,13 +220,79 @@ def generate_report_html(package_report: dict[str, Any], output_file: str) -> No
             .github-link a:hover {
                 text-decoration: underline;
             }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 30px;
+                font-size: 0.95rem;
+                background: white;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                border-radius: 8px;
+            }
+            table th, table td {
+                padding: 12px;
+                border: 1px solid #eee;
+            }
+            table th {
+                background-color: #f0f4f8;
+                color: #333;
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                border: 1px;
+            }
+            table tr:nth-child(even) {
+                background-color: #fafafa;
+            }
+            table tr:hover {
+                background-color: #f1f8ff;
+            }
+            .coverage-cell {
+                text-align: right;
+                padding-right: 10px;
+                color: #333;
+            }
+            .skipped-cell {
+                text-align: center;
+                color: #d9534f;
+            }
         </style>
-    </head>
-    <body>
-        <h1>Package Type Coverage Report</h1>
-        <p class="github-link">See code and methodology here:
+        </head>
+        <body>
+        <h1>📦 Package Type Coverage Report</h1>
+
+        <div class="preamble">
+            <ul>
+            <li>✅ <strong>Better Reliability:</strong> Type annotations help catch bugs early and improve confidence in your codebase.</li>
+            <li>🚀 <strong>Developer Velocity:</strong> Great type coverage improves editor support, autocompletion, and navigation.</li>
+            <li>📚 <strong>Living Documentation:</strong> Type hints clarify APIs without relying solely on comments or docstrings, and they are validated automatically.</li>
+            <li>🔍 <strong>Community Visibility:</strong> This site tracks the top 2,000 PyPI packages—stand out by adding great types!</li>
+            </ul>
+            <ul>
+            <li>
+                📈 <a href="https://python-type-checking.com/historical_data/coverage-trends.html" target="_blank">
+                View historical coverage trends
+                </a>
+            </li>
+            <li>
+                ❓ Have questions or ideas? 
+                <a href="https://github.com/lolpack/type_coverage_py/issues" target="_blank">
+                Leave an issue on GitHub
+                </a>.
+            </li>
+            <li>
+                ✍️ Want to contribute types? 
+                <a href="https://github.com/lolpack/type_coverage_py/issues" target="_blank">
+                Find an open issue or start one
+                </a> and make a real impact!
+            </li>
+            </ul>
+        </div>
+
+        <p class="github-link">
+            🛠️ See code and methodology here: 
             <a href="https://github.com/lolpack/type_coverage_py" target="_blank">
-                https://github.com/lolpack/type_coverage_py
+            https://github.com/lolpack/type_coverage_py
             </a>
         </p>
         <table>
@@ -284,7 +345,7 @@ def generate_report_html(package_report: dict[str, Any], output_file: str) -> No
             <tr>
                 <td>{details['DownloadRanking']}</td>
                 <td>{package_name}</td>
-                <td>{details['DownloadCount']}</td>
+                <td>{details['DownloadCount']:,}</td> 
                 {create_boolean_row(details['HasTypeShed'])}
                 {create_boolean_row(details['HasStubsPackage'])}
                 {create_boolean_row(details['HasPyTypedFile'])}

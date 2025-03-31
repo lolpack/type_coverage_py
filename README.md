@@ -97,7 +97,7 @@ Generate report from a specific list of packages
 
 Run daily command for prioritized list:
 
-`python main.py --package-list included_packages.txt  --archive-prioritize`
+`python main.py --package-list included_packages.txt  --archive-prioritized`
 
 ### Type check the project (of course!)
 

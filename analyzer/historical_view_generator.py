@@ -42,40 +42,68 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
         <script src="chart.min.js"></script>
         <style>
             body {
-                font-family: Arial, sans-serif;
+                font-family: 'Segoe UI', sans-serif;
                 margin: 0;
-                padding: 20px;
-                background-color: #f9f9f9;
-            }
-            h1 {
-                text-align: center;
+                padding: 40px 20px;
+                background-color: #f8fafc;
                 color: #333;
             }
-            .table-container {
-                margin: 20px auto;
-                max-width: 800px;
+
+            h1 {
+                text-align: center;
+                font-size: 2.2rem;
+                color: #1a202c;
+                margin-bottom: 40px;
             }
+
+            .table-container {
+                margin: 0 auto;
+                max-width: 1100px;
+                background-color: white;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+            }
+
             table {
                 width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
+                border-collapse: separate;
+                border-spacing: 0 12px;
             }
+
             th, td {
-                border: 1px solid #ddd;
-                padding: 8px;
+                padding: 14px 16px;
                 text-align: left;
+                background: white;
+                border: 1px solid #e2e8f0;
+                vertical-align: top;
             }
+
             th {
-                background-color: #f2f2f2;
-                font-weight: bold;
+                background-color: #edf2f7;
+                color: #2d3748;
+                font-size: 0.95rem;
+                position: sticky;
+                top: 0;
+                z-index: 2;
             }
+
+            tr:nth-child(even) td {
+                background-color: #f7fafc;
+            }
+
             .chart-container {
-                position: relative;
                 width: 100%;
-                max-width: 800px;
-                margin: 20px auto;
+                height: 300px;
+                overflow-x: auto;
+            }
+
+            canvas {
+                max-width: 100%;
+                max-height: 300px;
             }
         </style>
+
     </head>
     <body>
         <h1>Type Coverage Historical Trends</h1>
@@ -110,35 +138,40 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                     data: {{ records | map(attribute='DownloadRanking') | list | safe }},
                                                     borderColor: 'rgb(255, 99, 132)',
                                                     yAxisID: 'y2',
-                                                    tension: 0.1
+                                                    tension: 0.1,
+                                                    hidden: true 
                                                 },
                                                 {
                                                     label: 'Param Coverage with Stubs',
                                                     data: {{ records | map(attribute='CoverageData.parameter_coverage_with_stubs') | list | safe }},
                                                     borderColor: 'rgb(54, 162, 235)',
                                                     yAxisID: 'y1',
-                                                    tension: 0.1
+                                                    tension: 0.1,
+                                                    hidden: true
                                                 },
                                                 {
                                                     label: 'Return Coverage with Stubs',
                                                     data: {{ records | map(attribute='CoverageData.return_type_coverage_with_stubs') | list | safe }},
                                                     borderColor: 'rgb(75, 192, 192)',
                                                     yAxisID: 'y1',
-                                                    tension: 0.1
+                                                    tension: 0.1,
+                                                    hidden: true 
                                                 },
                                                 {
                                                     label: 'Parameter Coverage',
                                                     data: {{ records | map(attribute='CoverageData.parameter_coverage') | list | safe }},
                                                     borderColor: 'rgb(153, 102, 255)',
                                                     yAxisID: 'y1',
-                                                    tension: 0.1
+                                                    tension: 0.1,
+                                                    hidden: true 
                                                 },
                                                 {
                                                     label: 'Return Coverage',
                                                     data: {{ records | map(attribute='CoverageData.return_type_coverage') | list | safe }},
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
-                                                    tension: 0.1
+                                                    tension: 0.1,
+                                                    hidden: true 
                                                 },
                                                 {
                                                     label: 'Pyright Coverage',
