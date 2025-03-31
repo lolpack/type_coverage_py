@@ -265,8 +265,8 @@ def generate_report_html(package_report: dict[str, Any], output_file: str) -> No
             <ul>
             <li>✅ <strong>Better Reliability:</strong> Type annotations help catch bugs early and improve confidence in your codebase.</li>
             <li>🚀 <strong>Developer Velocity:</strong> Great type coverage improves editor support, autocompletion, and navigation.</li>
-            <li>📚 <strong>Living Documentation:</strong> Type hints clarify APIs without relying solely on comments or docstrings.</li>
-            <li>🔍 <strong>Community Visibility:</strong> This site tracks the top 2000 PyPI packages—stand out by adding great types!</li>
+            <li>📚 <strong>Living Documentation:</strong> Type hints clarify APIs without relying solely on comments or docstrings, and they are validated automatically.</li>
+            <li>🔍 <strong>Community Visibility:</strong> This site tracks the top 2,000 PyPI packages—stand out by adding great types!</li>
             </ul>
             <ul>
             <li>
