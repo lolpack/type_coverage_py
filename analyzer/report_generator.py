@@ -158,7 +158,7 @@ def create_percentage_row(percentage: str | float) -> str:
 
 
 def create_boolean_row(value: bool) -> str:
-    color = "green" if value else "none"
+    color = "green" if value else "transparent"
     text = "Yes" if value else "No"
     return f'<td style="background-color: {color};">{text}</td>'
 
