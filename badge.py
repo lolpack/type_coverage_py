@@ -24,15 +24,15 @@ def check_typed_classifier(package_name: str) -> tuple[bool, bool]:
 badge_total = 0
 stubs_only_total = 0
 
-non_badge: defaultdict[tuple[bool, bool, bool, bool, bool], list[str]] = defaultdict(list)
-badge: defaultdict[tuple[bool, bool, bool, bool, bool], list[str]] = defaultdict(list)
+non_badge: defaultdict[tuple[bool, bool, bool, bool, bool], list[str]] = defaultdict(list) # type: ignore  `defaultdict[str, list[Unknown]]` is not assignable to `defaultdict[tuple[bool, bool, bool, bool, bool], list[str]]` [bad-assignment]
+badge: defaultdict[tuple[bool, bool, bool, bool, bool], list[str]] = defaultdict(list) # type: ignore   `defaultdict[str, list[Unknown]]` is not assignable to `defaultdict[tuple[bool, bool, bool, bool, bool], list[str]]` [bad-assignment]
 for package, package_info in package_report.items():
     has_typed_classifier, has_stubs_only_classifier = check_typed_classifier(package)
     key = (package_info["HasPyTypedFile"], package_info["HasTypeShed"], package_info["HasStubsPackage"], package.startswith("types-") or package.endswith("-stubs"), has_stubs_only_classifier)
     if has_stubs_only_classifier:
-        stubs_only_total += 1
+        stubs_only_total += 1 # type: ignore `+=` is not supported between `@10903` and `Literal[1]` TODO: Binding::AugAssign
     if has_typed_classifier:
-        badge_total += 1
+        badge_total += 1 # type: ignore `+=` is not supported between `@10903` and `Literal[1]` TODO: Binding::AugAssign
         badge[key].append(package)
     else:
         non_badge[key].append(package)

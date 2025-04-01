@@ -65,7 +65,7 @@ def calculate_parameter_coverage(files: list[str]) -> tuple[int, int, int]:
                                     param_count, annotation_count)
 
         except (SyntaxError, UnicodeDecodeError):
-            skipped_files += 1
+            skipped_files += 1 # type: ignore TODO: Binding::AugAssign  [internal-error]
 
     # Sum up the final counts
     total_params = sum(counts[0] for counts in function_param_counts.values())
@@ -122,7 +122,7 @@ def calculate_return_type_coverage(files: list[str]) -> tuple[int, int, int]:
                                 )
 
         except (SyntaxError, UnicodeDecodeError):
-            skipped_files += 1
+            skipped_files += 1 # type: ignore TODO: Binding::AugAssign  [internal-error]
 
     # Sum up the final counts
     total_functions = sum(counts[0]

@@ -228,7 +228,7 @@ def parallel_analyze_packages(
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = {
             executor.submit(
-                analyze_package_concurrently,
+                analyze_package_concurrently, # type: ignore Argument `(package_data: dict[str, Any], rank: int, typeshed_data: dict[str, dict[str, Any]], packages_with_stubs: set[str]) -> tuple[str, dict[str, Any]] | None` is not assignable to parameter with type `(*Unknown, **Unknown) -> tuple[str, dict[str, Any]] | None` in function `concurrent.futures._base.Executor.submit` [bad-argument-type]
                 package_data,
                 rank,
                 typeshed_data,
@@ -287,7 +287,7 @@ def main(
     else:
         # Analyze top N packages
         sorted_packages = load_and_sort_top_packages(TOP_PYPI_PACKAGES)
-        top_packages = sorted_packages[:top_n]
+        top_packages = sorted_packages[:top_n] # type: ignore Item assignment is not supported on `@5395 | @5397` \n#Argument `object` is not assignable to parameter with type `str` in function `dict.__setitem__` [bad-argument-type]
 
         if package_list:
             included_packages: list[str] = read_packages(package_list)

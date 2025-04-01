@@ -48,12 +48,13 @@ def download_package(package_name: str, temp_dir: str) -> str:
     sdist_response.raise_for_status()
 
     # Determine the archive type and extract
-    if sdist_url.endswith(".zip"):
+    if sdist_url.endswith(".zip"):     # type: ignore [missing-attribute] Object of class `NoneType` has no attribute `endswith`
         archive_path = os.path.join(temp_dir, f"{package_name}.zip")
         with open(archive_path, "wb") as archive_file:
             archive_file.write(sdist_response.content)
         with zipfile.ZipFile(archive_path, "r") as zip_ref:
             zip_ref.extractall(temp_dir)
+    # type: ignore [missing-attribute] Object of class `NoneType` has no attribute `endswith`
     elif sdist_url.endswith((".tar.gz", ".tgz")):
         archive_path = os.path.join(temp_dir, f"{package_name}.tar.gz")
         with open(archive_path, "wb") as archive_file:

@@ -19,13 +19,13 @@ def collect_historical_data(data_dir: str) -> Dict[str, List[Dict[str, Any]]]:
                 data: Dict[str, Any] = json.load(f)
                 for package, details in data.items():
                     if package not in historical_data:
-                        historical_data[package] = []
+                        historical_data[package] = [] # type: ignore  Item assignment is not supported on `@5395 | @5397` Argument `object` is not assignable to parameter with type `str` in function `dict.__setitem__` [bad-argument-type]
                     formatted_date = date.strftime("%Y-%m-%d")
                     record: dict[str, Any] = {"date": formatted_date}
                     record.update({k: v for k, v in details.items() if k != 'pyright_stats'})
                     pyright_stats = details.get('pyright_stats', {})
                     record['pyright_coverage'] = pyright_stats.get('coverage') or 0.0
-                    historical_data[package].append(record)
+                    historical_data[package].append(record) # type: ignore Can't apply arguments to non-class, got dict[str, list[dict[str, Any]]] [bad-specialization]
     print(f"Collected data for {len(historical_data)} packages.")
     return historical_data
 
