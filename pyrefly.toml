@@ -1,6 +1,7 @@
 # pyre.toml
 
-project_includes = ["./**/*.py"]
+# Let's include everything so commenting out
+# project_includes = ["./**/*.py"]
 
 project_excludes = [
   "**/node_modules/**",
@@ -17,9 +18,10 @@ site_package_path = [
 ]
 
 [errors]
-bad_assignment = false
-missing_attribute = false
-bad_specialization = false
-bad_argument_type = false
-internal_error = false
-bad_return = false
+bad-assignment = false
+no-matching-overload = false
+missing-attribute = false
+bad-specialization = false
+bad-argument-type = false
+internal-error = false
+# bad-return = false
