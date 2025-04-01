@@ -45,6 +45,7 @@ def mock_get(url: str, *args: Any, **kwargs: Any) -> Any:
 
         def raise_for_status(self) -> None:
             if self.status_code != 200:
+                # type: ignore  No attribute `exceptions` in module `requests` [missing-attribute]
                 raise requests.exceptions.HTTPError(
                     f"HTTP {self.status_code} Error: {self.url}")
 
