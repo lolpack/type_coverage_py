@@ -101,6 +101,10 @@ Run daily command for prioritized list:
 
 ### Type check the project (of course!)
 
+Pyrefly
+
+`$ pyrefly check -c pyrefly.toml`
+
 Pyright
 
 `$ node node_modules/pyright/index.js`
