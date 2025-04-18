@@ -103,13 +103,5 @@ Run daily command for prioritized list:
 
 Pyrefly
 
-`$ pyrefly check -c pyrefly.toml`
+`$ pyrefly check`
 
-Pyright
-
-`$ node node_modules/pyright/index.js`
-
-Or simply install globally
-
-`$ npm i -g pyright`
-`$ pyright`
