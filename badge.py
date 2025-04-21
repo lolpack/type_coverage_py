@@ -24,8 +24,8 @@ def check_typed_classifier(package_name: str) -> tuple[bool, bool]:
 badge_total = 0
 stubs_only_total = 0
 
-non_badge: defaultdict[tuple[bool, bool, bool, bool, bool], list[str]] = defaultdict(list)
-badge: defaultdict[tuple[bool, bool, bool, bool, bool], list[str]] = defaultdict(list)
+non_badge = defaultdict[tuple[bool, bool, bool, bool, bool], list[str]](list)
+badge = defaultdict[tuple[bool, bool, bool, bool, bool], list[str]](list)
 for package, package_info in package_report.items():
     has_typed_classifier, has_stubs_only_classifier = check_typed_classifier(package)
     key = (package_info["HasPyTypedFile"], package_info["HasTypeShed"], package_info["HasStubsPackage"], package.startswith("types-") or package.endswith("-stubs"), has_stubs_only_classifier)
