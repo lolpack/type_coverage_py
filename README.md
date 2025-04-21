@@ -101,7 +101,7 @@ Run daily command for prioritized list:
 
 ### Type check the project (of course!)
 
-We use [Pyrefly](https://pyrefly.org/) to check the project. You can also use the accompany IDE extension in [VSCode](https://marketplace.visualstudio.com/items?itemName=meta.pyrefly).
+We use [Pyrefly](https://pyrefly.org/) to check the project. You can also use the accompanying IDE extension in [VSCode](https://marketplace.visualstudio.com/items?itemName=meta.pyrefly).
 
 `$ pyrefly check`
 
