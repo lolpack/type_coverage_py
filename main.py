@@ -267,6 +267,7 @@ def main(
     package_list: Optional[str] = None,
     pyright_stats: Optional[bool] = False,
     output_list_only: Optional[bool] = False,
+    prioritized: bool = False
 ) -> None:
     package_report: dict[str, Any] = {}
 
@@ -367,7 +368,7 @@ def main(
 
     if create_daily:
         update_main_html_with_links(html_report_file, historical_html_dir)
-        generate_historical_graphs(historical_json_dir, coverag_trends_html)
+        generate_historical_graphs(historical_json_dir, coverag_trends_html, prioritized=prioritized)
 
 
 if __name__ == "__main__":
@@ -447,7 +448,8 @@ if __name__ == "__main__":
             parallel=args.parallel,
             pyright_stats=True,
             output_list_only=True,
-            create_daily=True
+            create_daily=True,
+            prioritized=True
         )
     elif args.package_list:
         main(
