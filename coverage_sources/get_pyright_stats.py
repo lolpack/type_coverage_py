@@ -4,6 +4,11 @@ from pathlib import Path
 import os
 import subprocess
 from typing import Any, Dict, Union
+from fnmatch import fnmatch
+
+EXCLUDE_LIKE: Dict[str, str] = {
+    'numpy': '*.tests.*',
+}
 
 
 def create_output_directory(output_dir: str) -> None:
@@ -66,13 +71,23 @@ def run_pyright(venv_name: str, package: str, output_file: str) -> None:
         print(f"Output: {e.output}")
 
 
-def parse_output_json(output_file: str) -> Dict[str, Union[int, float]]:
+def parse_output_json(output_file: str, exclude_like: str | None = None) -> Dict[str, Union[int, float]]:
     try:
         with open(output_file, "r") as f:
             output_data = json.load(f)
             pyright_data: Dict[str, Union[int, float]] = {}
+
             symbol_count = output_data["typeCompleteness"]["exportedSymbolCounts"]
-            coverage: float = output_data["typeCompleteness"]["completenessScore"] * 100.0
+            if exclude_like is None:
+                coverage: float = output_data["typeCompleteness"]["completenessScore"] * 100.0
+            else:
+                matched_symbols = [
+                    x for x in output_data["typeCompleteness"]["symbols"] if not fnmatch(x["name"], exclude_like)
+                    and x['isExported']
+                ]
+                coverage = (
+                    sum(x["isTypeKnown"] for x in matched_symbols) / len(matched_symbols) * 100
+                )
             
             pyright_data = symbol_count
             pyright_data["coverage"] = coverage
@@ -133,7 +148,7 @@ def main(packages: list[dict[str, Any]]) -> Dict[str, Any]:
 
         output_file = f"{output_dir}/{package}_output.json"
         run_pyright(venv_name, package, output_file)
-        pyright_data = parse_output_json(output_file)
+        pyright_data = parse_output_json(output_file, EXCLUDE_LIKE.get(package, None))
 
         stats[package] = pyright_data
 
