@@ -107,5 +107,5 @@ def test_main(tmp_path: Path) -> None:
         mock_activate_install.assert_called_once_with(expected_venv, "test_package")
         mock_create_py_typed.assert_called_once_with(expected_py_typed)
         mock_run_pyright.assert_called_once_with(expected_venv, "test_package", expected_output_file)
-        mock_parse_json.assert_called_once_with(expected_output_file)
+        mock_parse_json.assert_called_once_with(expected_output_file, None)
         mock_subprocess_run.assert_called()
