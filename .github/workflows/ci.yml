@@ -42,6 +42,10 @@ jobs:
       - name: Install Pyright
         run: npm install -g pyright
 
+      - uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: --all-files
+
       # Run Pyright type checking
       - name: Run Pyright
         run: pyright
