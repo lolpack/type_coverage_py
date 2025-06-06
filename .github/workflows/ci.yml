@@ -29,6 +29,8 @@ jobs:
           python -m pip install --upgrade pip
           # Install your dependencies; adjust the following lines as needed
           pip install -r requirements.txt
+          # persists the venv’s scripts dir
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
           # Run tests
           pytest
 
@@ -52,4 +54,4 @@ jobs:
 
       # Run Pyrefly type checking
       - name: Typecheck with Pyrefly
-        run: .venv/bin/pyrefly check    
+        run: pyrefly check    
