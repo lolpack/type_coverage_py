@@ -6,9 +6,12 @@ repos:
   - repo: local            # no clone; just run a local entry
     hooks:
       - id: pyrefly-typecheck
-        name: Pyrefly type checker
+        name: pyrefly check
         entry: pyrefly check
+        types_or: [python, pyi]
         language: python
         pass_filenames: false                       # Pyrefly reads config & project roots itself
-        always_run: true                            # run even if only docs changed
-        stages: [pre-commit]
+        args: []
+        require_serial: true
+        additional_dependencies: []
+        minimum_pre_commit_version: "2.9.2"
