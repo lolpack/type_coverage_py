@@ -1,0 +1,14 @@
+# .pre-commit-config.yaml
+# Pin by tag/sha so every dev & CI run exactly the same versions
+repos:
+  # ‑‑‑ Pyrefly type checker --------------------------------------------
+  # We call the already‑installed CLI so we can pass --config etc.
+  - repo: local            # no clone; just run a local entry
+    hooks:
+      - id: pyrefly-typecheck
+        name: Pyrefly type checker
+        entry: pyrefly check
+        language: python
+        pass_filenames: false                       # Pyrefly reads config & project roots itself
+        always_run: true                            # run even if only docs changed
+        stages: [pre-commit]
