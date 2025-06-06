@@ -29,6 +29,8 @@ jobs:
           python -m pip install --upgrade pip
           # Install your dependencies; adjust the following lines as needed
           pip install -r requirements.txt
+          # persists the venv’s scripts dir
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
           # Run tests
           pytest
 
@@ -42,10 +44,14 @@ jobs:
       - name: Install Pyright
         run: npm install -g pyright
 
+      - uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: --all-files
+
       # Run Pyright type checking
       - name: Run Pyright
         run: pyright
 
       # Run Pyrefly type checking
       - name: Typecheck with Pyrefly
-        run: .venv/bin/pyrefly check    
+        run: pyrefly check    
