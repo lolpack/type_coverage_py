@@ -49,6 +49,7 @@ def calculate_parameter_coverage(files: list[str]) -> tuple[int, int, int]:
 
                         # Exclude 'self' and 'cls' from parameters
                         params = [
+                            # pyrefly: ignore  # missing-attribute
                             arg for arg in node.args.args if arg.arg not in ('self', 'cls')]
                         param_count = len(params)
                         annotation_count = sum(

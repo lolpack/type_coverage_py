@@ -6,7 +6,7 @@ import tarfile
 import tempfile
 import os
 import sys
-import requests
+import requests.exceptions
 from typing import Any, Optional
 
 # Add the directory containing main.py to sys.path

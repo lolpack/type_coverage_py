@@ -4,26 +4,28 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  typecheck:
     runs-on: ubuntu-latest
 
     steps:
       # Check out the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Set up Python 3.12
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       # Install Python dependencies and run tests
       - name: Install dependencies and run pytest
         run: |
+          python -m venv .venv
+          source .venv/bin/activate
           python -m pip install --upgrade pip
           # Install your dependencies; adjust the following lines as needed
           pip install -r requirements.txt
@@ -43,3 +45,7 @@ jobs:
       # Run Pyright type checking
       - name: Run Pyright
         run: pyright
+
+      # Run Pyrefly type checking
+      - name: Typecheck with Pyrefly
+        run: .venv/bin/pyrefly check    

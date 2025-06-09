@@ -1,0 +1,18 @@
+# pyrefly.toml
+
+# Let's include everything so commenting out
+# project_includes = ["./**/*.py"]
+
+project_excludes = [
+  "**/node_modules/**",
+  "**/__pycache__/**",
+  "**/.git/**",
+  "**/venv/**",
+  "**/.venv/**",
+  "typeshed/**",
+  "tests/test_files/**"
+]
+
+site_package_path = [
+  ".venv/lib/python3.12/site-packages/"
+]
