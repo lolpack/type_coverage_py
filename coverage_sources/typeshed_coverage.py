@@ -43,7 +43,7 @@ def download_typeshed_csv() -> dict[str, dict[str, Any]]:
             "unannotated_returns": unannotated_returns,
             "% return": return_percent,
             "stubtest_strictness": row["stubtest_strictness"],
-            "stubtest_platforms": row["stubtest_platforms"],
+            "stubtest_platforms": row["stubtest_ci_platforms"],
         }
 
     return typeshed_data
