@@ -6,8 +6,17 @@ import subprocess
 from typing import Any, Dict, Union
 from fnmatch import fnmatch
 
-EXCLUDE_LIKE: Dict[str, str] = {
-    'numpy': '*.tests.*',
+EXCLUDE_LIKE: Dict[str, list[str]] = {
+    'numpy': ['*.tests.*'],
+    'pandas': [
+        # pandas distributes (untyped) tests with the package
+        '*.tests.*',
+        # pandas.core is technically private, and anything considered public
+        # is re-exported in other places. For example, `DataFrameGroupBy` is
+        # re-exported in `pandas.api.typing`. The re-exports are available
+        # under `'alternateNames'`, which we consider when excluding symbols.
+        'pandas.core.*'
+    ],
 }
 
 
@@ -71,7 +80,7 @@ def run_pyright(venv_name: str, package: str, output_file: str) -> None:
         print(f"Output: {e.output}")
 
 
-def parse_output_json(output_file: str, exclude_like: str | None = None) -> Dict[str, Union[int, float]]:
+def parse_output_json(output_file: str, exclude_like: list[str] | None = None) -> Dict[str, Union[int, float]]:
     try:
         with open(output_file, "r") as f:
             output_data = json.load(f)
@@ -82,8 +91,13 @@ def parse_output_json(output_file: str, exclude_like: str | None = None) -> Dict
                 coverage: float = output_data["typeCompleteness"]["completenessScore"] * 100.0
             else:
                 matched_symbols = [
-                    x for x in output_data["typeCompleteness"]["symbols"] if not fnmatch(x["name"], exclude_like)
-                    and x['isExported']
+                    x for x in output_data["typeCompleteness"]["symbols"]
+                    if x['isExported']
+                    # Keep symbols where there's any name which doesn't match any excluded patterns.
+                    and any(
+                        all(not fnmatch(name, pattern) for pattern in exclude_like)
+                        for name in [x['name'], *x.get('alternateNames', [])]
+                    )
                 ]
                 coverage = (
                     sum(x["isTypeKnown"] for x in matched_symbols) / len(matched_symbols) * 100
