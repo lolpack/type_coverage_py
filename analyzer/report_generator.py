@@ -145,7 +145,7 @@ def get_color(percentage: float) -> str:
         red = int(255 * ((100 - percentage) / 50))
         green = 255
 
-    blue = 200  # A small amount of blue for a softer, more pleasant color
+    blue = 55  # A small amount of blue for a softer, more pleasant color
     return f"rgb({red},{green},{blue})"
 
 
