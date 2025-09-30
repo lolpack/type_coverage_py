@@ -196,6 +196,8 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                 y1: {
                                                     type: 'linear',
                                                     position: 'left',
+                                                    min: 0,
+                                                    max: 100,
                                                     title: {
                                                         display: true,
                                                         text: 'Coverage Percent'
