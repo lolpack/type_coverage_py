@@ -15,7 +15,9 @@ EXCLUDE_LIKE: Dict[str, list[str]] = {
         # is re-exported in other places. For example, `DataFrameGroupBy` is
         # re-exported in `pandas.api.typing`. The re-exports are available
         # under `'alternateNames'`, which we consider when excluding symbols.
-        'pandas.core.*'
+        'pandas.core.*',
+        # Not considered public
+        'pandas.compat.*'
     ],
 }
 
