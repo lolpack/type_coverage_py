@@ -6,7 +6,7 @@ Calculate the Type Coverage for top Python packages. This analysis aims to deter
 
 - Daily coverage calculator: [https://python-type-checking.com](https://python-type-checking.com/)
 - Coverage Trends: [https://python-type-checking.com/historical_data/coverage-trends.html](https://python-type-checking.com/historical_data/coverage-trends.html)
-
+- Prioritized Coverage Reports: [https://python-type-checking.com/prioritized/](https://python-type-checking.com/prioritized/)
 
 - Prioritized list of packages included in analysis with Pyright: https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt
 - Coverage trends for prioritized list: [https://python-type-checking.com/prioritized/historical_data/coverage-trends.html](https://python-type-checking.com/prioritized/historical_data/coverage-trends.html)

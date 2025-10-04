@@ -30,7 +30,7 @@ def collect_historical_data(data_dir: str) -> Dict[str, List[Dict[str, Any]]]:
     return historical_data
 
 
-def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output: str) -> None:
+def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output: str, prioritized: bool = False) -> None:
     html_template = """
     <!DOCTYPE html>
     <html lang="en">
@@ -139,7 +139,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                     borderColor: 'rgb(255, 99, 132)',
                                                     yAxisID: 'y2',
                                                     tension: 0.1,
-                                                    hidden: true 
+                                                    hidden: true
                                                 },
                                                 {
                                                     label: 'Param Coverage with Stubs',
@@ -147,7 +147,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                     borderColor: 'rgb(54, 162, 235)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1,
-                                                    hidden: true
+                                                    hidden: {{ 'true' if prioritized else 'false' }}
                                                 },
                                                 {
                                                     label: 'Return Coverage with Stubs',
@@ -155,7 +155,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                     borderColor: 'rgb(75, 192, 192)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1,
-                                                    hidden: true 
+                                                    hidden: {{ 'true' if prioritized else 'false' }}
                                                 },
                                                 {
                                                     label: 'Parameter Coverage',
@@ -163,7 +163,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                     borderColor: 'rgb(153, 102, 255)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1,
-                                                    hidden: true 
+                                                    hidden: true
                                                 },
                                                 {
                                                     label: 'Return Coverage',
@@ -171,14 +171,15 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1,
-                                                    hidden: true 
+                                                    hidden: true
                                                 },
                                                 {
                                                     label: 'Pyright Coverage',
                                                     data: {{ records | map(attribute='pyright_coverage') | list | safe }},
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
-                                                    tension: 0.1
+                                                    tension: 0.1,
+                                                    hidden: {{ 'false' if prioritized else 'true' }}
                                                 }
                                             ]
                                         },
@@ -235,13 +236,14 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
     </html>
     """
     template = Template(html_template)
-    html_content = template.render(historical_data=historical_data)
+    html_content = template.render(historical_data=historical_data, prioritized=prioritized)
 
     with open(html_output, "w") as f:
         f.write(html_content)
 
     print("HTML generated successfully.")
 
-def generate_historical_graphs(historical_data_dir: str, html_output: str) -> None:
+
+def generate_historical_graphs(historical_data_dir: str, html_output: str, prioritized: bool = False) -> None:
     historical_data = collect_historical_data(historical_data_dir)
-    generate_html(historical_data, html_output)
+    generate_html(historical_data, html_output, prioritized=prioritized)
