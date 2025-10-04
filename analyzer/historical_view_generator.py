@@ -31,16 +31,24 @@ def collect_historical_data(data_dir: str) -> Dict[str, List[Dict[str, Any]]]:
                         if k == 'pyright_stats':
                             continue  # Handle separately
                         elif k.startswith('CoverageData.'):
-                            # Keep the flattened key for backward compatibility
+                            # Keep the flattened key for backward compatibility (old format)
                             record[k] = v
                             # Also extract the nested field name for template access
                             field_name = k.replace('CoverageData.', '')
                             coverage_data[field_name] = v
+                        elif k == 'CoverageData' and isinstance(v, dict):
+                            # Handle new nested format
+                            record['CoverageData'] = v
+                            # Also create flattened keys for backward compatibility
+                            for nested_key, nested_value in v.items():
+                                flattened_key = f'CoverageData.{nested_key}'
+                                record[flattened_key] = nested_value
+                            coverage_data = v
                         else:
                             record[k] = v
                     
-                    # Add the nested CoverageData object if it has any fields
-                    if coverage_data:
+                    # Add the nested CoverageData object if it has any fields and wasn't already added
+                    if coverage_data and 'CoverageData' not in record:
                         record['CoverageData'] = coverage_data
                     
                     pyright_stats = details.get('pyright_stats', {})
