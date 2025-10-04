@@ -22,7 +22,27 @@ def collect_historical_data(data_dir: str) -> Dict[str, List[Dict[str, Any]]]:
                         historical_data[package] = []
                     formatted_date = date.strftime("%Y-%m-%d")
                     record: dict[str, Any] = {"date": formatted_date}
-                    record.update({k: v for k, v in details.items() if k != 'pyright_stats'})
+                    
+                    # Create nested CoverageData object
+                    coverage_data = {}
+                    
+                    # Process all fields
+                    for k, v in details.items():
+                        if k == 'pyright_stats':
+                            continue  # Handle separately
+                        elif k.startswith('CoverageData.'):
+                            # Keep the flattened key for backward compatibility
+                            record[k] = v
+                            # Also extract the nested field name for template access
+                            field_name = k.replace('CoverageData.', '')
+                            coverage_data[field_name] = v
+                        else:
+                            record[k] = v
+                    
+                    # Add the nested CoverageData object if it has any fields
+                    if coverage_data:
+                        record['CoverageData'] = coverage_data
+                    
                     pyright_stats = details.get('pyright_stats', {})
                     record['pyright_coverage'] = pyright_stats.get('coverage') or 0.0
                     historical_data[package].append(record)
@@ -143,7 +163,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                 },
                                                 {
                                                     label: 'Param Coverage with Stubs',
-                                                    data: {{ records | map(attribute='CoverageData.parameter_coverage_with_stubs') | list | safe }},
+                                                    data: [{% for record in records %}{{ record['CoverageData.parameter_coverage_with_stubs'] | default(0) }}{% if not loop.last %}, {% endif %}{% endfor %}],
                                                     borderColor: 'rgb(54, 162, 235)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1,
@@ -151,7 +171,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                 },
                                                 {
                                                     label: 'Return Coverage with Stubs',
-                                                    data: {{ records | map(attribute='CoverageData.return_type_coverage_with_stubs') | list | safe }},
+                                                    data: [{% for record in records %}{{ record['CoverageData.return_type_coverage_with_stubs'] | default(0) }}{% if not loop.last %}, {% endif %}{% endfor %}],
                                                     borderColor: 'rgb(75, 192, 192)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1,
@@ -159,7 +179,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                 },
                                                 {
                                                     label: 'Parameter Coverage',
-                                                    data: {{ records | map(attribute='CoverageData.parameter_coverage') | list | safe }},
+                                                    data: [{% for record in records %}{{ record['CoverageData.parameter_coverage'] | default(0) }}{% if not loop.last %}, {% endif %}{% endfor %}],
                                                     borderColor: 'rgb(153, 102, 255)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1,
@@ -167,7 +187,7 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
                                                 },
                                                 {
                                                     label: 'Return Coverage',
-                                                    data: {{ records | map(attribute='CoverageData.return_type_coverage') | list | safe }},
+                                                    data: [{% for record in records %}{{ record['CoverageData.return_type_coverage'] | default(0) }}{% if not loop.last %}, {% endif %}{% endfor %}],
                                                     borderColor: 'rgb(255, 159, 64)',
                                                     yAxisID: 'y1',
                                                     tension: 0.1,
