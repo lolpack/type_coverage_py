@@ -34,23 +34,9 @@ jobs:
           # Run tests
           pytest
 
-      # Set up Node.js (needed for Pyright)
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      # Install Pyright globally using npm
-      - name: Install Pyright
-        run: npm install -g pyright
-
       - uses: pre-commit/action@v3.0.1
         with:
           extra_args: --all-files
-
-      # Run Pyright type checking
-      - name: Run Pyright
-        run: pyright
 
       # Run Pyrefly type checking
       - name: Typecheck with Pyrefly
