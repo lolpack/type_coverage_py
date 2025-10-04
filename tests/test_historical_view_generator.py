@@ -402,3 +402,100 @@ class TestEdgeCases:
         collect_historical_data(str(tmp_path))
 
         mock_print.assert_called_with("Collected data for 3 packages.")
+
+    def test_collect_historical_data_handles_nested_coverage_data(self, tmp_path):
+        """Test that nested CoverageData format is handled correctly."""
+        # Test data with new nested CoverageData format
+        test_data = {
+            "package1": {
+                "DownloadRanking": 1,
+                "CoverageData": {
+                    "parameter_coverage": 85.5,
+                    "return_type_coverage": 90.2,
+                    "parameter_coverage_with_stubs": 92.1,
+                    "return_type_coverage_with_stubs": 95.3
+                },
+                "pyright_stats": {"coverage": 88.7}
+            }
+        }
+
+        file_path = tmp_path / "package_report-2023-01-01.json"
+        with open(file_path, "w") as f:
+            json.dump(test_data, f)
+
+        result = collect_historical_data(str(tmp_path))
+
+        # Verify the nested data is correctly processed
+        assert "package1" in result
+        record = result["package1"][0]
+        
+        # Check that nested CoverageData object is preserved
+        assert "CoverageData" in record
+        assert record["CoverageData"]["parameter_coverage"] == 85.5
+        assert record["CoverageData"]["return_type_coverage"] == 90.2
+        
+        # Check that flattened keys are created for template compatibility
+        assert record["CoverageData.parameter_coverage"] == 85.5
+        assert record["CoverageData.return_type_coverage"] == 90.2
+        assert record["CoverageData.parameter_coverage_with_stubs"] == 92.1
+        assert record["CoverageData.return_type_coverage_with_stubs"] == 95.3
+        
+        # Check other fields are preserved
+        assert record["DownloadRanking"] == 1
+        assert record["pyright_coverage"] == 88.7
+        assert record["date"] == "2023-01-01"
+
+    def test_collect_historical_data_handles_mixed_formats(self, tmp_path):
+        """Test that both old flattened and new nested CoverageData formats work together."""
+        # Test data mixing old flattened format and new nested format
+        test_data_old = {
+            "package1": {
+                "DownloadRanking": 1,
+                "CoverageData.parameter_coverage": 75.0,
+                "CoverageData.return_type_coverage": 80.0,
+                "pyright_stats": {"coverage": 78.5}
+            }
+        }
+        
+        test_data_new = {
+            "package1": {
+                "DownloadRanking": 1,
+                "CoverageData": {
+                    "parameter_coverage": 85.5,
+                    "return_type_coverage": 90.2
+                },
+                "pyright_stats": {"coverage": 88.7}
+            }
+        }
+
+        # Create files with different formats
+        file1_path = tmp_path / "package_report-2023-01-01.json"
+        file2_path = tmp_path / "package_report-2023-01-02.json"
+        
+        with open(file1_path, "w") as f:
+            json.dump(test_data_old, f)
+        with open(file2_path, "w") as f:
+            json.dump(test_data_new, f)
+
+        result = collect_historical_data(str(tmp_path))
+
+        # Verify both records are processed correctly
+        assert "package1" in result
+        assert len(result["package1"]) == 2
+        
+        # Check old format record
+        old_record = result["package1"][0]  # First chronologically
+        assert old_record["date"] == "2023-01-01"
+        assert old_record["CoverageData.parameter_coverage"] == 75.0
+        assert old_record["CoverageData.return_type_coverage"] == 80.0
+        assert old_record["pyright_coverage"] == 78.5
+        
+        # Check new format record
+        new_record = result["package1"][1]  # Second chronologically
+        assert new_record["date"] == "2023-01-02"
+        assert new_record["CoverageData.parameter_coverage"] == 85.5
+        assert new_record["CoverageData.return_type_coverage"] == 90.2
+        assert new_record["pyright_coverage"] == 88.7
+        # Verify nested object is also present
+        assert "CoverageData" in new_record
+        assert new_record["CoverageData"]["parameter_coverage"] == 85.5
