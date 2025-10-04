@@ -23,33 +23,39 @@ def collect_historical_data(data_dir: str) -> Dict[str, List[Dict[str, Any]]]:
                     formatted_date = date.strftime("%Y-%m-%d")
                     record: dict[str, Any] = {"date": formatted_date}
                     
-                    # Create nested CoverageData object
-                    coverage_data = {}
-                    
-                    # Process all fields
-                    for k, v in details.items():
-                        if k == 'pyright_stats':
-                            continue  # Handle separately
-                        elif k.startswith('CoverageData.'):
-                            # Keep the flattened key for backward compatibility (old format)
-                            record[k] = v
-                            # Also extract the nested field name for template access
-                            field_name = k.replace('CoverageData.', '')
-                            coverage_data[field_name] = v
-                        elif k == 'CoverageData' and isinstance(v, dict):
-                            # Handle new nested format
-                            record['CoverageData'] = v
-                            # Also create flattened keys for backward compatibility
-                            for nested_key, nested_value in v.items():
-                                flattened_key = f'CoverageData.{nested_key}'
-                                record[flattened_key] = nested_value
-                            coverage_data = v
-                        else:
-                            record[k] = v
-                    
-                    # Add the nested CoverageData object if it has any fields and wasn't already added
-                    if coverage_data and 'CoverageData' not in record:
-                        record['CoverageData'] = coverage_data
+                    # Handle both old flattened format and new nested CoverageData format
+                    if 'CoverageData' in details and isinstance(details['CoverageData'], dict):
+                        # New nested format - CoverageData is already a dict
+                        record['CoverageData'] = details['CoverageData']
+                        # Also create flattened keys for backward compatibility
+                        for nested_key, nested_value in details['CoverageData'].items():
+                            flattened_key = f'CoverageData.{nested_key}'
+                            record[flattened_key] = nested_value
+                        
+                        # Add other fields (excluding CoverageData since we've already processed it)
+                        for k, v in details.items():
+                            if k not in ['CoverageData', 'pyright_stats']:
+                                record[k] = v
+                    else:
+                        # Old flattened format - collect coverage fields and create nested structure
+                        coverage_data = {}
+                        
+                        # Process all fields
+                        for k, v in details.items():
+                            if k == 'pyright_stats':
+                                continue  # Handle separately
+                            elif k.startswith('CoverageData.'):
+                                # Keep the flattened key for backward compatibility (old format)
+                                record[k] = v
+                                # Also extract the nested field name for template access
+                                field_name = k.replace('CoverageData.', '')
+                                coverage_data[field_name] = v
+                            else:
+                                record[k] = v
+                        
+                        # Add the nested CoverageData object if it has coverage fields
+                        if coverage_data:
+                            record['CoverageData'] = coverage_data
                     
                     pyright_stats = details.get('pyright_stats', {})
                     record['pyright_coverage'] = pyright_stats.get('coverage') or 0.0
