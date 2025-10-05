@@ -32,7 +32,6 @@ STUB_PACKAGES = "stub_packages.json"
 HISTORICAL_DATA_DIR = "historical_data"
 
 
-
 def load_and_sort_top_packages(json_file: str) -> list[dict[str, Any]]:
     """Load the JSON file and sort it by download_count."""
     with open(json_file, "r") as f:
