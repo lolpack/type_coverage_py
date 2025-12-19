@@ -177,6 +177,7 @@ KNOWN_GITHUB_URLS: dict[str, str] = {
     "starlette": "https://github.com/encode/starlette",
     "redis": "https://github.com/redis/redis-py",
     "celery": "https://github.com/celery/celery",
+    "homeassistant": "https://github.com/home-assistant/core",
 }
 
 # Type checker LSP commands
