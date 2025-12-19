@@ -384,8 +384,8 @@ class TestParseArgs:
         """Test parsing with default arguments."""
         args = parse_args([])
 
-        assert args.packages == 10
-        assert args.runs == 5
+        assert args.packages is None  # None means all packages
+        assert args.runs == 100
         assert args.output is None
         assert args.seed is None
 

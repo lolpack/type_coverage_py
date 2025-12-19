@@ -7,13 +7,13 @@ on:
   workflow_dispatch:
     inputs:
       package_count:
-        description: 'Number of packages to benchmark'
+        description: 'Number of packages to benchmark (use 0 for all prioritized packages)'
         required: false
-        default: '10'
+        default: '0'
       runs_per_package:
         description: 'Number of benchmark runs per package'
         required: false
-        default: '5'
+        default: '100'
 
 jobs:
   benchmark:
@@ -50,31 +50,39 @@ jobs:
 
       - name: Install Type Checkers
         run: |
-          # Install Pyright
+          # Install Pyright (always get latest)
           npm install -g pyright
           
-          # Install Pyrefly (if available)
-          pip install pyrefly || echo "Pyrefly not available via pip"
-          
-          # Install ty (Red Knot/ty) if available
-          pip install ty || echo "ty not available via pip"
-          
-          # Install Zuban (if available)
-          pip install zuban || echo "Zuban not available via pip"
+          # Install type checkers via pip (always get latest)
+          pip install --upgrade pyrefly || echo "Pyrefly not available via pip"
+          pip install --upgrade ty || echo "ty not available via pip"
+          pip install --upgrade zuban || echo "Zuban not available via pip"
           
           # Verify installations
           echo "Installed type checkers:"
           which pyright-langserver && echo "  pyright: $(pyright --version)" || echo "  pyright: not found"
           which pyrefly && echo "  pyrefly: installed" || echo "  pyrefly: not found"
           which ty && echo "  ty: installed" || echo "  ty: not found"
+          which zubanls && echo "  zuban: installed" || echo "  zuban: not found"
 
       - name: Run LSP Benchmark
         run: |
-          python -m lsp.benchmark.daily_runner \
-            --packages ${{ github.event.inputs.package_count || '10' }} \
-            --runs ${{ github.event.inputs.runs_per_package || '5' }} \
-            --checkers pyright pyrefly ty \
-            --output lsp/benchmark/results
+          PACKAGE_COUNT="${{ github.event.inputs.package_count || '0' }}"
+          RUNS="${{ github.event.inputs.runs_per_package || '100' }}"
+          
+          # If package_count is 0, use all prioritized packages (don't pass --packages flag)
+          if [ "$PACKAGE_COUNT" = "0" ]; then
+            python -m lsp.benchmark.daily_runner \
+              --runs "$RUNS" \
+              --checkers pyright pyrefly ty zuban \
+              --output lsp/benchmark/results
+          else
+            python -m lsp.benchmark.daily_runner \
+              --packages "$PACKAGE_COUNT" \
+              --runs "$RUNS" \
+              --checkers pyright pyrefly ty zuban \
+              --output lsp/benchmark/results
+          fi
 
       - name: Upload Results Artifact
         uses: actions/upload-artifact@v4
