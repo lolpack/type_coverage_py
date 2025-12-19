@@ -33,6 +33,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import concurrent.futures
 import dataclasses
 import json
 import os
@@ -789,25 +790,32 @@ def run_one_server(
     *,
     trace: bool = False,
     settings: Any = None,
-    init_warmup_ms: int = 0,
-    didopen_warmup_ms: int = 50,
+    timeout_s: float = 10.0,
 ) -> DefinitionResult:
+    """Run a single LSP server and measure Go to Definition latency.
+    
+    Args:
+        name: Server name for logging.
+        cmd: Command to start the LSP server.
+        case: The benchmark case (file, position, token).
+        root: Repository root path.
+        trace: Enable verbose LSP tracing.
+        settings: Optional LSP settings to apply.
+        timeout_s: Timeout in seconds for the definition request (default: 10s).
+                   Timeouts are counted as errors and do NOT contribute to latency stats.
+    
+    Returns:
+        DefinitionResult with latency and location info.
+    """
     argv = _split_command(cmd)
     with LspClient(name=name, argv=argv, root=root, trace=trace) as lsp:
         lsp.initialize()
         if settings is not None:
             lsp.change_configuration(settings)
 
-        # Give the server time to finish any async startup/indexing work.
-        if init_warmup_ms > 0:
-            time.sleep(init_warmup_ms / 1000.0)
-
         text = case.file_path.read_text(encoding="utf-8", errors="replace")
         lsp.open_document(case.uri, text)
-        # Give server a moment to process didOpen/indexing (some servers do work async)
-        if didopen_warmup_ms > 0:
-            time.sleep(didopen_warmup_ms / 1000.0)
-        return lsp.definition(case.uri, case.position, timeout_s=120.0)
+        return lsp.definition(case.uri, case.position, timeout_s=timeout_s)
 
 
 def _split_command(cmd: str) -> List[str]:
@@ -875,21 +883,13 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--trace", action="store_true", help="Verbose LSP wire trace to stderr"
     )
     ap.add_argument(
-        "--init-warmup-ms",
-        type=int,
-        default=0,
+        "--timeout",
+        type=float,
+        default=10.0,
+        dest="timeout_s",
         help=(
-            "Sleep after initialized/didChangeConfiguration before didOpen. "
-            "Useful when a server needs time to spin up or start indexing."
-        ),
-    )
-    ap.add_argument(
-        "--didopen-warmup-ms",
-        type=int,
-        default=50,
-        help=(
-            "Sleep after didOpen before textDocument/definition (default: 50ms). "
-            "Increase this if a server returns no results initially but works in-editor."
+            "Timeout in seconds for each Go to Definition request (default: 10s). "
+            "Requests that timeout are counted as errors and do NOT contribute to latency statistics."
         ),
     )
     ap.add_argument(
@@ -1014,6 +1014,30 @@ def main(argv: Optional[List[str]] = None) -> int:
         for name, _ in servers
     }
 
+    def run_server_task(
+        server_name: str, cmd: str, case: BenchmarkCase
+    ) -> Tuple[str, DefinitionResult]:
+        """Run a single server benchmark task (for parallel execution)."""
+        # Only apply the pyright-disable-indexing config to pyright by default.
+        per_server_settings = settings_payload
+        if (
+            args.pyright_disable_indexing
+            and server_name != "pyright"
+            and args.settings_json is None
+        ):
+            per_server_settings = None
+
+        res = run_one_server(
+            server_name,
+            cmd,
+            case,
+            root,
+            trace=args.trace,
+            settings=per_server_settings,
+            timeout_s=float(args.timeout_s),
+        )
+        return (server_name, res)
+
     for run_idx in range(runs):
         case = pick_random_case(root, rng=rng)
 
@@ -1039,58 +1063,76 @@ def main(argv: Optional[List[str]] = None) -> int:
             f"Run {run_idx + 1}/{runs}: {case.file_path}:{case.position.line + 1}:{case.position.character + 1} token={case.token} kind={case.kind}"
         )
 
-        for server_name, cmd in servers:
-            try:
-                # Only apply the pyright-disable-indexing config to pyright by default.
-                per_server_settings = settings_payload
-                if (
-                    args.pyright_disable_indexing
-                    and server_name != "pyright"
-                    and args.settings_json is None
-                ):
-                    per_server_settings = None
+        # Run all servers in PARALLEL for fair comparison
+        # This eliminates first-mover advantage from disk caching
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(servers)) as executor:
+            futures = {
+                executor.submit(run_server_task, name, cmd, case): name
+                for name, cmd in servers
+            }
+            
+            for future in concurrent.futures.as_completed(futures):
+                server_name = futures[future]
+                try:
+                    _, res = future.result()
+                    locations_payload = [
+                        {
+                            "uri": loc.uri,
+                            "start": dataclasses.asdict(loc.range.start),
+                            "end": dataclasses.asdict(loc.range.end),
+                            "valid": _looks_like_valid_location(loc, root),
+                        }
+                        for loc in res.locations
+                    ]
+                    any_valid = any(l.get("valid") for l in locations_payload)
 
-                res = run_one_server(
-                    server_name,
-                    cmd,
-                    case,
-                    root,
-                    trace=args.trace,
-                    settings=per_server_settings,
-                    init_warmup_ms=int(args.init_warmup_ms),
-                    didopen_warmup_ms=int(args.didopen_warmup_ms),
-                )
-                locations_payload = [
-                    {
-                        "uri": loc.uri,
-                        "start": dataclasses.asdict(loc.range.start),
-                        "end": dataclasses.asdict(loc.range.end),
-                        "valid": _looks_like_valid_location(loc, root),
+                    case_payload["results"][server_name] = {
+                        # Backward-compatible: ok means request succeeded.
+                        "ok": res.ok,
+                        "found": res.found,
+                        "n_locations": res.n_locations,
+                        "latency_ms": res.latency_ms,
+                        "error": res.error,
+                        "locations": locations_payload,
                     }
-                    for loc in res.locations
-                ]
-                any_valid = any(l.get("valid") for l in locations_payload)
 
-                case_payload["results"][server_name] = {
-                    # Backward-compatible: ok means request succeeded.
-                    "ok": res.ok,
-                    "found": res.found,
-                    "n_locations": res.n_locations,
-                    "latency_ms": res.latency_ms,
-                    "error": res.error,
-                    "locations": locations_payload,
-                }
+                    if res.ok:
+                        agg[server_name]["ok"] += 1
+                    if res.found:
+                        agg[server_name]["found"] += 1
+                    if any_valid:
+                        agg[server_name]["valid"] += 1
+                    # Only count latency for successful requests (not timeouts)
+                    if res.ok and res.latency_ms is not None:
+                        agg[server_name]["latencies_ms"].append(res.latency_ms)
 
-                if res.ok:
-                    agg[server_name]["ok"] += 1
-                if res.found:
-                    agg[server_name]["found"] += 1
-                if any_valid:
-                    agg[server_name]["valid"] += 1
-                if res.latency_ms is not None:
-                    agg[server_name]["latencies_ms"].append(res.latency_ms)
-
-                if not locations_payload or not any_valid:
+                    if not locations_payload or not any_valid:
+                        case_payload["unresolved"][server_name] = {
+                            "file": str(case.file_path),
+                            "uri": case.uri,
+                            "line": case.position.line,
+                            "character": case.position.character,
+                            "line_1b": case.position.line + 1,
+                            "character_1b": case.position.character + 1,
+                            "token": case.token,
+                            "kind": case.kind,
+                            "line_text": case.line_text,
+                            "reason": (
+                                "no_definition_locations"
+                                if not locations_payload
+                                else "no_valid_file_location"
+                            ),
+                        }
+                except Exception as e:
+                    agg[server_name]["errors"] += 1
+                    case_payload["results"][server_name] = {
+                        "ok": False,
+                        "found": False,
+                        "n_locations": 0,
+                        "latency_ms": None,
+                        "error": str(e),
+                        "locations": [],
+                    }
                     case_payload["unresolved"][server_name] = {
                         "file": str(case.file_path),
                         "uri": case.uri,
@@ -1101,35 +1143,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                         "token": case.token,
                         "kind": case.kind,
                         "line_text": case.line_text,
-                        "reason": (
-                            "no_definition_locations"
-                            if not locations_payload
-                            else "no_valid_file_location"
-                        ),
+                        "reason": "server_exception",
+                        "error": str(e),
                     }
-            except Exception as e:
-                agg[server_name]["errors"] += 1
-                case_payload["results"][server_name] = {
-                    "ok": False,
-                    "found": False,
-                    "n_locations": 0,
-                    "latency_ms": None,
-                    "error": str(e),
-                    "locations": [],
-                }
-                case_payload["unresolved"][server_name] = {
-                    "file": str(case.file_path),
-                    "uri": case.uri,
-                    "line": case.position.line,
-                    "character": case.position.character,
-                    "line_1b": case.position.line + 1,
-                    "character_1b": case.position.character + 1,
-                    "token": case.token,
-                    "kind": case.kind,
-                    "line_text": case.line_text,
-                    "reason": "server_exception",
-                    "error": str(e),
-                }
 
         report["cases"].append(case_payload)
 
