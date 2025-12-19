@@ -527,8 +527,8 @@ def _run_checkers_together(
             ",".join(checker_names),  # Comma-separated list of servers
             "--runs",
             str(runs),
-            "--didopen-warmup-ms",
-            "100",
+            "--timeout",
+            "10",  # 10 second timeout - timeouts don't count toward latency stats
         ]
 
         # Add command for each checker
