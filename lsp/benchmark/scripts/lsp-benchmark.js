@@ -226,10 +226,10 @@ function getDemoData() {
                 ranking: 1,
                 error: null,
                 metrics: {
-                    pyright: { ok: true, valid_pct: 80, found_pct: 100, latency_ms: { mean: 125, p50: 120, p95: 180 } },
-                    pyrefly: { ok: true, valid_pct: 70, found_pct: 90, latency_ms: { mean: 85, p50: 80, p95: 140 } },
-                    ty: { ok: true, valid_pct: 90, found_pct: 100, latency_ms: { mean: 45, p50: 42, p95: 65 } },
-                    zuban: { ok: true, valid_pct: 85, found_pct: 95, latency_ms: { mean: 65, p50: 60, p95: 95 } }
+                    pyright: { ok: true, valid_pct: 80, latency_ms: { mean: 125, p50: 120, p95: 180 } },
+                    pyrefly: { ok: true, valid_pct: 70, latency_ms: { mean: 85, p50: 80, p95: 140 } },
+                    ty: { ok: true, valid_pct: 90, latency_ms: { mean: 45, p50: 42, p95: 65 } },
+                    zuban: { ok: true, valid_pct: 85, latency_ms: { mean: 65, p50: 60, p95: 95 } }
                 }
             },
             {
@@ -238,10 +238,10 @@ function getDemoData() {
                 ranking: 2,
                 error: null,
                 metrics: {
-                    pyright: { ok: true, valid_pct: 85, found_pct: 95, latency_ms: { mean: 155, p50: 150, p95: 220 } },
-                    pyrefly: { ok: true, valid_pct: 75, found_pct: 85, latency_ms: { mean: 105, p50: 100, p95: 160 } },
-                    ty: { ok: true, valid_pct: 88, found_pct: 98, latency_ms: { mean: 58, p50: 55, p95: 85 } },
-                    zuban: { ok: true, valid_pct: 82, found_pct: 92, latency_ms: { mean: 78, p50: 72, p95: 115 } }
+                    pyright: { ok: true, valid_pct: 85, latency_ms: { mean: 155, p50: 150, p95: 220 } },
+                    pyrefly: { ok: true, valid_pct: 75, latency_ms: { mean: 105, p50: 100, p95: 160 } },
+                    ty: { ok: true, valid_pct: 88, latency_ms: { mean: 58, p50: 55, p95: 85 } },
+                    zuban: { ok: true, valid_pct: 82, latency_ms: { mean: 78, p50: 72, p95: 115 } }
                 }
             },
             {
@@ -250,10 +250,10 @@ function getDemoData() {
                 ranking: 3,
                 error: null,
                 metrics: {
-                    pyright: { ok: true, valid_pct: 75, found_pct: 90, latency_ms: { mean: 280, p50: 260, p95: 420 } },
-                    pyrefly: { ok: true, valid_pct: 68, found_pct: 82, latency_ms: { mean: 185, p50: 170, p95: 290 } },
-                    ty: { ok: true, valid_pct: 82, found_pct: 95, latency_ms: { mean: 95, p50: 88, p95: 145 } },
-                    zuban: { ok: true, valid_pct: 78, found_pct: 88, latency_ms: { mean: 120, p50: 110, p95: 185 } }
+                    pyright: { ok: true, valid_pct: 75, latency_ms: { mean: 280, p50: 260, p95: 420 } },
+                    pyrefly: { ok: true, valid_pct: 68, latency_ms: { mean: 185, p50: 170, p95: 290 } },
+                    ty: { ok: true, valid_pct: 82, latency_ms: { mean: 95, p50: 88, p95: 145 } },
+                    zuban: { ok: true, valid_pct: 78, latency_ms: { mean: 120, p50: 110, p95: 185 } }
                 }
             },
             {
@@ -262,10 +262,10 @@ function getDemoData() {
                 ranking: 4,
                 error: null,
                 metrics: {
-                    pyright: { ok: true, valid_pct: 90, found_pct: 100, latency_ms: { mean: 135, p50: 130, p95: 195 } },
-                    pyrefly: { ok: true, valid_pct: 78, found_pct: 92, latency_ms: { mean: 92, p50: 88, p95: 145 } },
-                    ty: { ok: true, valid_pct: 92, found_pct: 100, latency_ms: { mean: 48, p50: 45, p95: 72 } },
-                    zuban: { ok: true, valid_pct: 88, found_pct: 96, latency_ms: { mean: 68, p50: 62, p95: 100 } }
+                    pyright: { ok: true, valid_pct: 90, latency_ms: { mean: 135, p50: 130, p95: 195 } },
+                    pyrefly: { ok: true, valid_pct: 78, latency_ms: { mean: 92, p50: 88, p95: 145 } },
+                    ty: { ok: true, valid_pct: 92, latency_ms: { mean: 48, p50: 45, p95: 72 } },
+                    zuban: { ok: true, valid_pct: 88, latency_ms: { mean: 68, p50: 62, p95: 100 } }
                 }
             },
             {
@@ -274,10 +274,10 @@ function getDemoData() {
                 ranking: 5,
                 error: null,
                 metrics: {
-                    pyright: { ok: true, valid_pct: 72, found_pct: 88, latency_ms: { mean: 168, p50: 160, p95: 250 } },
-                    pyrefly: { ok: true, valid_pct: 65, found_pct: 80, latency_ms: { mean: 115, p50: 108, p95: 175 } },
-                    ty: { ok: true, valid_pct: 85, found_pct: 95, latency_ms: { mean: 62, p50: 58, p95: 95 } },
-                    zuban: { ok: true, valid_pct: 80, found_pct: 90, latency_ms: { mean: 82, p50: 75, p95: 125 } }
+                    pyright: { ok: true, valid_pct: 72, latency_ms: { mean: 168, p50: 160, p95: 250 } },
+                    pyrefly: { ok: true, valid_pct: 65, latency_ms: { mean: 115, p50: 108, p95: 175 } },
+                    ty: { ok: true, valid_pct: 85, latency_ms: { mean: 62, p50: 58, p95: 95 } },
+                    zuban: { ok: true, valid_pct: 80, latency_ms: { mean: 82, p50: 75, p95: 125 } }
                 }
             }
         ]
@@ -602,7 +602,6 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                 p50Latency: metrics?.latency_ms?.p50,
                 p95Latency: metrics?.latency_ms?.p95,
                 validPct: metrics?.valid_pct,
-                foundPct: metrics?.found_pct,
                 hasError: hasError,
                 error: result.error || metrics?.error
             });
@@ -611,7 +610,7 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
     
     // Render
     if (rows.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="loading-row">No results found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="loading-row">No results found</td></tr>`;
         return;
     }
     
@@ -631,7 +630,6 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                 <td class="latency">${formatLatency(row.p50Latency)}</td>
                 <td class="latency">${formatLatency(row.p95Latency)}</td>
                 <td>${formatPercent(row.validPct)}</td>
-                <td>${formatPercent(row.foundPct)}</td>
             </tr>
         `;
     }).join('');
