@@ -493,7 +493,7 @@ function createPackageComparisonChart() {
         label: CHECKER_NAMES[checker] || checker,
         data: results.map(r => {
             const metrics = r.metrics?.[checker];
-            return metrics?.latency_ms?.mean || 0;
+            return metrics?.latency_ms?.p95 || 0;
         }),
         backgroundColor: CHECKER_COLORS[checker] || '#888',
         borderRadius: 4,
@@ -507,6 +507,12 @@ function createPackageComparisonChart() {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
+                title: {
+                    display: true,
+                    text: 'Latency by Package (p95)',
+                    color: '#c9d1d9',
+                    font: { size: 16 }
+                },
                 legend: {
                     position: 'top',
                     labels: { 
