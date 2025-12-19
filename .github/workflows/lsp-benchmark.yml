@@ -1,0 +1,102 @@
+name: Daily LSP Benchmark
+
+on:
+  schedule:
+    # Run daily at 3 AM UTC (after the main data update)
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      package_count:
+        description: 'Number of packages to benchmark'
+        required: false
+        default: '10'
+      runs_per_package:
+        description: 'Number of benchmark runs per package'
+        required: false
+        default: '5'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ref: published-report
+
+      - name: Setup SSH Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Node.js (for Pyright)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Type Checkers
+        run: |
+          # Install Pyright
+          npm install -g pyright
+          
+          # Install Pyrefly (if available)
+          pip install pyrefly || echo "Pyrefly not available via pip"
+          
+          # Install ty (Red Knot/ty) if available
+          pip install ty || echo "ty not available via pip"
+          
+          # Install Zuban (if available)
+          pip install zuban || echo "Zuban not available via pip"
+          
+          # Verify installations
+          echo "Installed type checkers:"
+          which pyright-langserver && echo "  pyright: $(pyright --version)" || echo "  pyright: not found"
+          which pyrefly && echo "  pyrefly: installed" || echo "  pyrefly: not found"
+          which ty && echo "  ty: installed" || echo "  ty: not found"
+
+      - name: Run LSP Benchmark
+        run: |
+          python -m lsp.benchmark.daily_runner \
+            --packages ${{ github.event.inputs.package_count || '10' }} \
+            --runs ${{ github.event.inputs.runs_per_package || '5' }} \
+            --checkers pyright pyrefly ty \
+            --output lsp/benchmark/results
+
+      - name: Upload Results Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lsp-benchmark-results
+          path: lsp/benchmark/results/
+          retention-days: 90
+
+      - name: Stash Changes
+        run: |
+          git add .
+          git stash
+
+      - name: Pull Latest Changes
+        run: git pull origin published-report --rebase
+
+      - name: Apply Stashed Changes
+        run: git stash pop || true
+
+      - name: Commit and Push Results
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update LSP benchmark results [skip ci]"
+          branch: published-report
+          file_pattern: 'lsp/benchmark/results/*.json'
