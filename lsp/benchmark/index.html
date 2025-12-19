@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSP Benchmark Results | Python Type Coverage</title>
+    <link rel="stylesheet" href="styles/lsp-benchmark.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>🚀 LSP Performance Benchmarks</h1>
+            <p class="subtitle">Daily performance analysis of Python type checkers</p>
+            <p class="description">
+                Measuring <code>textDocument/definition</code> (Go to Definition) latency and accuracy 
+                across popular Python packages
+            </p>
+            <div class="last-updated" id="lastUpdated">Loading...</div>
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <div class="container">
+            <a href="../index.html" class="back-link">← Back to Type Coverage</a>
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#comparison">Comparison</a>
+                <a href="#packages">By Package</a>
+                <a href="#methodology">Methodology</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Overview Section -->
+        <section id="overview" class="section">
+            <h2>📊 Performance Overview</h2>
+            <div class="stats-grid" id="overviewStats">
+                <div class="stat-card loading">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value" id="packageCount">-</div>
+                    <div class="stat-label">Packages Tested</div>
+                </div>
+                <div class="stat-card loading">
+                    <div class="stat-icon">🔍</div>
+                    <div class="stat-value" id="checkerCount">-</div>
+                    <div class="stat-label">Type Checkers</div>
+                </div>
+                <div class="stat-card loading">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-value" id="fastestChecker">-</div>
+                    <div class="stat-label">Fastest (Avg Latency)</div>
+                </div>
+                <div class="stat-card loading">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value" id="mostAccurate">-</div>
+                    <div class="stat-label">Most Accurate</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Charts -->
+        <section id="comparison" class="section">
+            <h2>📈 Type Checker Comparison</h2>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Average Latency (ms)</h3>
+                    <p class="chart-description">Lower is better - time to resolve "Go to Definition"</p>
+                    <canvas id="latencyChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Success Rate (%)</h3>
+                    <p class="chart-description">Higher is better - valid definitions found</p>
+                    <canvas id="successChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3>Latency by Package</h3>
+                <p class="chart-description">Average "Go to Definition" latency per package (lower is better)</p>
+                <canvas id="packageComparisonChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Detailed Results Table -->
+        <section id="packages" class="section">
+            <h2>📋 Detailed Results</h2>
+            
+            <div class="filter-bar">
+                <input type="text" id="packageSearch" placeholder="Search packages..." class="search-input">
+                <select id="sortBy" class="filter-select">
+                    <option value="ranking">Sort by Ranking</option>
+                    <option value="name">Sort by Name</option>
+                    <option value="latency">Sort by Latency</option>
+                    <option value="success">Sort by Success Rate</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table class="results-table" id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Package</th>
+                            <th>Type Checker</th>
+                            <th>Avg Latency</th>
+                            <th>P50 Latency</th>
+                            <th>P95 Latency</th>
+                            <th>Valid %</th>
+                            <th>Found %</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        <tr>
+                            <td colspan="8" class="loading-row">Loading results...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Methodology Section -->
+        <section id="methodology" class="section">
+            <h2>📐 Methodology</h2>
+            <div class="methodology-content">
+                <div class="method-card">
+                    <h3>🎯 What We Measure</h3>
+                    <p>
+                        We benchmark the <code>textDocument/definition</code> LSP request (Go to Definition) 
+                        across different type checker language servers. This is one of the most commonly used 
+                        IDE features for code navigation.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>🔄 Test Process</h3>
+                    <ol>
+                        <li>Clone the top Python packages from GitHub</li>
+                        <li>Start each type checker's LSP server</li>
+                        <li>Pick random Python files and identifier positions</li>
+                        <li>Request "Go to Definition" and measure latency</li>
+                        <li>Verify if the returned location is valid</li>
+                    </ol>
+                </div>
+                <div class="method-card">
+                    <h3>📊 Metrics Explained</h3>
+                    <ul>
+                        <li><strong>Latency:</strong> Time (ms) from request to response</li>
+                        <li><strong>P50/P95:</strong> 50th/95th percentile latencies</li>
+                        <li><strong>Valid %:</strong> Definitions pointing to real files</li>
+                        <li><strong>Found %:</strong> Requests that returned any result</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legend -->
+        <section class="section">
+            <h2>🏷️ Type Checker Legend</h2>
+            <div class="legend-grid">
+                <div class="legend-item pyright">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Pyright</strong>
+                        <span>Microsoft's static type checker for Python</span>
+                    </div>
+                </div>
+                <div class="legend-item pyrefly">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Pyrefly</strong>
+                        <span>Meta's next-generation Python type checker</span>
+                    </div>
+                </div>
+                <div class="legend-item ty">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>ty (Red Knot)</strong>
+                        <span>Astral's fast Python type checker</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Part of the <a href="https://github.com/lolpack/type_coverage_py">Python Type Coverage</a> project</p>
+            <p>Benchmarks run daily via GitHub Actions</p>
+        </div>
+    </footer>
+
+    <script src="scripts/lsp-benchmark.js"></script>
+</body>
+</html>
