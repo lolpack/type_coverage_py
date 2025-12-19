@@ -1,11 +1,25 @@
 # Project: type_coverage_py
 
+## ⚠️ CRITICAL: Virtual Environment Activation
+
+**ALWAYS activate the virtual environment BEFORE running ANY Python command!**
+
+This is the MOST IMPORTANT step. Never use system Python or pip.
+
+```bash
+# macOS/Linux:
+source .venv/bin/activate
+
+# Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+```
+
+After activation, your prompt should show `(.venv)`. Only then run Python commands.
+
 ## Environment Setup
-- **Always activate the virtual environment first** before running any Python commands:
-  ```powershell
-  .\.venv\Scripts\Activate.ps1
-  ```
 - The project uses Python 3.12
+- All dependencies are installed in `.venv/`
+- Type checkers (pyrefly, ty, zuban, pyright) must be run from the activated venv
 
 ## Type Checking
 - **Use Pyrefly** for type checking (not Pyright):

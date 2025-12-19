@@ -29,17 +29,12 @@ async function init() {
     try {
         await loadBenchmarkData();
         updateTimestamp();
-        updateOverviewStats();
         createLatencyChart();
         createSuccessChart();
         createPackageComparisonChart();
         populateResultsTable();
         setupFilters();
-        
-        // Remove loading states
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.classList.remove('loading');
-        });
+        setupDateSelector();
     } catch (error) {
         console.error('Failed to initialize dashboard:', error);
         showError('Failed to load benchmark data. Please try again later.');
@@ -47,14 +42,68 @@ async function init() {
 }
 
 /**
- * Load benchmark results from JSON file
+ * Setup date selector event listeners
  */
-async function loadBenchmarkData() {
-    const paths = [
-        './results/latest.json',
-        '../lsp/benchmark/results/latest.json',
-        './data/benchmark-latest.json'
-    ];
+function setupDateSelector() {
+    const dateInput = document.getElementById('dateSelect');
+    const loadBtn = document.getElementById('loadDateBtn');
+    const latestBtn = document.getElementById('latestBtn');
+    
+    if (!dateInput || !loadBtn || !latestBtn) return;
+    
+    // Set default value to current data's date
+    if (benchmarkData?.date) {
+        dateInput.value = benchmarkData.date;
+    }
+    
+    // Load specific date
+    loadBtn.addEventListener('click', async () => {
+        const date = dateInput.value;
+        if (date) {
+            await switchToDate(date);
+        }
+    });
+    
+    // Load latest
+    latestBtn.addEventListener('click', async () => {
+        await switchToDate(null);
+        if (benchmarkData?.date) {
+            dateInput.value = benchmarkData.date;
+        }
+    });
+    
+    // Also allow Enter key to load
+    dateInput.addEventListener('keypress', async (e) => {
+        if (e.key === 'Enter') {
+            const date = dateInput.value;
+            if (date) {
+                await switchToDate(date);
+            }
+        }
+    });
+}
+
+/**
+ * Load benchmark results from JSON file
+ * @param {string|null} date - Optional date string (YYYY-MM-DD) to load historical data
+ */
+async function loadBenchmarkData(date = null) {
+    let paths;
+    
+    if (date) {
+        // Load specific date
+        paths = [
+            `./results/benchmark_${date}.json`,
+            `../lsp/benchmark/results/benchmark_${date}.json`
+        ];
+    } else {
+        // Load latest
+        paths = [
+            './results/latest.json',
+            '../lsp/benchmark/results/latest.json',
+            './data/benchmark-latest.json'
+        ];
+    }
     
     for (const path of paths) {
         try {
@@ -69,10 +118,65 @@ async function loadBenchmarkData() {
         }
     }
     
+    if (date) {
+        // If specific date failed, show error
+        throw new Error(`No benchmark data found for ${date}`);
+    }
+    
     // Use demo data if no file found
     console.log('Using demo data');
     benchmarkData = getDemoData();
     return benchmarkData;
+}
+
+/**
+ * Load available benchmark dates from the results directory
+ */
+async function loadAvailableDates() {
+    const dates = [];
+    
+    // Try to load the manifest or scan for files
+    // For now, we'll try common recent dates
+    const today = new Date();
+    for (let i = 0; i < 30; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+        
+        try {
+            const response = await fetch(`./results/benchmark_${dateStr}.json`, { method: 'HEAD' });
+            if (response.ok) {
+                dates.push(dateStr);
+            }
+        } catch (e) {
+            // File doesn't exist, continue
+        }
+    }
+    
+    return dates;
+}
+
+/**
+ * Switch to a different date's benchmark data
+ */
+async function switchToDate(date) {
+    try {
+        await loadBenchmarkData(date);
+        updateTimestamp();
+        
+        // Destroy existing charts
+        Object.values(charts).forEach(chart => chart?.destroy());
+        charts = {};
+        
+        // Recreate charts and table
+        createLatencyChart();
+        createSuccessChart();
+        createPackageComparisonChart();
+        populateResultsTable();
+    } catch (error) {
+        console.error('Failed to load data for date:', date, error);
+        showError(`No benchmark data available for ${date}`);
+    }
 }
 
 /**
@@ -181,9 +285,18 @@ function getDemoData() {
 }
 
 /**
+ * Clear any error messages
+ */
+function clearError() {
+    const errorMessages = document.querySelectorAll('.error-message');
+    errorMessages.forEach(el => el.remove());
+}
+
+/**
  * Show error message to user
  */
 function showError(message) {
+    clearError(); // Clear any existing errors first
     const main = document.querySelector('main');
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
@@ -504,12 +617,6 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                </td>`
             : '';
         
-        const status = row.hasError 
-            ? `<span class="status-badge error">Error</span>`
-            : (row.validPct >= 80 
-                ? `<span class="status-badge success">Good</span>`
-                : `<span class="status-badge warning">Fair</span>`);
-        
         return `
             <tr>
                 ${packageCell}
@@ -519,7 +626,6 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                 <td class="latency">${formatLatency(row.p95Latency)}</td>
                 <td>${formatPercent(row.validPct)}</td>
                 <td>${formatPercent(row.foundPct)}</td>
-                <td>${status}</td>
             </tr>
         `;
     }).join('');

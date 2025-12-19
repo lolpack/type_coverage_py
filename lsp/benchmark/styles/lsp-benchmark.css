@@ -88,6 +88,50 @@ code {
     margin-right: auto;
 }
 
+.date-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.date-selector label {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.date-input {
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    color: var(--color-text);
+    font-size: 0.9rem;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.date-btn {
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    color: var(--color-text);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.date-btn:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+}
+
 .last-updated {
     display: inline-block;
     background: var(--color-bg-tertiary);
@@ -464,6 +508,7 @@ code {
 .legend-item.pyrefly .legend-color { background: var(--color-pyrefly); }
 .legend-item.ty .legend-color { background: var(--color-ty); }
 .legend-item.mypy .legend-color { background: var(--color-mypy); }
+.legend-item.zuban .legend-color { background: var(--color-zuban); }
 
 .legend-info {
     display: flex;
