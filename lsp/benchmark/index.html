@@ -16,6 +16,12 @@
                 Measuring <code>textDocument/definition</code> (Go to Definition) latency and accuracy 
                 across popular Python packages
             </p>
+            <div class="date-selector">
+                <label for="dateSelect">View results for:</label>
+                <input type="date" id="dateSelect" class="date-input">
+                <button id="loadDateBtn" class="date-btn">Load</button>
+                <button id="latestBtn" class="date-btn">Latest</button>
+            </div>
             <div class="last-updated" id="lastUpdated">Loading...</div>
         </div>
     </header>
@@ -24,7 +30,6 @@
         <div class="container">
             <a href="../index.html" class="back-link">← Back to Type Coverage</a>
             <div class="nav-links">
-                <a href="#overview">Overview</a>
                 <a href="#comparison">Comparison</a>
                 <a href="#packages">By Package</a>
                 <a href="#methodology">Methodology</a>
@@ -33,33 +38,6 @@
     </nav>
 
     <main class="container">
-        <!-- Overview Section -->
-        <section id="overview" class="section">
-            <h2>📊 Performance Overview</h2>
-            <div class="stats-grid" id="overviewStats">
-                <div class="stat-card loading">
-                    <div class="stat-icon">📦</div>
-                    <div class="stat-value" id="packageCount">-</div>
-                    <div class="stat-label">Packages Tested</div>
-                </div>
-                <div class="stat-card loading">
-                    <div class="stat-icon">🔍</div>
-                    <div class="stat-value" id="checkerCount">-</div>
-                    <div class="stat-label">Type Checkers</div>
-                </div>
-                <div class="stat-card loading">
-                    <div class="stat-icon">⚡</div>
-                    <div class="stat-value" id="fastestChecker">-</div>
-                    <div class="stat-label">Fastest (Avg Latency)</div>
-                </div>
-                <div class="stat-card loading">
-                    <div class="stat-icon">🎯</div>
-                    <div class="stat-value" id="mostAccurate">-</div>
-                    <div class="stat-label">Most Accurate</div>
-                </div>
-            </div>
-        </section>
-
         <!-- Comparison Charts -->
         <section id="comparison" class="section">
             <h2>📈 Type Checker Comparison</h2>
@@ -109,12 +87,11 @@
                             <th>P95 Latency</th>
                             <th>Valid %</th>
                             <th>Found %</th>
-                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody id="resultsBody">
                         <tr>
-                            <td colspan="8" class="loading-row">Loading results...</td>
+                            <td colspan="7" class="loading-row">Loading results...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -170,14 +147,21 @@
                     <span class="legend-color"></span>
                     <div class="legend-info">
                         <strong>Pyrefly</strong>
-                        <span>Meta's next-generation Python type checker</span>
+                        <span>Meta's Python type checker</span>
                     </div>
                 </div>
                 <div class="legend-item ty">
                     <span class="legend-color"></span>
                     <div class="legend-info">
-                        <strong>ty (Red Knot)</strong>
-                        <span>Astral's fast Python type checker</span>
+                        <strong>ty</strong>
+                        <span>Astral's Python type checker</span>
+                    </div>
+                </div>
+                <div class="legend-item zuban">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Zuban</strong>
+                        <span>Python type checker from the creator of Jedi</span>
                     </div>
                 </div>
             </div>

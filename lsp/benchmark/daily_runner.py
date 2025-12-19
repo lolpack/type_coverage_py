@@ -122,6 +122,9 @@ def get_benchmark_runner() -> BenchmarkRunner:
         raise ImportError(f"Could not load {benchmark_path}")
 
     module = importlib.util.module_from_spec(spec)
+    # Register the module in sys.modules BEFORE exec_module
+    # This is required for dataclasses to work properly
+    sys.modules["lsp_benchmark"] = module
     spec.loader.exec_module(module)
     runner: BenchmarkRunner = module.main
     _benchmark_runner = runner
@@ -177,9 +180,10 @@ KNOWN_GITHUB_URLS: dict[str, str] = {
 }
 
 # Type checker LSP commands
+# Note: Indexing is disabled for pyrefly to ensure fast cold-start benchmarks
 TYPE_CHECKER_COMMANDS: dict[str, str] = {
     "pyright": "pyright-langserver --stdio",
-    "pyrefly": "pyrefly lsp",
+    "pyrefly": "pyrefly lsp --indexing-mode none",
     "ty": "ty server",
     "zuban": "zubanls",
 }
@@ -446,6 +450,9 @@ def run_benchmark_for_package(
 ) -> dict[str, CheckerMetrics]:
     """Run the LSP benchmark for a package across all type checkers.
 
+    All type checkers are run in a single benchmark invocation to ensure
+    they are tested on the exact same files and positions for fairness.
+
     Args:
         package_path: Path to the package directory.
         package_name: Name of the package.
@@ -458,6 +465,8 @@ def run_benchmark_for_package(
     """
     results: dict[str, CheckerMetrics] = {}
 
+    # Find available type checkers and their commands
+    available_checkers: list[tuple[str, str]] = []
     for checker in type_checkers:
         cmd = find_type_checker_command(checker)
         if not cmd:
@@ -467,48 +476,67 @@ def run_benchmark_for_package(
                 "error": "Type checker not installed",
                 "latency_ms": None,
             }
-            continue
+        else:
+            available_checkers.append((checker, cmd))
 
-        print(f"    Running {checker}...")
-        results[checker] = _run_single_checker(checker, cmd, package_path, runs, seed)
+    if not available_checkers:
+        return results
+
+    # Run all available checkers together in a single benchmark call
+    # This ensures they all get the exact same test cases for fairness
+    print(f"    Running {', '.join(c[0] for c in available_checkers)} together...")
+    benchmark_results = _run_checkers_together(
+        available_checkers, package_path, runs, seed
+    )
+    results.update(benchmark_results)
 
     return results
 
 
-def _run_single_checker(
-    checker: str,
-    cmd: str,
+def _run_checkers_together(
+    checkers: list[tuple[str, str]],
     package_path: Path,
     runs: int,
     seed: int | None,
-) -> CheckerMetrics:
-    """Run a single type checker benchmark.
+) -> dict[str, CheckerMetrics]:
+    """Run multiple type checkers together in a single benchmark.
+
+    This ensures all checkers are tested on the exact same files and positions.
 
     Args:
-        checker: Name of the type checker.
-        cmd: Command to run the checker's LSP server.
+        checkers: List of (checker_name, command) tuples.
         package_path: Path to the package directory.
         runs: Number of benchmark runs.
         seed: Random seed for reproducibility.
 
     Returns:
-        Metrics from the benchmark run.
+        Dictionary mapping checker names to their metrics.
     """
+    results: dict[str, CheckerMetrics] = {}
+
     try:
         benchmark_runner = get_benchmark_runner()
 
+        # Build args for all checkers
+        checker_names = [name for name, _ in checkers]
         args = [
             "--root",
             str(package_path),
             "--servers",
-            checker,
-            f"--{checker}-cmd",
-            cmd,
+            ",".join(checker_names),  # Comma-separated list of servers
             "--runs",
             str(runs),
             "--didopen-warmup-ms",
             "100",
         ]
+
+        # Add command for each checker
+        for checker, cmd in checkers:
+            args.extend([f"--{checker}-cmd", cmd])
+
+        # Disable indexing for pyright if it's in the list
+        if any(name == "pyright" for name, _ in checkers):
+            args.append("--pyright-disable-indexing")
 
         if seed is not None:
             args.extend(["--seed", str(seed)])
@@ -521,32 +549,39 @@ def _run_single_checker(
 
         args.extend(["--json", str(tmp_path)])
 
-        # Run the benchmark
+        # Run the benchmark with all checkers together
         benchmark_runner(args)
 
-        # Read and parse results
+        # Read and parse results for all checkers
         if tmp_path.exists():
             try:
                 with open(tmp_path, encoding="utf-8") as f:
                     benchmark_data: dict[str, Any] = json.load(f)
 
-                return _parse_benchmark_results(benchmark_data, checker, runs)
+                for checker, _ in checkers:
+                    results[checker] = _parse_benchmark_results(
+                        benchmark_data, checker, runs
+                    )
             finally:
                 tmp_path.unlink(missing_ok=True)
-
-        return {
-            "ok": False,
-            "error": "No output file generated",
-            "latency_ms": None,
-        }
+        else:
+            for checker, _ in checkers:
+                results[checker] = {
+                    "ok": False,
+                    "error": "No output file generated",
+                    "latency_ms": None,
+                }
 
     except Exception as e:
-        print(f"    Error running {checker}: {e}")
-        return {
-            "ok": False,
-            "error": str(e),
-            "latency_ms": None,
-        }
+        print(f"    Error running benchmark: {e}")
+        for checker, _ in checkers:
+            results[checker] = {
+                "ok": False,
+                "error": str(e),
+                "latency_ms": None,
+            }
+
+    return results
 
 
 def _parse_benchmark_results(
@@ -923,8 +958,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--packages",
         "-p",
         type=int,
-        default=10,
-        help="Number of packages to benchmark (default: 10)",
+        default=None,
+        help="Number of packages to benchmark (default: all prioritized packages)",
     )
     parser.add_argument(
         "--checkers",
@@ -937,8 +972,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--runs",
         "-r",
         type=int,
-        default=5,
-        help="Number of runs per package (default: 5)",
+        default=100,
+        help="Number of runs per package (default: 100)",
     )
     parser.add_argument(
         "--output",
