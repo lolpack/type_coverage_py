@@ -26,6 +26,50 @@ ROOT_DIR = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
 
+def get_type_checker_versions() -> dict[str, str]:
+    """Get version strings for all type checkers.
+
+    Returns:
+        Dictionary mapping type checker names to version strings.
+    """
+    import re
+    
+    versions: dict[str, str] = {}
+
+    version_commands = {
+        "pyright": ["pyright", "--version"],
+        "pyrefly": ["pyrefly", "--version"],
+        "ty": ["ty", "--version"],
+        "zuban": ["zuban", "--version"],
+    }
+
+    for name, cmd in version_commands.items():
+        try:
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+            output = result.stdout.strip() or result.stderr.strip()
+            if output:
+                # Try to find a semver-like pattern (e.g., 1.2.3, 0.0.4)
+                match = re.search(r'\d+\.\d+\.\d+', output)
+                if match:
+                    versions[name] = match.group(0)
+                else:
+                    # Fallback: take the second word (after the name)
+                    parts = output.split()
+                    version = parts[1] if len(parts) > 1 else parts[0] if parts else "unknown"
+                    versions[name] = version
+            else:
+                versions[name] = "unknown"
+        except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+            versions[name] = "not installed"
+
+    return versions
+
+
 class LatencyMetrics(TypedDict, total=False):
     """Latency metrics from benchmark runs."""
 
@@ -82,6 +126,7 @@ class BenchmarkOutput(TypedDict):
     timestamp: str
     date: str
     type_checkers: list[str]
+    type_checker_versions: dict[str, str]
     package_count: int
     runs_per_package: int
     aggregate: dict[str, AggregateStats]
@@ -723,9 +768,10 @@ def print_summary(stats: dict[str, AggregateStats], type_checkers: list[str]) ->
 
 
 def run_daily_benchmark(
-    package_limit: int = 10,
+    package_limit: int | None = None,
+    package_names: list[str] | None = None,
     type_checkers: list[str] | None = None,
-    runs_per_package: int = 5,
+    runs_per_package: int = 100,
     output_dir: Path | None = None,
     seed: int | None = None,
 ) -> Path:
@@ -733,6 +779,7 @@ def run_daily_benchmark(
 
     Args:
         package_limit: Maximum number of packages to benchmark.
+        package_names: Specific package names to benchmark (overrides package_limit).
         type_checkers: List of type checker names to use.
         runs_per_package: Number of benchmark runs per package.
         output_dir: Directory to write results to.
@@ -749,9 +796,25 @@ def run_daily_benchmark(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    packages = load_prioritized_packages(limit=package_limit)
+    # Load packages - either by name or by limit
+    if package_names:
+        all_packages = load_prioritized_packages(limit=None)
+        packages = [p for p in all_packages if p["name"] in package_names]
+        if not packages:
+            print(f"Warning: None of the specified packages found: {package_names}")
+            print(f"Available packages: {[p['name'] for p in all_packages[:20]]}...")
+            return output_dir / "empty.json"
+    else:
+        packages = load_prioritized_packages(limit=package_limit)
 
     _print_benchmark_header(packages, type_checkers, runs_per_package)
+
+    # Get type checker versions
+    type_checker_versions = get_type_checker_versions()
+    print("\nType Checker Versions:")
+    for name, version in type_checker_versions.items():
+        print(f"  {name}: {version}")
+    print()
 
     all_results = _run_all_benchmarks(packages, type_checkers, runs_per_package, seed)
 
@@ -763,6 +826,7 @@ def run_daily_benchmark(
         all_results,
         aggregate_stats,
         type_checkers,
+        type_checker_versions,
         len(packages),
         runs_per_package,
         output_dir,
@@ -899,6 +963,7 @@ def _save_results(
     results: list[PackageResult],
     aggregate_stats: dict[str, AggregateStats],
     type_checkers: list[str],
+    type_checker_versions: dict[str, str],
     package_count: int,
     runs_per_package: int,
     output_dir: Path,
@@ -909,6 +974,7 @@ def _save_results(
         results: List of package results.
         aggregate_stats: Aggregate statistics.
         type_checkers: List of type checkers used.
+        type_checker_versions: Version strings for each type checker.
         package_count: Number of packages benchmarked.
         runs_per_package: Number of runs per package.
         output_dir: Directory to write to.
@@ -924,6 +990,7 @@ def _save_results(
         "timestamp": timestamp.isoformat(),
         "date": date_str,
         "type_checkers": type_checkers,
+        "type_checker_versions": type_checker_versions,
         "package_count": package_count,
         "runs_per_package": runs_per_package,
         "aggregate": aggregate_stats,
@@ -961,6 +1028,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=int,
         default=None,
         help="Number of packages to benchmark (default: all prioritized packages)",
+    )
+    parser.add_argument(
+        "--package-names",
+        "-n",
+        nargs="+",
+        default=None,
+        help="Specific package names to benchmark (overrides --packages)",
     )
     parser.add_argument(
         "--checkers",
@@ -1007,6 +1081,7 @@ def main(argv: list[str] | None = None) -> int:
 
     run_daily_benchmark(
         package_limit=args.packages,
+        package_names=args.package_names,
         type_checkers=args.checkers,
         runs_per_package=args.runs,
         output_dir=args.output,

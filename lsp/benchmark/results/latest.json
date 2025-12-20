@@ -7,52 +7,52 @@
     "ty",
     "zuban"
   ],
-  "package_count": 15,
+  "package_count": 16,
   "runs_per_package": 100,
   "aggregate": {
     "pyright": {
-      "packages_tested": 15,
-      "total_runs": 1500,
-      "total_ok": 1498,
-      "total_found": 1205,
-      "total_valid": 1205,
-      "avg_latency_ms": 547.352362569695,
+      "packages_tested": 16,
+      "total_runs": 1600,
+      "total_ok": 1598,
+      "total_found": 1278,
+      "total_valid": 1278,
+      "avg_latency_ms": 541.9066996003329,
       "min_latency_ms": 351.1276222200104,
       "max_latency_ms": 1661.7117441800108,
-      "success_rate": 80.33333333333333
+      "success_rate": 79.875
     },
     "pyrefly": {
-      "packages_tested": 15,
-      "total_runs": 1500,
-      "total_ok": 1500,
-      "total_found": 1325,
-      "total_valid": 1325,
-      "avg_latency_ms": 433.97610784734024,
+      "packages_tested": 16,
+      "total_runs": 1600,
+      "total_ok": 1600,
+      "total_found": 1409,
+      "total_valid": 1409,
+      "avg_latency_ms": 432.68874227500476,
       "min_latency_ms": 223.47297716989488,
       "max_latency_ms": 1317.0842580699082,
-      "success_rate": 88.33333333333333
+      "success_rate": 88.0625
     },
     "ty": {
-      "packages_tested": 15,
-      "total_runs": 1500,
-      "total_ok": 1489,
-      "total_found": 1402,
-      "total_valid": 1402,
-      "avg_latency_ms": 242.26886818413442,
+      "packages_tested": 16,
+      "total_runs": 1600,
+      "total_ok": 1589,
+      "total_found": 1488,
+      "total_valid": 1488,
+      "avg_latency_ms": 244.12104396075404,
       "min_latency_ms": 90.39571418999913,
       "max_latency_ms": 1493.3652255100333,
-      "success_rate": 93.46666666666667
+      "success_rate": 93.0
     },
     "zuban": {
-      "packages_tested": 15,
-      "total_runs": 1500,
-      "total_ok": 1473,
-      "total_found": 1337,
-      "total_valid": 1337,
-      "avg_latency_ms": 238.6483450444071,
+      "packages_tested": 16,
+      "total_runs": 1600,
+      "total_ok": 1573,
+      "total_found": 1423,
+      "total_valid": 1423,
+      "avg_latency_ms": 239.9641027222565,
       "min_latency_ms": 93.66751546993328,
       "max_latency_ms": 974.9650064216561,
-      "success_rate": 89.13333333333333
+      "success_rate": 88.9375
     }
   },
   "results": [
@@ -1255,6 +1255,92 @@
           }
         }
       }
+    },
+    {
+      "package_name": "homeassistant",
+      "github_url": "https://github.com/home-assistant/core",
+      "ranking": 11,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 73,
+          "found_pct": 73.0,
+          "valid_count": 73,
+          "valid_pct": 73.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 410.873389999324,
+            "p95": 862.4022970016085,
+            "min": 320.90724800036696,
+            "max": 931.1895640003058,
+            "mean": 460.2217550599016
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 84,
+          "found_pct": 84.0,
+          "valid_count": 84,
+          "valid_pct": 84.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 417.07778199997847,
+            "p95": 668.3963300001778,
+            "min": 244.84477799887827,
+            "max": 869.7423960002197,
+            "mean": 413.3782586899724
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 270.0941420007439,
+            "p95": 400.35401200111664,
+            "min": 143.25598100003845,
+            "max": 588.8748399993347,
+            "mean": 271.90368061004847
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 281.5891139998712,
+            "p95": 438.8897749995522,
+            "min": 86.35182900070504,
+            "max": 660.5125099995348,
+            "mean": 259.7004678899975
+          }
+        }
+      }
     }
-  ]
+  ],
+  "type_checker_versions": {
+    "pyright": "1.1.407",
+    "pyrefly": "0.46.0",
+    "ty": "0.0.4",
+    "zuban": "0.3.0"
+  }
 }

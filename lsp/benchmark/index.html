@@ -113,19 +113,26 @@
                     <h3>🔄 Test Process</h3>
                     <ol>
                         <li>Clone the top Python packages from GitHub</li>
-                        <li>Start each type checker's LSP server</li>
+                        <li>Start all type checker LSP servers in parallel</li>
                         <li>Pick random Python files and identifier positions</li>
-                        <li>Request "Go to Definition" and measure latency</li>
-                        <li>Verify if the returned location is valid</li>
+                        <li>Send identical "Go to Definition" requests to all servers simultaneously</li>
+                        <li>Measure latency and verify if returned locations are valid</li>
                     </ol>
+                    <p class="method-note">
+                        <strong>⏱️ Timeout:</strong> Requests have a 10-second timeout. 
+                        Timeouts are counted as failures and excluded from latency statistics.
+                    </p>
+                    <p class="method-note">
+                        <strong>🔄 Parallel Execution:</strong> All type checkers receive identical test cases 
+                        and run simultaneously. No warmup runs are performed.
+                    </p>
                 </div>
                 <div class="method-card">
                     <h3>📊 Metrics Explained</h3>
                     <ul>
-                        <li><strong>Latency:</strong> Time (ms) from request to response</li>
+                        <li><strong>Latency:</strong> Time (ms) from request to response (excludes timeouts)</li>
                         <li><strong>P50/P95:</strong> 50th/95th percentile latencies</li>
-                        <li><strong>Valid %:</strong> Definitions pointing to real files</li>
-                        <li><strong>Found %:</strong> Requests that returned any result</li>
+                        <li><strong>Success %:</strong> Percentage of requests that returned a valid definition location pointing to a real file</li>
                     </ul>
                 </div>
             </div>
@@ -133,34 +140,38 @@
 
         <!-- Legend -->
         <section class="section">
-            <h2>🏷️ Type Checker Legend</h2>
+            <h2>🏷️ Type Checkers & Language Servers</h2>
             <div class="legend-grid">
                 <div class="legend-item pyright">
                     <span class="legend-color"></span>
                     <div class="legend-info">
                         <strong>Pyright</strong>
-                        <span>Microsoft's static type checker for Python</span>
+                        <span class="legend-version" id="version-pyright"></span>
+                        <span>Type checker and language server for Python by Microsoft</span>
                     </div>
                 </div>
                 <div class="legend-item pyrefly">
                     <span class="legend-color"></span>
                     <div class="legend-info">
                         <strong>Pyrefly</strong>
-                        <span>Meta's Python type checker</span>
+                        <span class="legend-version" id="version-pyrefly"></span>
+                        <span>Type checker and language server for Python by Meta</span>
                     </div>
                 </div>
                 <div class="legend-item ty">
                     <span class="legend-color"></span>
                     <div class="legend-info">
                         <strong>ty</strong>
-                        <span>Astral's Python type checker</span>
+                        <span class="legend-version" id="version-ty"></span>
+                        <span>Type checker and language server for Python by Astral</span>
                     </div>
                 </div>
                 <div class="legend-item zuban">
                     <span class="legend-color"></span>
                     <div class="legend-info">
                         <strong>Zuban</strong>
-                        <span>Python type checker from the creator of Jedi</span>
+                        <span class="legend-version" id="version-zuban"></span>
+                        <span>Type checker and language server for Python by the creator of Jedi LSP</span>
                     </div>
                 </div>
             </div>
