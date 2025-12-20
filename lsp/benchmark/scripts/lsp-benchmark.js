@@ -324,6 +324,22 @@ function updateTimestamp() {
     } else {
         el.textContent = 'Demo data - no benchmark results available';
     }
+    
+    // Update type checker versions in legend
+    updateTypeCheckerVersions();
+}
+
+/**
+ * Update type checker version displays in the legend
+ */
+function updateTypeCheckerVersions() {
+    const versions = benchmarkData?.type_checker_versions || {};
+    for (const [checker, version] of Object.entries(versions)) {
+        const el = document.getElementById(`version-${checker}`);
+        if (el && version && version !== 'unknown' && version !== 'not installed') {
+            el.textContent = `v${version}`;
+        }
+    }
 }
 
 /**
