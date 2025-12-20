@@ -1010,7 +1010,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     # Aggregation buckets
     agg: Dict[str, Dict[str, Any]] = {
-        name: {"ok": 0, "found": 0, "valid": 0, "latencies_ms": [], "errors": 0}
+        name: {"ok": 0, "found": 0, "valid": 0, "latencies_ms": [], "errors": 0, "timeouts": 0}
         for name, _ in servers
     }
 
