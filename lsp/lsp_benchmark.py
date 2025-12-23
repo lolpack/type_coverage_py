@@ -45,9 +45,8 @@ import sys
 import threading
 import time
 import traceback
-import uuid
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 JsonObj = Dict[str, Any]
@@ -493,8 +492,11 @@ class LspClient:
                         _ = self._stderr_tail.get_nowait()
                     self._stderr_tail.put_nowait(s)
                 except Exception:
+                    # Best-effort only: failure to record stderr should not affect
+                    # the running client, so ignore any queue-related errors here.
                     pass
         except Exception:
+            # Stream read failed (e.g., process terminated). Exit reader thread gracefully.
             return
 
     def _stderr_tail_text(self, max_lines: int = 40) -> str:
@@ -509,6 +511,7 @@ class LspClient:
             try:
                 self._stderr_tail.put_nowait(s)
             except Exception:
+                # Best-effort requeue of stderr tail; drop lines if the buffer is full.
                 pass
         tail = lines[-max_lines:]
         return "\n".join(tail)
@@ -520,16 +523,19 @@ class LspClient:
             try:
                 self.request("shutdown", {})
             except Exception:
+                # LSP shutdown request may fail if server already crashed or timed out.
                 pass
             try:
                 self.notify("exit", {})
             except Exception:
+                # LSP exit notification may fail if server is unresponsive.
                 pass
             self._shutdown = True
 
         try:
             self._proc.terminate()
         except Exception:
+            # Process may already be terminated; ignore.
             pass
 
         try:
@@ -538,6 +544,8 @@ class LspClient:
             try:
                 self._proc.kill()
             except Exception:
+                # Best-effort cleanup: ignore failures to force-kill a process that may
+                # already have exited or may not be killable in this environment.
                 pass
 
         self._proc = None

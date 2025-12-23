@@ -3,12 +3,9 @@
 from __future__ import annotations
 
 import json
-import tempfile
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, patch
-
-import pytest
 
 # Import the module under test
 import sys
@@ -18,9 +15,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from lsp.benchmark.daily_runner import (
     KNOWN_GITHUB_URLS,
     TYPE_CHECKER_COMMANDS,
-    AggregateStats,
-    CheckerMetrics,
-    PackageInfo,
     PackageResult,
     compute_aggregate_stats,
     fetch_github_package,
