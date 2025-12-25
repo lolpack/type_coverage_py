@@ -362,7 +362,7 @@ def main(
 
     # Conditionally generate the HTML report
     if write_html:
-        generate_report_html(package_report, html_report_file)
+        generate_report_html(package_report, html_report_file, prioritized=prioritized)
         print("HTML report generated.")
 
     if create_daily:
