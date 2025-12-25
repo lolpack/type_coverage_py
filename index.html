@@ -328,10 +328,6 @@
                             <th>Has Stubs Package</th>
                             <th>Has py.typed File</th>
                             <th>Non-Typeshed Stubs</th>
-                            <th>Pyright Known Types</th>
-                            <th>Pyright Ambiguous Types</th>
-                            <th>Pyright Unknown Types</th>
-                            <th>Pyright Coverage</th>
                             <th>Parameter Type Coverage</th>
                             <th>Return Type Coverage</th>
                             <th>Parameter Coverage w/ Typeshed</th>
@@ -348,7 +344,6 @@
             for (const [packageName, details] of Object.entries(data)) {
                 const coverage = details.CoverageData || {};
                 const typeshed = details.TypeshedData || {};
-                const pyright = details.pyright_stats || {};
 
                 const paramCoverage = coverage.parameter_coverage;
                 const returnCoverage = coverage.return_type_coverage;
@@ -372,10 +367,6 @@
                         ${createBooleanCell(details.HasStubsPackage)}
                         ${createBooleanCell(details.HasPyTypedFile)}
                         <td>${nonTypeshedStubs}</td>
-                        <td>${pyright.withKnownType || 'N/A'}</td>
-                        <td>${pyright.withAmbiguousType || 'N/A'}</td>
-                        <td>${pyright.withUnknownType || 'N/A'}</td>
-                        ${createPercentageCell(pyright.coverage)}
                         ${createPercentageCell(paramCoverage)}
                         ${createPercentageCell(returnCoverage)}
                         ${createPercentageCell(paramCoverageStubs)}
