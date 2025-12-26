@@ -275,6 +275,11 @@ def generate_report_html(package_report: dict[str, Any], output_file: str) -> No
                 </a>
             </li>
             <li>
+                ⚡ <a href="https://python-type-checking.com/lsp/benchmark/" target="_blank">
+                View LSP performance benchmarks
+                </a>
+            </li>
+            <li>
                 ❓ Have questions or ideas? 
                 <a href="https://github.com/lolpack/type_coverage_py/issues" target="_blank">
                 Leave an issue on GitHub
