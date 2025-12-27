@@ -1,0 +1,581 @@
+
+    <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Package Type Coverage Report</title>
+        <link rel="icon" href="https://raw.githubusercontent.com/jdecked/twemoji/master/assets/svg/2705.svg" type="image/svg+xml"/>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 40px;
+                background-color: #f9fbfc;
+                color: #333;
+            }
+            h1 {
+                text-align: center;
+                color: #1a73e8;
+                font-size: 2.5em;
+                margin-bottom: 30px;
+            }
+            .preamble {
+                background: #fff;
+                padding: 25px;
+                border-radius: 12px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                margin-bottom: 40px;
+                font-size: 1rem;
+            }
+            .preamble ul {
+                padding-left: 1.5rem;
+            }
+            .preamble li {
+                margin-bottom: 12px;
+            }
+            .preamble a {
+                color: #1a73e8;
+                font-weight: bold;
+                text-decoration: none;
+            }
+            .preamble a:hover {
+                text-decoration: underline;
+            }
+            .github-link {
+                text-align: center;
+                margin-top: 20px;
+                font-size: 1rem;
+            }
+            .github-link a {
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .github-link a:hover {
+                text-decoration: underline;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 30px;
+                font-size: 0.95rem;
+                background: white;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                border-radius: 8px;
+            }
+            table th, table td {
+                padding: 12px;
+                border: 1px solid #eee;
+            }
+            table th {
+                background-color: #f0f4f8;
+                color: #333;
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                border: 1px;
+            }
+            table tr:nth-child(even) {
+                background-color: #fafafa;
+            }
+            table tr:hover {
+                background-color: #f1f8ff;
+            }
+            .coverage-cell {
+                text-align: right;
+                padding-right: 10px;
+                color: #333;
+            }
+            .skipped-cell {
+                text-align: center;
+                color: #d9534f;
+            }
+        </style>
+        </head>
+        <body>
+        <h1>📦 Package Type Coverage Report</h1>
+
+        <div class="preamble">
+            <ul>
+            <li>✅ <strong>Better Reliability:</strong> Type annotations help catch bugs early and improve confidence in your codebase.</li>
+            <li>🚀 <strong>Developer Velocity:</strong> Great type coverage improves editor support, autocompletion, and navigation.</li>
+            <li>📚 <strong>Living Documentation:</strong> Type hints clarify APIs without relying solely on comments or docstrings, and they are validated automatically.</li>
+            <li>🔍 <strong>Community Visibility:</strong> This site tracks the top 2,000 PyPI packages—stand out by adding great types!</li>
+            </ul>
+            <ul>
+            <li>
+                📈 <a href="https://python-type-checking.com/historical_data/coverage-trends.html" target="_blank">
+                View historical coverage trends
+                </a>
+            </li>
+            <li>
+                ❓ Have questions or ideas? 
+                <a href="https://github.com/lolpack/type_coverage_py/issues" target="_blank">
+                Leave an issue on GitHub
+                </a>.
+            </li>
+            <li>
+                ✍️ Want to contribute types? 
+                <a href="https://github.com/lolpack/type_coverage_py/issues" target="_blank">
+                Find an open issue or start one
+                </a> and make a real impact!
+            </li>
+            </ul>
+        </div>
+
+        <p class="github-link">
+            🛠️ See code and methodology here: 
+            <a href="https://github.com/lolpack/type_coverage_py" target="_blank">
+            https://github.com/lolpack/type_coverage_py
+            </a>
+        </p>
+        <table>
+            <tr>
+                <th>Ranking</th>
+                <th>Package Name</th>
+                <th>Download Count</th>
+                <th>Has Typeshed</th>
+                <th>Has Stubs Package</th>
+                <th>Has py.typed File</th>
+                <th>Non-Typeshed Stubs</th>
+                <th>Pyright Known Types</th>
+                <th>Pyright Ambiguous Types</th>
+                <th>Pyright Unknown Types</th>
+                <th>Pyright Coverage</th>
+                <th>Parameter Type Coverage</th>
+                <th>Return Type Coverage</th>
+                <th>Parameter Coverage w/ Typeshed</th>
+                <th>Return Type Coverage w/ Typeshed</th>
+                <th>Typeshed-stats Parameter Type Coverage</th>
+                <th>Typeshed-stats Return Type Coverage</th>
+                <th>Typeshed-stats Completeness Level</th>
+                <th>Typeshed-stats Stubtest Strictness</th>
+            </tr>
+    
+            <tr>
+                <td>1</td>
+                <td>requests</td>
+                <td>576,250,793</td> 
+                <td style="background-color: green;">Yes</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>52</td>
+                <td>27</td>
+                <td>279</td>
+                <td class="coverage-cell" style="background-color: rgb(255,74,200);">14.53%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,6,200);">1.27%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,2,200);">0.44%</td>
+                <td class="coverage-cell" style="background-color: rgb(250,255,200);">50.79%</td>
+                <td class="coverage-cell" style="background-color: rgb(238,255,200);">53.28%</td>
+                <td class="coverage-cell" style="background-color: rgb(165,255,200);">67.50%</td>
+                <td class="coverage-cell" style="background-color: rgb(130,255,200);">74.32%</td>
+                <td>COMPLETE</td>
+                <td>ERROR_ON_MISSING_STUB</td>
+            </tr>
+        
+            <tr>
+                <td>2</td>
+                <td>numpy</td>
+                <td>381,826,344</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: green;">Yes</td>
+                <td>N/A</td>
+                <td>4758</td>
+                <td>444</td>
+                <td>4519</td>
+                <td class="coverage-cell" style="background-color: rgb(87,255,200);">82.76%</td>
+                <td class="coverage-cell" style="background-color: rgb(171,255,200);">66.47%</td>
+                <td class="coverage-cell" style="background-color: rgb(183,255,200);">64.01%</td>
+                <td class="coverage-cell" style="background-color: rgb(171,255,200);">66.47%</td>
+                <td class="coverage-cell" style="background-color: rgb(183,255,200);">64.01%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>3</td>
+                <td>pandas</td>
+                <td>278,848,477</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td><a href="https://pypi.org/project/pandas-stubs/" target="_blank">pandas-stubs</a></td>
+                <td>9197</td>
+                <td>545</td>
+                <td>15784</td>
+                <td class="coverage-cell" style="background-color: rgb(235,255,200);">53.92%</td>
+                <td class="coverage-cell" style="background-color: rgb(155,255,200);">69.43%</td>
+                <td class="coverage-cell" style="background-color: rgb(148,255,200);">70.97%</td>
+                <td class="coverage-cell" style="background-color: rgb(138,255,200);">72.75%</td>
+                <td class="coverage-cell" style="background-color: rgb(134,255,200);">73.63%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>4</td>
+                <td>click</td>
+                <td>247,497,543</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: green;">Yes</td>
+                <td>N/A</td>
+                <td>635</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>5</td>
+                <td>pytest</td>
+                <td>167,688,126</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: green;">Yes</td>
+                <td>N/A</td>
+                <td>80</td>
+                <td>3</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(18,255,200);">96.39%</td>
+                <td class="coverage-cell" style="background-color: rgb(111,255,200);">78.07%</td>
+                <td class="coverage-cell" style="background-color: rgb(108,255,200);">78.79%</td>
+                <td class="coverage-cell" style="background-color: rgb(111,255,200);">78.07%</td>
+                <td class="coverage-cell" style="background-color: rgb(108,255,200);">78.79%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>6</td>
+                <td>pyarrow</td>
+                <td>155,525,406</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td><a href="https://pypi.org/project/pyarrow-stubs/" target="_blank">pyarrow-stubs</a></td>
+                <td>1235</td>
+                <td>136</td>
+                <td>2229</td>
+                <td class="coverage-cell" style="background-color: rgb(255,174,200);">34.31%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,35,200);">6.92%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,43,200);">8.50%</td>
+                <td class="coverage-cell" style="background-color: rgb(106,255,200);">79.04%</td>
+                <td class="coverage-cell" style="background-color: rgb(96,255,200);">81.15%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>7</td>
+                <td>scipy</td>
+                <td>124,452,573</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: green;">Yes</td>
+                <td><a href="https://pypi.org/project/scipy-stubs/" target="_blank">scipy-stubs</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,28,200);">5.59%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,54,200);">10.71%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,251,200);">49.23%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,220,200);">43.17%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>8</td>
+                <td>transformers</td>
+                <td>48,296,869</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: green;">Yes</td>
+                <td>N/A</td>
+                <td>31880</td>
+                <td>21196</td>
+                <td>71238</td>
+                <td class="coverage-cell" style="background-color: rgb(255,130,200);">25.64%</td>
+                <td class="coverage-cell" style="background-color: rgb(199,255,200);">60.92%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,196,200);">38.45%</td>
+                <td class="coverage-cell" style="background-color: rgb(199,255,200);">60.92%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,196,200);">38.45%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>9</td>
+                <td>torch</td>
+                <td>39,746,242</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>5938</td>
+                <td>802</td>
+                <td>9132</td>
+                <td class="coverage-cell" style="background-color: rgb(255,190,200);">37.41%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,-5,200);">-1.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,-5,200);">-1.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,-5,200);">-1.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,-5,200);">-1.00%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>10</td>
+                <td>sphinx</td>
+                <td>26,206,237</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: green;">Yes</td>
+                <td>N/A</td>
+                <td>3920</td>
+                <td>1428</td>
+                <td>56</td>
+                <td class="coverage-cell" style="background-color: rgb(140,255,200);">72.54%</td>
+                <td class="coverage-cell" style="background-color: rgb(4,255,200);">99.09%</td>
+                <td class="coverage-cell" style="background-color: rgb(4,255,200);">99.18%</td>
+                <td class="coverage-cell" style="background-color: rgb(4,255,200);">99.09%</td>
+                <td class="coverage-cell" style="background-color: rgb(4,255,200);">99.18%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>11</td>
+                <td>plotly</td>
+                <td>19,644,470</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td><a href="https://pypi.org/project/plotly-stubs/" target="_blank">plotly-stubs</a></td>
+                <td>541</td>
+                <td>15</td>
+                <td>531</td>
+                <td class="coverage-cell" style="background-color: rgb(255,253,200);">49.77%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,1,200);">0.24%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,20,200);">3.96%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,170,200);">33.38%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,89,200);">17.63%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>12</td>
+                <td>ujson</td>
+                <td>14,331,194</td> 
+                <td style="background-color: green;">Yes</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(19,255,200);">96.15%</td>
+                <td class="coverage-cell" style="background-color: rgb(72,255,200);">85.71%</td>
+                <td class="coverage-cell" style="background-color: rgb(9,255,200);">98.21%</td>
+                <td class="coverage-cell" style="background-color: rgb(39,255,200);">92.31%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>COMPLETE</td>
+                <td>ERROR_ON_MISSING_STUB</td>
+            </tr>
+        
+            <tr>
+                <td>13</td>
+                <td>ansible</td>
+                <td>5,961,860</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: green;">Yes</td>
+                <td><a href="https://pypi.org/project/ansible-stubs/" target="_blank">ansible-stubs</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,25,200);">5.07%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,18,200);">3.55%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,25,200);">5.07%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,18,200);">3.55%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>14</td>
+                <td>pyopengl</td>
+                <td>939,749</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>15</td>
+                <td>pyarrow-stubs</td>
+                <td>477,537</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>1358</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(25,255,200);">95.03%</td>
+                <td class="coverage-cell" style="background-color: rgb(16,255,200);">96.76%</td>
+                <td class="coverage-cell" style="background-color: rgb(25,255,200);">95.03%</td>
+                <td class="coverage-cell" style="background-color: rgb(16,255,200);">96.76%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>16</td>
+                <td>wagtail</td>
+                <td>304,244</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>2593</td>
+                <td>1177</td>
+                <td>20163</td>
+                <td class="coverage-cell" style="background-color: rgb(255,55,200);">10.83%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,17,200);">3.44%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,8,200);">1.61%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,17,200);">3.44%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,8,200);">1.61%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>17</td>
+                <td>kivy</td>
+                <td>282,614</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>778</td>
+                <td>1362</td>
+                <td>4173</td>
+                <td class="coverage-cell" style="background-color: rgb(255,62,200);">12.32%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.03%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.18%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.03%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.18%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>18</td>
+                <td>ixnetwork-restpy</td>
+                <td>181,369</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(255,0,200);">0.00%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+            <tr>
+                <td>19</td>
+                <td>scipy-stubs</td>
+                <td>91,030</td> 
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td style="background-color: transparent;">No</td>
+                <td>N/A</td>
+                <td>4039</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">99.87%</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">99.87%</td>
+                <td class="coverage-cell" style="background-color: rgb(0,255,200);">100.00%</td>
+                <td class="coverage-cell">N/A</td>
+                <td class="coverage-cell">N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        
+        </table>
+    
+    <h2>Historical Data</h2>
+    <ul>
+        <li><a href='prioritized/historical_data/html/index-2025-02-02.html'>index-2025-02-02.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-03.html'>index-2025-02-03.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-04.html'>index-2025-02-04.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-05.html'>index-2025-02-05.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-06.html'>index-2025-02-06.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-07.html'>index-2025-02-07.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-08.html'>index-2025-02-08.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-09.html'>index-2025-02-09.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-10.html'>index-2025-02-10.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-11.html'>index-2025-02-11.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-12.html'>index-2025-02-12.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-13.html'>index-2025-02-13.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-14.html'>index-2025-02-14.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-15.html'>index-2025-02-15.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-16.html'>index-2025-02-16.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-17.html'>index-2025-02-17.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-18.html'>index-2025-02-18.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-19.html'>index-2025-02-19.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-20.html'>index-2025-02-20.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-21.html'>index-2025-02-21.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-22.html'>index-2025-02-22.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-23.html'>index-2025-02-23.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-24.html'>index-2025-02-24.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-25.html'>index-2025-02-25.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-26.html'>index-2025-02-26.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-27.html'>index-2025-02-27.html</a></li><li><a href='prioritized/historical_data/html/index-2025-02-28.html'>index-2025-02-28.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-01.html'>index-2025-03-01.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-02.html'>index-2025-03-02.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-03.html'>index-2025-03-03.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-04.html'>index-2025-03-04.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-05.html'>index-2025-03-05.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-06.html'>index-2025-03-06.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-07.html'>index-2025-03-07.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-08.html'>index-2025-03-08.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-09.html'>index-2025-03-09.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-10.html'>index-2025-03-10.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-11.html'>index-2025-03-11.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-12.html'>index-2025-03-12.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-13.html'>index-2025-03-13.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-14.html'>index-2025-03-14.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-15.html'>index-2025-03-15.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-16.html'>index-2025-03-16.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-17.html'>index-2025-03-17.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-18.html'>index-2025-03-18.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-19.html'>index-2025-03-19.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-20.html'>index-2025-03-20.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-21.html'>index-2025-03-21.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-22.html'>index-2025-03-22.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-23.html'>index-2025-03-23.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-24.html'>index-2025-03-24.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-25.html'>index-2025-03-25.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-26.html'>index-2025-03-26.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-27.html'>index-2025-03-27.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-28.html'>index-2025-03-28.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-29.html'>index-2025-03-29.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-30.html'>index-2025-03-30.html</a></li><li><a href='prioritized/historical_data/html/index-2025-03-31.html'>index-2025-03-31.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-01.html'>index-2025-04-01.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-02.html'>index-2025-04-02.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-03.html'>index-2025-04-03.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-04.html'>index-2025-04-04.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-05.html'>index-2025-04-05.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-06.html'>index-2025-04-06.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-07.html'>index-2025-04-07.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-08.html'>index-2025-04-08.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-09.html'>index-2025-04-09.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-10.html'>index-2025-04-10.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-11.html'>index-2025-04-11.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-12.html'>index-2025-04-12.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-13.html'>index-2025-04-13.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-14.html'>index-2025-04-14.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-15.html'>index-2025-04-15.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-16.html'>index-2025-04-16.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-17.html'>index-2025-04-17.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-18.html'>index-2025-04-18.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-19.html'>index-2025-04-19.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-20.html'>index-2025-04-20.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-21.html'>index-2025-04-21.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-22.html'>index-2025-04-22.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-23.html'>index-2025-04-23.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-24.html'>index-2025-04-24.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-25.html'>index-2025-04-25.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-26.html'>index-2025-04-26.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-27.html'>index-2025-04-27.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-28.html'>index-2025-04-28.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-29.html'>index-2025-04-29.html</a></li><li><a href='prioritized/historical_data/html/index-2025-04-30.html'>index-2025-04-30.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-01.html'>index-2025-05-01.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-02.html'>index-2025-05-02.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-03.html'>index-2025-05-03.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-04.html'>index-2025-05-04.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-05.html'>index-2025-05-05.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-06.html'>index-2025-05-06.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-07.html'>index-2025-05-07.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-08.html'>index-2025-05-08.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-09.html'>index-2025-05-09.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-10.html'>index-2025-05-10.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-11.html'>index-2025-05-11.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-12.html'>index-2025-05-12.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-13.html'>index-2025-05-13.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-14.html'>index-2025-05-14.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-15.html'>index-2025-05-15.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-16.html'>index-2025-05-16.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-17.html'>index-2025-05-17.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-18.html'>index-2025-05-18.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-19.html'>index-2025-05-19.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-20.html'>index-2025-05-20.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-21.html'>index-2025-05-21.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-22.html'>index-2025-05-22.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-23.html'>index-2025-05-23.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-24.html'>index-2025-05-24.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-25.html'>index-2025-05-25.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-26.html'>index-2025-05-26.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-27.html'>index-2025-05-27.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-28.html'>index-2025-05-28.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-29.html'>index-2025-05-29.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-30.html'>index-2025-05-30.html</a></li><li><a href='prioritized/historical_data/html/index-2025-05-31.html'>index-2025-05-31.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-01.html'>index-2025-06-01.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-02.html'>index-2025-06-02.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-03.html'>index-2025-06-03.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-04.html'>index-2025-06-04.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-05.html'>index-2025-06-05.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-06.html'>index-2025-06-06.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-07.html'>index-2025-06-07.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-08.html'>index-2025-06-08.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-09.html'>index-2025-06-09.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-10.html'>index-2025-06-10.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-11.html'>index-2025-06-11.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-12.html'>index-2025-06-12.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-13.html'>index-2025-06-13.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-14.html'>index-2025-06-14.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-15.html'>index-2025-06-15.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-16.html'>index-2025-06-16.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-17.html'>index-2025-06-17.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-18.html'>index-2025-06-18.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-19.html'>index-2025-06-19.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-20.html'>index-2025-06-20.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-21.html'>index-2025-06-21.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-22.html'>index-2025-06-22.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-23.html'>index-2025-06-23.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-24.html'>index-2025-06-24.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-25.html'>index-2025-06-25.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-26.html'>index-2025-06-26.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-27.html'>index-2025-06-27.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-28.html'>index-2025-06-28.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-29.html'>index-2025-06-29.html</a></li><li><a href='prioritized/historical_data/html/index-2025-06-30.html'>index-2025-06-30.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-01.html'>index-2025-07-01.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-02.html'>index-2025-07-02.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-03.html'>index-2025-07-03.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-04.html'>index-2025-07-04.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-05.html'>index-2025-07-05.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-06.html'>index-2025-07-06.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-07.html'>index-2025-07-07.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-08.html'>index-2025-07-08.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-09.html'>index-2025-07-09.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-10.html'>index-2025-07-10.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-11.html'>index-2025-07-11.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-12.html'>index-2025-07-12.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-13.html'>index-2025-07-13.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-14.html'>index-2025-07-14.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-15.html'>index-2025-07-15.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-16.html'>index-2025-07-16.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-17.html'>index-2025-07-17.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-18.html'>index-2025-07-18.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-19.html'>index-2025-07-19.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-20.html'>index-2025-07-20.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-21.html'>index-2025-07-21.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-22.html'>index-2025-07-22.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-23.html'>index-2025-07-23.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-24.html'>index-2025-07-24.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-25.html'>index-2025-07-25.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-26.html'>index-2025-07-26.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-27.html'>index-2025-07-27.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-28.html'>index-2025-07-28.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-29.html'>index-2025-07-29.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-30.html'>index-2025-07-30.html</a></li><li><a href='prioritized/historical_data/html/index-2025-07-31.html'>index-2025-07-31.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-01.html'>index-2025-08-01.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-02.html'>index-2025-08-02.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-03.html'>index-2025-08-03.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-04.html'>index-2025-08-04.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-05.html'>index-2025-08-05.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-06.html'>index-2025-08-06.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-07.html'>index-2025-08-07.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-08.html'>index-2025-08-08.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-09.html'>index-2025-08-09.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-10.html'>index-2025-08-10.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-18.html'>index-2025-08-18.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-19.html'>index-2025-08-19.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-20.html'>index-2025-08-20.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-21.html'>index-2025-08-21.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-22.html'>index-2025-08-22.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-23.html'>index-2025-08-23.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-24.html'>index-2025-08-24.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-25.html'>index-2025-08-25.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-26.html'>index-2025-08-26.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-27.html'>index-2025-08-27.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-28.html'>index-2025-08-28.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-29.html'>index-2025-08-29.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-30.html'>index-2025-08-30.html</a></li><li><a href='prioritized/historical_data/html/index-2025-08-31.html'>index-2025-08-31.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-01.html'>index-2025-09-01.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-02.html'>index-2025-09-02.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-03.html'>index-2025-09-03.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-04.html'>index-2025-09-04.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-05.html'>index-2025-09-05.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-06.html'>index-2025-09-06.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-07.html'>index-2025-09-07.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-08.html'>index-2025-09-08.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-09.html'>index-2025-09-09.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-10.html'>index-2025-09-10.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-11.html'>index-2025-09-11.html</a></li><li><a href='prioritized/historical_data/html/index-2025-09-12.html'>index-2025-09-12.html</a></li>
+    </ul>
+    
+</body>
+    </html>
+    
