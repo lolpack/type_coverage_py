@@ -23,11 +23,41 @@ let benchmarkData = null;
 let charts = {};
 
 /**
+ * Get date from URL query string
+ * @returns {string|null} Date string (YYYY-MM-DD) or null if not specified
+ */
+function getDateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const date = params.get('date');
+    // Validate date format (YYYY-MM-DD)
+    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return date;
+    }
+    return null;
+}
+
+/**
+ * Update URL query string with date
+ * @param {string|null} date - Date to set, or null to remove
+ */
+function updateUrlWithDate(date) {
+    const url = new URL(window.location);
+    if (date) {
+        url.searchParams.set('date', date);
+    } else {
+        url.searchParams.delete('date');
+    }
+    window.history.replaceState({}, '', url);
+}
+
+/**
  * Initialize the dashboard
  */
 async function init() {
     try {
-        await loadBenchmarkData();
+        // Check for date in URL query string
+        const urlDate = getDateFromUrl();
+        await loadBenchmarkData(urlDate);
         updateTimestamp();
         createLatencyChart();
         createSuccessChart();
@@ -37,7 +67,15 @@ async function init() {
         setupDateSelector();
     } catch (error) {
         console.error('Failed to initialize dashboard:', error);
-        showError('Failed to load benchmark data. Please try again later.');
+        const urlDate = getDateFromUrl();
+        if (urlDate) {
+            showError(`No benchmark data available for ${urlDate}.`, {
+                text: 'Load latest results →',
+                onClick: () => switchToDate(null)
+            });
+        } else {
+            showError('Failed to load benchmark data. Please try again later.');
+        }
     }
 }
 
@@ -165,6 +203,16 @@ async function switchToDate(date) {
         clearError();
         updateTimestamp();
         
+        // Update URL with the actual loaded date from the data
+        const loadedDate = benchmarkData?.date || date;
+        updateUrlWithDate(loadedDate);
+        
+        // Update date input to reflect loaded date
+        const dateInput = document.getElementById('dateSelect');
+        if (dateInput && loadedDate) {
+            dateInput.value = loadedDate;
+        }
+        
         // Destroy existing charts
         Object.values(charts).forEach(chart => chart?.destroy());
         charts = {};
@@ -176,7 +224,10 @@ async function switchToDate(date) {
         populateResultsTable();
     } catch (error) {
         console.error('Failed to load data for date:', date, error);
-        showError(`No benchmark data available for ${date}`);
+        showError(`No benchmark data available for ${date}.`, {
+            text: 'Load latest results →',
+            onClick: () => switchToDate(null)
+        });
     }
 }
 
@@ -294,9 +345,13 @@ function clearError() {
 }
 
 /**
- * Show error message to user
+ * Show error message to user with optional action link
+ * @param {string} message - Main error message
+ * @param {Object} [action] - Optional action link
+ * @param {string} action.text - Link text
+ * @param {Function} action.onClick - Click handler
  */
-function showError(message) {
+function showError(message, action = null) {
     clearError(); // Clear any existing errors first
     const main = document.querySelector('main');
     const errorDiv = document.createElement('div');
@@ -310,7 +365,28 @@ function showError(message) {
         margin: 24px 0;
         text-align: center;
     `;
-    errorDiv.textContent = message;
+    
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = message;
+    errorDiv.appendChild(messageSpan);
+    
+    if (action) {
+        const link = document.createElement('a');
+        link.textContent = action.text;
+        link.href = '#';
+        link.style.cssText = `
+            color: #58a6ff;
+            margin-left: 8px;
+            text-decoration: underline;
+            cursor: pointer;
+        `;
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            action.onClick();
+        });
+        errorDiv.appendChild(link);
+    }
+    
     main.insertBefore(errorDiv, main.firstChild);
 }
 
