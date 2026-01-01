@@ -162,6 +162,7 @@ async function loadAvailableDates() {
 async function switchToDate(date) {
     try {
         await loadBenchmarkData(date);
+        clearError();
         updateTimestamp();
         
         // Destroy existing charts
