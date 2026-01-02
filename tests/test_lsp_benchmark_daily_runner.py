@@ -327,6 +327,7 @@ class TestComputeAggregateStats:
         assert stats["pyright"]["total_runs"] == 10
         assert stats["pyright"]["total_valid"] == 9
         assert stats["pyright"]["avg_latency_ms"] == 150.0
+        assert stats["pyright"]["ok_rate"] == 100.0
         assert stats["pyright"]["success_rate"] == 90.0
 
     def test_compute_stats_with_errors(self) -> None:
@@ -368,7 +369,98 @@ class TestComputeAggregateStats:
         assert stats["pyright"]["packages_tested"] == 0
         assert stats["pyright"]["total_runs"] == 0
         assert stats["pyright"]["avg_latency_ms"] is None
+        assert stats["pyright"]["ok_rate"] == 0.0
         assert stats["pyright"]["success_rate"] == 0.0
+
+    def test_compute_stats_with_timeouts(self) -> None:
+        """Test ok_rate calculation when some requests timeout."""
+        results: list[PackageResult] = [
+            {
+                "package_name": "pkg1",
+                "github_url": "https://github.com/test/pkg1",
+                "ranking": 1,
+                "error": None,
+                "metrics": {
+                    "pyright": {
+                        "ok": True,
+                        "runs": 10,
+                        "ok_count": 8,  # 2 timeouts
+                        "found_count": 7,
+                        "valid_count": 7,
+                        "latency_ms": {"mean": 100.0},
+                    }
+                },
+            },
+        ]
+
+        stats = compute_aggregate_stats(results, ["pyright"])
+
+        assert stats["pyright"]["total_runs"] == 10
+        assert stats["pyright"]["total_ok"] == 8
+        assert stats["pyright"]["ok_rate"] == 80.0  # 8/10 * 100
+        assert stats["pyright"]["success_rate"] == 70.0  # 7/10 * 100
+
+    def test_compute_stats_ok_rate_vs_success_rate(self) -> None:
+        """Test that ok_rate and success_rate are calculated independently."""
+        results: list[PackageResult] = [
+            {
+                "package_name": "pkg1",
+                "github_url": "https://github.com/test/pkg1",
+                "ranking": 1,
+                "error": None,
+                "metrics": {
+                    "pyright": {
+                        "ok": True,
+                        "runs": 100,
+                        "ok_count": 95,  # 95% completed without timeout
+                        "found_count": 90,
+                        "valid_count": 85,  # 85% returned valid definitions
+                        "latency_ms": {"mean": 100.0},
+                    }
+                },
+            },
+        ]
+
+        stats = compute_aggregate_stats(results, ["pyright"])
+
+        assert stats["pyright"]["ok_rate"] == 95.0  # Reliability
+        assert stats["pyright"]["success_rate"] == 85.0  # Accuracy
+        # ok_rate should be >= success_rate since ok includes non-valid results
+        assert stats["pyright"]["ok_rate"] >= stats["pyright"]["success_rate"]
+
+    def test_compute_stats_multiple_checkers_different_ok_rates(self) -> None:
+        """Test ok_rate calculation for multiple type checkers."""
+        results: list[PackageResult] = [
+            {
+                "package_name": "pkg1",
+                "github_url": "https://github.com/test/pkg1",
+                "ranking": 1,
+                "error": None,
+                "metrics": {
+                    "pyright": {
+                        "ok": True,
+                        "runs": 10,
+                        "ok_count": 10,
+                        "valid_count": 8,
+                        "latency_ms": {"mean": 100.0},
+                    },
+                    "pyrefly": {
+                        "ok": True,
+                        "runs": 10,
+                        "ok_count": 9,  # 1 timeout
+                        "valid_count": 7,
+                        "latency_ms": {"mean": 80.0},
+                    },
+                },
+            },
+        ]
+
+        stats = compute_aggregate_stats(results, ["pyright", "pyrefly"])
+
+        assert stats["pyright"]["ok_rate"] == 100.0
+        assert stats["pyright"]["success_rate"] == 80.0
+        assert stats["pyrefly"]["ok_rate"] == 90.0
+        assert stats["pyrefly"]["success_rate"] == 70.0
 
 
 class TestParseArgs:

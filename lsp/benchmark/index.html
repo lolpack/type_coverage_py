@@ -49,6 +49,11 @@
                     <canvas id="latencyChart"></canvas>
                 </div>
                 <div class="chart-card">
+                    <h3>OK Rate (%)</h3>
+                    <p class="chart-description">Higher is better - requests that completed without timeout/error</p>
+                    <canvas id="okChart"></canvas>
+                </div>
+                <div class="chart-card">
                     <h3>Success Rate (%)</h3>
                     <p class="chart-description">Higher is better - valid definitions found</p>
                     <canvas id="successChart"></canvas>
@@ -85,12 +90,13 @@
                             <th>Avg Latency</th>
                             <th>P50 Latency</th>
                             <th>P95 Latency</th>
+                            <th>OK %</th>
                             <th>Success %</th>
                         </tr>
                     </thead>
                     <tbody id="resultsBody">
                         <tr>
-                            <td colspan="6" class="loading-row">Loading results...</td>
+                            <td colspan="7" class="loading-row">Loading results...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -132,7 +138,8 @@
                     <ul>
                         <li><strong>Latency:</strong> Time (ms) from request to response (excludes timeouts)</li>
                         <li><strong>P50/P95:</strong> 50th/95th percentile latencies</li>
-                        <li><strong>Success %:</strong> Percentage of requests that returned a valid definition location pointing to a real file</li>
+                        <li><strong>OK Rate:</strong> Percentage of requests that completed without timeout or error (indicates reliability)</li>
+                        <li><strong>Success Rate:</strong> Percentage of requests that returned a valid definition location pointing to a real file (indicates accuracy)</li>
                     </ul>
                 </div>
             </div>
