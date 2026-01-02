@@ -117,6 +117,7 @@ class AggregateStats(TypedDict, total=False):
     avg_latency_ms: float | None
     min_latency_ms: float | None
     max_latency_ms: float | None
+    ok_rate: float
     success_rate: float
 
 
@@ -721,6 +722,7 @@ def compute_aggregate_stats(
             min_latency = min(latencies)
             max_latency = max(latencies)
 
+        ok_rate = (sum(ok_counts) / total_runs * 100) if total_runs > 0 else 0.0
         success_rate = (sum(valid_counts) / total_runs * 100) if total_runs > 0 else 0.0
 
         stats[checker] = {
@@ -732,6 +734,7 @@ def compute_aggregate_stats(
             "avg_latency_ms": avg_latency,
             "min_latency_ms": min_latency,
             "max_latency_ms": max_latency,
+            "ok_rate": ok_rate,
             "success_rate": success_rate,
         }
 
@@ -953,6 +956,15 @@ def _benchmark_single_package(
             "ranking": package.get("ranking"),
             "error": None,
             "metrics": metrics,
+        }
+    except Exception as e:
+        print(f"  Error running benchmarks: {e}")
+        return {
+            "package_name": package_name,
+            "github_url": github_url,
+            "ranking": package.get("ranking"),
+            "error": f"Benchmark failed: {e}",
+            "metrics": {},
         }
     finally:
         # Cleanup package directory
