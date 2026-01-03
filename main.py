@@ -13,14 +13,13 @@ from analyzer.report_generator import (
     archive_old_reports,
     generate_report,
     generate_report_html,
-    update_main_html_with_links,
 )
 from analyzer.typeshed_checker import (
     check_typeshed,
     find_stub_files,
     merge_files_with_stubs,
 )
-from analyzer.historical_view_generator import generate_historical_graphs
+from analyzer.historical_view_generator import generate_dates_manifest
 from coverage_sources.get_pyright_stats import main as get_pyright_stats
 from coverage_sources.typeshed_coverage import download_typeshed_csv
 
@@ -328,28 +327,19 @@ def main(
 
     html_report_file = HTML_REPORT_FILE
     json_report_file = JSON_REPORT_FILE
-    historical_data_dir = HISTORICAL_DATA_DIR
-    historical_html_dir = os.path.join(HISTORICAL_DATA_DIR, "html")
     historical_json_dir = os.path.join(HISTORICAL_DATA_DIR, "json")
-    coverag_trends_html = os.path.join(HISTORICAL_DATA_DIR, "coverage-trends.html")
 
     if output_list_only:
         os.makedirs("prioritized", exist_ok=True)
         html_report_file: str = os.path.join("prioritized", "index.html")
         json_report_file: str = os.path.join("prioritized", "package_report.json")
-
-        historical_data_dir = os.path.join("prioritized", historical_data_dir)
-        historical_html_dir: str = os.path.join("prioritized", historical_html_dir)
         historical_json_dir: str = os.path.join("prioritized", historical_json_dir)
-        coverag_trends_html: str = os.path.join("prioritized", coverag_trends_html)
 
 
 
     # Archive old report in data section
     if create_daily:
         archive_old_reports(
-            html_report_file,
-            historical_html_dir,
             historical_json_dir,
             json_report_file
         )
@@ -362,12 +352,12 @@ def main(
 
     # Conditionally generate the HTML report
     if write_html:
-        generate_report_html(package_report, html_report_file)
+        generate_report_html(package_report, html_report_file, prioritized=prioritized)
         print("HTML report generated.")
 
     if create_daily:
-        update_main_html_with_links(html_report_file, historical_html_dir)
-        generate_historical_graphs(historical_json_dir, coverag_trends_html, prioritized=prioritized)
+        # Generate dates.json manifest for dynamic HTML pages (no static HTML generation needed)
+        generate_dates_manifest(historical_json_dir)
 
 
 if __name__ == "__main__":
