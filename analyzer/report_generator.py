@@ -4,20 +4,11 @@ from typing import Any
 
 
 def archive_old_reports(
-        html_report_file: str,
-        historical_html_dir: str,
         historical_json_dir: str,
         json_report_file: str) -> None:
-    """Move the old reports to the historical_data directory with a timestamp."""
+    """Move the old JSON report to the historical_data directory with a timestamp."""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
-    os.makedirs(historical_html_dir, exist_ok=True)
     os.makedirs(historical_json_dir, exist_ok=True)
-
-    # Archive old HTML report
-    if os.path.exists(html_report_file):
-        new_html_name = os.path.join(historical_html_dir, f"index-{timestamp}.html")
-        os.rename(html_report_file, new_html_name)
-        print(f"Archived {html_report_file} to {new_html_name}")
 
     # Archive old JSON report
     if os.path.exists(json_report_file):
