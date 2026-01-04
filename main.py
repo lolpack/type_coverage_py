@@ -168,12 +168,12 @@ def analyze_package(
         else:
             package_report["TypeshedData"] = {}
 
-        package_report["CoverageData"][
-            "parameter_coverage_with_stubs"
-        ] = parameter_coverage_with_stubs
-        package_report["CoverageData"][
-            "return_type_coverage_with_stubs"
-        ] = return_type_coverage_with_stubs
+        package_report["CoverageData"]["parameter_coverage_with_stubs"] = (
+            parameter_coverage_with_stubs
+        )
+        package_report["CoverageData"]["return_type_coverage_with_stubs"] = (
+            return_type_coverage_with_stubs
+        )
 
         skipped_files_total = max(skipped_files_with_stubs, skipped_tests)
         package_report["CoverageData"]["skipped_files"] = skipped_files_total
@@ -265,7 +265,7 @@ def main(
     package_list: Optional[str] = None,
     pyright_stats: Optional[bool] = False,
     output_list_only: Optional[bool] = False,
-    prioritized: bool = False
+    prioritized: bool = False,
 ) -> None:
     package_report: dict[str, Any] = {}
 
@@ -314,12 +314,17 @@ def main(
 
     # Call pyright stats and merge data
     if pyright_stats:
-        pyright_package_stats: dict[str, Any] = get_pyright_stats([
-            {
-                "package_name": package_data["project"],
-                "has_py_typed": package_report[package_data["project"]]["HasPyTypedFile"]
-            } for package_data in top_packages
-        ])
+        pyright_package_stats: dict[str, Any] = get_pyright_stats(
+            [
+                {
+                    "package_name": package_data["project"],
+                    "has_py_typed": package_report[package_data["project"]][
+                        "HasPyTypedFile"
+                    ],
+                }
+                for package_data in top_packages
+            ]
+        )
 
         for package, stats in pyright_package_stats.items():
             if package in package_report:
@@ -335,14 +340,9 @@ def main(
         json_report_file: str = os.path.join("prioritized", "package_report.json")
         historical_json_dir: str = os.path.join("prioritized", historical_json_dir)
 
-
-
     # Archive old report in data section
     if create_daily:
-        archive_old_reports(
-            historical_json_dir,
-            json_report_file
-        )
+        archive_old_reports(historical_json_dir, json_report_file)
 
     # Conditionally write the JSON report
     if write_json:
@@ -406,7 +406,7 @@ if __name__ == "__main__":
             top_n=(args.top_n or 8000),
             package_name=args.package_name,
             write_json=True,
-            write_html=True,
+            write_html=False,  # Dynamic HTML loads from JSON, no static generation needed
             create_daily=True,
         )
     elif args.package_name:
@@ -438,7 +438,7 @@ if __name__ == "__main__":
             pyright_stats=True,
             output_list_only=True,
             create_daily=True,
-            prioritized=True
+            prioritized=True,
         )
     elif args.package_list:
         main(
