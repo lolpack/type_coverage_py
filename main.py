@@ -433,7 +433,7 @@ if __name__ == "__main__":
         main(
             package_list=args.package_list,
             write_json=True,
-            write_html=True,
+            write_html=False,  # Dynamic HTML loads from JSON, no static generation needed
             parallel=args.parallel,
             pyright_stats=True,
             output_list_only=True,
