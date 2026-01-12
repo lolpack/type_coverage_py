@@ -1,0 +1,123 @@
+name: Daily Type Checker Error Benchmark
+
+on:
+  schedule:
+    # Run daily at 4 AM UTC (after the LSP benchmark)
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      package_count:
+        description: 'Number of packages to benchmark (use 0 for all prioritized packages)'
+        required: false
+        default: '0'
+      timeout:
+        description: 'Timeout per type checker in seconds (300 = 5 minutes)'
+        required: false
+        default: '300'
+      test_mode:
+        description: 'Test mode - skip commit/push (for testing on branches)'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Use current branch for workflow_dispatch, published-report for scheduled runs
+          ref: ${{ github.event_name == 'schedule' && 'published-report' || github.ref }}
+
+      - name: Setup SSH Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Node.js (for Pyright)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Type Checkers
+        run: |
+          # Install Pyright (always get latest)
+          npm install -g pyright
+          
+          # Install type checkers via pip (always get latest)
+          pip install --upgrade pyrefly || echo "Pyrefly not available via pip"
+          pip install --upgrade ty || echo "ty not available via pip"
+          pip install --upgrade mypy || echo "Mypy installation failed"
+          pip install --upgrade zuban || echo "Zuban not available via pip"
+          
+          # Verify installations
+          echo "Installed type checkers:"
+          which pyright && echo "  pyright: $(pyright --version)" || echo "  pyright: not found"
+          which pyrefly && echo "  pyrefly: $(pyrefly --version 2>&1 || echo 'installed')" || echo "  pyrefly: not found"
+          which ty && echo "  ty: $(ty --version 2>&1 || echo 'installed')" || echo "  ty: not found"
+          which mypy && echo "  mypy: $(mypy --version)" || echo "  mypy: not found"
+          which zuban && echo "  zuban: $(zuban --version 2>&1 || echo 'installed')" || echo "  zuban: not found"
+
+      - name: Run Type Checker Benchmark
+        run: |
+          PACKAGE_COUNT="${{ github.event.inputs.package_count || '0' }}"
+          TIMEOUT="${{ github.event.inputs.timeout || '300' }}"
+          
+          # If package_count is 0, use all prioritized packages (don't pass --packages flag)
+          if [ "$PACKAGE_COUNT" = "0" ]; then
+            python -m type_checker_benchmark.daily_runner \
+              --timeout "$TIMEOUT" \
+              --checkers pyright pyrefly ty mypy zuban \
+              --output type_checker_benchmark/results
+          else
+            python -m type_checker_benchmark.daily_runner \
+              --packages "$PACKAGE_COUNT" \
+              --timeout "$TIMEOUT" \
+              --checkers pyright pyrefly ty mypy zuban \
+              --output type_checker_benchmark/results
+          fi
+
+      - name: Upload Results Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: type-checker-benchmark-results
+          path: type_checker_benchmark/results/
+          retention-days: 90
+
+      # Only commit/push on scheduled runs or when test_mode is false
+      - name: Stash Changes
+        if: github.event_name == 'schedule' || github.event.inputs.test_mode == 'false'
+        run: |
+          git add .
+          git stash
+
+      - name: Pull Latest Changes
+        if: github.event_name == 'schedule' || github.event.inputs.test_mode == 'false'
+        run: git pull origin published-report --rebase
+
+      - name: Apply Stashed Changes
+        if: github.event_name == 'schedule' || github.event.inputs.test_mode == 'false'
+        run: git stash pop || true
+
+      - name: Commit and Push Results
+        if: github.event_name == 'schedule' || github.event.inputs.test_mode == 'false'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update type checker benchmark results [skip ci]"
+          branch: published-report
+          file_pattern: 'type_checker_benchmark/results/*.json'

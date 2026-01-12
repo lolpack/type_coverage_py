@@ -1,0 +1,167 @@
+{
+  "timestamp": "2026-01-12T15:12:09.651173+00:00",
+  "date": "2026-01-12",
+  "type_checkers": [
+    "pyright",
+    "pyrefly",
+    "ty",
+    "mypy",
+    "zuban"
+  ],
+  "type_checker_versions": {
+    "pyright": "1.1.407",
+    "pyrefly": "0.46.2",
+    "ty": "0.0.4",
+    "mypy": "not installed",
+    "zuban": "0.3.0"
+  },
+  "package_count": 2,
+  "aggregate": {
+    "pyright": {
+      "packages_tested": 1,
+      "total_errors": 217,
+      "total_warnings": 5,
+      "avg_errors_per_package": 217.0,
+      "min_errors": 217,
+      "max_errors": 217,
+      "avg_execution_time_s": 5.46
+    },
+    "pyrefly": {
+      "packages_tested": 2,
+      "total_errors": 10224,
+      "total_warnings": 0,
+      "avg_errors_per_package": 5112.0,
+      "min_errors": 166,
+      "max_errors": 10058,
+      "avg_execution_time_s": 18.93
+    },
+    "ty": {
+      "packages_tested": 1,
+      "total_errors": 149,
+      "total_warnings": 21,
+      "avg_errors_per_package": 149.0,
+      "min_errors": 149,
+      "max_errors": 149,
+      "avg_execution_time_s": 0.35
+    },
+    "mypy": {
+      "packages_tested": 2,
+      "total_errors": 37,
+      "total_warnings": 0,
+      "avg_errors_per_package": 18.5,
+      "min_errors": 1,
+      "max_errors": 36,
+      "avg_execution_time_s": 4.71
+    },
+    "zuban": {
+      "packages_tested": 1,
+      "total_errors": 342,
+      "total_warnings": 0,
+      "avg_errors_per_package": 342.0,
+      "min_errors": 342,
+      "max_errors": 342,
+      "avg_execution_time_s": 0.79
+    }
+  },
+  "results": [
+    {
+      "package_name": "requests",
+      "github_url": "https://github.com/psf/requests",
+      "ranking": 1,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 217,
+          "warning_count": 5,
+          "info_count": 0,
+          "files_checked": 36,
+          "execution_time_s": 5.46
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 166,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.61
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 149,
+          "warning_count": 21,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.35
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 36,
+          "warning_count": 0,
+          "info_count": 5,
+          "files_checked": 0,
+          "execution_time_s": 8.62
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 342,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.79
+        }
+      }
+    },
+    {
+      "package_name": "numpy",
+      "github_url": "https://github.com/numpy/numpy",
+      "ranking": 2,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 120,
+          "error_message": "Timeout"
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 10058,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 37.25
+        },
+        "ty": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 120,
+          "error_message": "Timeout"
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.79
+        },
+        "zuban": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 120,
+          "error_message": "Timeout"
+        }
+      }
+    }
+  ]
+}

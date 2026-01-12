@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type Checker Error Benchmark | Python Type Coverage</title>
+    <link rel="stylesheet" href="styles/type-checker-benchmark.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>🔍 Type Checker Error Benchmarks</h1>
+            <p class="subtitle">Daily error analysis across Python type checkers</p>
+            <p class="description">
+                Comparing error counts reported by different type checkers on popular Python packages
+            </p>
+            <div class="date-selector">
+                <label for="dateSelect">View results for:</label>
+                <input type="date" id="dateSelect" class="date-input">
+                <button id="loadDateBtn" class="date-btn">Load</button>
+                <button id="latestBtn" class="date-btn">Latest</button>
+            </div>
+            <div class="last-updated" id="lastUpdated">Loading...</div>
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <div class="container">
+            <a href="/index.html" class="back-link">← Back to Type Coverage</a>
+            <div class="nav-links">
+                <a href="#comparison">Comparison</a>
+                <a href="#packages">By Package</a>
+                <a href="#methodology">Methodology</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Comparison Charts -->
+        <section id="comparison" class="section">
+            <h2>📈 Type Checker Comparison</h2>
+            
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Total Errors</h3>
+                    <p class="chart-description">Aggregate error counts across all packages</p>
+                    <canvas id="totalErrorsChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Average Errors per Package</h3>
+                    <p class="chart-description">Mean number of errors reported per package</p>
+                    <canvas id="avgErrorsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3>Errors by Package</h3>
+                <p class="chart-description">Error counts per package for each type checker</p>
+                <canvas id="packageComparisonChart"></canvas>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3>Execution Time Comparison</h3>
+                <p class="chart-description">Average time to type check each package (lower is better)</p>
+                <canvas id="executionTimeChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Detailed Results Table -->
+        <section id="packages" class="section">
+            <h2>📋 Detailed Results</h2>
+            
+            <div class="filter-bar">
+                <input type="text" id="packageSearch" placeholder="Search packages..." class="search-input">
+                <select id="sortBy" class="filter-select">
+                    <option value="ranking">Sort by Ranking</option>
+                    <option value="name">Sort by Name</option>
+                    <option value="errors">Sort by Error Count</option>
+                    <option value="time">Sort by Execution Time</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table class="results-table" id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Package</th>
+                            <th>Type Checker</th>
+                            <th>Errors</th>
+                            <th>Warnings</th>
+                            <th>Execution Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        <tr>
+                            <td colspan="6" class="loading-row">Loading results...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Methodology Section -->
+        <section id="methodology" class="section">
+            <h2>📐 Methodology</h2>
+            <div class="methodology-content">
+                <div class="method-card">
+                    <h3>🎯 What We Measure</h3>
+                    <p>
+                        We run each type checker on the source code of popular Python packages and count
+                        the number of errors, warnings, and other diagnostics reported. This helps compare
+                        how strict or permissive each type checker is on real-world code.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>🔄 Test Process</h3>
+                    <ol>
+                        <li>Clone the top Python packages from GitHub (shallow clone)</li>
+                        <li>Run each type checker on the package root</li>
+                        <li>Parse output to count errors and warnings</li>
+                        <li>Record execution time for each type checker</li>
+                    </ol>
+                    <p class="method-note">
+                        <strong>⏱️ Timeout:</strong> Each type checker has a 5-minute timeout. 
+                        Timeouts are marked as failures.
+                    </p>
+                    <p class="method-note">
+                        <strong>🔧 Configuration:</strong> Type checkers run with default settings.
+                        No custom configuration is provided to ensure a fair comparison.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>📊 Metrics Explained</h3>
+                    <ul>
+                        <li><strong>Errors:</strong> Type errors and issues that would block type safety</li>
+                        <li><strong>Warnings:</strong> Less severe issues or suggestions</li>
+                        <li><strong>Execution Time:</strong> Wall-clock time to complete the check</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legend -->
+        <section class="section">
+            <h2>🏷️ Type Checkers</h2>
+            <div class="legend-grid">
+                <div class="legend-item pyright">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Pyright</strong>
+                        <span class="legend-version" id="version-pyright"></span>
+                        <span>Type checker for Python by Microsoft</span>
+                    </div>
+                </div>
+                <div class="legend-item pyrefly">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Pyrefly</strong>
+                        <span class="legend-version" id="version-pyrefly"></span>
+                        <span>Type checker for Python by Meta</span>
+                    </div>
+                </div>
+                <div class="legend-item ty">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>ty</strong>
+                        <span class="legend-version" id="version-ty"></span>
+                        <span>Type checker for Python by Astral</span>
+                    </div>
+                </div>
+                <div class="legend-item mypy">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>mypy</strong>
+                        <span class="legend-version" id="version-mypy"></span>
+                        <span>The original optional static type checker for Python</span>
+                    </div>
+                </div>
+                <div class="legend-item zuban">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Zuban</strong>
+                        <span class="legend-version" id="version-zuban"></span>
+                        <span>Type checker for Python by the creator of Jedi LSP</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Part of the <a href="https://github.com/lolpack/type_coverage_py">Python Type Coverage</a> project</p>
+            <p>Benchmarks run daily via GitHub Actions</p>
+        </div>
+    </footer>
+
+    <script src="scripts/type-checker-benchmark.js"></script>
+</body>
+</html>
