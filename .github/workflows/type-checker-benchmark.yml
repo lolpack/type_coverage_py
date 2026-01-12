@@ -103,25 +103,4 @@ jobs:
           path: type_checker_benchmark/results/
           retention-days: 90
 
-      # Only commit/push on scheduled runs or when test_mode is false
-      - name: Stash Changes
-        if: github.event_name == 'schedule' || github.event.inputs.test_mode == 'false'
-        run: |
-          git add .
-          git stash
-
-      - name: Pull Latest Changes
-        if: github.event_name == 'schedule' || github.event.inputs.test_mode == 'false'
-        run: git pull origin published-report --rebase
-
-      - name: Apply Stashed Changes
-        if: github.event_name == 'schedule' || github.event.inputs.test_mode == 'false'
-        run: git stash pop || true
-
-      - name: Commit and Push Results
-        if: github.event_name == 'schedule' || github.event.inputs.test_mode == 'false'
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Update type checker benchmark results [skip ci]"
-          branch: published-report
-          file_pattern: 'type_checker_benchmark/results/*.json'
+     
