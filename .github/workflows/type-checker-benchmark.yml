@@ -1,6 +1,10 @@
 name: Daily Type Checker Error Benchmark
 
 on:
+  # TEMPORARY: Remove this push trigger after testing
+  push:
+    branches:
+      - add_typecheck_timings
   schedule:
     # Run daily at 4 AM UTC (after the LSP benchmark)
     - cron: '0 4 * * *'
