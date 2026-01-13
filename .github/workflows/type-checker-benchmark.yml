@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-15-xlarge, windows-latest]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 240
 
@@ -42,6 +42,7 @@ jobs:
           ref: ${{ github.event_name == 'schedule' && 'published-report' || github.ref }}
 
       - name: Setup SSH Known Hosts
+        shell: bash
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -53,6 +54,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install Python Dependencies
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -63,16 +65,17 @@ jobs:
           node-version: '20'
 
       - name: Install Type Checkers
+        shell: bash
         run: |
           # Install Pyright (always get latest)
           npm install -g pyright
-          
+
           # Install type checkers via pip (always get latest)
           pip install --upgrade pyrefly || echo "Pyrefly not available via pip"
           pip install --upgrade ty || echo "ty not available via pip"
           pip install --upgrade mypy || echo "Mypy installation failed"
           pip install --upgrade zuban || echo "Zuban not available via pip"
-          
+
           # Verify installations
           echo "Installed type checkers:"
           which pyright && echo "  pyright: $(pyright --version)" || echo "  pyright: not found"
@@ -82,10 +85,11 @@ jobs:
           which zuban && echo "  zuban: $(zuban --version 2>&1 || echo 'installed')" || echo "  zuban: not found"
 
       - name: Run Type Checker Benchmark
+        shell: bash
         run: |
           PACKAGE_COUNT="${{ github.event.inputs.package_count || '0' }}"
           TIMEOUT="${{ github.event.inputs.timeout || '300' }}"
-          
+
           # If package_count is 0, use all prioritized packages (don't pass --packages flag)
           if [ "$PACKAGE_COUNT" = "0" ]; then
             python -m type_checker_benchmark.daily_runner \
@@ -103,8 +107,8 @@ jobs:
       - name: Upload Results Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: type-checker-benchmark-results-${{ matrix.os }}
-          path: type_checker_benchmark/results/
+          name: type-checker-benchmark-results-new-${{ matrix.os }}
+          path: type_checker_benchmark/results-new/
           retention-days: 90
 
      
