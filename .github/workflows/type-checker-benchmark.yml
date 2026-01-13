@@ -117,8 +117,8 @@ jobs:
       - name: Upload Results Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: type-checker-benchmark-results-new-${{ matrix.os }}
-          path: type_checker_benchmark/results-new/
+          name: type-checker-benchmark-results-${{ matrix.os }}
+          path: type_checker_benchmark/results/
           retention-days: 90
 
      
