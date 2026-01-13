@@ -8,6 +8,7 @@ Calculate the Type Coverage for top Python packages. This analysis aims to deter
 - Coverage Trends: [https://python-type-checking.com/historical_data/coverage-trends.html](https://python-type-checking.com/historical_data/coverage-trends.html)
 - Prioritized Coverage Reports: [https://python-type-checking.com/prioritized/](https://python-type-checking.com/prioritized/)
 - LSP Performance Benchmark: [https://python-type-checking.com/lsp/benchmark/](https://python-type-checking.com/lsp/benchmark/)
+- Type Checker Error Benchmark: [https://python-type-checking.com/type_checker_benchmark/](https://python-type-checking.com/type_checker_benchmark/)
 
 - Prioritized list of packages included in analysis with Pyright: https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt
 - Coverage trends for prioritized list: [https://python-type-checking.com/prioritized/historical_data/coverage-trends.html](https://python-type-checking.com/prioritized/historical_data/coverage-trends.html)

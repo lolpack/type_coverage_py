@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest-large, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 240
 
@@ -90,18 +90,28 @@ jobs:
           PACKAGE_COUNT="${{ github.event.inputs.package_count || '0' }}"
           TIMEOUT="${{ github.event.inputs.timeout || '300' }}"
 
-          # If package_count is 0, use all prioritized packages (don't pass --packages flag)
+          # Determine OS name for output file
+          case "${{ matrix.os }}" in
+            ubuntu-*) OS_NAME="ubuntu" ;;
+            macos-*) OS_NAME="macos" ;;
+            windows-*) OS_NAME="windows" ;;
+            *) OS_NAME="${{ matrix.os }}" ;;
+          esac
+
+          # If package_count is 0, use all benchmark packages (don't pass --packages flag)
           if [ "$PACKAGE_COUNT" = "0" ]; then
             python -m type_checker_benchmark.daily_runner \
               --timeout "$TIMEOUT" \
               --checkers pyright pyrefly ty mypy zuban \
-              --output type_checker_benchmark/results
+              --output type_checker_benchmark/results \
+              --os-name "$OS_NAME"
           else
             python -m type_checker_benchmark.daily_runner \
               --packages "$PACKAGE_COUNT" \
               --timeout "$TIMEOUT" \
               --checkers pyright pyrefly ty mypy zuban \
-              --output type_checker_benchmark/results
+              --output type_checker_benchmark/results \
+              --os-name "$OS_NAME"
           fi
 
       - name: Upload Results Artifact

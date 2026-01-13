@@ -16,7 +16,13 @@
                 Comparing error counts reported by different type checkers on popular Python packages
             </p>
             <div class="date-selector">
-                <label for="dateSelect">View results for:</label>
+                <label for="osSelect">Platform:</label>
+                <select id="osSelect" class="filter-select">
+                    <option value="ubuntu">Ubuntu</option>
+                    <option value="macos">macOS</option>
+                    <option value="windows">Windows</option>
+                </select>
+                <label for="dateSelect">Date:</label>
                 <input type="date" id="dateSelect" class="date-input">
                 <button id="loadDateBtn" class="date-btn">Load</button>
                 <button id="latestBtn" class="date-btn">Latest</button>

@@ -21,6 +21,20 @@ const CHECKER_NAMES = {
 
 let benchmarkData = null;
 let charts = {};
+let currentOs = 'ubuntu';  // Default OS
+
+/**
+ * Get OS from URL query string
+ * @returns {string} OS name (defaults to 'ubuntu')
+ */
+function getOsFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const os = params.get('os');
+    if (os && ['ubuntu', 'macos', 'windows'].includes(os)) {
+        return os;
+    }
+    return 'ubuntu';
+}
 
 /**
  * Get date from URL query string
@@ -36,15 +50,19 @@ function getDateFromUrl() {
 }
 
 /**
- * Update URL query string with date
+ * Update URL query string with date and OS
  * @param {string|null} date - Date to set, or null to remove
+ * @param {string|null} os - OS to set
  */
-function updateUrlWithDate(date) {
+function updateUrlWithDate(date, os = null) {
     const url = new URL(window.location);
     if (date) {
         url.searchParams.set('date', date);
     } else {
         url.searchParams.delete('date');
+    }
+    if (os) {
+        url.searchParams.set('os', os);
     }
     window.history.replaceState({}, '', url);
 }
@@ -54,8 +72,16 @@ function updateUrlWithDate(date) {
  */
 async function init() {
     try {
+        currentOs = getOsFromUrl();
         const urlDate = getDateFromUrl();
-        await loadBenchmarkData(urlDate);
+
+        // Set OS selector to match URL
+        const osSelect = document.getElementById('osSelect');
+        if (osSelect) {
+            osSelect.value = currentOs;
+        }
+
+        await loadBenchmarkData(urlDate, currentOs);
         updateTimestamp();
         createTotalErrorsChart();
         createAvgErrorsChart();
@@ -69,12 +95,12 @@ async function init() {
         console.error('Failed to initialize dashboard:', error);
         const urlDate = getDateFromUrl();
         if (urlDate) {
-            showError(`No benchmark data available for ${urlDate}.`, {
+            showError(`No benchmark data available for ${urlDate} on ${currentOs}.`, {
                 text: 'Load latest results →',
-                onClick: () => switchToDate(null)
+                onClick: () => switchToDate(null, currentOs)
             });
         } else {
-            showError('Failed to load benchmark data. Please try again later.');
+            showError(`Failed to load benchmark data for ${currentOs}. Please try again later.`);
         }
     }
 }
@@ -86,56 +112,73 @@ function setupDateSelector() {
     const dateInput = document.getElementById('dateSelect');
     const loadBtn = document.getElementById('loadDateBtn');
     const latestBtn = document.getElementById('latestBtn');
-    
+    const osSelect = document.getElementById('osSelect');
+
     if (!dateInput || !loadBtn || !latestBtn) return;
-    
+
     if (benchmarkData?.date) {
         dateInput.value = benchmarkData.date;
     }
-    
+
     loadBtn.addEventListener('click', async () => {
         const date = dateInput.value;
         if (date) {
-            await switchToDate(date);
+            await switchToDate(date, currentOs);
         }
     });
-    
+
     latestBtn.addEventListener('click', async () => {
-        await switchToDate(null);
+        await switchToDate(null, currentOs);
         if (benchmarkData?.date) {
             dateInput.value = benchmarkData.date;
         }
     });
-    
+
     dateInput.addEventListener('keypress', async (e) => {
         if (e.key === 'Enter') {
             const date = dateInput.value;
             if (date) {
-                await switchToDate(date);
+                await switchToDate(date, currentOs);
             }
         }
     });
+
+    // OS selector change handler
+    if (osSelect) {
+        osSelect.addEventListener('change', async () => {
+            currentOs = osSelect.value;
+            const date = dateInput.value || null;
+            await switchToDate(date, currentOs);
+        });
+    }
 }
 
 /**
  * Load benchmark results from JSON file
  * @param {string|null} date - Optional date string (YYYY-MM-DD) to load historical data
+ * @param {string} os - OS name (ubuntu, macos, windows)
  */
-async function loadBenchmarkData(date = null) {
+async function loadBenchmarkData(date = null, os = 'ubuntu') {
     let paths;
-    
+
     if (date) {
         paths = [
+            `./results/benchmark_${date}_${os}.json`,
+            `../type_checker_benchmark/results/benchmark_${date}_${os}.json`,
+            // Fallback to non-OS-specific files for backwards compatibility
             `./results/benchmark_${date}.json`,
             `../type_checker_benchmark/results/benchmark_${date}.json`
         ];
     } else {
         paths = [
+            `./results/latest-${os}.json`,
+            `../type_checker_benchmark/results/latest-${os}.json`,
+            // Fallback to non-OS-specific files for backwards compatibility
             './results/latest.json',
             '../type_checker_benchmark/results/latest.json'
         ];
     }
-    
+
     for (const path of paths) {
         try {
             const response = await fetch(path);
@@ -148,11 +191,11 @@ async function loadBenchmarkData(date = null) {
             console.warn(`Failed to load from ${path}:`, e);
         }
     }
-    
+
     if (date) {
-        throw new Error(`No benchmark data found for ${date}`);
+        throw new Error(`No benchmark data found for ${date} on ${os}`);
     }
-    
+
     console.log('Using demo data');
     benchmarkData = getDemoData();
     return benchmarkData;
@@ -160,15 +203,17 @@ async function loadBenchmarkData(date = null) {
 
 /**
  * Switch to a different date's benchmark data
+ * @param {string|null} date - Date to load, or null for latest
+ * @param {string} os - OS name (ubuntu, macos, windows)
  */
-async function switchToDate(date) {
+async function switchToDate(date, os = 'ubuntu') {
     try {
-        await loadBenchmarkData(date);
+        await loadBenchmarkData(date, os);
         clearError();
         updateTimestamp();
 
         const loadedDate = benchmarkData?.date || date;
-        updateUrlWithDate(loadedDate);
+        updateUrlWithDate(loadedDate, os);
 
         const dateInput = document.getElementById('dateSelect');
         if (dateInput && loadedDate) {
@@ -185,10 +230,10 @@ async function switchToDate(date) {
         createP95ExecutionTimeChart();
         populateResultsTable();
     } catch (error) {
-        console.error('Failed to load data for date:', date, error);
-        showError(`No benchmark data available for ${date}.`, {
-            text: 'Load latest results →',
-            onClick: () => switchToDate(null)
+        console.error('Failed to load data for date:', date, 'os:', os, error);
+        showError(`No benchmark data available for ${date || 'latest'} on ${os}.`, {
+            text: 'Load latest Ubuntu results →',
+            onClick: () => switchToDate(null, 'ubuntu')
         });
     }
 }
@@ -370,11 +415,13 @@ function updateTimestamp() {
     const el = document.getElementById('lastUpdated');
     if (benchmarkData?.timestamp) {
         const date = new Date(benchmarkData.timestamp);
-        el.textContent = `Last updated: ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
+        const osLabel = benchmarkData?.os || currentOs;
+        const osDisplay = osLabel.charAt(0).toUpperCase() + osLabel.slice(1);
+        el.textContent = `Last updated: ${date.toLocaleDateString()} at ${date.toLocaleTimeString()} (${osDisplay})`;
     } else {
         el.textContent = 'Demo data - no benchmark results available';
     }
-    
+
     updateTypeCheckerVersions();
 }
 

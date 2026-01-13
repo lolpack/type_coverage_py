@@ -286,6 +286,57 @@ def get_type_checker_versions() -> dict[str, str]:
     return versions
 
 
+def load_benchmark_packages(
+    limit: int | None = None,
+    packages_file: Path | None = None,
+) -> list[PackageInfo]:
+    """Load packages from the dedicated benchmark package list.
+
+    Args:
+        limit: Maximum number of packages to return.
+        packages_file: Path to the benchmark packages text file.
+
+    Returns:
+        List of package information dictionaries.
+    """
+    if packages_file is None:
+        packages_file = ROOT_DIR / "type_checker_benchmark" / "benchmark_packages.txt"
+
+    if not packages_file.exists():
+        print(f"Warning: {packages_file} not found, using fallback packages")
+        fallback = get_fallback_packages()
+        return fallback[:limit] if limit else fallback
+
+    # Read package names from the text file
+    package_names: list[str] = []
+    with open(packages_file, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            # Skip empty lines and comments
+            if line and not line.startswith("#"):
+                package_names.append(line)
+
+    packages: list[PackageInfo] = []
+    for i, name in enumerate(package_names, 1):
+        github_url = resolve_github_url(name, {})
+        if github_url:
+            packages.append(
+                {
+                    "name": name,
+                    "github_url": github_url,
+                    "download_count": 0,
+                    "ranking": i,
+                }
+            )
+        else:
+            print(f"Warning: No GitHub URL found for {name}, skipping")
+
+    if limit:
+        packages = packages[:limit]
+
+    return packages
+
+
 def load_prioritized_packages(
     limit: int | None = None,
     packages_file: Path | None = None,
@@ -923,6 +974,7 @@ def run_daily_benchmark(
     type_checkers: list[str] | None = None,
     timeout: int = 300,
     output_dir: Path | None = None,
+    os_name: str | None = None,
 ) -> Path:
     """Run the daily benchmark suite.
 
@@ -932,6 +984,7 @@ def run_daily_benchmark(
         type_checkers: List of type checker names to use.
         timeout: Timeout in seconds for each type checker.
         output_dir: Directory to write results to.
+        os_name: OS name to include in output filename (e.g., ubuntu, macos, windows).
 
     Returns:
         Path to the output JSON file.
@@ -946,14 +999,14 @@ def run_daily_benchmark(
 
     # Load packages - either by name or by limit
     if package_names:
-        all_packages = load_prioritized_packages(limit=None)
+        all_packages = load_benchmark_packages(limit=None)
         packages = [p for p in all_packages if p["name"] in package_names]
         if not packages:
             print(f"Warning: None of the specified packages found: {package_names}")
             print(f"Available packages: {[p['name'] for p in all_packages[:20]]}...")
             return output_dir / "empty.json"
     else:
-        packages = load_prioritized_packages(limit=package_limit)
+        packages = load_benchmark_packages(limit=package_limit)
 
     _print_benchmark_header(packages, type_checkers, timeout)
 
@@ -977,6 +1030,7 @@ def run_daily_benchmark(
         type_checker_versions,
         len(packages),
         output_dir,
+        os_name,
     )
 
     print("\n" + "=" * 70)
@@ -1108,6 +1162,7 @@ def _save_results(
     type_checker_versions: dict[str, str],
     package_count: int,
     output_dir: Path,
+    os_name: str | None = None,
 ) -> Path:
     """Save benchmark results to JSON files.
 
@@ -1118,13 +1173,21 @@ def _save_results(
         type_checker_versions: Version strings for each type checker.
         package_count: Number of packages benchmarked.
         output_dir: Directory to write to.
+        os_name: OS name to include in filename (e.g., ubuntu, macos, windows).
 
     Returns:
         Path to the dated output file.
     """
     timestamp = datetime.now(timezone.utc)
     date_str = timestamp.strftime("%Y-%m-%d")
-    output_file = output_dir / f"benchmark_{date_str}.json"
+
+    # Build filename with optional OS suffix
+    if os_name:
+        output_file = output_dir / f"benchmark_{date_str}_{os_name}.json"
+        latest_file = output_dir / f"latest-{os_name}.json"
+    else:
+        output_file = output_dir / f"benchmark_{date_str}.json"
+        latest_file = output_dir / "latest.json"
 
     output_data: BenchmarkOutput = {
         "timestamp": timestamp.isoformat(),
@@ -1136,11 +1199,14 @@ def _save_results(
         "results": results,
     }
 
+    # Add OS to output if specified
+    if os_name:
+        output_data["os"] = os_name  # type: ignore[typeddict-unknown-key]
+
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(output_data, f, indent=2)
 
-    # Also save as latest.json for the web page
-    latest_file = output_dir / "latest.json"
+    # Also save as latest.json (or latest-{os}.json) for the web page
     with open(latest_file, "w", encoding="utf-8") as f:
         json.dump(output_data, f, indent=2)
 
@@ -1196,6 +1262,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=None,
         help="Output directory for results",
     )
+    parser.add_argument(
+        "--os-name",
+        type=str,
+        default=None,
+        help="OS name to include in output filename (e.g., ubuntu, macos, windows)",
+    )
 
     return parser.parse_args(argv)
 
@@ -1217,6 +1289,7 @@ def main(argv: list[str] | None = None) -> int:
         type_checkers=args.checkers,
         timeout=args.timeout,
         output_dir=args.output,
+        os_name=args.os_name,
     )
 
     return 0
