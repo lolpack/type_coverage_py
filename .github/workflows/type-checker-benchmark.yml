@@ -26,7 +26,11 @@ on:
 
 jobs:
   benchmark:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 240
 
     steps:
@@ -99,7 +103,7 @@ jobs:
       - name: Upload Results Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: type-checker-benchmark-results
+          name: type-checker-benchmark-results-${{ matrix.os }}
           path: type_checker_benchmark/results/
           retention-days: 90
 
