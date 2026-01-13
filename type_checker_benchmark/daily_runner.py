@@ -36,75 +36,6 @@ DEFAULT_TYPE_CHECKERS: list[str] = ["pyright", "pyrefly", "ty", "mypy", "zuban"]
 DEFAULT_TIMEOUT = 300  # 5 minutes for most checkers
 SLOW_CHECKER_TIMEOUT = 300  # 5 minutes for pyright and mypy
 
-# Known GitHub URLs for packages
-KNOWN_GITHUB_URLS: dict[str, str] = {
-    "requests": "https://github.com/psf/requests",
-    "numpy": "https://github.com/numpy/numpy",
-    "pandas": "https://github.com/pandas-dev/pandas",
-    "click": "https://github.com/pallets/click",
-    "flask": "https://github.com/pallets/flask",
-    "django": "https://github.com/django/django",
-    "fastapi": "https://github.com/fastapi/fastapi",
-    "pydantic": "https://github.com/pydantic/pydantic",
-    "httpx": "https://github.com/encode/httpx",
-    "aiohttp": "https://github.com/aio-libs/aiohttp",
-    "boto3": "https://github.com/boto/boto3",
-    "botocore": "https://github.com/boto/botocore",
-    "urllib3": "https://github.com/urllib3/urllib3",
-    "certifi": "https://github.com/certifi/python-certifi",
-    "idna": "https://github.com/kjd/idna",
-    "charset-normalizer": "https://github.com/Ousret/charset_normalizer",
-    "typing-extensions": "https://github.com/python/typing_extensions",
-    "packaging": "https://github.com/pypa/packaging",
-    "setuptools": "https://github.com/pypa/setuptools",
-    "wheel": "https://github.com/pypa/wheel",
-    "pip": "https://github.com/pypa/pip",
-    "six": "https://github.com/benjaminp/six",
-    "python-dateutil": "https://github.com/dateutil/dateutil",
-    "pyyaml": "https://github.com/yaml/pyyaml",
-    "attrs": "https://github.com/python-attrs/attrs",
-    "cryptography": "https://github.com/pyca/cryptography",
-    "cffi": "https://github.com/python-cffi/cffi",
-    "jinja2": "https://github.com/pallets/jinja",
-    "markupsafe": "https://github.com/pallets/markupsafe",
-    "sqlalchemy": "https://github.com/sqlalchemy/sqlalchemy",
-    "pillow": "https://github.com/python-pillow/Pillow",
-    "pytest": "https://github.com/pytest-dev/pytest",
-    "scipy": "https://github.com/scipy/scipy",
-    "matplotlib": "https://github.com/matplotlib/matplotlib",
-    "scikit-learn": "https://github.com/scikit-learn/scikit-learn",
-    "tensorflow": "https://github.com/tensorflow/tensorflow",
-    "torch": "https://github.com/pytorch/pytorch",
-    "transformers": "https://github.com/huggingface/transformers",
-    "rich": "https://github.com/Textualize/rich",
-    "typer": "https://github.com/tiangolo/typer",
-    "uvicorn": "https://github.com/encode/uvicorn",
-    "starlette": "https://github.com/encode/starlette",
-    "redis": "https://github.com/redis/redis-py",
-    "celery": "https://github.com/celery/celery",
-    "homeassistant": "https://github.com/home-assistant/core",
-    "ansible": "https://github.com/ansible/ansible",
-    "salt": "https://github.com/saltstack/salt",
-    "airflow": "https://github.com/apache/airflow",
-    "sentry-sdk": "https://github.com/getsentry/sentry-python",
-    "sympy": "https://github.com/sympy/sympy",
-    "spacy": "https://github.com/explosion/spaCy",
-    "black": "https://github.com/psf/black",
-    "dask": "https://github.com/dask/dask",
-    "streamlit": "https://github.com/streamlit/streamlit",
-    "gradio": "https://github.com/gradio-app/gradio",
-    "langchain": "https://github.com/langchain-ai/langchain",
-    "openai": "https://github.com/openai/openai-python",
-    "scrapy": "https://github.com/scrapy/scrapy",
-    "luigi": "https://github.com/spotify/luigi",
-    "prefect": "https://github.com/PrefectHQ/prefect",
-    "ray": "https://github.com/ray-project/ray",
-    "networkx": "https://github.com/networkx/networkx",
-    "trio": "https://github.com/python-trio/trio",
-    "httpcore": "https://github.com/encode/httpcore",
-    "tqdm": "https://github.com/tqdm/tqdm",
-}
-
 
 class ErrorMetrics(TypedDict, total=False):
     """Error metrics for a type checker run."""
@@ -118,7 +49,7 @@ class ErrorMetrics(TypedDict, total=False):
     error_message: str | None
 
 
-class PackageResult(TypedDict):
+class PackageResult(TypedDict, total=False):
     """Result of type checking a single package."""
 
     package_name: str
@@ -126,6 +57,8 @@ class PackageResult(TypedDict):
     ranking: int | None
     error: str | None
     metrics: dict[str, ErrorMetrics]
+    has_py_typed: bool
+    configured_checkers: dict[str, bool]
 
 
 class AggregateStats(TypedDict, total=False):
@@ -154,13 +87,15 @@ class BenchmarkOutput(TypedDict):
     results: list[PackageResult]
 
 
-class PackageInfo(TypedDict):
-    """Package information from the prioritized list."""
+class PackageInfo(TypedDict, total=False):
+    """Package information from the benchmark list."""
 
     name: str
     github_url: str | None
     download_count: int
     ranking: int
+    has_py_typed: bool
+    configured_checkers: dict[str, bool]  # Which type checkers are configured
 
 
 class ProcessResult(TypedDict):
@@ -290,46 +225,48 @@ def load_benchmark_packages(
     limit: int | None = None,
     packages_file: Path | None = None,
 ) -> list[PackageInfo]:
-    """Load packages from the dedicated benchmark package list.
+    """Load packages from the benchmark package JSON file.
 
     Args:
         limit: Maximum number of packages to return.
-        packages_file: Path to the benchmark packages text file.
+        packages_file: Path to the benchmark packages JSON file.
 
     Returns:
         List of package information dictionaries.
     """
     if packages_file is None:
-        packages_file = ROOT_DIR / "type_checker_benchmark" / "benchmark_packages.txt"
+        packages_file = ROOT_DIR / "type_checker_benchmark" / "benchmark_packages.json"
 
     if not packages_file.exists():
         print(f"Warning: {packages_file} not found, using fallback packages")
         fallback = get_fallback_packages()
         return fallback[:limit] if limit else fallback
 
-    # Read package names from the text file
-    package_names: list[str] = []
     with open(packages_file, encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            # Skip empty lines and comments
-            if line and not line.startswith("#"):
-                package_names.append(line)
+        data = json.load(f)
 
     packages: list[PackageInfo] = []
-    for i, name in enumerate(package_names, 1):
-        github_url = resolve_github_url(name, {})
-        if github_url:
-            packages.append(
-                {
-                    "name": name,
-                    "github_url": github_url,
-                    "download_count": 0,
-                    "ranking": i,
-                }
-            )
-        else:
-            print(f"Warning: No GitHub URL found for {name}, skipping")
+    for i, pkg in enumerate(data.get("packages", []), 1):
+        github_url = pkg.get("github_url")
+        if not github_url:
+            print(f"Warning: No GitHub URL for {pkg['name']}, skipping")
+            continue
+
+        # Extract configured checkers
+        configured_checkers = {}
+        for checker, info in pkg.get("type_checkers", {}).items():
+            configured_checkers[checker] = info.get("detected", False)
+
+        packages.append(
+            {
+                "name": pkg["name"],
+                "github_url": github_url,
+                "download_count": 0,
+                "ranking": i,
+                "has_py_typed": pkg.get("has_py_typed", False),
+                "configured_checkers": configured_checkers,
+            }
+        )
 
     if limit:
         packages = packages[:limit]
@@ -412,11 +349,6 @@ def resolve_github_url(package_name: str, package_data: dict[str, Any]) -> str |
     Returns:
         GitHub URL if found, None otherwise.
     """
-    # Check known mappings first
-    normalized_name = package_name.lower()
-    if normalized_name in KNOWN_GITHUB_URLS:
-        return KNOWN_GITHUB_URLS[normalized_name]
-
     # Try PyPI API to get project URLs
     return _fetch_github_url_from_pypi(package_name)
 
@@ -1112,6 +1044,15 @@ def _benchmark_single_package(
         Package result dictionary.
     """
     package_name = package["name"]
+    has_py_typed = package.get("has_py_typed", False)
+    configured_checkers = package.get("configured_checkers", {})
+
+    # Print configured checkers info
+    configured = [tc for tc, detected in configured_checkers.items() if detected]
+    if configured:
+        print(f"  Configured type checkers: {', '.join(configured)}")
+    if has_py_typed:
+        print(f"  Has py.typed marker")
 
     if not github_url:
         print("  Skipping: No GitHub URL found")
@@ -1121,6 +1062,8 @@ def _benchmark_single_package(
             "ranking": package.get("ranking"),
             "error": "No GitHub URL found",
             "metrics": {},
+            "has_py_typed": has_py_typed,
+            "configured_checkers": configured_checkers,
         }
 
     package_path = fetch_github_package(github_url, package_name, temp_path)
@@ -1131,6 +1074,8 @@ def _benchmark_single_package(
             "ranking": package.get("ranking"),
             "error": "Failed to clone repository",
             "metrics": {},
+            "has_py_typed": has_py_typed,
+            "configured_checkers": configured_checkers,
         }
 
     print(f"  Running type checkers...")
@@ -1149,6 +1094,8 @@ def _benchmark_single_package(
             "ranking": package.get("ranking"),
             "error": None,
             "metrics": metrics,
+            "has_py_typed": has_py_typed,
+            "configured_checkers": configured_checkers,
         }
     finally:
         # Cleanup package directory

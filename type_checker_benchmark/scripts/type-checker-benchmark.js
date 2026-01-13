@@ -714,19 +714,20 @@ function createP95ExecutionTimeChart() {
 function populateResultsTable() {
     const tbody = document.getElementById('resultsBody');
     if (!tbody) return;
-    
+
     const results = benchmarkData.results || [];
     const checkers = benchmarkData.type_checkers || [];
-    
+
     tbody.innerHTML = '';
-    
+
     for (const result of results) {
         for (let i = 0; i < checkers.length; i++) {
             const checker = checkers[i];
             const metrics = result.metrics?.[checker];
-            
+            const isConfigured = result.configured_checkers?.[checker] || false;
+
             const row = document.createElement('tr');
-            
+
             // Package name (only on first row for each package)
             const packageCell = document.createElement('td');
             if (i === 0) {
@@ -741,17 +742,34 @@ function populateResultsTable() {
                 } else {
                     packageCell.textContent = result.package_name;
                 }
+                // Add py.typed badge if applicable
+                if (result.has_py_typed) {
+                    const pyTypedBadge = document.createElement('span');
+                    pyTypedBadge.className = 'py-typed-badge';
+                    pyTypedBadge.textContent = 'py.typed';
+                    pyTypedBadge.title = 'Package includes py.typed marker';
+                    packageCell.appendChild(pyTypedBadge);
+                }
                 row.appendChild(packageCell);
             }
-            
-            // Type checker badge
+
+            // Type checker badge with configured indicator
             const checkerCell = document.createElement('td');
             const badge = document.createElement('span');
             badge.className = `checker-badge ${checker}`;
             badge.textContent = CHECKER_NAMES[checker] || checker;
             checkerCell.appendChild(badge);
+
+            // Add configured indicator
+            if (isConfigured) {
+                const configBadge = document.createElement('span');
+                configBadge.className = 'configured-badge';
+                configBadge.textContent = 'configured';
+                configBadge.title = `${result.package_name} uses ${checker} for type checking`;
+                checkerCell.appendChild(configBadge);
+            }
             row.appendChild(checkerCell);
-            
+
             // Error count
             const errorCell = document.createElement('td');
             errorCell.className = 'error-count';
@@ -763,7 +781,7 @@ function populateResultsTable() {
                 errorCell.textContent = metrics?.error_message || 'Failed';
             }
             row.appendChild(errorCell);
-            
+
             // Warning count
             const warningCell = document.createElement('td');
             if (result.error || !metrics?.ok) {
@@ -772,7 +790,7 @@ function populateResultsTable() {
                 warningCell.textContent = (metrics.warning_count || 0).toLocaleString();
             }
             row.appendChild(warningCell);
-            
+
             // Execution time
             const timeCell = document.createElement('td');
             if (result.error || !metrics?.ok) {
@@ -782,7 +800,7 @@ function populateResultsTable() {
                 timeCell.textContent = time ? `${time.toFixed(1)}s` : '-';
             }
             row.appendChild(timeCell);
-            
+
             // Status badge
             const statusCell = document.createElement('td');
             const statusBadge = document.createElement('span');
@@ -798,7 +816,7 @@ function populateResultsTable() {
             }
             statusCell.appendChild(statusBadge);
             row.appendChild(statusCell);
-            
+
             tbody.appendChild(row);
         }
     }

@@ -1,0 +1,2585 @@
+{
+  "packages": [
+    {
+      "name": "requests",
+      "github_url": "https://github.com/psf/requests",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "flask",
+      "github_url": "https://github.com/pallets/flask",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"pyright\",",
+            "[tool.pyright]",
+            "[\"pyright\"],"
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "tests.yaml: - name: cache mypy",
+            "tests.yaml: key: mypy|${{ hashFiles('pyproject.toml') }}",
+            "\"mypy\","
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "django",
+      "github_url": "https://github.com/django/django",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "fastapi",
+      "github_url": "https://github.com/fastapi/fastapi",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"mypy==1.14.1\",",
+            "[tool.mypy]",
+            "plugins = [\"pydantic.mypy\"]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "starlette",
+      "github_url": "https://github.com/encode/starlette",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"mypy==1.16.1\",",
+            "[tool.mypy]",
+            "[[tool.mypy.overrides]]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "uvicorn",
+      "github_url": "https://github.com/encode/uvicorn",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"mypy==1.15.0\",",
+            "[tool.mypy]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "aiohttp",
+      "github_url": "https://github.com/aio-libs/aiohttp",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "requirements",
+            "config_file"
+          ],
+          "evidence": [
+            "ci-cd.yml: - name: Run mypy",
+            "ci-cd.yml: make mypy",
+            "constraints.txt: # via mypy"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "httpx",
+      "github_url": "https://github.com/encode/httpx",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "[tool.mypy]",
+            "[[tool.mypy.overrides]]",
+            "requirements.txt: mypy==1.17.1"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "numpy",
+      "github_url": "https://github.com/numpy/numpy",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "stubtest.yml: # Stubtest depends on different branches and paths than mypy does, so we have a separate workflow.",
+            "stubtest.yml: mypy:",
+            "mypy.yml: name: Run MyPy"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "pandas",
+      "github_url": "https://github.com/pandas-dev/pandas",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "[tool.pyright]",
+            "typeCheckingMode = \"basic\""
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "# getattr is used to side-step mypy",
+            "[tool.mypy]",
+            "[[tool.mypy.overrides]]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "scipy",
+      "github_url": "https://github.com/scipy/scipy",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml",
+            "requirements",
+            "config_file"
+          ],
+          "evidence": [
+            "linux.yml: name: mypy (py3.12) & dev deps (py3.14), fast, spin",
+            "linux.yml: - name: Mypy",
+            "linux.yml: python -m pip install mypy==1.10.0 types-psutil typing_extensions"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "matplotlib",
+      "github_url": "https://github.com/matplotlib/matplotlib",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "mypy-stubtest.yml: name: Mypy Stubtest",
+            "mypy-stubtest.yml: mypy-stubtest:",
+            "mypy-stubtest.yml: name: mypy-stubtest"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "scikit-learn",
+      "github_url": "https://github.com/scikit-learn/scikit-learn",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "lint.yml: # Include pytest compatibility with mypy",
+            "lint.yml: pip install pytest $(get_dep ruff min) $(get_dep mypy min) cython-lint",
+            "lint.yml: python -c \"from importlib.metadata import version; print(f\\\"mypy={version('mypy')}\\\")\" >> /tmp/versions.txt"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "tensorflow",
+      "github_url": "https://github.com/tensorflow/tensorflow",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "torch",
+      "github_url": "https://github.com/pytorch/pytorch",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "config_file"
+          ],
+          "evidence": [
+            "lint.yml: # NOTE: We should be able to disable this and consolidate with Pyrefly",
+            "lint.yml: lintrunner-pyrefly:",
+            "lint.yml: name: lintrunner-pyrefly-${{ needs.get-changed-files.outputs.changed-files == '*' && 'all' || 'partial' }}"
+          ]
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "setup",
+            "config_file"
+          ],
+          "evidence": [
+            "lint.yml: # NOTE: mypy needs its own job because it depends on --all-files, without assessing all files it sometimes",
+            "_runner-determinator.yml: def get_gh_client(github_token: str) -> Github:  # type: ignore[no-any-unimported]",
+            "_runner-determinator.yml: def get_issue(gh: Github, repo: str, issue_num: int) -> Issue:  # type: ignore[no-any-unimported]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "transformers",
+      "github_url": "https://github.com/huggingface/transformers",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "langchain",
+      "github_url": "https://github.com/langchain-ai/langchain",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "openai",
+      "github_url": "https://github.com/openai/openai-python",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"pyright==1.1.399\",",
+            "\"typecheck:pyright\",",
+            "\"typecheck:pyright\" = \"pyright\""
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "detect-breaking-changes.yml: run: make mypy",
+            "\"mypy==1.17\",",
+            "\"typecheck:mypy\""
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "click",
+      "github_url": "https://github.com/pallets/click",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"pyright\",",
+            "[tool.pyright]",
+            "[\"pyright\", \"--ignoreexternal\", \"--verifytypes\", \"click\"],"
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "tests.yaml: - name: cache mypy",
+            "tests.yaml: key: mypy|${{ hashFiles('pyproject.toml') }}",
+            "\"mypy\","
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "typer",
+      "github_url": "https://github.com/tiangolo/typer",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"mypy==1.19.1\",",
+            "[tool.mypy]",
+            "[[tool.mypy.overrides]]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "rich",
+      "github_url": "https://github.com/Textualize/rich",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "pythonpackage.yml: - name: Typecheck with mypy",
+            "mypy = \"^1.11\"",
+            "[tool.mypy]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "tqdm",
+      "github_url": "https://github.com/tqdm/tqdm",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "black",
+      "github_url": "https://github.com/psf/black",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"mypy==1.19.0\",",
+            "mypy-args = [\"--ignore-missing-imports\"]",
+            "[tool.mypy]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "pydantic",
+      "github_url": "https://github.com/pydantic/pydantic",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "ci.yml: - name: Run typechecking integration tests (Pyright)",
+            "ci.yml: run: make test-typechecking-pyright",
+            "'pyright',"
+          ]
+        },
+        "pyrefly": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "ci.yml: - name: Run typechecking integration tests (Pyrefly)",
+            "ci.yml: run: make test-typechecking-pyrefly",
+            "'pyrefly',"
+          ]
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "ci.yml: run: uv run pytest --ignore=tests/mypy/ --ignore=tests/test_docs.py --memray",
+            "ci.yml: test-mypy:",
+            "ci.yml: name: Mypy typechecking tests"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "attrs",
+      "github_url": "https://github.com/python-attrs/attrs",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "pyright = [\"pyright\", { include-group = \"tests\" }]",
+            "[tool.pyright]"
+          ]
+        },
+        "pyrefly": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "pyrefly = [\"pyrefly\", { include-group = \"tests\" }]"
+          ]
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "ci.yml: name: Tests & Mypy on ${{ matrix.python-version }}",
+            "ci.yml: -e $TOX_PYTHON-mypy",
+            "mypy = ["
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "typing-extensions",
+      "github_url": "https://github.com/python/typing_extensions",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows"
+          ],
+          "evidence": [
+            "third_party.yml: mypy:",
+            "third_party.yml: - name: Checkout mypy for stubtest and mypyc tests",
+            "third_party.yml: run: git clone --depth=1 https://github.com/python/mypy.git || git clone --depth=1 https://github.com/python/mypy.git"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "packaging",
+      "github_url": "https://github.com/pypa/packaging",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "[tool.mypy]",
+            "[[tool.mypy.overrides]]",
+            "\"S101\",    # assert is used by mypy and pytest"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "setuptools",
+      "github_url": "https://github.com/pypa/setuptools",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "config_file"
+          ],
+          "evidence": [
+            "pyright.yml: name: pyright",
+            "pyright.yml: # pin pyright version so a new version doesn't suddenly cause the CI to fail,",
+            "pyright.yml: # For help with static-typing issues, or pyright update, ping @Avasam"
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml",
+            "setup",
+            "config_file"
+          ],
+          "evidence": [
+            "\"pytest-mypy\",",
+            "# pin mypy version so a new version doesn't suddenly cause the CI to fail,",
+            "# For help with static-typing issues, or mypy update, ping @Avasam"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "wheel",
+      "github_url": "https://github.com/pypa/wheel",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "mypy-init-return = true"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "pip",
+      "github_url": "https://github.com/pypa/pip",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "# mypy",
+            "[tool.mypy]",
+            "[[tool.mypy.overrides]]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "six",
+      "github_url": "https://github.com/benjaminp/six",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "python-dateutil",
+      "github_url": "https://github.com/dateutil/dateutil",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "pyyaml",
+      "github_url": "https://github.com/yaml/pyyaml",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "trio",
+      "github_url": "https://github.com/python-trio/trio",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "ci.yml: # `nodejs` for pyright (`node-env` pulls in nodejs but that takes a while and can time out the test).",
+            "[tool.pyright]",
+            "typeCheckingMode = \"strict\""
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "\"ANN401\",  # any-type (mypy's `disallow_any_explicit` is better)",
+            "[tool.mypy]",
+            "# Be strict about use of Mypy"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "httpcore",
+      "github_url": "https://github.com/encode/httpcore",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "[tool.mypy]",
+            "[[tool.mypy.overrides]]",
+            "requirements.txt: mypy==1.10.1"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "sqlalchemy",
+      "github_url": "https://github.com/sqlalchemy/sqlalchemy",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "[tool.pyright]"
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "run-on-pr.yaml: - mypy",
+            "run-test.yaml: - mypy",
+            "mypy = ["
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "redis",
+      "github_url": "https://github.com/redis/redis-py",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "config_file"
+          ],
+          "evidence": [
+            "Config file exists: .mypy.ini"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "celery",
+      "github_url": "https://github.com/celery/celery",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "[tool.mypy]",
+            "test.txt: mypy==1.19.1; platform_python_implementation==\"CPython\""
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "boto3",
+      "github_url": "https://github.com/boto/boto3",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "botocore",
+      "github_url": "https://github.com/boto/botocore",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "scrapy",
+      "github_url": "https://github.com/scrapy/scrapy",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "[tool.mypy]",
+            "[[tool.mypy.overrides]]",
+            "\"useless-import-alias\",  # used as a hint to mypy"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "luigi",
+      "github_url": "https://github.com/spotify/luigi",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"mypy\","
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "prefect",
+      "github_url": "https://github.com/PrefectHQ/prefect",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "static-analysis.yaml: uv run pyright --ignoreexternal --verifytypes prefect",
+            "static-analysis.yaml: - name: Run pyright check",
+            "static-analysis.yaml: uv run pyright -p .github/pyrightconfig-ci.json --level error"
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "integration-tests.yaml: pytest-mypy-plugins \\",
+            "\"pytest-mypy-plugins>=3.2.0\",",
+            "\"mypy==1.15.0\","
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "ansible",
+      "github_url": "https://github.com/ansible/ansible",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "salt",
+      "github_url": "https://github.com/saltstack/salt",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "setup"
+          ],
+          "evidence": [
+            "setup.cfg: [mypy]",
+            "setup.cfg: [mypy-tools.*]",
+            "setup.cfg: [mypy-tools.precommit.docstrings]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "airflow",
+      "github_url": "https://github.com/apache/airflow",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "ci-amd-arm.yml: mypy-checks: ${{ steps.selective-checks.outputs.mypy-checks }}",
+            "ci-amd-arm.yml: run-mypy: ${{ steps.selective-checks.outputs.run-mypy }}",
+            "ci-amd-arm.yml: run-mypy: ${{ needs.build-info.outputs.run-mypy }}"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "sympy",
+      "github_url": "https://github.com/sympy/sympy",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "# pyright type checker settings:",
+            "[tool.pyright]"
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "runtests.yml: # ----------------------------- mypy ----------------------------- #",
+            "runtests.yml: mypy:",
+            "runtests.yml: - run: pip install mpmath mypy hypothesis"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "spacy",
+      "github_url": "https://github.com/explosion/spaCy",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "requirements",
+            "setup"
+          ],
+          "evidence": [
+            "tests.yml: - name: Run mypy",
+            "tests.yml: python -m mypy spacy",
+            "requirements.txt: mypy>=1.5.0,<1.6.0; platform_machine != \"aarch64\" and python_version >= \"3.8\""
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "dask",
+      "github_url": "https://github.com/dask/dask",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "[tool.mypy]",
+            "# See https://github.com/python/mypy/issues/12286 for automatic multi-platform support",
+            "[[tool.mypy.overrides]]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "streamlit",
+      "github_url": "https://github.com/streamlit/streamlit",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "config_file"
+          ],
+          "evidence": [
+            "Config file exists: mypy.ini"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "gradio",
+      "github_url": "https://github.com/gradio-app/gradio",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "ray",
+      "github_url": "https://github.com/ray-project/ray",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "networkx",
+      "github_url": "https://github.com/networkx/networkx",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "mypy.yml: name: Mypy",
+            "mypy.yml: - name: run mypy",
+            "mypy.yml: run: mypy -p networkx"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "homeassistant",
+      "github_url": "https://github.com/home-assistant/core",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml",
+            "requirements",
+            "config_file"
+          ],
+          "evidence": [
+            "ci.yaml: mypy-only:",
+            "ci.yaml: description: \"Only run mypy\"",
+            "ci.yaml: || [[ \"${{ github.event.inputs.mypy-only }}\" == \"true\" ]] \\"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "cryptography",
+      "github_url": "https://github.com/pyca/cryptography",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"mypy >=1.14\",",
+            "\"mypy.ini\",",
+            "[tool.mypy]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "cffi",
+      "github_url": "https://github.com/python-cffi/cffi",
+      "has_py_typed": false,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "urllib3",
+      "github_url": "https://github.com/urllib3/urllib3",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "mypy = [",
+            "\"mypy>=1.14.1\",",
+            "[tool.mypy]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "certifi",
+      "github_url": "https://github.com/certifi/python-certifi",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows"
+          ],
+          "evidence": [
+            "ci.yml: mypy:",
+            "ci.yml: run: pip install mypy",
+            "ci.yml: - name: Run mypy"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "idna",
+      "github_url": "https://github.com/kjd/idna",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "python-package.yml: mypy:",
+            "python-package.yml: run: python -m pip install ruff mypy",
+            "python-package.yml: - name: Check types with mypy"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "charset-normalizer",
+      "github_url": "https://github.com/Ousret/charset_normalizer",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml",
+            "setup"
+          ],
+          "evidence": [
+            "[tool.mypy]",
+            "setup.py: mypycify = None  # type: ignore[assignment]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "jinja2",
+      "github_url": "https://github.com/pallets/jinja",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"pyright\",",
+            "[tool.pyright]",
+            "typeCheckingMode = \"standard\""
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "tests.yaml: - name: cache mypy",
+            "tests.yaml: key: mypy|${{ hashFiles('pyproject.toml') }}",
+            "\"mypy\","
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "markupsafe",
+      "github_url": "https://github.com/pallets/markupsafe",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "\"pyright\",",
+            "[tool.pyright]",
+            "typeCheckingMode = \"standard\""
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "tests.yaml: - name: cache mypy",
+            "tests.yaml: key: mypy|${{ hashFiles('pyproject.toml') }}",
+            "\"mypy\","
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "pillow",
+      "github_url": "https://github.com/python-pillow/Pillow",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "github_workflows",
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "lint.yml: - name: Mypy",
+            "lint.yml: run: uvx --with tox-uv tox -e mypy",
+            "[tool.mypy]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "pytest",
+      "github_url": "https://github.com/pytest-dev/pytest",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "[tool.pyright]",
+            "typeCheckingMode = \"basic\""
+          ]
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml"
+          ],
+          "evidence": [
+            "[tool.mypy]"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    },
+    {
+      "name": "sentry-sdk",
+      "github_url": "https://github.com/getsentry/sentry-python",
+      "has_py_typed": true,
+      "error": null,
+      "type_checkers": {
+        "pyright": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "pyrefly": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "mypy": {
+          "detected": true,
+          "locations": [
+            "pyproject.toml",
+            "requirements"
+          ],
+          "evidence": [
+            "# Tool: Mypy",
+            "[tool.mypy]",
+            "# Relaxations for code written before mypy was introduced"
+          ]
+        },
+        "ty": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        },
+        "zuban": {
+          "detected": false,
+          "locations": [],
+          "evidence": []
+        }
+      }
+    }
+  ],
+  "type_checkers": [
+    "pyright",
+    "pyrefly",
+    "mypy",
+    "ty",
+    "zuban"
+  ]
+}
