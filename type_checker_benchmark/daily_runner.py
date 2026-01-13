@@ -135,9 +135,11 @@ class AggregateStats(TypedDict, total=False):
     total_errors: int
     total_warnings: int
     avg_errors_per_package: float
+    p95_errors: int
     min_errors: int
     max_errors: int
     avg_execution_time_s: float
+    p95_execution_time_s: float
 
 
 class BenchmarkOutput(TypedDict):
@@ -809,6 +811,28 @@ def run_type_checkers_for_package(
     return results
 
 
+def compute_percentile(values: list[float | int], percentile: float) -> float:
+    """Compute the given percentile of a list of values.
+
+    Args:
+        values: List of numeric values.
+        percentile: Percentile to compute (0-100).
+
+    Returns:
+        The percentile value, or 0 if values is empty.
+    """
+    if not values:
+        return 0.0
+    sorted_values = sorted(values)
+    index = (percentile / 100) * (len(sorted_values) - 1)
+    lower = int(index)
+    upper = lower + 1
+    if upper >= len(sorted_values):
+        return float(sorted_values[-1])
+    fraction = index - lower
+    return sorted_values[lower] + fraction * (sorted_values[upper] - sorted_values[lower])
+
+
 def compute_aggregate_stats(
     results: list[PackageResult],
     type_checkers: list[str],
@@ -849,15 +873,19 @@ def compute_aggregate_stats(
         total_warnings = sum(warning_counts)
         avg_errors = total_errors / len(error_counts) if error_counts else 0.0
         avg_time = sum(execution_times) / len(execution_times) if execution_times else 0.0
+        p95_errors = compute_percentile(error_counts, 95)
+        p95_time = compute_percentile(execution_times, 95)
 
         stats[checker] = {
             "packages_tested": packages_tested,
             "total_errors": total_errors,
             "total_warnings": total_warnings,
             "avg_errors_per_package": round(avg_errors, 2),
+            "p95_errors": round(p95_errors),
             "min_errors": min(error_counts) if error_counts else 0,
             "max_errors": max(error_counts) if error_counts else 0,
             "avg_execution_time_s": round(avg_time, 2),
+            "p95_execution_time_s": round(p95_time, 2),
         }
 
     return stats
@@ -884,7 +912,9 @@ def print_summary(stats: dict[str, AggregateStats], type_checkers: list[str]) ->
         print(f"    Total errors: {s.get('total_errors', 0)}")
         print(f"    Total warnings: {s.get('total_warnings', 0)}")
         print(f"    Avg errors/package: {s.get('avg_errors_per_package', 0):.1f}")
+        print(f"    P95 errors: {s.get('p95_errors', 0)}")
         print(f"    Avg execution time: {s.get('avg_execution_time_s', 0):.1f}s")
+        print(f"    P95 execution time: {s.get('p95_execution_time_s', 0):.1f}s")
 
 
 def run_daily_benchmark(

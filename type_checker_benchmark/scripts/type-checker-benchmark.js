@@ -59,8 +59,9 @@ async function init() {
         updateTimestamp();
         createTotalErrorsChart();
         createAvgErrorsChart();
-        createPackageComparisonChart();
-        createExecutionTimeChart();
+        createP95ErrorsChart();
+        createAvgExecutionTimeChart();
+        createP95ExecutionTimeChart();
         populateResultsTable();
         setupFilters();
         setupDateSelector();
@@ -165,22 +166,23 @@ async function switchToDate(date) {
         await loadBenchmarkData(date);
         clearError();
         updateTimestamp();
-        
+
         const loadedDate = benchmarkData?.date || date;
         updateUrlWithDate(loadedDate);
-        
+
         const dateInput = document.getElementById('dateSelect');
         if (dateInput && loadedDate) {
             dateInput.value = loadedDate;
         }
-        
+
         Object.values(charts).forEach(chart => chart?.destroy());
         charts = {};
-        
+
         createTotalErrorsChart();
         createAvgErrorsChart();
-        createPackageComparisonChart();
-        createExecutionTimeChart();
+        createP95ErrorsChart();
+        createAvgExecutionTimeChart();
+        createP95ExecutionTimeChart();
         populateResultsTable();
     } catch (error) {
         console.error('Failed to load data for date:', date, error);
@@ -206,36 +208,44 @@ function getDemoData() {
                 total_errors: 245,
                 total_warnings: 120,
                 avg_errors_per_package: 49.0,
+                p95_errors: 82,
                 min_errors: 12,
                 max_errors: 85,
-                avg_execution_time_s: 12.5
+                avg_execution_time_s: 12.5,
+                p95_execution_time_s: 18.2
             },
             pyrefly: {
                 packages_tested: 5,
                 total_errors: 312,
                 total_warnings: 45,
                 avg_errors_per_package: 62.4,
+                p95_errors: 115,
                 min_errors: 18,
                 max_errors: 120,
-                avg_execution_time_s: 8.2
+                avg_execution_time_s: 8.2,
+                p95_execution_time_s: 12.1
             },
             ty: {
                 packages_tested: 5,
                 total_errors: 180,
                 total_warnings: 65,
                 avg_errors_per_package: 36.0,
+                p95_errors: 68,
                 min_errors: 8,
                 max_errors: 70,
-                avg_execution_time_s: 3.5
+                avg_execution_time_s: 3.5,
+                p95_execution_time_s: 5.6
             },
             mypy: {
                 packages_tested: 5,
                 total_errors: 298,
                 total_warnings: 85,
                 avg_errors_per_package: 59.6,
+                p95_errors: 92,
                 min_errors: 15,
                 max_errors: 95,
-                avg_execution_time_s: 25.8
+                avg_execution_time_s: 25.8,
+                p95_execution_time_s: 36.5
             }
         },
         results: [
@@ -486,48 +496,47 @@ function createAvgErrorsChart() {
 }
 
 /**
- * Create package comparison chart
+ * Create P95 errors per package chart
  */
-function createPackageComparisonChart() {
-    const ctx = document.getElementById('packageComparisonChart')?.getContext('2d');
+function createP95ErrorsChart() {
+    const ctx = document.getElementById('p95ErrorsChart')?.getContext('2d');
     if (!ctx) return;
-    
-    const results = benchmarkData.results || [];
+
+    const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    
-    // Get packages with valid metrics
-    const validResults = results.filter(r => !r.error && r.metrics);
-    const labels = validResults.map(r => r.package_name);
-    
-    const datasets = checkers.map(checker => ({
-        label: CHECKER_NAMES[checker] || checker,
-        data: validResults.map(r => r.metrics[checker]?.error_count || 0),
-        backgroundColor: CHECKER_COLORS[checker] || '#888',
-        borderRadius: 4
-    }));
-    
-    charts.packageComparison = new Chart(ctx, {
+
+    const labels = checkers.map(c => CHECKER_NAMES[c] || c);
+    const data = checkers.map(c => agg[c]?.p95_errors || 0);
+    const colors = checkers.map(c => CHECKER_COLORS[c] || '#888');
+
+    charts.p95Errors = new Chart(ctx, {
         type: 'bar',
-        data: { labels, datasets },
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'P95 Errors/Package',
+                data: data,
+                backgroundColor: colors,
+                borderRadius: 6,
+                borderWidth: 0
+            }]
+        },
         options: {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
-                legend: {
-                    position: 'top',
-                    labels: { color: '#c9d1d9' }
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => `${ctx.raw.toLocaleString()} errors (p95)`
+                    }
                 }
             },
             scales: {
                 y: {
                     beginAtZero: true,
                     grid: { color: '#30363d' },
-                    ticks: { color: '#8b949e' },
-                    title: {
-                        display: true,
-                        text: 'Error Count',
-                        color: '#8b949e'
-                    }
+                    ticks: { color: '#8b949e' }
                 },
                 x: {
                     grid: { display: false },
@@ -539,20 +548,20 @@ function createPackageComparisonChart() {
 }
 
 /**
- * Create execution time comparison chart
+ * Create average execution time chart
  */
-function createExecutionTimeChart() {
-    const ctx = document.getElementById('executionTimeChart')?.getContext('2d');
+function createAvgExecutionTimeChart() {
+    const ctx = document.getElementById('avgExecutionTimeChart')?.getContext('2d');
     if (!ctx) return;
-    
+
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    
+
     const labels = checkers.map(c => CHECKER_NAMES[c] || c);
     const data = checkers.map(c => agg[c]?.avg_execution_time_s || 0);
     const colors = checkers.map(c => CHECKER_COLORS[c] || '#888');
-    
-    charts.executionTime = new Chart(ctx, {
+
+    charts.avgExecutionTime = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
@@ -572,6 +581,63 @@ function createExecutionTimeChart() {
                 tooltip: {
                     callbacks: {
                         label: (ctx) => `${ctx.raw.toFixed(1)}s`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#30363d' },
+                    ticks: { color: '#8b949e' },
+                    title: {
+                        display: true,
+                        text: 'Seconds',
+                        color: '#8b949e'
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#c9d1d9' }
+                }
+            }
+        }
+    });
+}
+
+/**
+ * Create P95 execution time chart
+ */
+function createP95ExecutionTimeChart() {
+    const ctx = document.getElementById('p95ExecutionTimeChart')?.getContext('2d');
+    if (!ctx) return;
+
+    const agg = benchmarkData.aggregate || {};
+    const checkers = benchmarkData.type_checkers || [];
+
+    const labels = checkers.map(c => CHECKER_NAMES[c] || c);
+    const data = checkers.map(c => agg[c]?.p95_execution_time_s || 0);
+    const colors = checkers.map(c => CHECKER_COLORS[c] || '#888');
+
+    charts.p95ExecutionTime = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'P95 Execution Time (s)',
+                data: data,
+                backgroundColor: colors,
+                borderRadius: 6,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => `${ctx.raw.toFixed(1)}s (p95)`
                     }
                 }
             },
