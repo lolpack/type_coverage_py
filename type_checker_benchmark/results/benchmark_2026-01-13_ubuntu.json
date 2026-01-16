@@ -1,0 +1,3725 @@
+{
+  "timestamp": "2026-01-13T16:41:23.989181+00:00",
+  "date": "2026-01-13",
+  "type_checkers": [
+    "pyright",
+    "pyrefly",
+    "ty",
+    "mypy",
+    "zuban"
+  ],
+  "type_checker_versions": {
+    "pyright": "1.1.408",
+    "pyrefly": "0.48.0",
+    "ty": "0.0.11",
+    "mypy": "not installed",
+    "zuban": "0.4.1"
+  },
+  "package_count": 65,
+  "aggregate": {
+    "pyright": {
+      "packages_tested": 62,
+      "total_errors": 394591,
+      "total_warnings": 10058,
+      "avg_errors_per_package": 6364.37,
+      "p95_errors": 30988,
+      "min_errors": 0,
+      "max_errors": 57456,
+      "avg_execution_time_s": 35.34,
+      "p95_execution_time_s": 150.33
+    },
+    "pyrefly": {
+      "packages_tested": 65,
+      "total_errors": 857950,
+      "total_warnings": 0,
+      "avg_errors_per_package": 13199.23,
+      "p95_errors": 84815,
+      "min_errors": 1,
+      "max_errors": 160643,
+      "avg_execution_time_s": 3.37,
+      "p95_execution_time_s": 17.6
+    },
+    "ty": {
+      "packages_tested": 63,
+      "total_errors": 500073,
+      "total_warnings": 76353,
+      "avg_errors_per_package": 7937.67,
+      "p95_errors": 28465,
+      "min_errors": 3,
+      "max_errors": 171266,
+      "avg_execution_time_s": 2.56,
+      "p95_execution_time_s": 9.42
+    },
+    "mypy": {
+      "packages_tested": 65,
+      "total_errors": 23756,
+      "total_warnings": 0,
+      "avg_errors_per_package": 365.48,
+      "p95_errors": 1785,
+      "min_errors": 0,
+      "max_errors": 6445,
+      "avg_execution_time_s": 5.09,
+      "p95_execution_time_s": 14.06
+    },
+    "zuban": {
+      "packages_tested": 64,
+      "total_errors": 428342,
+      "total_warnings": 0,
+      "avg_errors_per_package": 6692.84,
+      "p95_errors": 19104,
+      "min_errors": 0,
+      "max_errors": 204208,
+      "avg_execution_time_s": 6.83,
+      "p95_execution_time_s": 54.59
+    }
+  },
+  "results": [
+    {
+      "package_name": "requests",
+      "github_url": "https://github.com/psf/requests",
+      "ranking": 1,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 217,
+          "warning_count": 3,
+          "info_count": 0,
+          "files_checked": 36,
+          "execution_time_s": 4.17
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 164,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.34
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 152,
+          "warning_count": 26,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.17
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 36,
+          "warning_count": 0,
+          "info_count": 5,
+          "files_checked": 0,
+          "execution_time_s": 4.45
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 349,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.3
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "flask",
+      "github_url": "https://github.com/pallets/flask",
+      "ranking": 2,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 189,
+          "warning_count": 3,
+          "info_count": 0,
+          "files_checked": 83,
+          "execution_time_s": 4.82
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 225,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.46
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 264,
+          "warning_count": 59,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.28
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.17
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1524,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.49
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "django",
+      "github_url": "https://github.com/django/django",
+      "ranking": 3,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 30330,
+          "warning_count": 100,
+          "info_count": 0,
+          "files_checked": 2883,
+          "execution_time_s": 62.32
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 32971,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 4.45
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 18965,
+          "warning_count": 1112,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 4.68
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 5.44
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 20498,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 5.04
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "fastapi",
+      "github_url": "https://github.com/fastapi/fastapi",
+      "ranking": 4,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1525,
+          "warning_count": 9,
+          "info_count": 0,
+          "files_checked": 1252,
+          "execution_time_s": 10.56
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 837,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.2
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 1011,
+          "warning_count": 38,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.69
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.18
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 5548,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.77
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "starlette",
+      "github_url": "https://github.com/encode/starlette",
+      "ranking": 5,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 63,
+          "warning_count": 2,
+          "info_count": 0,
+          "files_checked": 67,
+          "execution_time_s": 5.64
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 84,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.39
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 238,
+          "warning_count": 69,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.26
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 80,
+          "warning_count": 0,
+          "info_count": 4,
+          "files_checked": 0,
+          "execution_time_s": 5.15
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 170,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.37
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "uvicorn",
+      "github_url": "https://github.com/encode/uvicorn",
+      "ranking": 6,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 111,
+          "warning_count": 4,
+          "info_count": 0,
+          "files_checked": 74,
+          "execution_time_s": 4.84
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 108,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.36
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 287,
+          "warning_count": 47,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.22
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 15,
+          "warning_count": 0,
+          "info_count": 5,
+          "files_checked": 0,
+          "execution_time_s": 4.39
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 254,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.32
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "aiohttp",
+      "github_url": "https://github.com/aio-libs/aiohttp",
+      "ranking": 7,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1114,
+          "warning_count": 11,
+          "info_count": 0,
+          "files_checked": 165,
+          "execution_time_s": 16.95
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 881,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.92
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 681,
+          "warning_count": 236,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.84
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1352,
+          "warning_count": 0,
+          "info_count": 156,
+          "files_checked": 0,
+          "execution_time_s": 9.57
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1950,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.88
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "httpx",
+      "github_url": "https://github.com/encode/httpx",
+      "ranking": 8,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 56,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 60,
+          "execution_time_s": 4.81
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 77,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.37
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 119,
+          "warning_count": 8,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.2
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 24,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 4.61
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 53,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.49
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "numpy",
+      "github_url": "https://github.com/numpy/numpy",
+      "ranking": 9,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 8800,
+          "warning_count": 1189,
+          "info_count": 0,
+          "files_checked": 765,
+          "execution_time_s": 284.19
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 9282,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 19.87
+        },
+        "ty": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 300.08,
+          "error_message": "Timeout"
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.23
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 8221,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 80.43
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "pandas",
+      "github_url": "https://github.com/pandas-dev/pandas",
+      "ranking": 10,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 575,
+          "warning_count": 59,
+          "info_count": 0,
+          "files_checked": 431,
+          "execution_time_s": 28.97
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 8513,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 4.82
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 5332,
+          "warning_count": 992,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 4.68
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 2599,
+          "warning_count": 0,
+          "info_count": 744,
+          "files_checked": 0,
+          "execution_time_s": 34.1
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 3284,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.77
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "scipy",
+      "github_url": "https://github.com/scipy/scipy",
+      "ranking": 11,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 15349,
+          "warning_count": 1267,
+          "info_count": 0,
+          "files_checked": 1103,
+          "execution_time_s": 75.08
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 17558,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.79
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 7949,
+          "warning_count": 878,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.38
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1687,
+          "warning_count": 0,
+          "info_count": 40,
+          "files_checked": 0,
+          "execution_time_s": 18.01
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1918,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.49
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "matplotlib",
+      "github_url": "https://github.com/matplotlib/matplotlib",
+      "ranking": 12,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 8724,
+          "warning_count": 82,
+          "info_count": 0,
+          "files_checked": 995,
+          "execution_time_s": 32.81
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 8086,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.19
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 7446,
+          "warning_count": 1037,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.17
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 21,
+          "warning_count": 0,
+          "info_count": 4,
+          "files_checked": 0,
+          "execution_time_s": 5.14
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 48,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.36
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "scikit-learn",
+      "github_url": "https://github.com/scikit-learn/scikit-learn",
+      "ranking": 13,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 17831,
+          "warning_count": 103,
+          "info_count": 0,
+          "files_checked": 987,
+          "execution_time_s": 43.56
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 7468,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.7
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 3497,
+          "warning_count": 302,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.0
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 183,
+          "warning_count": 0,
+          "info_count": 7,
+          "files_checked": 0,
+          "execution_time_s": 14.68
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 209,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.2
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "tensorflow",
+      "github_url": "https://github.com/tensorflow/tensorflow",
+      "ranking": 14,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 53229,
+          "warning_count": 1182,
+          "info_count": 0,
+          "files_checked": 3253,
+          "execution_time_s": 181.21
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 88163,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 15.79
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 23637,
+          "warning_count": 2667,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 9.49
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 6445,
+          "warning_count": 0,
+          "info_count": 654,
+          "files_checked": 0,
+          "execution_time_s": 41.0
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 6.11
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "torch",
+      "github_url": "https://github.com/pytorch/pytorch",
+      "ranking": 15,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 300.1,
+          "error_message": "Timeout"
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 160643,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 21.69
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 171266,
+          "warning_count": 19475,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 30.59
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.52
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 204208,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 17.63
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": true,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "transformers",
+      "github_url": "https://github.com/huggingface/transformers",
+      "ranking": 16,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 300.1,
+          "error_message": "Timeout"
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 66897,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 11.08
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 41019,
+          "warning_count": 9226,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 16.73
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.26
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.35
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "langchain",
+      "github_url": "https://github.com/langchain-ai/langchain",
+      "ranking": 17,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 6285,
+          "warning_count": 317,
+          "info_count": 0,
+          "files_checked": 2501,
+          "execution_time_s": 32.57
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 5829,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.53
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 6373,
+          "warning_count": 984,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.55
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.66
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 8208,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.66
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "openai",
+      "github_url": "https://github.com/openai/openai-python",
+      "ranking": 18,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 9937,
+          "warning_count": 1,
+          "info_count": 0,
+          "files_checked": 1132,
+          "execution_time_s": 16.35
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 659,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.3
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 994,
+          "warning_count": 305,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.96
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 284,
+          "warning_count": 0,
+          "info_count": 10,
+          "files_checked": 0,
+          "execution_time_s": 9.17
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 374,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.6
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "click",
+      "github_url": "https://github.com/pallets/click",
+      "ranking": 19,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 63,
+          "warning_count": 2,
+          "info_count": 0,
+          "files_checked": 62,
+          "execution_time_s": 5.97
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 76,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.35
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 90,
+          "warning_count": 21,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.26
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1046,
+          "warning_count": 0,
+          "info_count": 222,
+          "files_checked": 0,
+          "execution_time_s": 4.49
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1155,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.34
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "typer",
+      "github_url": "https://github.com/tiangolo/typer",
+      "ranking": 20,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 382,
+          "warning_count": 1,
+          "info_count": 0,
+          "files_checked": 638,
+          "execution_time_s": 5.76
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 312,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.79
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 491,
+          "warning_count": 19,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.3
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 35,
+          "warning_count": 0,
+          "info_count": 3,
+          "files_checked": 0,
+          "execution_time_s": 0.6
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1320,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.55
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "rich",
+      "github_url": "https://github.com/Textualize/rich",
+      "ranking": 21,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 346,
+          "warning_count": 28,
+          "info_count": 0,
+          "files_checked": 190,
+          "execution_time_s": 8.47
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 314,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.52
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 336,
+          "warning_count": 16,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.32
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 919,
+          "warning_count": 0,
+          "info_count": 520,
+          "files_checked": 0,
+          "execution_time_s": 5.62
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1164,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.45
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "tqdm",
+      "github_url": "https://github.com/tqdm/tqdm",
+      "ranking": 22,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 308,
+          "warning_count": 3,
+          "info_count": 0,
+          "files_checked": 64,
+          "execution_time_s": 4.47
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 180,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.39
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 135,
+          "warning_count": 13,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.21
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 93,
+          "warning_count": 0,
+          "info_count": 13,
+          "files_checked": 0,
+          "execution_time_s": 4.18
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 414,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.3
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "black",
+      "github_url": "https://github.com/psf/black",
+      "ranking": 23,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 6082,
+          "warning_count": 394,
+          "info_count": 0,
+          "files_checked": 314,
+          "execution_time_s": 152.09
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 6181,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.81
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 5738,
+          "warning_count": 73,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.62
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 2,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.94
+        },
+        "zuban": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 300.1,
+          "error_message": "Timeout"
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "pydantic",
+      "github_url": "https://github.com/pydantic/pydantic",
+      "ranking": 24,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 3922,
+          "warning_count": 20,
+          "info_count": 12,
+          "files_checked": 372,
+          "execution_time_s": 30.96
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 4483,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.8
+        },
+        "ty": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 300.1,
+          "error_message": "Timeout"
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 1.1
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 4835,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 61.11
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": true,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "attrs",
+      "github_url": "https://github.com/python-attrs/attrs",
+      "ranking": 25,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 943,
+          "warning_count": 46,
+          "info_count": 5,
+          "files_checked": 64,
+          "execution_time_s": 5.9
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 609,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.41
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 613,
+          "warning_count": 67,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.23
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1810,
+          "warning_count": 0,
+          "info_count": 439,
+          "files_checked": 0,
+          "execution_time_s": 5.21
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1918,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.26
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": true,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "typing-extensions",
+      "github_url": "https://github.com/python/typing_extensions",
+      "ranking": 26,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1522,
+          "warning_count": 81,
+          "info_count": 1,
+          "files_checked": 7,
+          "execution_time_s": 5.93
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 1427,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.41
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 913,
+          "warning_count": 89,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.34
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.15
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1282,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.23
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "packaging",
+      "github_url": "https://github.com/pypa/packaging",
+      "ranking": 27,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 107,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 37,
+          "execution_time_s": 5.52
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 76,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.32
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 96,
+          "warning_count": 53,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.19
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 7,
+          "warning_count": 0,
+          "info_count": 1,
+          "files_checked": 0,
+          "execution_time_s": 0.77
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.7
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "setuptools",
+      "github_url": "https://github.com/pypa/setuptools",
+      "ranking": 28,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 0,
+          "warning_count": 485,
+          "info_count": 0,
+          "files_checked": 145,
+          "execution_time_s": 8.85
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 1748,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.08
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 1385,
+          "warning_count": 159,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.02
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 58,
+          "warning_count": 0,
+          "info_count": 1,
+          "files_checked": 0,
+          "execution_time_s": 5.48
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 208,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.33
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "wheel",
+      "github_url": "https://github.com/pypa/wheel",
+      "ranking": 29,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 48,
+          "warning_count": 3,
+          "info_count": 0,
+          "files_checked": 24,
+          "execution_time_s": 2.75
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 60,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.27
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 61,
+          "warning_count": 18,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.1
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 69,
+          "warning_count": 0,
+          "info_count": 39,
+          "files_checked": 0,
+          "execution_time_s": 3.64
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 95,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.19
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "pip",
+      "github_url": "https://github.com/pypa/pip",
+      "ranking": 30,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1202,
+          "warning_count": 91,
+          "info_count": 0,
+          "files_checked": 635,
+          "execution_time_s": 23.65
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 1149,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.37
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 794,
+          "warning_count": 155,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.34
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 1.2
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 2917,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.99
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "six",
+      "github_url": "https://github.com/benjaminp/six",
+      "ranking": 31,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 97,
+          "warning_count": 15,
+          "info_count": 0,
+          "files_checked": 4,
+          "execution_time_s": 2.07
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 85,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.26
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 41,
+          "warning_count": 3,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.07
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 14,
+          "warning_count": 0,
+          "info_count": 7,
+          "files_checked": 0,
+          "execution_time_s": 3.54
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 129,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.1
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "python-dateutil",
+      "github_url": "https://github.com/dateutil/dateutil",
+      "ranking": 32,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 419,
+          "warning_count": 40,
+          "info_count": 0,
+          "files_checked": 38,
+          "execution_time_s": 42.81
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 551,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.42
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 363,
+          "warning_count": 13,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.28
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 49,
+          "warning_count": 0,
+          "info_count": 4,
+          "files_checked": 0,
+          "execution_time_s": 3.98
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 941,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.42
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "pyyaml",
+      "github_url": "https://github.com/yaml/pyyaml",
+      "ranking": 33,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 674,
+          "warning_count": 22,
+          "info_count": 0,
+          "files_checked": 47,
+          "execution_time_s": 3.86
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 815,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.35
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 996,
+          "warning_count": 170,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.18
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.16
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 990,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.3
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "trio",
+      "github_url": "https://github.com/python-trio/trio",
+      "ranking": 34,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 3320,
+          "warning_count": 11,
+          "info_count": 0,
+          "files_checked": 162,
+          "execution_time_s": 9.47
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 835,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.66
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 890,
+          "warning_count": 151,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.47
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 526,
+          "warning_count": 0,
+          "info_count": 69,
+          "files_checked": 0,
+          "execution_time_s": 6.44
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 771,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.4
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "httpcore",
+      "github_url": "https://github.com/encode/httpcore",
+      "ranking": 35,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 128,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 55,
+          "execution_time_s": 3.52
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 111,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.29
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 202,
+          "warning_count": 32,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.16
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 58,
+          "warning_count": 0,
+          "info_count": 4,
+          "files_checked": 0,
+          "execution_time_s": 4.27
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 83,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.26
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "sqlalchemy",
+      "github_url": "https://github.com/sqlalchemy/sqlalchemy",
+      "ranking": 36,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 14093,
+          "warning_count": 250,
+          "info_count": 0,
+          "files_checked": 660,
+          "execution_time_s": 53.3
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 31395,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.31
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 13712,
+          "warning_count": 1491,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 4.37
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 2,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 4.18
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 9144,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.93
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "redis",
+      "github_url": "https://github.com/redis/redis-py",
+      "ranking": 37,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 3862,
+          "warning_count": 27,
+          "info_count": 0,
+          "files_checked": 268,
+          "execution_time_s": 17.15
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 3653,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.44
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 2561,
+          "warning_count": 291,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.95
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 3128,
+          "warning_count": 0,
+          "info_count": 216,
+          "files_checked": 0,
+          "execution_time_s": 10.47
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 3949,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.97
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "celery",
+      "github_url": "https://github.com/celery/celery",
+      "ranking": 38,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 7529,
+          "warning_count": 58,
+          "info_count": 0,
+          "files_checked": 412,
+          "execution_time_s": 16.8
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 6302,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.45
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 4510,
+          "warning_count": 541,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.0
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 2,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.57
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 6629,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.55
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "boto3",
+      "github_url": "https://github.com/boto/boto3",
+      "ranking": 39,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 309,
+          "warning_count": 19,
+          "info_count": 0,
+          "files_checked": 103,
+          "execution_time_s": 3.91
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 268,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.34
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 213,
+          "warning_count": 41,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.18
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 120,
+          "warning_count": 0,
+          "info_count": 4,
+          "files_checked": 0,
+          "execution_time_s": 3.9
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 447,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.55
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "botocore",
+      "github_url": "https://github.com/boto/botocore",
+      "ranking": 40,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 955,
+          "warning_count": 37,
+          "info_count": 0,
+          "files_checked": 283,
+          "execution_time_s": 12.68
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 1148,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.82
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 607,
+          "warning_count": 167,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.8
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 103,
+          "warning_count": 0,
+          "info_count": 15,
+          "files_checked": 0,
+          "execution_time_s": 6.68
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 5055,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.11
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "scrapy",
+      "github_url": "https://github.com/scrapy/scrapy",
+      "ranking": 41,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1892,
+          "warning_count": 40,
+          "info_count": 0,
+          "files_checked": 411,
+          "execution_time_s": 12.85
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 2090,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.06
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 1769,
+          "warning_count": 397,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.75
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.93
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 149,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.14
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "luigi",
+      "github_url": "https://github.com/spotify/luigi",
+      "ranking": 42,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 3577,
+          "warning_count": 89,
+          "info_count": 0,
+          "files_checked": 260,
+          "execution_time_s": 12.85
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 5636,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.19
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 1902,
+          "warning_count": 196,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.68
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 328,
+          "warning_count": 0,
+          "info_count": 17,
+          "files_checked": 0,
+          "execution_time_s": 6.62
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 3331,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.81
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "prefect",
+      "github_url": "https://github.com/PrefectHQ/prefect",
+      "ranking": 43,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 10613,
+          "warning_count": 200,
+          "info_count": 0,
+          "files_checked": 1625,
+          "execution_time_s": 82.29
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 11407,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 4.88
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 8169,
+          "warning_count": 1098,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.66
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.21
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1370,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.27
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "ansible",
+      "github_url": "https://github.com/ansible/ansible",
+      "ranking": 44,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 6065,
+          "warning_count": 94,
+          "info_count": 0,
+          "files_checked": 1773,
+          "execution_time_s": 43.09
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 8583,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.13
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 4895,
+          "warning_count": 1055,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.29
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.26
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 7130,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.62
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "salt",
+      "github_url": "https://github.com/saltstack/salt",
+      "ranking": 45,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 31023,
+          "warning_count": 350,
+          "info_count": 0,
+          "files_checked": 2591,
+          "execution_time_s": 89.92
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 28939,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 18.03
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 21885,
+          "warning_count": 1904,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 5.63
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 237,
+          "warning_count": 0,
+          "info_count": 14,
+          "files_checked": 0,
+          "execution_time_s": 5.49
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 110,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.21
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "airflow",
+      "github_url": "https://github.com/apache/airflow",
+      "ranking": 46,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 23036,
+          "warning_count": 2033,
+          "info_count": 0,
+          "files_checked": 6503,
+          "execution_time_s": 108.32
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 27607,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 11.92
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 22934,
+          "warning_count": 1460,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 8.79
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 3.11
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 3082,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 119.52
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "sympy",
+      "github_url": "https://github.com/sympy/sympy",
+      "ranking": 47,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 38321,
+          "warning_count": 74,
+          "info_count": 0,
+          "files_checked": 1584,
+          "execution_time_s": 280.61
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 114822,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 10.08
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 14744,
+          "warning_count": 858,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 6.7
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.24
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 740,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.35
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "spacy",
+      "github_url": "https://github.com/explosion/spaCy",
+      "ranking": 48,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1750,
+          "warning_count": 131,
+          "info_count": 0,
+          "files_checked": 888,
+          "execution_time_s": 15.02
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 1438,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.07
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 1818,
+          "warning_count": 158,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.81
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.17
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 116,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.6
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "dask",
+      "github_url": "https://github.com/dask/dask",
+      "ranking": 49,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 4755,
+          "warning_count": 19,
+          "info_count": 0,
+          "files_checked": 363,
+          "execution_time_s": 37.74
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 3218,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.27
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 1521,
+          "warning_count": 267,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.45
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 40,
+          "warning_count": 0,
+          "info_count": 33,
+          "files_checked": 0,
+          "execution_time_s": 10.33
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 149,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.76
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "streamlit",
+      "github_url": "https://github.com/streamlit/streamlit",
+      "ranking": 50,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 5085,
+          "warning_count": 48,
+          "info_count": 0,
+          "files_checked": 1041,
+          "execution_time_s": 23.11
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 6785,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.46
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 159,
+          "warning_count": 159,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.67
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 833,
+          "warning_count": 0,
+          "info_count": 92,
+          "files_checked": 0,
+          "execution_time_s": 11.6
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 11207,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.47
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "gradio",
+      "github_url": "https://github.com/gradio-app/gradio",
+      "ranking": 51,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 2003,
+          "warning_count": 15,
+          "info_count": 0,
+          "files_checked": 709,
+          "execution_time_s": 16.73
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 2608,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.91
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 1845,
+          "warning_count": 497,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.86
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.33
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 2168,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.07
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "ray",
+      "github_url": "https://github.com/ray-project/ray",
+      "ranking": 52,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 57456,
+          "warning_count": 601,
+          "info_count": 0,
+          "files_checked": 4309,
+          "execution_time_s": 116.99
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 71423,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 15.9
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 29001,
+          "warning_count": 5071,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 7.6
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.52
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 37927,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 7.57
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "networkx",
+      "github_url": "https://github.com/networkx/networkx",
+      "ranking": 53,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 3044,
+          "warning_count": 16,
+          "info_count": 0,
+          "files_checked": 686,
+          "execution_time_s": 27.05
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 2420,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.49
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 2116,
+          "warning_count": 318,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.28
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 13,
+          "warning_count": 0,
+          "info_count": 19,
+          "files_checked": 0,
+          "execution_time_s": 8.39
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 33,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.47
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "homeassistant",
+      "github_url": "https://github.com/home-assistant/core",
+      "ranking": 54,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 300.1,
+          "error_message": "Timeout"
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 93589,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 24.14
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 56948,
+          "warning_count": 21082,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 18.85
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.52
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 48252,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 88.98
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "cryptography",
+      "github_url": "https://github.com/pyca/cryptography",
+      "ranking": 55,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 482,
+          "warning_count": 25,
+          "info_count": 0,
+          "files_checked": 256,
+          "execution_time_s": 11.58
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 308,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.69
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 135,
+          "warning_count": 16,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.52
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 35,
+          "warning_count": 0,
+          "info_count": 5,
+          "files_checked": 0,
+          "execution_time_s": 7.14
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1183,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.6
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "cffi",
+      "github_url": "https://github.com/python-cffi/cffi",
+      "ranking": 56,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1611,
+          "warning_count": 94,
+          "info_count": 0,
+          "files_checked": 124,
+          "execution_time_s": 8.18
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 3140,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.58
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 3278,
+          "warning_count": 28,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.41
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 140,
+          "warning_count": 0,
+          "info_count": 20,
+          "files_checked": 0,
+          "execution_time_s": 4.68
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 3621,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.4
+        }
+      },
+      "has_py_typed": false,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": false,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "urllib3",
+      "github_url": "https://github.com/urllib3/urllib3",
+      "ranking": 57,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 167,
+          "warning_count": 2,
+          "info_count": 0,
+          "files_checked": 81,
+          "execution_time_s": 7.37
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 968,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.5
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 348,
+          "warning_count": 202,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.37
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 182,
+          "warning_count": 0,
+          "info_count": 31,
+          "files_checked": 0,
+          "execution_time_s": 5.51
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 465,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.43
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "certifi",
+      "github_url": "https://github.com/certifi/python-certifi",
+      "ranking": 58,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 1,
+          "info_count": 0,
+          "files_checked": 6,
+          "execution_time_s": 0.96
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.18
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 3,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.05
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 2,
+          "warning_count": 0,
+          "info_count": 3,
+          "files_checked": 0,
+          "execution_time_s": 1.99
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 3,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.08
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "idna",
+      "github_url": "https://github.com/kjd/idna",
+      "ranking": 59,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 8,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 14,
+          "execution_time_s": 6.01
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 6,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.54
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 7,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 2.89
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 0,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 3.42
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.63
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "charset-normalizer",
+      "github_url": "https://github.com/Ousret/charset_normalizer",
+      "ranking": 60,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 29,
+          "warning_count": 1,
+          "info_count": 0,
+          "files_checked": 33,
+          "execution_time_s": 3.36
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 31,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.26
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 43,
+          "warning_count": 19,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.1
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 98,
+          "warning_count": 0,
+          "info_count": 36,
+          "files_checked": 0,
+          "execution_time_s": 6.51
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 124,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.16
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "jinja2",
+      "github_url": "https://github.com/pallets/jinja",
+      "ranking": 61,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 120,
+          "warning_count": 1,
+          "info_count": 0,
+          "files_checked": 60,
+          "execution_time_s": 6.02
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 119,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.36
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 190,
+          "warning_count": 96,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.36
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 960,
+          "warning_count": 0,
+          "info_count": 147,
+          "files_checked": 0,
+          "execution_time_s": 4.66
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 1006,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.36
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "markupsafe",
+      "github_url": "https://github.com/pallets/markupsafe",
+      "ranking": 62,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 6,
+          "warning_count": 7,
+          "info_count": 0,
+          "files_checked": 13,
+          "execution_time_s": 1.59
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 36,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.22
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 48,
+          "warning_count": 6,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.05
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 16,
+          "warning_count": 0,
+          "info_count": 4,
+          "files_checked": 0,
+          "execution_time_s": 3.4
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 31,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.09
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "pillow",
+      "github_url": "https://github.com/python-pillow/Pillow",
+      "ranking": 63,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 624,
+          "warning_count": 44,
+          "info_count": 0,
+          "files_checked": 304,
+          "execution_time_s": 14.7
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 605,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.89
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 431,
+          "warning_count": 37,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.75
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 77,
+          "warning_count": 0,
+          "info_count": 13,
+          "files_checked": 0,
+          "execution_time_s": 8.38
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 550,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.92
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "pytest",
+      "github_url": "https://github.com/pytest-dev/pytest",
+      "ranking": 64,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 309,
+          "warning_count": 21,
+          "info_count": 0,
+          "files_checked": 271,
+          "execution_time_s": 14.43
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 382,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.8
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 405,
+          "warning_count": 120,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.81
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 1,
+          "warning_count": 0,
+          "info_count": 2,
+          "files_checked": 0,
+          "execution_time_s": 0.17
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 357,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.06
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": true,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    },
+    {
+      "package_name": "sentry-sdk",
+      "github_url": "https://github.com/getsentry/sentry-python",
+      "ranking": 65,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "error_count": 1968,
+          "warning_count": 187,
+          "info_count": 0,
+          "files_checked": 464,
+          "execution_time_s": 15.57
+        },
+        "pyrefly": {
+          "ok": true,
+          "error_count": 1566,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.49
+        },
+        "ty": {
+          "ok": true,
+          "error_count": 1502,
+          "warning_count": 265,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.76
+        },
+        "mypy": {
+          "ok": true,
+          "error_count": 9,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 0.86
+        },
+        "zuban": {
+          "ok": true,
+          "error_count": 4975,
+          "warning_count": 0,
+          "info_count": 0,
+          "files_checked": 0,
+          "execution_time_s": 1.43
+        }
+      },
+      "has_py_typed": true,
+      "configured_checkers": {
+        "pyright": false,
+        "pyrefly": false,
+        "mypy": true,
+        "ty": false,
+        "zuban": false
+      }
+    }
+  ],
+  "os": "ubuntu"
+}
