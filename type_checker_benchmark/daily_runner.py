@@ -471,6 +471,47 @@ def is_type_checker_available(checker: str) -> bool:
     return result.returncode == 0
 
 
+def _write_dummy_pyright_config(package_path: Path) -> Path:
+    """Write a minimal pyright config to ignore existing project configs.
+
+    Args:
+        package_path: Path to the package directory.
+
+    Returns:
+        Path to the dummy config file.
+    """
+    config = {
+        "include": ["."],
+        "exclude": [],
+        "typeCheckingMode": "basic",
+    }
+    # Use pyrightconfig.json directly - this overrides any existing config
+    # in the cloned package (which gets deleted after benchmarking anyway)
+    config_path = package_path / "pyrightconfig.json"
+    with open(config_path, "w", encoding="utf-8") as f:
+        json.dump(config, f)
+    return config_path
+
+
+def _write_dummy_mypy_config(package_path: Path) -> Path:
+    """Write a minimal mypy config with check_untyped_defs enabled.
+
+    Args:
+        package_path: Path to the package directory.
+
+    Returns:
+        Path to the dummy config file.
+    """
+    config_content = """[mypy]
+check_untyped_defs = True
+ignore_missing_imports = True
+"""
+    config_path = package_path / "mypy.benchmark.ini"
+    with open(config_path, "w", encoding="utf-8") as f:
+        f.write(config_content)
+    return config_path
+
+
 def run_pyright(package_path: Path, timeout: int = SLOW_CHECKER_TIMEOUT) -> ErrorMetrics:
     """Run Pyright on a package and count errors.
 
@@ -481,6 +522,10 @@ def run_pyright(package_path: Path, timeout: int = SLOW_CHECKER_TIMEOUT) -> Erro
     Returns:
         Error metrics dictionary.
     """
+    # Write a dummy config to ensure consistent behavior and ignore existing configs
+    _write_dummy_pyright_config(package_path)
+
+    # Run pyright - it will automatically find our pyrightconfig.json in the package dir
     result = run_process_with_timeout(
         ["pyright", "--outputjson", str(package_path)],
         cwd=package_path,
@@ -644,10 +689,13 @@ def run_mypy(package_path: Path, timeout: int = SLOW_CHECKER_TIMEOUT) -> ErrorMe
     Returns:
         Error metrics dictionary.
     """
-    # Run mypy on the package using python -m mypy
-    # since the mypy executable might not be in PATH
+    # Write a dummy config to ensure consistent behavior and check untyped defs
+    config_path = _write_dummy_mypy_config(package_path)
+
+    # Run mypy with our custom config that enables check_untyped_defs
+    # This ensures we check all code, not just annotated functions
     result = run_process_with_timeout(
-        [sys.executable, "-m", "mypy", str(package_path)],
+        [sys.executable, "-m", "mypy", "--config-file", str(config_path), str(package_path)],
         cwd=package_path,
         timeout=timeout,
     )

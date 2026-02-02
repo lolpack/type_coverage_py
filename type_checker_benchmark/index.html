@@ -130,17 +130,22 @@
                     <h3>🔄 Test Process</h3>
                     <ol>
                         <li>Clone the top Python packages from GitHub (shallow clone)</li>
-                        <li>Run each type checker on the package root</li>
+                        <li>Run each type checker on the package root with standardized configuration</li>
                         <li>Parse output to count errors and warnings</li>
                         <li>Record execution time for each type checker</li>
                     </ol>
                     <p class="method-note">
-                        <strong>⏱️ Timeout:</strong> Each type checker has a 5-minute timeout. 
+                        <strong>⏱️ Timeout:</strong> Each type checker has a 5-minute timeout.
                         Timeouts are marked as failures.
                     </p>
                     <p class="method-note">
-                        <strong>🔧 Configuration:</strong> Type checkers run with default settings.
-                        No custom configuration is provided to ensure a fair comparison.
+                        <strong>🔧 Configuration:</strong> Type checkers run with standardized minimal
+                        configurations that ignore any existing project settings. This ensures a fair
+                        comparison across all packages regardless of how they are configured.
+                    </p>
+                    <p class="method-note">
+                        <strong>📝 mypy:</strong> Runs with <code>check_untyped_defs = True</code> to
+                        analyze all code including unannotated functions, ensuring comprehensive coverage.
                     </p>
                 </div>
                 <div class="method-card">
