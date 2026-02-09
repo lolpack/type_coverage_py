@@ -230,7 +230,7 @@ KNOWN_GITHUB_URLS: dict[str, str] = {
 # Note: Indexing is disabled for pyrefly to ensure fast cold-start benchmarks
 TYPE_CHECKER_COMMANDS: dict[str, str] = {
     "pyright": "pyright-langserver --stdio",
-    "pyrefly": "pyrefly lsp",
+    "pyrefly": "pyrefly lsp --indexing-mode none",
     "ty": "ty server",
     "zuban": "zubanls",
 }
