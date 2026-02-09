@@ -120,7 +120,7 @@ class AggregateStats(TypedDict, total=False):
     success_rate: float
 
 
-class BenchmarkOutput(TypedDict):
+class BenchmarkOutput(TypedDict, total=False):
     """Complete benchmark output structure."""
 
     timestamp: str
@@ -131,6 +131,7 @@ class BenchmarkOutput(TypedDict):
     runs_per_package: int
     aggregate: dict[str, AggregateStats]
     results: list[PackageResult]
+    os: str
 
 
 class PackageInfo(TypedDict):
@@ -229,7 +230,7 @@ KNOWN_GITHUB_URLS: dict[str, str] = {
 # Note: Indexing is disabled for pyrefly to ensure fast cold-start benchmarks
 TYPE_CHECKER_COMMANDS: dict[str, str] = {
     "pyright": "pyright-langserver --stdio",
-    "pyrefly": "pyrefly lsp --indexing-mode none",
+    "pyrefly": "pyrefly lsp",
     "ty": "ty server",
     "zuban": "zubanls",
 }
@@ -774,6 +775,7 @@ def run_daily_benchmark(
     runs_per_package: int = 100,
     output_dir: Path | None = None,
     seed: int | None = None,
+    os_name: str | None = None,
 ) -> Path:
     """Run the daily benchmark suite.
 
@@ -784,6 +786,7 @@ def run_daily_benchmark(
         runs_per_package: Number of benchmark runs per package.
         output_dir: Directory to write results to.
         seed: Random seed for reproducibility.
+        os_name: OS name to include in output filename (e.g., ubuntu, macos, windows).
 
     Returns:
         Path to the output JSON file.
@@ -830,6 +833,7 @@ def run_daily_benchmark(
         len(packages),
         runs_per_package,
         output_dir,
+        os_name,
     )
 
     print("\n" + "=" * 70)
@@ -967,6 +971,7 @@ def _save_results(
     package_count: int,
     runs_per_package: int,
     output_dir: Path,
+    os_name: str | None = None,
 ) -> Path:
     """Save benchmark results to JSON files.
 
@@ -978,13 +983,21 @@ def _save_results(
         package_count: Number of packages benchmarked.
         runs_per_package: Number of runs per package.
         output_dir: Directory to write to.
+        os_name: OS name to include in filename (e.g., ubuntu, macos, windows).
 
     Returns:
         Path to the dated output file.
     """
     timestamp = datetime.now(timezone.utc)
     date_str = timestamp.strftime("%Y-%m-%d")
-    output_file = output_dir / f"benchmark_{date_str}.json"
+
+    # Build filename with optional OS suffix
+    if os_name:
+        output_file = output_dir / f"benchmark_{date_str}_{os_name}.json"
+        latest_file = output_dir / f"latest-{os_name}.json"
+    else:
+        output_file = output_dir / f"benchmark_{date_str}.json"
+        latest_file = output_dir / "latest.json"
 
     output_data: BenchmarkOutput = {
         "timestamp": timestamp.isoformat(),
@@ -997,11 +1010,14 @@ def _save_results(
         "results": results,
     }
 
+    # Add OS to output if specified
+    if os_name:
+        output_data["os"] = os_name
+
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(output_data, f, indent=2)
 
-    # Also save as latest.json for the web page
-    latest_file = output_dir / "latest.json"
+    # Also save as latest.json (or latest-{os}.json) for the web page
     with open(latest_file, "w", encoding="utf-8") as f:
         json.dump(output_data, f, indent=2)
 
@@ -1064,6 +1080,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=None,
         help="Random seed for reproducibility",
     )
+    parser.add_argument(
+        "--os-name",
+        type=str,
+        default=None,
+        help="OS name to include in output filename (e.g., ubuntu, macos, windows)",
+    )
 
     return parser.parse_args(argv)
 
@@ -1086,6 +1108,7 @@ def main(argv: list[str] | None = None) -> int:
         runs_per_package=args.runs,
         output_dir=args.output,
         seed=args.seed,
+        os_name=args.os_name,
     )
 
     return 0

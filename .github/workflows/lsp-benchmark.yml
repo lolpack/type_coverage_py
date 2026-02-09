@@ -1,6 +1,9 @@
 name: Daily LSP Benchmark
 
 on:
+  push:
+    branches:
+      - update_lsp_benchmark
   schedule:
     # Run daily at 3 AM UTC (after the main data update)
     - cron: '0 3 * * *'
@@ -17,7 +20,11 @@ on:
 
 jobs:
   benchmark:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 180
 
     steps:
@@ -25,9 +32,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: published-report
+          # Use current branch for push/workflow_dispatch, published-report for scheduled runs
+          ref: ${{ github.event_name == 'schedule' && 'published-report' || github.ref }}
 
       - name: Setup SSH Known Hosts
+        shell: bash
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -39,6 +48,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install Python Dependencies
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -49,15 +59,16 @@ jobs:
           node-version: '20'
 
       - name: Install Type Checkers
+        shell: bash
         run: |
           # Install Pyright (always get latest)
           npm install -g pyright
-          
+
           # Install type checkers via pip (always get latest)
           pip install --upgrade pyrefly || echo "Pyrefly not available via pip"
           pip install --upgrade ty || echo "ty not available via pip"
           pip install --upgrade zuban || echo "Zuban not available via pip"
-          
+
           # Verify installations
           echo "Installed type checkers:"
           which pyright-langserver && echo "  pyright: $(pyright --version)" || echo "  pyright: not found"
@@ -66,43 +77,61 @@ jobs:
           which zubanls && echo "  zuban: installed" || echo "  zuban: not found"
 
       - name: Run LSP Benchmark
+        shell: bash
         run: |
           PACKAGE_COUNT="${{ github.event.inputs.package_count || '0' }}"
           RUNS="${{ github.event.inputs.runs_per_package || '100' }}"
-          
+
+          # Determine OS name for output file
+          case "${{ matrix.os }}" in
+            ubuntu-*) OS_NAME="ubuntu" ;;
+            macos-*) OS_NAME="macos" ;;
+            windows-*) OS_NAME="windows" ;;
+            *) OS_NAME="${{ matrix.os }}" ;;
+          esac
+
           # If package_count is 0, use all prioritized packages (don't pass --packages flag)
           if [ "$PACKAGE_COUNT" = "0" ]; then
             python -m lsp.benchmark.daily_runner \
               --runs "$RUNS" \
               --checkers pyright pyrefly ty zuban \
-              --output lsp/benchmark/results
+              --output lsp/benchmark/results \
+              --os-name "$OS_NAME"
           else
             python -m lsp.benchmark.daily_runner \
               --packages "$PACKAGE_COUNT" \
               --runs "$RUNS" \
               --checkers pyright pyrefly ty zuban \
-              --output lsp/benchmark/results
+              --output lsp/benchmark/results \
+              --os-name "$OS_NAME"
           fi
 
       - name: Upload Results Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lsp-benchmark-results
+          name: lsp-benchmark-results-${{ matrix.os }}
           path: lsp/benchmark/results/
           retention-days: 90
 
       - name: Stash Changes
+        if: github.event_name == 'schedule'
+        shell: bash
         run: |
           git add .
           git stash
 
       - name: Pull Latest Changes
+        if: github.event_name == 'schedule'
+        shell: bash
         run: git pull origin published-report --rebase
 
       - name: Apply Stashed Changes
+        if: github.event_name == 'schedule'
+        shell: bash
         run: git stash pop || true
 
       - name: Commit and Push Results
+        if: github.event_name == 'schedule'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update LSP benchmark results [skip ci]"
