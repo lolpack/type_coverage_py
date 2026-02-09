@@ -227,10 +227,9 @@ KNOWN_GITHUB_URLS: dict[str, str] = {
 }
 
 # Type checker LSP commands
-# Note: Indexing is disabled for pyrefly to ensure fast cold-start benchmarks
 TYPE_CHECKER_COMMANDS: dict[str, str] = {
     "pyright": "pyright-langserver --stdio",
-    "pyrefly": "pyrefly lsp --indexing-mode none",
+    "pyrefly": "pyrefly lsp",
     "ty": "ty server",
     "zuban": "zubanls",
 }
