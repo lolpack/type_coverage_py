@@ -1,0 +1,1615 @@
+{
+  "package_name": "aiohttp",
+  "github_url": "https://github.com/aio-libs/aiohttp",
+  "commit_sha": "df0d897466b723cde92696dfb2887f253671870c",
+  "summary": {
+    "pyright_errors": 1074,
+    "pyrefly_errors": 868,
+    "false_positives": 119,
+    "false_negatives": 452
+  },
+  "false_positives": [
+    {
+      "file": "aiohttp/client.py",
+      "line": 434,
+      "error_code": "bad-typed-dict-key",
+      "message": "`StackSummary` is not assignable to TypedDict key `source_traceback` with type `str | Self@ClientSession`",
+      "source_context": "     431 |             )\n     432 |             context = {\"client_session\": self, \"message\": \"Unclosed client session\"}\n     433 |             if self._source_traceback is not None:\n>>>  434 |                 context[\"source_traceback\"] = self._source_traceback\n     435 |             self._loop.call_exception_handler(context)\n     436 | \n     437 |     if sys.version_info >= (3, 11) and TYPE_CHECKING:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L434"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 457,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `join`",
+      "source_context": "     454 |     def _build_url(self, str_or_url: StrOrURL) -> URL:\n     455 |         url = URL(str_or_url)\n     456 |         if self._base_url and not url.absolute:\n>>>  457 |             return self._base_url.join(url)\n     458 |         return url\n     459 | \n     460 |     async def _request(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L457"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 607,
+      "error_code": "redundant-condition",
+      "message": "Integer literal used as condition. It's equivalent to `False`",
+      "source_context": "     604 |                         # NOTE: Bail early, otherwise, causes `InvalidURL` through\n     605 |                         # NOTE: `self._request_class()` below.\n     606 |                         err_exc_cls = (\n>>>  607 |                             InvalidUrlRedirectClientError\n     608 |                             if redirects\n     609 |                             else InvalidUrlClientError\n     610 |                         )",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L607"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 916,
+      "error_code": "inconsistent-overload",
+      "message": "Implementation signature `(self: Self@ClientSession, url: str | Unknown, *, method: str = ..., protocols: Collection[str] = ..., timeout: ClientWSTimeout | _SENTINEL = _SENTINEL.sentinel, receive_timeout: float | None = None, autoclose: bool = True, autoping: bool = True, heartbeat: float | None = None, auth: BasicAuth | None = None, origin: str | None = None, params: Unknown = None, headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, proxy: str | Unknown | None = None, proxy_auth: BasicAuth | None = None, ssl: Fingerprint | SSLContext | bool = True, server_hostname: str | None = None, proxy_headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, compress: int = 0, max_msg_size: int = ..., decode_text: bool = True) -> _BaseRequestContextManager[ClientWebSocketResponse[bool]]` does not accept all arguments that overload signature `(self: Self@ClientSession, url: str | Unknown, *, decode_text: Literal[True] = ..., **kwargs: Unpack[_WSConnectOptions]) -> _BaseRequestContextManager[ClientWebSocketResponse[Literal[True]]]` accepts",
+      "source_context": "     913 |     if sys.version_info >= (3, 11) and TYPE_CHECKING:\n     914 | \n     915 |         @overload\n>>>  916 |         def ws_connect(\n     917 |             self,\n     918 |             url: StrOrURL,\n     919 |             *,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L916"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 925,
+      "error_code": "inconsistent-overload",
+      "message": "Implementation signature `(self: Self@ClientSession, url: str | Unknown, *, method: str = ..., protocols: Collection[str] = ..., timeout: ClientWSTimeout | _SENTINEL = _SENTINEL.sentinel, receive_timeout: float | None = None, autoclose: bool = True, autoping: bool = True, heartbeat: float | None = None, auth: BasicAuth | None = None, origin: str | None = None, params: Unknown = None, headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, proxy: str | Unknown | None = None, proxy_auth: BasicAuth | None = None, ssl: Fingerprint | SSLContext | bool = True, server_hostname: str | None = None, proxy_headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, compress: int = 0, max_msg_size: int = ..., decode_text: bool = True) -> _BaseRequestContextManager[ClientWebSocketResponse[bool]]` does not accept all arguments that overload signature `(self: Self@ClientSession, url: str | Unknown, *, decode_text: Literal[False], **kwargs: Unpack[_WSConnectOptions]) -> _BaseRequestContextManager[ClientWebSocketResponse[Literal[False]]]` accepts",
+      "source_context": "     922 |         ) -> \"_BaseRequestContextManager[ClientWebSocketResponse[Literal[True]]]\": ...\n     923 | \n     924 |         @overload\n>>>  925 |         def ws_connect(\n     926 |             self,\n     927 |             url: StrOrURL,\n     928 |             *,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L925"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 934,
+      "error_code": "inconsistent-overload",
+      "message": "Implementation signature `(self: Self@ClientSession, url: str | Unknown, *, method: str = ..., protocols: Collection[str] = ..., timeout: ClientWSTimeout | _SENTINEL = _SENTINEL.sentinel, receive_timeout: float | None = None, autoclose: bool = True, autoping: bool = True, heartbeat: float | None = None, auth: BasicAuth | None = None, origin: str | None = None, params: Unknown = None, headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, proxy: str | Unknown | None = None, proxy_auth: BasicAuth | None = None, ssl: Fingerprint | SSLContext | bool = True, server_hostname: str | None = None, proxy_headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, compress: int = 0, max_msg_size: int = ..., decode_text: bool = True) -> _BaseRequestContextManager[ClientWebSocketResponse[bool]]` does not accept all arguments that overload signature `(self: Self@ClientSession, url: str | Unknown, *, decode_text: bool = ..., **kwargs: Unpack[_WSConnectOptions]) -> _BaseRequestContextManager[ClientWebSocketResponse[bool]]` accepts",
+      "source_context": "     931 |         ) -> \"_BaseRequestContextManager[ClientWebSocketResponse[Literal[False]]]\": ...\n     932 | \n     933 |         @overload\n>>>  934 |         def ws_connect(\n     935 |             self,\n     936 |             url: StrOrURL,\n     937 |             *,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L934"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 995,
+      "error_code": "inconsistent-overload",
+      "message": "Implementation signature `(self: Self@ClientSession, url: str | Unknown, *, method: str = ..., protocols: Collection[str] = ..., timeout: ClientWSTimeout | _SENTINEL = _SENTINEL.sentinel, receive_timeout: float | None = None, autoclose: bool = True, autoping: bool = True, heartbeat: float | None = None, auth: BasicAuth | None = None, origin: str | None = None, params: Unknown = None, headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, proxy: str | Unknown | None = None, proxy_auth: BasicAuth | None = None, ssl: Fingerprint | SSLContext | bool = True, server_hostname: str | None = None, proxy_headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, compress: int = 0, max_msg_size: int = ..., decode_text: bool = True) -> Coroutine[Unknown, Unknown, ClientWebSocketResponse[bool]]` does not accept all arguments that overload signature `(self: Self@ClientSession, url: str | Unknown, *, decode_text: Literal[True] = ..., **kwargs: Unpack[_WSConnectOptions]) -> Coroutine[Unknown, Unknown, ClientWebSocketResponse[Literal[True]]]` accepts",
+      "source_context": "     992 |     if sys.version_info >= (3, 11) and TYPE_CHECKING:\n     993 | \n     994 |         @overload\n>>>  995 |         async def _ws_connect(\n     996 |             self,\n     997 |             url: StrOrURL,\n     998 |             *,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L995"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1004,
+      "error_code": "inconsistent-overload",
+      "message": "Implementation signature `(self: Self@ClientSession, url: str | Unknown, *, method: str = ..., protocols: Collection[str] = ..., timeout: ClientWSTimeout | _SENTINEL = _SENTINEL.sentinel, receive_timeout: float | None = None, autoclose: bool = True, autoping: bool = True, heartbeat: float | None = None, auth: BasicAuth | None = None, origin: str | None = None, params: Unknown = None, headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, proxy: str | Unknown | None = None, proxy_auth: BasicAuth | None = None, ssl: Fingerprint | SSLContext | bool = True, server_hostname: str | None = None, proxy_headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, compress: int = 0, max_msg_size: int = ..., decode_text: bool = True) -> Coroutine[Unknown, Unknown, ClientWebSocketResponse[bool]]` does not accept all arguments that overload signature `(self: Self@ClientSession, url: str | Unknown, *, decode_text: Literal[False], **kwargs: Unpack[_WSConnectOptions]) -> Coroutine[Unknown, Unknown, ClientWebSocketResponse[Literal[False]]]` accepts",
+      "source_context": "    1001 |         ) -> \"ClientWebSocketResponse[Literal[True]]\": ...\n    1002 | \n    1003 |         @overload\n>>> 1004 |         async def _ws_connect(\n    1005 |             self,\n    1006 |             url: StrOrURL,\n    1007 |             *,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1004"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1013,
+      "error_code": "inconsistent-overload",
+      "message": "Implementation signature `(self: Self@ClientSession, url: str | Unknown, *, method: str = ..., protocols: Collection[str] = ..., timeout: ClientWSTimeout | _SENTINEL = _SENTINEL.sentinel, receive_timeout: float | None = None, autoclose: bool = True, autoping: bool = True, heartbeat: float | None = None, auth: BasicAuth | None = None, origin: str | None = None, params: Unknown = None, headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, proxy: str | Unknown | None = None, proxy_auth: BasicAuth | None = None, ssl: Fingerprint | SSLContext | bool = True, server_hostname: str | None = None, proxy_headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, compress: int = 0, max_msg_size: int = ..., decode_text: bool = True) -> Coroutine[Unknown, Unknown, ClientWebSocketResponse[bool]]` does not accept all arguments that overload signature `(self: Self@ClientSession, url: str | Unknown, *, decode_text: bool = ..., **kwargs: Unpack[_WSConnectOptions]) -> Coroutine[Unknown, Unknown, ClientWebSocketResponse[bool]]` accepts",
+      "source_context": "    1010 |         ) -> \"ClientWebSocketResponse[Literal[False]]\": ...\n    1011 | \n    1012 |         @overload\n>>> 1013 |         async def _ws_connect(\n    1014 |             self,\n    1015 |             url: StrOrURL,\n    1016 |             *,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1013"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 365,
+      "error_code": "bad-typed-dict-key",
+      "message": "`StackSummary` is not assignable to TypedDict key `source_traceback` with type `str | Self@ClientResponse`",
+      "source_context": "     362 |                 )\n     363 |                 context = {\"client_response\": self, \"message\": \"Unclosed response\"}\n     364 |                 if self._source_traceback:\n>>>  365 |                     context[\"source_traceback\"] = self._source_traceback\n     366 |                 self._loop.call_exception_handler(context)\n     367 | \n     368 |     def __repr__(self) -> str:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L365"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 875,
+      "error_code": "not-iterable",
+      "message": "`not in` is not supported between `Unknown` and `None`",
+      "source_context": "     872 |             self.method in self.POST_METHODS\n     873 |             and (\n     874 |                 self._skip_auto_headers is None\n>>>  875 |                 or hdrs.CONTENT_TYPE not in self._skip_auto_headers\n     876 |             )\n     877 |             and hdrs.CONTENT_TYPE not in self.headers\n     878 |         ):",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L875"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 142,
+      "error_code": "bad-typed-dict-key",
+      "message": "`StackSummary` is not assignable to TypedDict key `source_traceback` with type `str | Self@Connection`",
+      "source_context": "     139 | \n     140 |             context = {\"client_connection\": self, \"message\": \"Unclosed connection\"}\n     141 |             if self._source_traceback is not None:\n>>>  142 |                 context[\"source_traceback\"] = self._source_traceback\n     143 |             self._loop.call_exception_handler(context)\n     144 | \n     145 |     def __bool__(self) -> Literal[True]:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L142"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 1248,
+      "error_code": "not-a-type",
+      "message": "Expected a type form, got instance of `tuple[Unknown, ...] | tuple[type[SSLCertVerificationError]]`",
+      "source_context": "    1245 |                 ):\n    1246 |                     kwargs[\"ssl_shutdown_timeout\"] = self._ssl_shutdown_timeout\n    1247 |                 return await self._loop.create_connection(*args, **kwargs, sock=sock)\n>>> 1248 |         except cert_errors as exc:\n    1249 |             raise ClientConnectorCertificateError(req.connection_key, exc) from exc\n    1250 |         except ssl_errors as exc:\n    1251 |             raise ClientConnectorSSLError(req.connection_key, exc) from exc",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L1248"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 1325,
+      "error_code": "bad-argument-type",
+      "message": "Argument `SSLContext | object` is not assignable to parameter `sslcontext` with type `SSLContext` in function `asyncio.events.AbstractEventLoop.start_tls`",
+      "source_context": "    1322 |                         tls_transport = await self._loop.start_tls(\n    1323 |                             underlying_transport,\n    1324 |                             tls_proto,\n>>> 1325 |                             sslcontext,\n    1326 |                             server_hostname=req.server_hostname or req.url.raw_host,\n    1327 |                             ssl_handshake_timeout=timeout.total,\n    1328 |                             ssl_shutdown_timeout=self._ssl_shutdown_timeout,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L1325"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 1334,
+      "error_code": "bad-argument-type",
+      "message": "Argument `SSLContext | object` is not assignable to parameter `sslcontext` with type `SSLContext` in function `asyncio.events.AbstractEventLoop.start_tls`",
+      "source_context": "    1331 |                         tls_transport = await self._loop.start_tls(\n    1332 |                             underlying_transport,\n    1333 |                             tls_proto,\n>>> 1334 |                             sslcontext,\n    1335 |                             server_hostname=req.server_hostname or req.url.raw_host,\n    1336 |                             ssl_handshake_timeout=timeout.total,\n    1337 |                         )",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L1334"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 1357,
+      "error_code": "not-a-type",
+      "message": "Expected a type form, got instance of `tuple[Unknown, ...] | tuple[type[SSLCertVerificationError]]`",
+      "source_context": "    1354 |                             if not self._cleanup_closed_disabled:\n    1355 |                                 self._cleanup_closed_transports.append(tls_transport)\n    1356 |                             raise\n>>> 1357 |         except cert_errors as exc:\n    1358 |             raise ClientConnectorCertificateError(req.connection_key, exc) from exc\n    1359 |         except ssl_errors as exc:\n    1360 |             raise ClientConnectorSSLError(req.connection_key, exc) from exc",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L1357"
+    },
+    {
+      "file": "aiohttp/helpers.py",
+      "line": 121,
+      "error_code": "invalid-inheritance",
+      "message": "Invalid expression form for base class: `namedtuple(\"BasicAuth\", [\"login\", \"password\", \"encoding\"])`",
+      "source_context": "     118 | json_re = re.compile(r\"(?:application/|[\\w.-]+/[\\w.+-]+?\\+)json$\", re.IGNORECASE)\n     119 | \n     120 | \n>>>  121 | class BasicAuth(namedtuple(\"BasicAuth\", [\"login\", \"password\", \"encoding\"])):\n     122 |     \"\"\"Http basic authentication helper.\"\"\"\n     123 | \n     124 |     def __new__(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/helpers.py#L121"
+    },
+    {
+      "file": "aiohttp/helpers.py",
+      "line": 394,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `email.parser.Parser.__init__` called with arguments: (type[EnsureOctetStream], policy=EmailPolicy[EmailMessage])",
+      "source_context": "     391 |     MappingProxyType of parameters. The default returned value\n     392 |     is `application/octet-stream`\n     393 |     \"\"\"\n>>>  394 |     msg = HeaderParser(EnsureOctetStream, policy=HTTP).parsestr(f\"Content-Type: {raw}\")\n     395 |     content_type = msg.get_content_type()\n     396 |     params = msg.get_params(())\n     397 |     content_dict = dict(params[1:])  # First element is content type again",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/helpers.py#L394"
+    },
+    {
+      "file": "aiohttp/helpers.py",
+      "line": 915,
+      "error_code": "bad-override",
+      "message": "Class member `ChainMapProxy.__getitem__` overrides parent class `Mapping` in an inconsistent manner",
+      "source_context": "     912 |         )\n     913 | \n     914 |     @overload  # type: ignore[override]\n>>>  915 |     def __getitem__(self, key: AppKey[_T]) -> _T: ...\n     916 | \n     917 |     @overload\n     918 |     def __getitem__(self, key: str) -> Any: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/helpers.py#L915"
+    },
+    {
+      "file": "aiohttp/helpers.py",
+      "line": 929,
+      "error_code": "bad-override",
+      "message": "Class member `ChainMapProxy.get` overrides parent class `Mapping` in an inconsistent manner",
+      "source_context": "     926 |         raise KeyError(key)\n     927 | \n     928 |     @overload  # type: ignore[override]\n>>>  929 |     def get(self, key: AppKey[_T], default: _S) -> _T | _S: ...\n     930 | \n     931 |     @overload\n     932 |     def get(self, key: AppKey[_T], default: None = ...) -> _T | None: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/helpers.py#L929"
+    },
+    {
+      "file": "aiohttp/payload.py",
+      "line": 717,
+      "error_code": "bad-override",
+      "message": "Class member `TextIOPayload._value` overrides parent class `IOBasePayload` in an inconsistent manner",
+      "source_context": "     714 | \n     715 | \n     716 | class TextIOPayload(IOBasePayload):\n>>>  717 |     _value: io.TextIOBase\n     718 |     # _autoclose = False (inherited) - Has text file handle that needs explicit closing\n     719 | \n     720 |     def __init__(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/payload.py#L717"
+    },
+    {
+      "file": "aiohttp/payload.py",
+      "line": 830,
+      "error_code": "bad-override",
+      "message": "Class member `BytesIOPayload._value` overrides parent class `IOBasePayload` in an inconsistent manner",
+      "source_context": "     827 | \n     828 | \n     829 | class BytesIOPayload(IOBasePayload):\n>>>  830 |     _value: io.BytesIO\n     831 |     _size: int  # Always initialized in __init__\n     832 |     _autoclose = True  # BytesIO is in-memory, safe to auto-close\n     833 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/payload.py#L830"
+    },
+    {
+      "file": "aiohttp/payload.py",
+      "line": 915,
+      "error_code": "bad-override",
+      "message": "Class member `BufferedReaderPayload._value` overrides parent class `IOBasePayload` in an inconsistent manner",
+      "source_context": "     912 | \n     913 | \n     914 | class BufferedReaderPayload(IOBasePayload):\n>>>  915 |     _value: io.BufferedIOBase\n     916 |     # _autoclose = False (inherited) - Has buffered file handle that needs explicit closing\n     917 | \n     918 |     def decode(self, encoding: str = \"utf-8\", errors: str = \"strict\") -> str:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/payload.py#L915"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 155,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `join`",
+      "source_context": "     152 |         url = URL(path)\n     153 |         if not self.skip_url_asserts:\n     154 |             assert not url.absolute\n>>>  155 |             return self._root.join(url)\n     156 |         else:\n     157 |             return URL(str(self._root) + str(path))\n     158 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L155"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 256,
+      "error_code": "invalid-annotation",
+      "message": "`__init__` method self type cannot reference class type parameter `_Request`",
+      "source_context": "     253 |     __test__ = False\n     254 | \n     255 |     @overload\n>>>  256 |     def __init__(\n     257 |         self: \"TestClient[Request, Application]\",\n     258 |         server: TestServer,\n     259 |         *,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L256"
+    },
+    {
+      "file": "aiohttp/web.py",
+      "line": 404,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Future[list[BaseException | Any]]` is not assignable to parameter `future` with type `Awaitable[tuple[Any]]` in function `asyncio.events.AbstractEventLoop.run_until_complete`",
+      "source_context": "     401 |     for task in to_cancel:\n     402 |         task.cancel()\n     403 | \n>>>  404 |     loop.run_until_complete(asyncio.gather(*to_cancel, return_exceptions=True))\n     405 | \n     406 |     for task in to_cancel:\n     407 |         if task.cancelled():",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web.py#L404"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 143,
+      "error_code": "bad-override",
+      "message": "Class member `Application.__getitem__` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     140 |         return self is other\n     141 | \n     142 |     @overload  # type: ignore[override]\n>>>  143 |     def __getitem__(self, key: AppKey[_T]) -> _T: ...\n     144 | \n     145 |     @overload\n     146 |     def __getitem__(self, key: str) -> Any: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L143"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 158,
+      "error_code": "bad-override",
+      "message": "Class member `Application.__setitem__` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     155 |             )\n     156 | \n     157 |     @overload  # type: ignore[override]\n>>>  158 |     def __setitem__(self, key: AppKey[_T], value: _T) -> None: ...\n     159 | \n     160 |     @overload\n     161 |     def __setitem__(self, key: str, value: Any) -> None: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L158"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 189,
+      "error_code": "bad-override",
+      "message": "Class member `Application.get` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     186 |         return id(self)\n     187 | \n     188 |     @overload  # type: ignore[override]\n>>>  189 |     def get(self, key: AppKey[_T], default: None = ...) -> _T | None: ...\n     190 | \n     191 |     @overload\n     192 |     def get(self, key: AppKey[_T], default: _U) -> _T | _U: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L189"
+    },
+    {
+      "file": "aiohttp/web_protocol.py",
+      "line": 575,
+      "error_code": "bad-assignment",
+      "message": "`StreamResponse | None` is not assignable to `None` (caused by inconsistent types when breaking cycles)",
+      "source_context": "     572 |         assert self._request_factory is not None\n     573 |         assert self._request_handler is not None\n     574 | \n>>>  575 |         while not self._force_close:\n     576 |             if not self._messages:\n     577 |                 try:\n     578 |                     # wait for next request",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_protocol.py#L575"
+    },
+    {
+      "file": "aiohttp/web_request.py",
+      "line": 262,
+      "error_code": "bad-override",
+      "message": "Class member `BaseRequest.__getitem__` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     259 |     # MutableMapping API\n     260 | \n     261 |     @overload  # type: ignore[override]\n>>>  262 |     def __getitem__(self, key: RequestKey[_T]) -> _T: ...\n     263 | \n     264 |     @overload\n     265 |     def __getitem__(self, key: str) -> Any: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_request.py#L262"
+    },
+    {
+      "file": "aiohttp/web_request.py",
+      "line": 271,
+      "error_code": "bad-override",
+      "message": "Class member `BaseRequest.__setitem__` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     268 |         return self._state[key]\n     269 | \n     270 |     @overload  # type: ignore[override]\n>>>  271 |     def __setitem__(self, key: RequestKey[_T], value: _T) -> None: ...\n     272 | \n     273 |     @overload\n     274 |     def __setitem__(self, key: str, value: Any) -> None: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_request.py#L271"
+    },
+    {
+      "file": "aiohttp/web_request.py",
+      "line": 720,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[bytes]` is not assignable to parameter `*args` with type `tuple[str]` in function `asyncio.events.AbstractEventLoop.run_in_executor`",
+      "source_context": "     717 |                         chunk = await field.read_chunk(size=2**16)\n     718 |                         while chunk:\n     719 |                             chunk = await field.decode_async(chunk)\n>>>  720 |                             await self._loop.run_in_executor(None, tmp.write, chunk)\n     721 |                             size += len(chunk)\n     722 |                             if 0 < max_size < size:\n     723 |                                 await self._loop.run_in_executor(None, tmp.close)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_request.py#L720"
+    },
+    {
+      "file": "aiohttp/web_request.py",
+      "line": 728,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[Literal[0]]` is not assignable to parameter `*args` with type `tuple[int, int]` in function `asyncio.events.AbstractEventLoop.run_in_executor`",
+      "source_context": "     725 |                                     max_size=max_size, actual_size=size\n     726 |                                 )\n     727 |                             chunk = await field.read_chunk(size=2**16)\n>>>  728 |                         await self._loop.run_in_executor(None, tmp.seek, 0)\n     729 | \n     730 |                         if field_ct is None:\n     731 |                             field_ct = \"application/octet-stream\"",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_request.py#L728"
+    },
+    {
+      "file": "aiohttp/web_request.py",
+      "line": 808,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `items`",
+      "source_context": "     805 |         # NOTE: `tempfile.Temporaryfile`-created `_io.BufferedRandom`\n     806 |         # NOTE: instances of files sent within multipart request body\n     807 |         # NOTE: via HTTP POST request.\n>>>  808 |         for file_name, file_field_object in self._post.items():\n     809 |             if isinstance(file_field_object, FileField):\n     810 |                 file_field_object.file.close()\n     811 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_request.py#L808"
+    },
+    {
+      "file": "aiohttp/web_response.py",
+      "line": 493,
+      "error_code": "bad-override",
+      "message": "Class member `StreamResponse.__getitem__` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     490 |         return f\"<{self.__class__.__name__} {self.reason} {info}>\"\n     491 | \n     492 |     @overload  # type: ignore[override]\n>>>  493 |     def __getitem__(self, key: ResponseKey[_T]) -> _T: ...\n     494 | \n     495 |     @overload\n     496 |     def __getitem__(self, key: str) -> Any: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_response.py#L493"
+    },
+    {
+      "file": "aiohttp/web_response.py",
+      "line": 502,
+      "error_code": "bad-override",
+      "message": "Class member `StreamResponse.__setitem__` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     499 |         return self._state[key]\n     500 | \n     501 |     @overload  # type: ignore[override]\n>>>  502 |     def __setitem__(self, key: ResponseKey[_T], value: _T) -> None: ...\n     503 | \n     504 |     @overload\n     505 |     def __setitem__(self, key: str, value: Any) -> None: ...",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_response.py#L502"
+    },
+    {
+      "file": "aiohttp/web_response.py",
+      "line": 647,
+      "error_code": "bad-argument-type",
+      "message": "Argument `str | None` is not assignable to parameter `encoding` with type `str` in function `str.encode`",
+      "source_context": "     644 |         if self.charset is None:\n     645 |             self.charset = \"utf-8\"\n     646 | \n>>>  647 |         self._body = text.encode(self.charset)\n     648 |         self._compressed_body = None\n     649 | \n     650 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_response.py#L647"
+    },
+    {
+      "file": "aiohttp/web_routedef.py",
+      "line": 168,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `RouteTableDef.__contains__` overrides parent class `Sequence` in an inconsistent manner",
+      "source_context": "     165 |     def __len__(self) -> int:\n     166 |         return len(self._items)\n     167 | \n>>>  168 |     def __contains__(self, item: object) -> bool:\n     169 |         return item in self._items\n     170 | \n     171 |     def route(self, method: str, path: str, **kwargs: Any) -> _Deco:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_routedef.py#L168"
+    },
+    {
+      "file": "aiohttp/web_runner.py",
+      "line": 114,
+      "error_code": "missing-attribute",
+      "message": "Method `start` inherited from class `BaseSite` has no implementation and cannot be accessed via `super()`",
+      "source_context": "     111 |         return str(URL.build(scheme=scheme, host=host, port=self._port))\n     112 | \n     113 |     async def start(self) -> None:\n>>>  114 |         await super().start()\n     115 |         loop = asyncio.get_event_loop()\n     116 |         server = self._runner.server\n     117 |         assert server is not None",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_runner.py#L114"
+    },
+    {
+      "file": "aiohttp/web_runner.py",
+      "line": 118,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `asyncio.events.AbstractEventLoop.create_server` called with arguments: (Server[Any], str | None, int, ssl=SSLContext | object | None, backlog=int, reuse_address=bool | None, reuse_port=bool | None)",
+      "source_context": "     115 |         loop = asyncio.get_event_loop()\n     116 |         server = self._runner.server\n     117 |         assert server is not None\n>>>  118 |         self._server = await loop.create_server(\n     119 |             server,\n     120 |             self._host,\n     121 |             self._port,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_runner.py#L118"
+    },
+    {
+      "file": "aiohttp/web_runner.py",
+      "line": 153,
+      "error_code": "missing-attribute",
+      "message": "Method `start` inherited from class `BaseSite` has no implementation and cannot be accessed via `super()`",
+      "source_context": "     150 |         return f\"{scheme}://unix:{self._path}:\"\n     151 | \n     152 |     async def start(self) -> None:\n>>>  153 |         await super().start()\n     154 |         loop = asyncio.get_event_loop()\n     155 |         server = self._runner.server\n     156 |         assert server is not None",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_runner.py#L153"
+    },
+    {
+      "file": "aiohttp/web_runner.py",
+      "line": 160,
+      "error_code": "bad-argument-type",
+      "message": "Argument `SSLContext | object | None` is not assignable to parameter `ssl` with type `SSLContext | bool | None` in function `asyncio.events.AbstractEventLoop.create_unix_server`",
+      "source_context": "     157 |         self._server = await loop.create_unix_server(\n     158 |             server,\n     159 |             self._path,\n>>>  160 |             ssl=self._ssl_context,\n     161 |             backlog=self._backlog,\n     162 |         )\n     163 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_runner.py#L160"
+    },
+    {
+      "file": "aiohttp/web_runner.py",
+      "line": 184,
+      "error_code": "missing-attribute",
+      "message": "Method `start` inherited from class `BaseSite` has no implementation and cannot be accessed via `super()`",
+      "source_context": "     181 |         return self._path\n     182 | \n     183 |     async def start(self) -> None:\n>>>  184 |         await super().start()\n     185 |         loop = asyncio.get_event_loop()\n     186 |         server = self._runner.server\n     187 |         assert server is not None",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_runner.py#L184"
+    },
+    {
+      "file": "aiohttp/web_runner.py",
+      "line": 224,
+      "error_code": "missing-attribute",
+      "message": "Method `start` inherited from class `BaseSite` has no implementation and cannot be accessed via `super()`",
+      "source_context": "     221 |         return self._name\n     222 | \n     223 |     async def start(self) -> None:\n>>>  224 |         await super().start()\n     225 |         loop = asyncio.get_event_loop()\n     226 |         server = self._runner.server\n     227 |         assert server is not None",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_runner.py#L224"
+    },
+    {
+      "file": "aiohttp/web_runner.py",
+      "line": 228,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `asyncio.events.AbstractEventLoop.create_server` called with arguments: (Server[Any], sock=socket, ssl=SSLContext | object | None, backlog=int)",
+      "source_context": "     225 |         loop = asyncio.get_event_loop()\n     226 |         server = self._runner.server\n     227 |         assert server is not None\n>>>  228 |         self._server = await loop.create_server(\n     229 |             server, sock=self._sock, ssl=self._ssl_context, backlog=self._backlog\n     230 |         )\n     231 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_runner.py#L228"
+    },
+    {
+      "file": "aiohttp/web_urldispatcher.py",
+      "line": 494,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `PrefixResource.raw_match` overrides parent class `AbstractResource` in an inconsistent manner",
+      "source_context": "     491 |         self._prefix = prefix + self._prefix\n     492 |         self._prefix2 = self._prefix + \"/\"\n     493 | \n>>>  494 |     def raw_match(self, prefix: str) -> bool:\n     495 |         return False\n     496 | \n     497 |     # TODO: impl missing abstract methods",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_urldispatcher.py#L494"
+    },
+    {
+      "file": "aiohttp/web_urldispatcher.py",
+      "line": 644,
+      "error_code": "not-a-type",
+      "message": "Expected a type form, got instance of `*Unknown`",
+      "source_context": "     641 |             else:\n     642 |                 file_path = unresolved_path.resolve()\n     643 |                 file_path.relative_to(self._directory)\n>>>  644 |         except (ValueError, *CIRCULAR_SYMLINK_ERROR) as error:\n     645 |             # ValueError is raised for the relative check. Circular symlinks\n     646 |             # raise here on resolving for python < 3.13.\n     647 |             raise HTTPNotFound() from error",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_urldispatcher.py#L644"
+    },
+    {
+      "file": "aiohttp/web_urldispatcher.py",
+      "line": 1082,
+      "error_code": "unbound-name",
+      "message": "`index_key` may be uninitialized",
+      "source_context": "    1079 |             # the index key will be `/core` since index is based on the\n    1080 |             # url parts split by `/`\n    1081 |             index_key = index_key.partition(\"{\")[0].rpartition(\"/\")[0]\n>>> 1082 |         return index_key.rstrip(\"/\") or \"/\"\n    1083 | \n    1084 |     def index_resource(self, resource: AbstractResource) -> None:\n    1085 |         \"\"\"Add a resource to the resource index.\"\"\"",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_urldispatcher.py#L1082"
+    },
+    {
+      "file": "aiohttp/web_ws.py",
+      "line": 295,
+      "error_code": "unbound-name",
+      "message": "`hdrs` may be uninitialized",
+      "source_context": "     292 |         ).decode()\n     293 |         response_headers = CIMultiDict(\n     294 |             {\n>>>  295 |                 hdrs.UPGRADE: \"websocket\",\n     296 |                 hdrs.CONNECTION: \"upgrade\",\n     297 |                 hdrs.SEC_WEBSOCKET_ACCEPT: accept_val,\n     298 |             }",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_ws.py#L295"
+    },
+    {
+      "file": "aiohttp/web_ws.py",
+      "line": 312,
+      "error_code": "unbound-name",
+      "message": "`hdrs` may be uninitialized",
+      "source_context": "     309 |                 enabledext = ws_ext_gen(\n     310 |                     compress=compress, isserver=True, server_notakeover=notakeover\n     311 |                 )\n>>>  312 |                 response_headers[hdrs.SEC_WEBSOCKET_EXTENSIONS] = enabledext\n     313 | \n     314 |         if protocol:\n     315 |             response_headers[hdrs.SEC_WEBSOCKET_PROTOCOL] = protocol",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_ws.py#L312"
+    },
+    {
+      "file": "aiohttp/web_ws.py",
+      "line": 315,
+      "error_code": "unbound-name",
+      "message": "`hdrs` may be uninitialized",
+      "source_context": "     312 |                 response_headers[hdrs.SEC_WEBSOCKET_EXTENSIONS] = enabledext\n     313 | \n     314 |         if protocol:\n>>>  315 |             response_headers[hdrs.SEC_WEBSOCKET_PROTOCOL] = protocol\n     316 |         return (\n     317 |             response_headers,\n     318 |             protocol,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_ws.py#L315"
+    },
+    {
+      "file": "aiohttp/worker.py",
+      "line": 70,
+      "error_code": "bad-argument-count",
+      "message": "Expected 2 more positional arguments",
+      "source_context": "      67 |         elif inspect.iscoroutinefunction(self.wsgi) or (\n      68 |             sys.version_info < (3, 14) and asyncio.iscoroutinefunction(self.wsgi)\n      69 |         ):\n>>>   70 |             wsgi = await self.wsgi()\n      71 |             if isinstance(wsgi, web.AppRunner):\n      72 |                 runner = wsgi\n      73 |                 app = runner.app",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/worker.py#L70"
+    },
+    {
+      "file": "docs/conf.py",
+      "line": 33,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `groupdict`",
+      "source_context": "      30 | )\n      31 | with open(_version_path, encoding=\"latin1\") as fp:\n      32 |     try:\n>>>   33 |         _version_info = re.search(\n      34 |             r'^__version__ = \"'\n      35 |             r\"(?P<major>\\d+)\"\n      36 |             r\"\\.(?P<minor>\\d+)\"",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/docs/conf.py#L33"
+    },
+    {
+      "file": "tests/conftest.py",
+      "line": 485,
+      "error_code": "bad-override",
+      "message": "Class member `SlowExecutor.submit` overrides parent class `ThreadPoolExecutor` in an inconsistent manner",
+      "source_context": "     482 |     class SlowExecutor(ThreadPoolExecutor):\n     483 |         \"\"\"Executor that adds delay to operations.\"\"\"\n     484 | \n>>>  485 |         def submit(\n     486 |             self, fn: Callable[..., Any], /, *args: Any, **kwargs: Any\n     487 |         ) -> Future[Any]:\n     488 |             def slow_fn(*args: Any, **kwargs: Any) -> Any:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/conftest.py#L485"
+    },
+    {
+      "file": "tests/test_benchmarks_client_request.py",
+      "line": 22,
+      "error_code": "invalid-annotation",
+      "message": "`Unpack` with a `TypedDict` is only allowed in a **kwargs annotation",
+      "source_context": "      19 | if sys.version_info >= (3, 11):\n      20 |     from typing import Unpack\n      21 | \n>>>   22 |     _RequestMaker = Callable[[str, URL, Unpack[ClientRequestArgs]], ClientRequest]\n      23 | else:\n      24 |     _RequestMaker = Any\n      25 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_benchmarks_client_request.py#L22"
+    },
+    {
+      "file": "tests/test_client_functional.py",
+      "line": 4809,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[Path, Literal['rb']]` is not assignable to parameter `*args` with type `tuple[FileDescriptorOrPath, OpenTextMode, int, str | None, str | None, str | None, bool, ((str, int) -> int) | None]` in function `asyncio.events.AbstractEventLoop.run_in_executor`",
+      "source_context": "    4806 | \n    4807 |         assert client._session.connector is not None\n    4808 |         assert len(client._session.connector._conns) == 1\n>>> 4809 |         fh = await asyncio.get_running_loop().run_in_executor(\n    4810 |             None, open, test_file, \"rb\"\n    4811 |         )\n    4812 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_functional.py#L4809"
+    },
+    {
+      "file": "tests/test_client_functional.py",
+      "line": 5612,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Literal['rb']` is not assignable to parameter `mode` with type `Literal['+a', '+at', '+r', '+rt', '+ta', '+tr', '+tw', '+tx', '+w', '+wt', '+x', '+xt', 'U', 'Ur', 'Urt', 'Utr', 'a', 'a+', 'a+t', 'at', 'at+', 'r', 'r+', 'r+t', 'rU', 'rUt', 'rt', 'rt+', 'rtU', 't+a', 't+r', 't+w', 't+x', 'tUr', 'ta', 'ta+', 'tr', 'tr+', 'trU', 'tw', 'tw+', 'tx', 'tx+', 'w', 'w+', 'w+t', 'wt', 'wt+', 'x', 'x+', 'x+t', 'xt', 'xt+']` in function `asyncio.threads.to_thread`",
+      "source_context": "    5609 |     expected_size = len(content)\n    5610 | \n    5611 |     # Upload file to URL with trailing slash (will trigger redirect)\n>>> 5612 |     f = await asyncio.to_thread(open, test_file, \"rb\")\n    5613 |     try:\n    5614 |         async with client.post(\"/upload/\", data=f) as resp:\n    5615 |             assert resp.status == 200",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_functional.py#L5612"
+    },
+    {
+      "file": "tests/test_client_functional.py",
+      "line": 5677,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Literal['rb']` is not assignable to parameter `mode` with type `Literal['+a', '+at', '+r', '+rt', '+ta', '+tr', '+tw', '+tx', '+w', '+wt', '+x', '+xt', 'U', 'Ur', 'Urt', 'Utr', 'a', 'a+', 'a+t', 'at', 'at+', 'r', 'r+', 'r+t', 'rU', 'rUt', 'rt', 'rt+', 'rtU', 't+a', 't+r', 't+w', 't+x', 'tUr', 'ta', 'ta+', 'tr', 'tr+', 'trU', 'tw', 'tw+', 'tx', 'tx+', 'w', 'w+', 'w+t', 'wt', 'wt+', 'x', 'x+', 'x+t', 'xt', 'xt+']` in function `asyncio.threads.to_thread`",
+      "source_context": "    5674 |     expected_size = len(content)\n    5675 | \n    5676 |     # Upload file to URL with trailing slash (will trigger redirect)\n>>> 5677 |     f = await asyncio.to_thread(open, test_file, \"rb\")\n    5678 |     try:\n    5679 |         async with client.request(method, \"/upload/\", data=f) as resp:\n    5680 |             assert resp.status == 200",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_functional.py#L5677"
+    },
+    {
+      "file": "tests/test_client_functional.py",
+      "line": 5750,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Literal['rb']` is not assignable to parameter `mode` with type `Literal['+a', '+at', '+r', '+rt', '+ta', '+tr', '+tw', '+tx', '+w', '+wt', '+x', '+xt', 'U', 'Ur', 'Urt', 'Utr', 'a', 'a+', 'a+t', 'at', 'at+', 'r', 'r+', 'r+t', 'rU', 'rUt', 'rt', 'rt+', 'rtU', 't+a', 't+r', 't+w', 't+x', 'tUr', 'ta', 'ta+', 'tr', 'tr+', 'trU', 'tw', 'tw+', 'tx', 'tx+', 'w', 'w+', 'w+t', 'wt', 'wt+', 'x', 'x+', 'x+t', 'xt', 'xt+']` in function `asyncio.threads.to_thread`",
+      "source_context": "    5747 |     expected_size = len(content)\n    5748 | \n    5749 |     # Upload file to URL that triggers 307->302->final redirect chain\n>>> 5750 |     f = await asyncio.to_thread(open, test_file, \"rb\")\n    5751 |     try:\n    5752 |         async with client.post(\"/upload307\", data=f) as resp:\n    5753 |             assert resp.status == 200",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_functional.py#L5750"
+    },
+    {
+      "file": "tests/test_client_middleware.py",
+      "line": 815,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `TrackingResolver.resolve` overrides parent class `ThreadedResolver` in an inconsistent manner",
+      "source_context": "     812 |     server = await aiohttp_server(app)\n     813 | \n     814 |     class TrackingResolver(ThreadedResolver):\n>>>  815 |         async def resolve(\n     816 |             self,\n     817 |             hostname: str,\n     818 |             port: int = 0,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_middleware.py#L815"
+    },
+    {
+      "file": "tests/test_client_proto.py",
+      "line": 134,
+      "error_code": "invalid-inheritance",
+      "message": "Invalid base class: `HttpResponseParser | Unknown`",
+      "source_context": "     131 | ) -> None:\n     132 |     proto = ResponseHandler(loop=loop)\n     133 | \n>>>  134 |     class PatchableHttpResponseParser(http.HttpResponseParser):\n     135 |         \"\"\"Subclass of HttpResponseParser to make it patchable.\"\"\"\n     136 | \n     137 |     with mock.patch(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_proto.py#L134"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 37,
+      "error_code": "invalid-annotation",
+      "message": "`Unpack` with a `TypedDict` is only allowed in a **kwargs annotation",
+      "source_context": "      34 | if sys.version_info >= (3, 11):\n      35 |     from typing import Unpack\n      36 | \n>>>   37 |     _RequestMaker = Callable[[str, URL, Unpack[ClientRequestArgs]], ClientRequest]\n      38 | else:\n      39 |     _RequestMaker = Any\n      40 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L37"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 666,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `loop`",
+      "source_context": "     663 |         headers=CIMultiDict(\n     664 |             {\"Cookie\": \"ISAWPLB{A7F52349-3531-4DA9-8776-F74BC6F4F1BB}=value1\"}\n     665 |         ),\n>>>  666 |         loop=loop,\n     667 |     )\n     668 | \n     669 |     # Update with another cookie",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L666"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 884,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `loop`",
+      "source_context": "     881 |             headers=CIMultiDict(\n     882 |                 {\"Content-Type\": f\"multipart/form-data; boundary={boundary}\"}\n     883 |             ),\n>>>  884 |             loop=loop,\n     885 |         )\n     886 |         async with await req._send(conn):\n     887 |             await asyncio.sleep(0)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L884"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 1043,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `loop`",
+      "source_context": "    1040 |             data=\"foo\",\n    1041 |             headers=CIMultiDict({\"content-encoding\": \"deflate\"}),\n    1042 |             compress=\"deflate\",\n>>> 1043 |             loop=loop,\n    1044 |         )\n    1045 | \n    1046 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L1043"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 1175,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `loop`",
+      "source_context": "    1172 |         data=data,\n    1173 |         headers=CIMultiDict({\"CONTENT-ENCODING\": \"deflate\"}),\n    1174 |         compress=False,\n>>> 1175 |         loop=loop,\n    1176 |     )\n    1177 |     assert not req.compress\n    1178 |     assert not req.chunked",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L1175"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 1834,
+      "error_code": "missing-argument",
+      "message": "Missing argument `real_url` in function `aiohttp.client_reqrep.RequestInfo.__init__`",
+      "source_context": "    1831 |     url = URL(\"http://example.com\")\n    1832 |     other_url = URL(\"http://example.org\")\n    1833 |     assert (\n>>> 1834 |         aiohttp.RequestInfo(\n    1835 |             url=url, method=\"GET\", headers=CIMultiDictProxy(CIMultiDict())\n    1836 |         ).real_url\n    1837 |         is url",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L1834"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 1840,
+      "error_code": "missing-argument",
+      "message": "Missing argument `real_url` in function `aiohttp.client_reqrep.RequestInfo.__init__`",
+      "source_context": "    1837 |         is url\n    1838 |     )\n    1839 |     assert (\n>>> 1840 |         aiohttp.RequestInfo(url, \"GET\", CIMultiDictProxy(CIMultiDict())).real_url is url\n    1841 |     )\n    1842 |     assert (\n    1843 |         aiohttp.RequestInfo(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L1840"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 1934,
+      "error_code": "invalid-yield",
+      "message": "Yielded type `bytes | int` is not assignable to declared yield type `bytes`",
+      "source_context": "    1931 | \n    1932 |         async def gen() -> AsyncIterator[bytes]:\n    1933 |             for chunk in data:\n>>> 1934 |                 yield chunk\n    1935 | \n    1936 |         await req.update_body(gen())\n    1937 |     else:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L1934"
+    },
+    {
+      "file": "tests/test_client_request.py",
+      "line": 1960,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable",
+      "source_context": "    1957 |     # Create an empty async generator\n    1958 |     async def gen() -> AsyncIterator[bytes]:\n    1959 |         return\n>>> 1960 |         yield  # pragma: no cover  # This makes it a generator but never executes\n    1961 | \n    1962 |     await req.update_body(gen())\n    1963 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L1960"
+    },
+    {
+      "file": "tests/test_client_response.py",
+      "line": 1630,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['123456']`",
+      "source_context": "    1627 |     # Create a SimpleCookie with some cookies\n    1628 |     cookies = SimpleCookie()\n    1629 |     cookies[\"session-id\"] = \"123456\"\n>>> 1630 |     cookies[\"session-id\"][\"domain\"] = \".example.com\"\n    1631 |     cookies[\"session-id\"][\"path\"] = \"/\"\n    1632 |     cookies[\"session-id\"][\"secure\"] = True\n    1633 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_response.py#L1630"
+    },
+    {
+      "file": "tests/test_client_response.py",
+      "line": 1635,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['xyz789']`",
+      "source_context": "    1632 |     cookies[\"session-id\"][\"secure\"] = True\n    1633 | \n    1634 |     cookies[\"tracking\"] = \"xyz789\"\n>>> 1635 |     cookies[\"tracking\"][\"domain\"] = \".example.com\"\n    1636 |     cookies[\"tracking\"][\"httponly\"] = True\n    1637 | \n    1638 |     # Set the cookies property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_response.py#L1635"
+    },
+    {
+      "file": "tests/test_connector.py",
+      "line": 52,
+      "error_code": "invalid-annotation",
+      "message": "`Unpack` with a `TypedDict` is only allowed in a **kwargs annotation",
+      "source_context": "      49 | if sys.version_info >= (3, 11):\n      50 |     from typing import Unpack\n      51 | \n>>>   52 |     _RequestMaker = Callable[[str, URL, Unpack[ClientRequestArgs]], ClientRequest]\n      53 | else:\n      54 |     _RequestMaker = Any\n      55 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_connector.py#L52"
+    },
+    {
+      "file": "tests/test_connector.py",
+      "line": 679,
+      "error_code": "missing-attribute",
+      "message": "Object of class `SSLCertVerificationError` has no attribute `certificate_error`",
+      "source_context": "     676 |             await conn.connect(req, [], ClientTimeout())\n     677 | \n     678 |         assert isinstance(ctx.value, ssl.CertificateError)\n>>>  679 |         assert isinstance(ctx.value.certificate_error, ssl.CertificateError)\n     680 |         assert isinstance(ctx.value, aiohttp.ClientSSLError)\n     681 | \n     682 |     await conn.close()",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_connector.py#L679"
+    },
+    {
+      "file": "tests/test_connector.py",
+      "line": 3353,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `proxy_headers`",
+      "source_context": "    3350 |         loop=loop,\n    3351 |         response_class=mock.Mock(),\n    3352 |         proxy=proxy,\n>>> 3353 |         proxy_headers=proxy_headers,\n    3354 |     )\n    3355 | \n    3356 |     conn = aiohttp.BaseConnector(limit=1)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_connector.py#L3353"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 816,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     813 |     cookie = SimpleCookie()\n     814 | \n     815 |     cookie[\"foo\"] = \"bar\"\n>>>  816 |     cookie[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 12:00:00 GMT\"\n     817 | \n     818 |     with freeze_time(\"1980-01-01\"):\n     819 |         sut.update_cookies(cookie)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L816"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 833,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     830 | \n     831 |     cookie_eleven_am = SimpleCookie()\n     832 |     cookie_eleven_am[\"foo\"] = \"bar\"\n>>>  833 |     cookie_eleven_am[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 11:00:00 GMT\"\n     834 | \n     835 |     cookie_noon = SimpleCookie()\n     836 |     cookie_noon[\"foo\"] = \"bar\"",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L833"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 837,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     834 | \n     835 |     cookie_noon = SimpleCookie()\n     836 |     cookie_noon[\"foo\"] = \"bar\"\n>>>  837 |     cookie_noon[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 12:00:00 GMT\"\n     838 | \n     839 |     cookie_one_pm = SimpleCookie()\n     840 |     cookie_one_pm[\"foo\"] = \"bar\"",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L837"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 841,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     838 | \n     839 |     cookie_one_pm = SimpleCookie()\n     840 |     cookie_one_pm[\"foo\"] = \"bar\"\n>>>  841 |     cookie_one_pm[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 13:00:00 GMT\"\n     842 | \n     843 |     cookie_two_pm = SimpleCookie()\n     844 |     cookie_two_pm[\"foo\"] = \"bar\"",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L841"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 845,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     842 | \n     843 |     cookie_two_pm = SimpleCookie()\n     844 |     cookie_two_pm[\"foo\"] = \"bar\"\n>>>  845 |     cookie_two_pm[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 14:00:00 GMT\"\n     846 | \n     847 |     with freeze_time() as freezer:\n     848 |         freezer.move_to(\"1990-01-01 10:00:00+00:00\")",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L845"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 886,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     883 | \n     884 |     cookie_eleven_am = SimpleCookie()\n     885 |     cookie_eleven_am[\"foo\"] = \"bar\"\n>>>  886 |     cookie_eleven_am[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 11:00:00 GMT\"\n     887 | \n     888 |     cookie_two_pm = SimpleCookie()\n     889 |     cookie_two_pm[\"foo\"] = \"bar\"",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L886"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 890,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     887 | \n     888 |     cookie_two_pm = SimpleCookie()\n     889 |     cookie_two_pm[\"foo\"] = \"bar\"\n>>>  890 |     cookie_two_pm[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 14:00:00 GMT\"\n     891 | \n     892 |     with freeze_time() as freezer:\n     893 |         freezer.move_to(\"1990-01-01 10:00:00+00:00\")",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L890"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 920,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     917 |     cookie = SimpleCookie()\n     918 | \n     919 |     cookie[\"foo\"] = \"bar\"\n>>>  920 |     cookie[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 12:00:00 GMT\"\n     921 | \n     922 |     with freeze_time(\"1980-01-01\"):\n     923 |         jar.update_cookies(cookie)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L920"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 948,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     945 |         for i in range(min_cookies_to_cleanup):\n     946 |             cookie = SimpleCookie()\n     947 |             cookie[\"foo\"] = \"bar\"\n>>>  948 |             cookie[\"foo\"][\"expires\"] = (\n     949 |                 start_time + datetime.timedelta(seconds=i)\n     950 |             ).strftime(\"%a, %d %b %Y %H:%M:%S GMT\")\n     951 |             jar.update_cookies(cookie)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L948"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 960,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     957 |         # add one more cookie to trigger the cleanup\n     958 |         cookie = SimpleCookie()\n     959 |         cookie[\"foo\"] = \"bar\"\n>>>  960 |         cookie[\"foo\"][\"expires\"] = (\n     961 |             start_time + datetime.timedelta(seconds=i + 1)\n     962 |         ).strftime(\"%a, %d %b %Y %H:%M:%S GMT\")\n     963 |         jar.update_cookies(cookie)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L960"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 987,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     984 |             for i in range(min_cookies_to_cleanup):\n     985 |                 cookie = SimpleCookie()\n     986 |                 cookie[\"foo\"] = \"bar\"\n>>>  987 |                 cookie[\"foo\"][\"domain\"] = f\"example{i}.com\"\n     988 |                 cookie[\"foo\"][\"expires\"] = f\"Tue, 1 Jan 1990 {hour}:00:00 GMT\"\n     989 |                 jar.update_cookies(cookie)\n     990 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L987"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 997,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['bar']`",
+      "source_context": "     994 | \n     995 |         cookie = SimpleCookie()\n     996 |         cookie[\"foo\"] = \"bar\"\n>>>  997 |         cookie[\"foo\"][\"domain\"] = \"example0.com\"\n     998 |         cookie[\"foo\"][\"expires\"] = \"Tue, 1 Jan 1990 14:00:00 GMT\"\n     999 |         jar.update_cookies(cookie)\n    1000 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L997"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 1016,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['value']`",
+      "source_context": "    1013 |     cookie = SimpleCookie()\n    1014 |     cookie[\"foo\"] = \"bar\"\n    1015 |     cookie[\"domain_cookie\"] = \"value\"\n>>> 1016 |     cookie[\"domain_cookie\"][\"domain\"] = \"example.com\"\n    1017 |     cookie[\"subdomain_cookie\"] = \"value\"\n    1018 |     cookie[\"subdomain_cookie\"][\"domain\"] = \"test.example.com\"\n    1019 |     sut.update_cookies(cookie)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L1016"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 1420,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['value']`",
+      "source_context": "    1417 |     # Create a shared cookie (no domain/path restrictions)\n    1418 |     sc = SimpleCookie()\n    1419 |     sc[\"shared\"] = \"value\"\n>>> 1420 |     sc[\"shared\"][\"path\"] = \"/\"  # Will be stripped to \"\"\n    1421 | \n    1422 |     # Update with empty URL to avoid domain being set\n    1423 |     jar.update_cookies(sc, URL())",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L1420"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 1450,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['value1']`",
+      "source_context": "    1447 |     # Create initial shared cookie\n    1448 |     sc = SimpleCookie()\n    1449 |     sc[\"shared\"] = \"value1\"\n>>> 1450 |     sc[\"shared\"][\"path\"] = \"/\"\n    1451 |     jar.update_cookies(sc, URL())\n    1452 | \n    1453 |     # Filter to populate cache",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L1450"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 1461,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['value2']`",
+      "source_context": "    1458 |     # Update the cookie with new value\n    1459 |     sc2 = SimpleCookie()\n    1460 |     sc2[\"shared\"] = \"value2\"\n>>> 1461 |     sc2[\"shared\"][\"path\"] = \"/\"\n    1462 |     jar.update_cookies(sc2, URL())\n    1463 | \n    1464 |     # Verify cache was cleared",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L1461"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 1482,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['value1']`",
+      "source_context": "    1479 |     # Create multiple shared cookies\n    1480 |     sc = SimpleCookie()\n    1481 |     sc[\"shared1\"] = \"value1\"\n>>> 1482 |     sc[\"shared1\"][\"path\"] = \"/\"\n    1483 |     sc[\"shared2\"] = \"value2\"\n    1484 |     sc[\"shared2\"][\"path\"] = \"/\"\n    1485 |     jar.update_cookies(sc, URL())",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L1482"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 1512,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['shared_value']`",
+      "source_context": "    1509 |     # Shared cookie\n    1510 |     sc1 = SimpleCookie()\n    1511 |     sc1[\"shared\"] = \"shared_value\"\n>>> 1512 |     sc1[\"shared\"][\"path\"] = \"/\"\n    1513 |     jar.update_cookies(sc1, URL())\n    1514 | \n    1515 |     # Domain-specific cookie",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L1512"
+    },
+    {
+      "file": "tests/test_cookiejar.py",
+      "line": 1548,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['everywhere']`",
+      "source_context": "    1545 |     # Create a truly shared cookie\n    1546 |     sc = SimpleCookie()\n    1547 |     sc[\"universal\"] = \"everywhere\"\n>>> 1548 |     sc[\"universal\"][\"path\"] = \"/\"\n    1549 |     jar.update_cookies(sc, URL())\n    1550 | \n    1551 |     # Test filtering for different domains",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_cookiejar.py#L1548"
+    },
+    {
+      "file": "tests/test_helpers.py",
+      "line": 950,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Literal['another_other_value']`",
+      "source_context": "     947 |     assert str(sut.cookies) == \"Set-Cookie: name=other_value; Path=/\"\n     948 | \n     949 |     sut.cookies[\"name\"] = \"another_other_value\"\n>>>  950 |     sut.cookies[\"name\"][\"max-age\"] = 10\n     951 |     assert (\n     952 |         str(sut.cookies) == \"Set-Cookie: name=another_other_value; Max-Age=10; Path=/\"\n     953 |     )",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_helpers.py#L950"
+    },
+    {
+      "file": "tests/test_http_parser.py",
+      "line": 120,
+      "error_code": "implicit-import",
+      "message": "Module `aiohttp.http_parser` exists, but was not imported explicitly. You are relying on other modules to load it.",
+      "source_context": "     117 | \n     118 | @pytest.mark.skipif(NO_EXTENSIONS, reason=\"Extensions available but not imported\")\n     119 | def test_c_parser_loaded() -> None:\n>>>  120 |     assert \"HttpRequestParserC\" in dir(aiohttp.http_parser)\n     121 |     assert \"HttpResponseParserC\" in dir(aiohttp.http_parser)\n     122 |     assert \"RawRequestMessageC\" in dir(aiohttp.http_parser)\n     123 |     assert \"RawResponseMessageC\" in dir(aiohttp.http_parser)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_http_parser.py#L120"
+    },
+    {
+      "file": "tests/test_http_parser.py",
+      "line": 123,
+      "error_code": "implicit-import",
+      "message": "Module `aiohttp.http_parser` exists, but was not imported explicitly. You are relying on other modules to load it.",
+      "source_context": "     120 |     assert \"HttpRequestParserC\" in dir(aiohttp.http_parser)\n     121 |     assert \"HttpResponseParserC\" in dir(aiohttp.http_parser)\n     122 |     assert \"RawRequestMessageC\" in dir(aiohttp.http_parser)\n>>>  123 |     assert \"RawResponseMessageC\" in dir(aiohttp.http_parser)\n     124 | \n     125 | \n     126 | def test_parse_headers(parser: HttpRequestParser) -> None:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_http_parser.py#L123"
+    },
+    {
+      "file": "tests/test_http_parser.py",
+      "line": 1267,
+      "error_code": "implicit-import",
+      "message": "Module `aiohttp.http_parser` exists, but was not imported explicitly. You are relying on other modules to load it.",
+      "source_context": "    1264 | \n    1265 | @pytest.mark.dev_mode\n    1266 | @pytest.mark.skipif(\n>>> 1267 |     \"HttpRequestParserC\" not in dir(aiohttp.http_parser),\n    1268 |     reason=\"C based HTTP parser not available\",\n    1269 | )\n    1270 | async def test_http_response_parser_bad_chunked_strict_c(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_http_parser.py#L1267"
+    },
+    {
+      "file": "tests/test_http_parser.py",
+      "line": 1702,
+      "error_code": "implicit-import",
+      "message": "Module `aiohttp.http_parser` exists, but was not imported explicitly. You are relying on other modules to load it.",
+      "source_context": "    1699 | \n    1700 | \n    1701 | @pytest.mark.skipif(\n>>> 1702 |     \"HttpRequestParserC\" not in dir(aiohttp.http_parser),\n    1703 |     reason=\"C based HTTP parser not available\",\n    1704 | )\n    1705 | def test_parse_bad_method_for_c_parser_raises(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_http_parser.py#L1702"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "aiohttp/__init__.py",
+      "line": 53,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"AddrInfoType\" is unknown import symbol",
+      "source_context": "      50 | from .client_middleware_digest_auth import DigestAuthMiddleware\n      51 | from .client_middlewares import ClientHandlerType, ClientMiddlewareType\n      52 | from .compression_utils import set_zlib_backend\n>>>   53 | from .connector import AddrInfoType, SocketFactoryType\n      54 | from .cookiejar import CookieJar, DummyCookieJar\n      55 | from .formdata import FormData\n      56 | from .helpers import BasicAuth, ChainMapProxy, ETag",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/__init__.py#L53"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 332,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"origin\" for class \"str\"\n\u00a0\u00a0Attribute \"origin\" is unknown",
+      "source_context": "     329 |         self._connector: BaseConnector | None = None\n     330 |         if base_url is None or isinstance(base_url, URL):\n     331 |             self._base_url: URL | None = base_url\n>>>  332 |             self._base_url_origin = None if base_url is None else base_url.origin()\n     333 |         else:\n     334 |             self._base_url = URL(base_url)\n     335 |             self._base_url_origin = self._base_url.origin()",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L332"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 789,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> RequestInfo\" cannot be assigned to parameter \"request_info\" of type \"RequestInfo\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"RequestInfo\"",
+      "source_context": "     786 |                                 await req._body.close()\n     787 |                             resp.close()\n     788 |                             raise TooManyRedirects(\n>>>  789 |                                 history[0].request_info, tuple(history)\n     790 |                             )\n     791 | \n     792 |                         # For 301 and 302, mimic IE, now changed in RFC",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L789"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 799,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"Iterable[tuple[str | Unknown, str]]\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "     796 |                         ):\n     797 |                             method = hdrs.METH_GET\n     798 |                             data = None\n>>>  799 |                             if headers.get(hdrs.CONTENT_LENGTH):\n     800 |                                 headers.pop(hdrs.CONTENT_LENGTH)\n     801 |                         else:\n     802 |                             # For 307/308, always preserve the request body",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L799"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 808,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "     805 |                             # Use the existing payload to avoid recreating it from a potentially consumed file\n     806 |                             data = req._body\n     807 | \n>>>  808 |                         r_url = resp.headers.get(hdrs.LOCATION) or resp.headers.get(\n     809 |                             hdrs.URI\n     810 |                         )\n     811 |                         if r_url is None:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L808"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 863,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"pop\" for class \"Mapping[str, str]\"\n\u00a0\u00a0Attribute \"pop\" is unknown",
+      "source_context": "     860 |                             and url.origin() != redirect_origin\n     861 |                         ):\n     862 |                             auth = None\n>>>  863 |                             headers.pop(hdrs.AUTHORIZATION, None)\n     864 | \n     865 |                         url = parsed_redirect_url\n     866 |                         params = {}",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L863"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1119,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> RequestInfo\" cannot be assigned to parameter \"request_info\" of type \"RequestInfo\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"RequestInfo\"",
+      "source_context": "    1116 |             # check handshake\n    1117 |             if resp.status != 101:\n    1118 |                 raise WSServerHandshakeError(\n>>> 1119 |                     resp.request_info,\n    1120 |                     resp.history,\n    1121 |                     message=\"Invalid response status\",\n    1122 |                     status=resp.status,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1119"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1126,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "    1123 |                     headers=resp.headers,\n    1124 |                 )\n    1125 | \n>>> 1126 |             if resp.headers.get(hdrs.UPGRADE, \"\").lower() != \"websocket\":\n    1127 |                 raise WSServerHandshakeError(\n    1128 |                     resp.request_info,\n    1129 |                     resp.history,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1126"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1129,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> tuple[ClientResponse, ...]\" cannot be assigned to parameter \"history\" of type \"tuple[ClientResponse, ...]\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"tuple[ClientResponse, ...]\"",
+      "source_context": "    1126 |             if resp.headers.get(hdrs.UPGRADE, \"\").lower() != \"websocket\":\n    1127 |                 raise WSServerHandshakeError(\n    1128 |                     resp.request_info,\n>>> 1129 |                     resp.history,\n    1130 |                     message=\"Invalid upgrade header\",\n    1131 |                     status=resp.status,\n    1132 |                     headers=resp.headers,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1129"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1135,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "    1132 |                     headers=resp.headers,\n    1133 |                 )\n    1134 | \n>>> 1135 |             if resp.headers.get(hdrs.CONNECTION, \"\").lower() != \"upgrade\":\n    1136 |                 raise WSServerHandshakeError(\n    1137 |                     resp.request_info,\n    1138 |                     resp.history,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1135"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1138,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> tuple[ClientResponse, ...]\" cannot be assigned to parameter \"history\" of type \"tuple[ClientResponse, ...]\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"tuple[ClientResponse, ...]\"",
+      "source_context": "    1135 |             if resp.headers.get(hdrs.CONNECTION, \"\").lower() != \"upgrade\":\n    1136 |                 raise WSServerHandshakeError(\n    1137 |                     resp.request_info,\n>>> 1138 |                     resp.history,\n    1139 |                     message=\"Invalid connection header\",\n    1140 |                     status=resp.status,\n    1141 |                     headers=resp.headers,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1138"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1145,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "    1142 |                 )\n    1143 | \n    1144 |             # key calculation\n>>> 1145 |             r_key = resp.headers.get(hdrs.SEC_WEBSOCKET_ACCEPT, \"\")\n    1146 |             match = base64.b64encode(hashlib.sha1(sec_key + WS_KEY).digest()).decode()\n    1147 |             if r_key != match:\n    1148 |                 raise WSServerHandshakeError(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1145"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1149,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> RequestInfo\" cannot be assigned to parameter \"request_info\" of type \"RequestInfo\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"RequestInfo\"",
+      "source_context": "    1146 |             match = base64.b64encode(hashlib.sha1(sec_key + WS_KEY).digest()).decode()\n    1147 |             if r_key != match:\n    1148 |                 raise WSServerHandshakeError(\n>>> 1149 |                     resp.request_info,\n    1150 |                     resp.history,\n    1151 |                     message=\"Invalid challenge response\",\n    1152 |                     status=resp.status,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1149"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1161,
+      "error_code": "reportIndexIssue",
+      "message": "Object of type \"() -> Unknown\" is not subscriptable",
+      "source_context": "    1158 |             if protocols and hdrs.SEC_WEBSOCKET_PROTOCOL in resp.headers:\n    1159 |                 resp_protocols = [\n    1160 |                     proto.strip()\n>>> 1161 |                     for proto in resp.headers[hdrs.SEC_WEBSOCKET_PROTOCOL].split(\",\")\n    1162 |                 ]\n    1163 | \n    1164 |                 for proto in resp_protocols:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1161"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1178,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> RequestInfo\" cannot be assigned to parameter \"request_info\" of type \"RequestInfo\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"RequestInfo\"",
+      "source_context": "    1175 |                         compress, notakeover = ws_ext_parse(compress_hdrs)\n    1176 |                     except WSHandshakeError as exc:\n    1177 |                         raise WSServerHandshakeError(\n>>> 1178 |                             resp.request_info,\n    1179 |                             resp.history,\n    1180 |                             message=exc.args[0],\n    1181 |                             status=resp.status,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1178"
+    },
+    {
+      "file": "aiohttp/client.py",
+      "line": 1242,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"items\" for class \"Iterable[tuple[str | Unknown, str]]\"\n\u00a0\u00a0Attribute \"items\" is unknown",
+      "source_context": "    1239 |             if not isinstance(headers, (MultiDictProxy, MultiDict)):\n    1240 |                 headers = CIMultiDict(headers)\n    1241 |             added_names: set[str] = set()\n>>> 1242 |             for key, value in headers.items():\n    1243 |                 if key in added_names:\n    1244 |                     result.add(key, value)\n    1245 |                 else:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L1242"
+    },
+    {
+      "file": "aiohttp/client_middleware_digest_auth.py",
+      "line": 392,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "     389 |         if response.status != 401:\n     390 |             return False\n     391 | \n>>>  392 |         auth_header = response.headers.get(\"www-authenticate\", \"\")\n     393 |         if not auth_header:\n     394 |             return False  # No authentication header present\n     395 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_middleware_digest_auth.py#L392"
+    },
+    {
+      "file": "aiohttp/client_middleware_digest_auth.py",
+      "line": 421,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"origin\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"origin\" is unknown",
+      "source_context": "     418 |                 self._challenge[field] = value\n     419 | \n     420 |         # Update protection space based on domain parameter or default to origin\n>>>  421 |         origin = response.url.origin()\n     422 | \n     423 |         if domain := self._challenge.get(\"domain\"):\n     424 |             # Parse space-separated list of URIs",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_middleware_digest_auth.py#L421"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 46,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"reify\" is unknown import symbol",
+      "source_context": "      43 |     frozen_dataclass_decorator,\n      44 |     is_expected_content_type,\n      45 |     parse_mimetype,\n>>>   46 |     reify,\n      47 |     sentinel,\n      48 |     set_exception,\n      49 |     set_result,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L46"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 178,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     175 |     host: str\n     176 |     port: int | None\n     177 |     is_ssl: bool\n>>>  178 |     ssl: SSLContext | bool | Fingerprint\n     179 |     proxy: URL | None\n     180 |     proxy_auth: BasicAuth | None\n     181 |     proxy_headers_hash: int | None  # hash(CIMultiDict)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L178"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 395,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"getall\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"getall\" is unknown",
+      "source_context": "     392 | \n     393 |     @reify\n     394 |     def links(self) -> \"MultiDictProxy[MultiDictProxy[str | URL]]\":\n>>>  395 |         links_str = \", \".join(self.headers.getall(\"link\", []))\n     396 | \n     397 |         if not links_str:\n     398 |             return MultiDictProxy(MultiDict())",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L395"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 421,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"join\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"join\" is unknown",
+      "source_context": "     418 | \n     419 |             key = link.get(\"rel\", url)\n     420 | \n>>>  421 |             link.add(\"url\", self.url.join(URL(url)))\n     422 | \n     423 |             links.add(str(key), MultiDictProxy(link))\n     424 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L421"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 441,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> RequestInfo\" cannot be assigned to parameter \"request_info\" of type \"RequestInfo\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"RequestInfo\"",
+      "source_context": "     438 |                     message, payload = await protocol.read()  # type: ignore[union-attr]\n     439 |                 except HttpProcessingError as exc:\n     440 |                     raise ClientResponseError(\n>>>  441 |                         self.request_info,\n     442 |                         self.history,\n     443 |                         status=exc.code,\n     444 |                         message=exc.message,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L441"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 471,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"getall\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"getall\" is unknown",
+      "source_context": "     468 |         self.content = payload\n     469 | \n     470 |         # cookies\n>>>  471 |         if cookie_hdrs := self.headers.getall(hdrs.SET_COOKIE, ()):\n     472 |             # Store raw cookie headers for CookieJar\n     473 |             self._raw_cookie_headers = tuple(cookie_hdrs)\n     474 |         return self",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L471"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 535,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> RequestInfo\" cannot be assigned to parameter \"request_info\" of type \"RequestInfo\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"RequestInfo\"",
+      "source_context": "     532 |                 self.release()\n     533 | \n     534 |             raise ClientResponseError(\n>>>  535 |                 self.request_info,\n     536 |                 self.history,\n     537 |                 status=self.status,\n     538 |                 message=self.reason,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L535"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 609,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "     606 |         return self._body\n     607 | \n     608 |     def get_encoding(self) -> str:\n>>>  609 |         ctype = self.headers.get(hdrs.CONTENT_TYPE, \"\").lower()\n     610 |         mimetype = parse_mimetype(ctype)\n     611 | \n     612 |         encoding = mimetype.parameters.get(\"charset\")",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L609"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 653,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> RequestInfo\" cannot be assigned to parameter \"request_info\" of type \"RequestInfo\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"RequestInfo\"",
+      "source_context": "     650 |         if content_type:\n     651 |             if not is_expected_content_type(self.content_type, content_type):\n     652 |                 raise ContentTypeError(\n>>>  653 |                     self.request_info,\n     654 |                     self.history,\n     655 |                     status=self.status,\n     656 |                     message=(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L653"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 720,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     717 |         headers: CIMultiDict[str],\n     718 |         auth: BasicAuth | None,\n     719 |         loop: asyncio.AbstractEventLoop,\n>>>  720 |         ssl: SSLContext | bool | Fingerprint,\n     721 |         trust_env: bool = False,\n     722 |     ):\n     723 |         if match := _CONTAINS_CONTROL_CHAR_RE.search(method):",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L720"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 778,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     775 |         return self.url.scheme in _SSL_SCHEMES\n     776 | \n     777 |     @property\n>>>  778 |     def ssl(self) -> \"SSLContext | bool | Fingerprint\":\n     779 |         return self._ssl\n     780 | \n     781 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L778"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 947,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     944 |     proxy_auth: BasicAuth | None\n     945 |     timer: BaseTimerContext\n     946 |     session: \"ClientSession\"\n>>>  947 |     ssl: SSLContext | bool | Fingerprint\n     948 |     proxy_headers: CIMultiDict[str] | None\n     949 |     traces: list[\"Trace\"]\n     950 |     trust_env: bool",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L947"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 991,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     988 |         proxy_auth: BasicAuth | None,\n     989 |         timer: BaseTimerContext,\n     990 |         session: \"ClientSession\",\n>>>  991 |         ssl: SSLContext | bool | Fingerprint,\n     992 |         proxy_headers: CIMultiDict[str] | None,\n     993 |         traces: list[\"Trace\"],\n     994 |         trust_env: bool,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L991"
+    },
+    {
+      "file": "aiohttp/client_reqrep.py",
+      "line": 1308,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"partial[CoroutineType[Any, Any, None]] | None\" cannot be assigned to parameter \"on_chunk_sent\" of type \"_T_OnChunkSent\" in function \"__init__\"\n\u00a0\u00a0Type \"partial[CoroutineType[Any, Any, None]] | None\" is not assignable to type \"_T_OnChunkSent\"\n\u00a0\u00a0\u00a0\u00a0Type \"partial[CoroutineType[Any, Any, None]]\" is not assignable to type \"_T_OnChunkSent\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"partial[CoroutineType[Any, Any, None]]\" is not assignable to type \"(bytes | bytearray | memoryview[int] | memoryview[bytes]) -> Awaitable[None]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Parameter 1: type \"bytes | bytearray | memoryview[int] | memoryview[bytes]\" is incompatible with type \"bytes\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"bytes | bytearray | memoryview[int] | memoryview[bytes]\" is not assignable to type \"bytes\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"partial[CoroutineType[Any, Any, None]]\" is not assignable to \"None\"",
+      "source_context": "    1305 |         writer = StreamWriter(\n    1306 |             protocol,\n    1307 |             self.loop,\n>>> 1308 |             on_chunk_sent=(\n    1309 |                 functools.partial(self._on_chunk_request_sent, self.method, self.url)\n    1310 |                 if self._traces\n    1311 |                 else None",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client_reqrep.py#L1308"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 835,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     832 |         return self._timestamps[key] + self._ttl < monotonic()\n     833 | \n     834 | \n>>>  835 | def _make_ssl_context(verified: bool) -> SSLContext:\n     836 |     \"\"\"Create SSL context.\n     837 | \n     838 |     This method is not async-friendly and should be called from a thread",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L835"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 913,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     910 |         use_dns_cache: bool = True,\n     911 |         ttl_dns_cache: int | None = 10,\n     912 |         family: socket.AddressFamily = socket.AddressFamily.AF_UNSPEC,\n>>>  913 |         ssl: bool | Fingerprint | SSLContext = True,\n     914 |         local_addr: tuple[str, int] | None = None,\n     915 |         resolver: AbstractResolver | None = None,\n     916 |         keepalive_timeout: None | float | _SENTINEL = sentinel,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L913"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 1177,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "    1174 | \n    1175 |         return proto\n    1176 | \n>>> 1177 |     def _get_ssl_context(self, req: ClientRequestBase) -> SSLContext | None:\n    1178 |         \"\"\"Logic to get the correct SSL context\n    1179 | \n    1180 |         0. if req.ssl is false, return None",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L1177"
+    },
+    {
+      "file": "aiohttp/connector.py",
+      "line": 1534,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> RequestInfo\" cannot be assigned to parameter \"request_info\" of type \"RequestInfo\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"RequestInfo\"",
+      "source_context": "    1531 |                         if message is None:\n    1532 |                             message = HTTPStatus(resp.status).phrase\n    1533 |                         raise ClientHttpProxyError(\n>>> 1534 |                             proxy_resp.request_info,\n    1535 |                             resp.history,\n    1536 |                             status=resp.status,\n    1537 |                             message=message,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L1534"
+    },
+    {
+      "file": "aiohttp/cookiejar.py",
+      "line": 95,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"origin\" for class \"str\"\n\u00a0\u00a0Attribute \"origin\" is unknown",
+      "source_context": "      92 |         if treat_as_secure_origin is None:\n      93 |             self._treat_as_secure_origin: frozenset[URL] = frozenset()\n      94 |         elif isinstance(treat_as_secure_origin, URL):\n>>>   95 |             self._treat_as_secure_origin = frozenset({treat_as_secure_origin.origin()})\n      96 |         elif isinstance(treat_as_secure_origin, str):\n      97 |             self._treat_as_secure_origin = frozenset(\n      98 |                 {URL(treat_as_secure_origin).origin()}",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/cookiejar.py#L95"
+    },
+    {
+      "file": "aiohttp/multipart.py",
+      "line": 29,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"reify\" is unknown import symbol",
+      "source_context": "      26 |     CONTENT_TRANSFER_ENCODING,\n      27 |     CONTENT_TYPE,\n      28 | )\n>>>   29 | from .helpers import CHAR, TOKEN, parse_mimetype, reify\n      30 | from .http import HeadersParser\n      31 | from .log import internal_logger\n      32 | from .payload import (",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/multipart.py#L29"
+    },
+    {
+      "file": "aiohttp/multipart.py",
+      "line": 605,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> (str | None)\" cannot be assigned to parameter \"value\" of type \"str\" in function \"__setitem__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"str\"",
+      "source_context": "     602 | \n     603 |         params: dict[str, str] = {}\n     604 |         if value.name is not None:\n>>>  605 |             params[\"name\"] = value.name\n     606 |         if value.filename is not None:\n     607 |             params[\"filename\"] = value.filename\n     608 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/multipart.py#L605"
+    },
+    {
+      "file": "aiohttp/multipart.py",
+      "line": 682,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> Unknown\" cannot be assigned to parameter \"headers\" of type \"Mapping[str, str]\" in function \"__init__\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"Mapping[str, str]\"",
+      "source_context": "     679 |         :param response: :class:`~aiohttp.client.ClientResponse` instance\n     680 |         \"\"\"\n     681 |         obj = cls.response_wrapper_cls(\n>>>  682 |             response, cls(response.headers, response.content)\n     683 |         )\n     684 |         return obj\n     685 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/multipart.py#L682"
+    },
+    {
+      "file": "aiohttp/resolver.py",
+      "line": 108,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"getaddrinfo\" is not a known attribute of \"None\"",
+      "source_context": "     105 |         self, host: str, port: int = 0, family: socket.AddressFamily = socket.AF_INET\n     106 |     ) -> list[ResolveResult]:\n     107 |         try:\n>>>  108 |             resp = await self._resolver.getaddrinfo(\n     109 |                 host,\n     110 |                 port=port,\n     111 |                 type=socket.SOCK_STREAM,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/resolver.py#L108"
+    },
+    {
+      "file": "aiohttp/resolver.py",
+      "line": 126,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"getnameinfo\" is not a known attribute of \"None\"",
+      "source_context": "     123 |                     # This is essential for link-local IPv6 addresses.\n     124 |                     # LL IPv6 is a VERY rare case. Strictly speaking, we should use\n     125 |                     # getnameinfo() unconditionally, but performance makes sense.\n>>>  126 |                     result = await self._resolver.getnameinfo(\n     127 |                         (address[0].decode(\"ascii\"), *address[1:]),\n     128 |                         _NAME_SOCKET_FLAGS,\n     129 |                     )",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/resolver.py#L126"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 265,
+      "error_code": "reportInvalidTypeVarUse",
+      "message": "Type annotation for \"self\" parameter of \"__init__\" method cannot contain class-scoped type variables",
+      "source_context": "     262 |     ) -> None: ...\n     263 |     @overload\n     264 |     def __init__(\n>>>  265 |         self: \"TestClient[_Request, None]\",\n     266 |         server: BaseTestServer[_Request],\n     267 |         *,\n     268 |         cookie_jar: AbstractCookieJar | None = None,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L265"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 285,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"CookieJar\" is not assignable to declared type \"AbstractCookieJar | None\"\n\u00a0\u00a0Type \"CookieJar\" is not assignable to type \"AbstractCookieJar | None\"\n\u00a0\u00a0\u00a0\u00a0\"CookieJar\" is not assignable to \"AbstractCookieJar\"\n\u00a0\u00a0\u00a0\u00a0\"CookieJar\" is not assignable to \"None\"",
+      "source_context": "     282 |             )\n     283 |         self._server = server\n     284 |         if cookie_jar is None:\n>>>  285 |             cookie_jar = aiohttp.CookieJar(unsafe=True)\n     286 |         self._session = ClientSession(cookie_jar=cookie_jar, **kwargs)\n     287 |         self._session._retry_connection = False\n     288 |         self._closed = False",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L285"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 436,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"ClientWebSocketResponse[Literal[True]]\" cannot be assigned to type variable \"_RetType_co@_BaseRequestContextManager\"\n\u00a0\u00a0Type \"ClientWebSocketResponse[Literal[True]]\" is not assignable to upper bound \"ClientResponse | ClientWebSocketResponse[bool]\" for type variable \"_RetType_co@_BaseRequestContextManager\"\n\u00a0\u00a0\u00a0\u00a0Type \"ClientWebSocketResponse[Literal[True]]\" is not assignable to type \"ClientResponse | ClientWebSocketResponse[bool]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ClientWebSocketResponse[Literal[True]]\" is not assignable to \"ClientResponse\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ClientWebSocketResponse[Literal[True]]\" is not assignable to \"ClientWebSocketResponse[bool]\"",
+      "source_context": "     433 |     @overload\n     434 |     def ws_connect(\n     435 |         self, path: StrOrURL, *, decode_text: Literal[True] = ..., **kwargs: Any\n>>>  436 |     ) -> \"_BaseRequestContextManager[ClientWebSocketResponse[Literal[True]]]\": ...\n     437 | \n     438 |     @overload\n     439 |     def ws_connect(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L436"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 441,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"ClientWebSocketResponse[Literal[False]]\" cannot be assigned to type variable \"_RetType_co@_BaseRequestContextManager\"\n\u00a0\u00a0Type \"ClientWebSocketResponse[Literal[False]]\" is not assignable to upper bound \"ClientResponse | ClientWebSocketResponse[bool]\" for type variable \"_RetType_co@_BaseRequestContextManager\"\n\u00a0\u00a0\u00a0\u00a0Type \"ClientWebSocketResponse[Literal[False]]\" is not assignable to type \"ClientResponse | ClientWebSocketResponse[bool]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ClientWebSocketResponse[Literal[False]]\" is not assignable to \"ClientResponse\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ClientWebSocketResponse[Literal[False]]\" is not assignable to \"ClientWebSocketResponse[bool]\"",
+      "source_context": "     438 |     @overload\n     439 |     def ws_connect(\n     440 |         self, path: StrOrURL, *, decode_text: Literal[False], **kwargs: Any\n>>>  441 |     ) -> \"_BaseRequestContextManager[ClientWebSocketResponse[Literal[False]]]\": ...\n     442 | \n     443 |     @overload\n     444 |     def ws_connect(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L441"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 446,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"ClientWebSocketResponse[bool]\" cannot be assigned to type variable \"_RetType_co@_BaseRequestContextManager\"\n\u00a0\u00a0Type \"ClientWebSocketResponse[bool]\" is not assignable to upper bound \"ClientResponse | ClientWebSocketResponse[bool]\" for type variable \"_RetType_co@_BaseRequestContextManager\"\n\u00a0\u00a0\u00a0\u00a0Type \"ClientWebSocketResponse[bool]\" is not assignable to type \"ClientResponse | ClientWebSocketResponse[bool]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ClientWebSocketResponse[bool]\" is not assignable to \"ClientResponse\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"client_ws.ClientWebSocketResponse\" is not assignable to \"aiohttp.client_ws.ClientWebSocketResponse\"",
+      "source_context": "     443 |     @overload\n     444 |     def ws_connect(\n     445 |         self, path: StrOrURL, *, decode_text: bool = ..., **kwargs: Any\n>>>  446 |     ) -> \"_BaseRequestContextManager[ClientWebSocketResponse[bool]]\": ...\n     447 | \n     448 |     def ws_connect(\n     449 |         self, path: StrOrURL, *, decode_text: bool = True, **kwargs: Any",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L446"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 450,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"ClientWebSocketResponse[bool]\" cannot be assigned to type variable \"_RetType_co@_BaseRequestContextManager\"\n\u00a0\u00a0Type \"ClientWebSocketResponse[bool]\" is not assignable to upper bound \"ClientResponse | ClientWebSocketResponse[bool]\" for type variable \"_RetType_co@_BaseRequestContextManager\"\n\u00a0\u00a0\u00a0\u00a0Type \"ClientWebSocketResponse[bool]\" is not assignable to type \"ClientResponse | ClientWebSocketResponse[bool]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ClientWebSocketResponse[bool]\" is not assignable to \"ClientResponse\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"client_ws.ClientWebSocketResponse\" is not assignable to \"aiohttp.client_ws.ClientWebSocketResponse\"",
+      "source_context": "     447 | \n     448 |     def ws_connect(\n     449 |         self, path: StrOrURL, *, decode_text: bool = True, **kwargs: Any\n>>>  450 |     ) -> \"_BaseRequestContextManager[ClientWebSocketResponse[bool]]\":\n     451 |         \"\"\"Initiate websocket connection.\n     452 | \n     453 |         The api corresponds to aiohttp.ClientSession.ws_connect.",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L450"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 456,
+      "error_code": "reportReturnType",
+      "message": "Type \"_WSRequestContextManager\" is not assignable to return type \"_BaseRequestContextManager[ClientWebSocketResponse[bool]]\"\n\u00a0\u00a0\"aiohttp.client._BaseRequestContextManager\" is not assignable to \"aiohttp.client._BaseRequestContextManager\"\n\u00a0\u00a0\u00a0\u00a0Type parameter \"_RetType_co@_BaseRequestContextManager\" is covariant, but \"aiohttp.client_ws.ClientWebSocketResponse[builtins.bool]\" is not a subtype of \"client_ws.ClientWebSocketResponse[builtins.bool]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"aiohttp.client_ws.ClientWebSocketResponse\" is not assignable to \"client_ws.ClientWebSocketResponse\"",
+      "source_context": "     453 |         The api corresponds to aiohttp.ClientSession.ws_connect.\n     454 | \n     455 |         \"\"\"\n>>>  456 |         return _WSRequestContextManager(\n     457 |             self._ws_connect(path, decode_text=decode_text, **kwargs)\n     458 |         )\n     459 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L456"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 671,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"items\" for class \"Iterable[tuple[str | Unknown, str]]\"\n\u00a0\u00a0Attribute \"items\" is unknown",
+      "source_context": "     668 |     if headers:\n     669 |         headers = CIMultiDictProxy(CIMultiDict(headers))\n     670 |         raw_hdrs = tuple(\n>>>  671 |             (k.encode(\"utf-8\"), v.encode(\"utf-8\")) for k, v in headers.items()\n     672 |         )\n     673 |     else:\n     674 |         headers = CIMultiDictProxy(CIMultiDict())",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L671"
+    },
+    {
+      "file": "aiohttp/test_utils.py",
+      "line": 677,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"Iterable[tuple[str | Unknown, str]]\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "     674 |         headers = CIMultiDictProxy(CIMultiDict())\n     675 |         raw_hdrs = ()\n     676 | \n>>>  677 |     chunked = \"chunked\" in headers.get(hdrs.TRANSFER_ENCODING, \"\").lower()\n     678 | \n     679 |     message = RawRequestMessage(\n     680 |         method,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L677"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 54,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      51 |     def __init__(\n      52 |         self, trace_config_ctx_factory: _Factory[Any] = SimpleNamespace\n      53 |     ) -> None:\n>>>   54 |         self._on_request_start: _TracingSignal[_T, TraceRequestStartParams] = Signal(\n      55 |             self\n      56 |         )\n      57 |         self._on_request_chunk_sent: _TracingSignal[_T, TraceRequestChunkSentParams] = (",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L54"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 57,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      54 |         self._on_request_start: _TracingSignal[_T, TraceRequestStartParams] = Signal(\n      55 |             self\n      56 |         )\n>>>   57 |         self._on_request_chunk_sent: _TracingSignal[_T, TraceRequestChunkSentParams] = (\n      58 |             Signal(self)\n      59 |         )\n      60 |         self._on_response_chunk_received: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L57"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 60,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      57 |         self._on_request_chunk_sent: _TracingSignal[_T, TraceRequestChunkSentParams] = (\n      58 |             Signal(self)\n      59 |         )\n>>>   60 |         self._on_response_chunk_received: _TracingSignal[\n      61 |             _T, TraceResponseChunkReceivedParams\n      62 |         ] = Signal(self)\n      63 |         self._on_request_end: _TracingSignal[_T, TraceRequestEndParams] = Signal(self)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L60"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 63,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      60 |         self._on_response_chunk_received: _TracingSignal[\n      61 |             _T, TraceResponseChunkReceivedParams\n      62 |         ] = Signal(self)\n>>>   63 |         self._on_request_end: _TracingSignal[_T, TraceRequestEndParams] = Signal(self)\n      64 |         self._on_request_exception: _TracingSignal[_T, TraceRequestExceptionParams] = (\n      65 |             Signal(self)\n      66 |         )",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L63"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 67,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      64 |         self._on_request_exception: _TracingSignal[_T, TraceRequestExceptionParams] = (\n      65 |             Signal(self)\n      66 |         )\n>>>   67 |         self._on_request_redirect: _TracingSignal[_T, TraceRequestRedirectParams] = (\n      68 |             Signal(self)\n      69 |         )\n      70 |         self._on_connection_queued_start: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L67"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 70,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      67 |         self._on_request_redirect: _TracingSignal[_T, TraceRequestRedirectParams] = (\n      68 |             Signal(self)\n      69 |         )\n>>>   70 |         self._on_connection_queued_start: _TracingSignal[\n      71 |             _T, TraceConnectionQueuedStartParams\n      72 |         ] = Signal(self)\n      73 |         self._on_connection_queued_end: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L70"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 73,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      70 |         self._on_connection_queued_start: _TracingSignal[\n      71 |             _T, TraceConnectionQueuedStartParams\n      72 |         ] = Signal(self)\n>>>   73 |         self._on_connection_queued_end: _TracingSignal[\n      74 |             _T, TraceConnectionQueuedEndParams\n      75 |         ] = Signal(self)\n      76 |         self._on_connection_create_start: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L73"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 76,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      73 |         self._on_connection_queued_end: _TracingSignal[\n      74 |             _T, TraceConnectionQueuedEndParams\n      75 |         ] = Signal(self)\n>>>   76 |         self._on_connection_create_start: _TracingSignal[\n      77 |             _T, TraceConnectionCreateStartParams\n      78 |         ] = Signal(self)\n      79 |         self._on_connection_create_end: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L76"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 79,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      76 |         self._on_connection_create_start: _TracingSignal[\n      77 |             _T, TraceConnectionCreateStartParams\n      78 |         ] = Signal(self)\n>>>   79 |         self._on_connection_create_end: _TracingSignal[\n      80 |             _T, TraceConnectionCreateEndParams\n      81 |         ] = Signal(self)\n      82 |         self._on_connection_reuseconn: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L79"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 82,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      79 |         self._on_connection_create_end: _TracingSignal[\n      80 |             _T, TraceConnectionCreateEndParams\n      81 |         ] = Signal(self)\n>>>   82 |         self._on_connection_reuseconn: _TracingSignal[\n      83 |             _T, TraceConnectionReuseconnParams\n      84 |         ] = Signal(self)\n      85 |         self._on_dns_resolvehost_start: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L82"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 85,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      82 |         self._on_connection_reuseconn: _TracingSignal[\n      83 |             _T, TraceConnectionReuseconnParams\n      84 |         ] = Signal(self)\n>>>   85 |         self._on_dns_resolvehost_start: _TracingSignal[\n      86 |             _T, TraceDnsResolveHostStartParams\n      87 |         ] = Signal(self)\n      88 |         self._on_dns_resolvehost_end: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L85"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 88,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      85 |         self._on_dns_resolvehost_start: _TracingSignal[\n      86 |             _T, TraceDnsResolveHostStartParams\n      87 |         ] = Signal(self)\n>>>   88 |         self._on_dns_resolvehost_end: _TracingSignal[\n      89 |             _T, TraceDnsResolveHostEndParams\n      90 |         ] = Signal(self)\n      91 |         self._on_dns_cache_hit: _TracingSignal[_T, TraceDnsCacheHitParams] = Signal(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L88"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 91,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      88 |         self._on_dns_resolvehost_end: _TracingSignal[\n      89 |             _T, TraceDnsResolveHostEndParams\n      90 |         ] = Signal(self)\n>>>   91 |         self._on_dns_cache_hit: _TracingSignal[_T, TraceDnsCacheHitParams] = Signal(\n      92 |             self\n      93 |         )\n      94 |         self._on_dns_cache_miss: _TracingSignal[_T, TraceDnsCacheMissParams] = Signal(",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L91"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 94,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      91 |         self._on_dns_cache_hit: _TracingSignal[_T, TraceDnsCacheHitParams] = Signal(\n      92 |             self\n      93 |         )\n>>>   94 |         self._on_dns_cache_miss: _TracingSignal[_T, TraceDnsCacheMissParams] = Signal(\n      95 |             self\n      96 |         )\n      97 |         self._on_request_headers_sent: _TracingSignal[",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L94"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 97,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      94 |         self._on_dns_cache_miss: _TracingSignal[_T, TraceDnsCacheMissParams] = Signal(\n      95 |             self\n      96 |         )\n>>>   97 |         self._on_request_headers_sent: _TracingSignal[\n      98 |             _T, TraceRequestHeadersSentParams\n      99 |         ] = Signal(self)\n     100 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L97"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 126,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     123 |         self._on_request_headers_sent.freeze()\n     124 | \n     125 |     @property\n>>>  126 |     def on_request_start(self) -> \"_TracingSignal[_T, TraceRequestStartParams]\":\n     127 |         return self._on_request_start\n     128 | \n     129 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L126"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 132,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     129 |     @property\n     130 |     def on_request_chunk_sent(\n     131 |         self,\n>>>  132 |     ) -> \"_TracingSignal[_T, TraceRequestChunkSentParams]\":\n     133 |         return self._on_request_chunk_sent\n     134 | \n     135 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L132"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 138,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     135 |     @property\n     136 |     def on_response_chunk_received(\n     137 |         self,\n>>>  138 |     ) -> \"_TracingSignal[_T, TraceResponseChunkReceivedParams]\":\n     139 |         return self._on_response_chunk_received\n     140 | \n     141 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L138"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 142,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     139 |         return self._on_response_chunk_received\n     140 | \n     141 |     @property\n>>>  142 |     def on_request_end(self) -> \"_TracingSignal[_T, TraceRequestEndParams]\":\n     143 |         return self._on_request_end\n     144 | \n     145 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L142"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 148,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     145 |     @property\n     146 |     def on_request_exception(\n     147 |         self,\n>>>  148 |     ) -> \"_TracingSignal[_T, TraceRequestExceptionParams]\":\n     149 |         return self._on_request_exception\n     150 | \n     151 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L148"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 154,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     151 |     @property\n     152 |     def on_request_redirect(\n     153 |         self,\n>>>  154 |     ) -> \"_TracingSignal[_T, TraceRequestRedirectParams]\":\n     155 |         return self._on_request_redirect\n     156 | \n     157 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L154"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 160,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     157 |     @property\n     158 |     def on_connection_queued_start(\n     159 |         self,\n>>>  160 |     ) -> \"_TracingSignal[_T, TraceConnectionQueuedStartParams]\":\n     161 |         return self._on_connection_queued_start\n     162 | \n     163 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L160"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 166,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     163 |     @property\n     164 |     def on_connection_queued_end(\n     165 |         self,\n>>>  166 |     ) -> \"_TracingSignal[_T, TraceConnectionQueuedEndParams]\":\n     167 |         return self._on_connection_queued_end\n     168 | \n     169 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L166"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 172,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     169 |     @property\n     170 |     def on_connection_create_start(\n     171 |         self,\n>>>  172 |     ) -> \"_TracingSignal[_T, TraceConnectionCreateStartParams]\":\n     173 |         return self._on_connection_create_start\n     174 | \n     175 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L172"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 178,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     175 |     @property\n     176 |     def on_connection_create_end(\n     177 |         self,\n>>>  178 |     ) -> \"_TracingSignal[_T, TraceConnectionCreateEndParams]\":\n     179 |         return self._on_connection_create_end\n     180 | \n     181 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L178"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 184,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     181 |     @property\n     182 |     def on_connection_reuseconn(\n     183 |         self,\n>>>  184 |     ) -> \"_TracingSignal[_T, TraceConnectionReuseconnParams]\":\n     185 |         return self._on_connection_reuseconn\n     186 | \n     187 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L184"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 190,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     187 |     @property\n     188 |     def on_dns_resolvehost_start(\n     189 |         self,\n>>>  190 |     ) -> \"_TracingSignal[_T, TraceDnsResolveHostStartParams]\":\n     191 |         return self._on_dns_resolvehost_start\n     192 | \n     193 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L190"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 196,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     193 |     @property\n     194 |     def on_dns_resolvehost_end(\n     195 |         self,\n>>>  196 |     ) -> \"_TracingSignal[_T, TraceDnsResolveHostEndParams]\":\n     197 |         return self._on_dns_resolvehost_end\n     198 | \n     199 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L196"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 200,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     197 |         return self._on_dns_resolvehost_end\n     198 | \n     199 |     @property\n>>>  200 |     def on_dns_cache_hit(self) -> \"_TracingSignal[_T, TraceDnsCacheHitParams]\":\n     201 |         return self._on_dns_cache_hit\n     202 | \n     203 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L200"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 204,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     201 |         return self._on_dns_cache_hit\n     202 | \n     203 |     @property\n>>>  204 |     def on_dns_cache_miss(self) -> \"_TracingSignal[_T, TraceDnsCacheMissParams]\":\n     205 |         return self._on_dns_cache_miss\n     206 | \n     207 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L204"
+    },
+    {
+      "file": "aiohttp/tracing.py",
+      "line": 210,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     207 |     @property\n     208 |     def on_request_headers_sent(\n     209 |         self,\n>>>  210 |     ) -> \"_TracingSignal[_T, TraceRequestHeadersSentParams]\":\n     211 |         return self._on_request_headers_sent\n     212 | \n     213 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/tracing.py#L210"
+    },
+    {
+      "file": "aiohttp/web.py",
+      "line": 279,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     276 |     port: int | None = None,\n     277 |     path: PathLike | TypingIterable[PathLike] | None = None,\n     278 |     sock: socket.socket | TypingIterable[socket.socket] | None = None,\n>>>  279 |     ssl_context: SSLContext | None = None,\n     280 |     print: Callable[..., None] | None = print,\n     281 |     backlog: int = 128,\n     282 |     reuse_address: bool | None = None,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web.py#L279"
+    },
+    {
+      "file": "aiohttp/web.py",
+      "line": 429,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     426 |     sock: socket.socket | TypingIterable[socket.socket] | None = None,\n     427 |     shutdown_timeout: float = 60.0,\n     428 |     keepalive_timeout: float = 75.0,\n>>>  429 |     ssl_context: SSLContext | None = None,\n     430 |     print: Callable[..., None] | None = print,\n     431 |     backlog: int = 128,\n     432 |     access_log_class: type[AbstractAccessLogger] = AccessLogger,",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web.py#L429"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 111,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     108 |         self._handler_args = handler_args\n     109 |         self.logger = logger\n     110 | \n>>>  111 |         self._middlewares: _Middlewares = FrozenList(middlewares)\n     112 | \n     113 |         # initialized on freezing\n     114 |         self._middlewares_handlers: _MiddlewaresHandlers = tuple()",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L111"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 123,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     120 |         self._pre_frozen = False\n     121 |         self._subapps: _Subapps = []\n     122 | \n>>>  123 |         self._on_response_prepare: _RespPrepareSignal = Signal(self)\n     124 |         self._on_startup: _AppSignal = Signal(self)\n     125 |         self._on_shutdown: _AppSignal = Signal(self)\n     126 |         self._on_cleanup: _AppSignal = Signal(self)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L123"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 126,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     123 |         self._on_response_prepare: _RespPrepareSignal = Signal(self)\n     124 |         self._on_startup: _AppSignal = Signal(self)\n     125 |         self._on_shutdown: _AppSignal = Signal(self)\n>>>  126 |         self._on_cleanup: _AppSignal = Signal(self)\n     127 |         self._cleanup_ctx = CleanupContext()\n     128 |         self._on_startup.append(self._cleanup_ctx._on_startup)\n     129 |         self._on_cleanup.append(self._cleanup_ctx._on_cleanup)",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L126"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 310,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     307 |         return self.router.add_routes(routes)\n     308 | \n     309 |     @property\n>>>  310 |     def on_response_prepare(self) -> _RespPrepareSignal:\n     311 |         return self._on_response_prepare\n     312 | \n     313 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L310"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 314,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     311 |         return self._on_response_prepare\n     312 | \n     313 |     @property\n>>>  314 |     def on_startup(self) -> _AppSignal:\n     315 |         return self._on_startup\n     316 | \n     317 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L314"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 318,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     315 |         return self._on_startup\n     316 | \n     317 |     @property\n>>>  318 |     def on_shutdown(self) -> _AppSignal:\n     319 |         return self._on_shutdown\n     320 | \n     321 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L318"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 322,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     319 |         return self._on_shutdown\n     320 | \n     321 |     @property\n>>>  322 |     def on_cleanup(self) -> _AppSignal:\n     323 |         return self._on_cleanup\n     324 | \n     325 |     @property",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L322"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 334,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "     331 |         return self._router\n     332 | \n     333 |     @property\n>>>  334 |     def middlewares(self) -> _Middlewares:\n     335 |         return self._middlewares\n     336 | \n     337 |     async def startup(self) -> None:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L334"
+    },
+    {
+      "file": "aiohttp/web_app.py",
+      "line": 373,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "     370 | \n     371 |         request._match_info = match_info\n     372 | \n>>>  373 |         if request.headers.get(hdrs.EXPECT):\n     374 |             resp = await match_info.expect_handler(request)\n     375 |             await request.writer.drain()\n     376 |             if resp is not None:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_app.py#L373"
+    },
+    {
+      "file": "aiohttp/web_fileresponse.py",
+      "line": 190,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> (tuple[ETag, ...] | None)\" cannot be assigned to parameter \"etags\" of type \"tuple[ETag, ...]\" in function \"_etag_match\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"tuple[ETag, ...]\"",
+      "source_context": "     187 | \n     188 |         # https://www.rfc-editor.org/rfc/rfc9110#section-13.1.1-2\n     189 |         if (ifmatch := request.if_match) is not None and not self._etag_match(\n>>>  190 |             etag_value, ifmatch, weak=False\n     191 |         ):\n     192 |             return _FileResponseResult.PRE_CONDITION_FAILED, None, st, file_encoding\n     193 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_fileresponse.py#L190"
+    },
+    {
+      "file": "aiohttp/web_fileresponse.py",
+      "line": 197,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"timestamp\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"timestamp\" is unknown",
+      "source_context": "     194 |         if (\n     195 |             (unmodsince := request.if_unmodified_since) is not None\n     196 |             and ifmatch is None\n>>>  197 |             and st.st_mtime > unmodsince.timestamp()\n     198 |         ):\n     199 |             return _FileResponseResult.PRE_CONDITION_FAILED, None, st, file_encoding\n     200 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_fileresponse.py#L197"
+    },
+    {
+      "file": "aiohttp/web_fileresponse.py",
+      "line": 203,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> (tuple[ETag, ...] | None)\" cannot be assigned to parameter \"etags\" of type \"tuple[ETag, ...]\" in function \"_etag_match\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"tuple[ETag, ...]\"",
+      "source_context": "     200 | \n     201 |         # https://www.rfc-editor.org/rfc/rfc9110#section-13.1.2-2\n     202 |         if (ifnonematch := request.if_none_match) is not None and self._etag_match(\n>>>  203 |             etag_value, ifnonematch, weak=True\n     204 |         ):\n     205 |             return _FileResponseResult.NOT_MODIFIED, None, st, file_encoding\n     206 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_fileresponse.py#L203"
+    },
+    {
+      "file": "aiohttp/web_fileresponse.py",
+      "line": 210,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"timestamp\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"timestamp\" is unknown",
+      "source_context": "     207 |         if (\n     208 |             (modsince := request.if_modified_since) is not None\n     209 |             and ifnonematch is None\n>>>  210 |             and st.st_mtime <= modsince.timestamp()\n     211 |         ):\n     212 |             return _FileResponseResult.NOT_MODIFIED, None, st, file_encoding\n     213 | ",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_fileresponse.py#L210"
+    },
+    {
+      "file": "aiohttp/web_fileresponse.py",
+      "line": 246,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get\" is unknown",
+      "source_context": "     243 |         loop = asyncio.get_running_loop()\n     244 |         # Encoding comparisons should be case-insensitive\n     245 |         # https://www.rfc-editor.org/rfc/rfc9110#section-8.4.1\n>>>  246 |         accept_encoding = request.headers.get(hdrs.ACCEPT_ENCODING, \"\").lower()\n     247 |         try:\n     248 |             response_result, fobj, st, file_encoding = await loop.run_in_executor(\n     249 |                 None, self._make_response, request, accept_encoding",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_fileresponse.py#L246"
+    },
+    {
+      "file": "aiohttp/web_fileresponse.py",
+      "line": 300,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"timestamp\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"timestamp\" is unknown",
+      "source_context": "     297 |         count: int = file_size\n     298 |         start: int | None = None\n     299 | \n>>>  300 |         if (ifrange := request.if_range) is None or file_mtime <= ifrange.timestamp():\n     301 |             # If-Range header check:\n     302 |             # condition = cached date >= last modification date\n     303 |             # return 206 if True else 200.",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_fileresponse.py#L300"
+    },
+    {
+      "file": "aiohttp/web_fileresponse.py",
+      "line": 310,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"start\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"start\" is unknown",
+      "source_context": "     307 |             #   return 200\n     308 |             try:\n     309 |                 rng = request.http_range\n>>>  310 |                 start = rng.start\n     311 |                 end: int | None = rng.stop\n     312 |             except ValueError:\n     313 |                 # https://tools.ietf.org/html/rfc7233:",
+      "github_link": "https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/web_fileresponse.py#L310"
+    }
+  ]
+}

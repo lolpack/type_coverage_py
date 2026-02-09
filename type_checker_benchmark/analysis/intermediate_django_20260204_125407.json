@@ -1,0 +1,1615 @@
+{
+  "package_name": "django",
+  "github_url": "https://github.com/django/django",
+  "commit_sha": "13299a6203f4bc3e5b2552c96a51ff2b15da3c43",
+  "summary": {
+    "pyright_errors": 3002,
+    "pyrefly_errors": 4096,
+    "false_positives": 1491,
+    "false_negatives": 399
+  },
+  "false_positives": [
+    {
+      "file": "django/apps/registry.py",
+      "line": 415,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `func`",
+      "source_context": "     412 |                 next_function = partial(apply_next_model.func, model)\n     413 |                 self.lazy_model_operation(next_function, *more_models)\n     414 | \n>>>  415 |             apply_next_model.func = function\n     416 | \n     417 |             # If the model has already been imported and registered, partially\n     418 |             # apply it to the function now. If not, add it to the list of",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/apps/registry.py#L415"
+    },
+    {
+      "file": "django/conf/__init__.py",
+      "line": 46,
+      "error_code": "bad-override",
+      "message": "Class member `LazySettings._setup` overrides parent class `LazyObject` in an inconsistent manner",
+      "source_context": "      43 |     Django uses the settings module pointed to by DJANGO_SETTINGS_MODULE.\n      44 |     \"\"\"\n      45 | \n>>>   46 |     def _setup(self, name=None):\n      47 |         \"\"\"\n      48 |         Load the settings module pointed to by the environment variable. This\n      49 |         is used the first time settings are needed, if the user hasn't",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/conf/__init__.py#L46"
+    },
+    {
+      "file": "django/conf/__init__.py",
+      "line": 69,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `SETTINGS_MODULE`",
+      "source_context": "      66 |         if self._wrapped is empty:\n      67 |             return \"<LazySettings [Unevaluated]>\"\n      68 |         return '<LazySettings \"%(settings_module)s\">' % {\n>>>   69 |             \"settings_module\": self._wrapped.SETTINGS_MODULE,\n      70 |         }\n      71 | \n      72 |     def __getattr__(self, name):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/conf/__init__.py#L69"
+    },
+    {
+      "file": "django/conf/__init__.py",
+      "line": 72,
+      "error_code": "bad-override",
+      "message": "Class member `LazySettings.__getattr__` overrides parent class `LazyObject` in an inconsistent manner",
+      "source_context": "      69 |             \"settings_module\": self._wrapped.SETTINGS_MODULE,\n      70 |         }\n      71 | \n>>>   72 |     def __getattr__(self, name):\n      73 |         \"\"\"Return the value of a setting and cache it in self.__dict__.\"\"\"\n      74 |         if (_wrapped := self._wrapped) is empty:\n      75 |             self._setup(name)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/conf/__init__.py#L72"
+    },
+    {
+      "file": "django/conf/__init__.py",
+      "line": 77,
+      "error_code": "unbound-name",
+      "message": "`_wrapped` may be uninitialized",
+      "source_context": "      74 |         if (_wrapped := self._wrapped) is empty:\n      75 |             self._setup(name)\n      76 |             _wrapped = self._wrapped\n>>>   77 |         val = getattr(_wrapped, name)\n      78 | \n      79 |         # Special case some settings which require further modification.\n      80 |         # This is done here for performance reasons so the modified value is",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/conf/__init__.py#L77"
+    },
+    {
+      "file": "django/contrib/admin/checks.py",
+      "line": 130,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Warning` is not assignable to parameter `object` with type `Error` in function `list.append`",
+      "source_context": "     127 |             not in django_templates_instance.context_processors\n     128 |         ):\n     129 |             errors.append(\n>>>  130 |                 checks.Warning(\n     131 |                     \"'django.template.context_processors.request' must be enabled \"\n     132 |                     \"in DjangoTemplates (TEMPLATES) in order to use the admin \"\n     133 |                     \"navigation sidebar.\",",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/checks.py#L130"
+    },
+    {
+      "file": "django/contrib/admin/checks.py",
+      "line": 1266,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `InlineModelAdminChecks.check` overrides parent class `BaseModelAdminChecks` in an inconsistent manner",
+      "source_context": "    1263 | \n    1264 | \n    1265 | class InlineModelAdminChecks(BaseModelAdminChecks):\n>>> 1266 |     def check(self, inline_obj, **kwargs):\n    1267 |         parent_model = inline_obj.parent_model\n    1268 |         return [\n    1269 |             *super().check(inline_obj),",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/checks.py#L1266"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 111,
+      "error_code": "bad-override",
+      "message": "Class member `SimpleListFilter.has_output` overrides parent class `ListFilter` in an inconsistent manner",
+      "source_context": "     108 |             lookup_choices = ()\n     109 |         self.lookup_choices = list(lookup_choices)\n     110 | \n>>>  111 |     def has_output(self):\n     112 |         return len(self.lookup_choices) > 0\n     113 | \n     114 |     def value(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L111"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 131,
+      "error_code": "bad-override",
+      "message": "Class member `SimpleListFilter.expected_parameters` overrides parent class `ListFilter` in an inconsistent manner",
+      "source_context": "     128 |             \"return a list of tuples (value, verbose value).\"\n     129 |         )\n     130 | \n>>>  131 |     def expected_parameters(self):\n     132 |         return [self.parameter_name]\n     133 | \n     134 |     def get_facet_counts(self, pk_attname, filtered_qs):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L131"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 134,
+      "error_code": "bad-override",
+      "message": "Class member `SimpleListFilter.get_facet_counts` overrides parent class `FacetsMixin` in an inconsistent manner",
+      "source_context": "     131 |     def expected_parameters(self):\n     132 |         return [self.parameter_name]\n     133 | \n>>>  134 |     def get_facet_counts(self, pk_attname, filtered_qs):\n     135 |         original_value = self.used_parameters.get(self.parameter_name)\n     136 |         counts = {}\n     137 |         for i, choice in enumerate(self.lookup_choices):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L134"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 148,
+      "error_code": "bad-override",
+      "message": "Class member `SimpleListFilter.choices` overrides parent class `ListFilter` in an inconsistent manner",
+      "source_context": "     145 |         self.used_parameters[self.parameter_name] = original_value\n     146 |         return counts\n     147 | \n>>>  148 |     def choices(self, changelist):\n     149 |         add_facets = changelist.add_facets\n     150 |         facet_counts = self.get_facet_queryset(changelist) if add_facets else None\n     151 |         yield {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L148"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 188,
+      "error_code": "bad-override",
+      "message": "Class member `FieldListFilter.has_output` overrides parent class `ListFilter` in an inconsistent manner",
+      "source_context": "     185 |                     p, value, self.list_separator\n     186 |                 )\n     187 | \n>>>  188 |     def has_output(self):\n     189 |         return True\n     190 | \n     191 |     def queryset(self, request, queryset):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L188"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 248,
+      "error_code": "bad-override",
+      "message": "Class member `RelatedFieldListFilter.has_output` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     245 |         \"\"\"\n     246 |         return self.field.null or (self.field.is_relation and self.field.many_to_many)\n     247 | \n>>>  248 |     def has_output(self):\n     249 |         if self.include_empty_choice:\n     250 |             extra = 1\n     251 |         else:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L248"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 255,
+      "error_code": "bad-override",
+      "message": "Class member `RelatedFieldListFilter.expected_parameters` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     252 |             extra = 0\n     253 |         return len(self.lookup_choices) + extra > 1\n     254 | \n>>>  255 |     def expected_parameters(self):\n     256 |         return [self.lookup_kwarg, self.lookup_kwarg_isnull]\n     257 | \n     258 |     def field_admin_ordering(self, field, request, model_admin):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L255"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 275,
+      "error_code": "bad-override",
+      "message": "Class member `RelatedFieldListFilter.get_facet_counts` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     272 |         ordering = self.field_admin_ordering(field, request, model_admin)\n     273 |         return field.get_choices(include_blank=False, ordering=ordering)\n     274 | \n>>>  275 |     def get_facet_counts(self, pk_attname, filtered_qs):\n     276 |         counts = {\n     277 |             f\"{pk_val}__c\": models.Count(\n     278 |                 pk_attname, filter=models.Q(**{self.lookup_kwarg: pk_val})",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L275"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 288,
+      "error_code": "bad-override",
+      "message": "Class member `RelatedFieldListFilter.choices` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     285 |             )\n     286 |         return counts\n     287 | \n>>>  288 |     def choices(self, changelist):\n     289 |         add_facets = changelist.add_facets\n     290 |         facet_counts = self.get_facet_queryset(changelist) if add_facets else None\n     291 |         yield {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L288"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 344,
+      "error_code": "bad-override",
+      "message": "Class member `BooleanFieldListFilter.expected_parameters` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     341 |                 int(self.used_parameters[self.lookup_kwarg])\n     342 |             )\n     343 | \n>>>  344 |     def expected_parameters(self):\n     345 |         return [self.lookup_kwarg, self.lookup_kwarg2]\n     346 | \n     347 |     def get_facet_counts(self, pk_attname, filtered_qs):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L344"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 347,
+      "error_code": "bad-override",
+      "message": "Class member `BooleanFieldListFilter.get_facet_counts` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     344 |     def expected_parameters(self):\n     345 |         return [self.lookup_kwarg, self.lookup_kwarg2]\n     346 | \n>>>  347 |     def get_facet_counts(self, pk_attname, filtered_qs):\n     348 |         return {\n     349 |             \"true__c\": models.Count(\n     350 |                 pk_attname, filter=models.Q(**{self.field_path: True})",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L347"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 360,
+      "error_code": "bad-override",
+      "message": "Class member `BooleanFieldListFilter.choices` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     357 |             ),\n     358 |         }\n     359 | \n>>>  360 |     def choices(self, changelist):\n     361 |         field_choices = dict(self.field.flatchoices)\n     362 |         add_facets = changelist.add_facets\n     363 |         facet_counts = self.get_facet_queryset(changelist) if add_facets else None",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L360"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 409,
+      "error_code": "bad-override",
+      "message": "Class member `ChoicesFieldListFilter.expected_parameters` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     406 |         )\n     407 |         super().__init__(field, request, params, model, model_admin, field_path)\n     408 | \n>>>  409 |     def expected_parameters(self):\n     410 |         return [self.lookup_kwarg, self.lookup_kwarg_isnull]\n     411 | \n     412 |     def get_facet_counts(self, pk_attname, filtered_qs):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L409"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 412,
+      "error_code": "bad-override",
+      "message": "Class member `ChoicesFieldListFilter.get_facet_counts` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     409 |     def expected_parameters(self):\n     410 |         return [self.lookup_kwarg, self.lookup_kwarg_isnull]\n     411 | \n>>>  412 |     def get_facet_counts(self, pk_attname, filtered_qs):\n     413 |         return {\n     414 |             f\"{i}__c\": models.Count(\n     415 |                 pk_attname,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L412"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 425,
+      "error_code": "bad-override",
+      "message": "Class member `ChoicesFieldListFilter.choices` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     422 |             for i, (value, _) in enumerate(self.field.flatchoices)\n     423 |         }\n     424 | \n>>>  425 |     def choices(self, changelist):\n     426 |         add_facets = changelist.add_facets\n     427 |         facet_counts = self.get_facet_queryset(changelist) if add_facets else None\n     428 |         yield {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L425"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 523,
+      "error_code": "bad-assignment",
+      "message": "`tuple[tuple[lazy.__proxy__, dict[Unknown, Unknown]], tuple[lazy.__proxy__, dict[Unknown, date | datetime | Unknown]], tuple[lazy.__proxy__, dict[Unknown, date | datetime | Unknown]], tuple[lazy.__proxy__, dict[Unknown, date | datetime | Unknown]], tuple[lazy.__proxy__, dict[Unknown, date | datetime | Unknown]], tuple[lazy.__proxy__, dict[Unknown, bool]], tuple[lazy.__proxy__, dict[Unknown, bool]]]` is not assignable to attribute `links` with type `tuple[tuple[lazy.__proxy__, dict[Unknown, Unknown]], tuple[lazy.__proxy__, dict[Unknown, date | datetime | Unknown]], tuple[lazy.__proxy__, dict[Unknown, date | datetime | Unknown]], tuple[lazy.__proxy__, dict[Unknown, date | datetime | Unknown]], tuple[lazy.__proxy__, dict[Unknown, date | datetime | Unknown]]]`",
+      "source_context": "     520 |         )\n     521 |         if field.null:\n     522 |             self.lookup_kwarg_isnull = \"%s__isnull\" % field_path\n>>>  523 |             self.links += (\n     524 |                 (_(\"No date\"), {self.field_generic + \"isnull\": True}),\n     525 |                 (_(\"Has date\"), {self.field_generic + \"isnull\": False}),\n     526 |             )",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L523"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 529,
+      "error_code": "bad-override",
+      "message": "Class member `DateFieldListFilter.expected_parameters` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     526 |             )\n     527 |         super().__init__(field, request, params, model, model_admin, field_path)\n     528 | \n>>>  529 |     def expected_parameters(self):\n     530 |         params = [self.lookup_kwarg_since, self.lookup_kwarg_until]\n     531 |         if self.field.null:\n     532 |             params.append(self.lookup_kwarg_isnull)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L529"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 541,
+      "error_code": "bad-override",
+      "message": "Class member `DateFieldListFilter.choices` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     538 |             for i, (_, param_dict) in enumerate(self.links)\n     539 |         }\n     540 | \n>>>  541 |     def choices(self, changelist):\n     542 |         add_facets = changelist.add_facets\n     543 |         facet_counts = self.get_facet_queryset(changelist) if add_facets else None\n     544 |         for i, (title, param_dict) in enumerate(self.links):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L541"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 584,
+      "error_code": "bad-override",
+      "message": "Class member `AllValuesFieldListFilter.expected_parameters` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     581 |         )\n     582 |         super().__init__(field, request, params, model, model_admin, field_path)\n     583 | \n>>>  584 |     def expected_parameters(self):\n     585 |         return [self.lookup_kwarg, self.lookup_kwarg_isnull]\n     586 | \n     587 |     def get_facet_counts(self, pk_attname, filtered_qs):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L584"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 587,
+      "error_code": "bad-override",
+      "message": "Class member `AllValuesFieldListFilter.get_facet_counts` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     584 |     def expected_parameters(self):\n     585 |         return [self.lookup_kwarg, self.lookup_kwarg_isnull]\n     586 | \n>>>  587 |     def get_facet_counts(self, pk_attname, filtered_qs):\n     588 |         return {\n     589 |             f\"{i}__c\": models.Count(\n     590 |                 pk_attname,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L587"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 600,
+      "error_code": "bad-override",
+      "message": "Class member `AllValuesFieldListFilter.choices` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     597 |             for i, value in enumerate(self.lookup_choices)\n     598 |         }\n     599 | \n>>>  600 |     def choices(self, changelist):\n     601 |         add_facets = changelist.add_facets\n     602 |         facet_counts = self.get_facet_queryset(changelist) if add_facets else None\n     603 |         yield {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L600"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 674,
+      "error_code": "bad-argument-type",
+      "message": "Argument `tuple[str, Literal[True]]` is not assignable to parameter `object` with type `tuple[Unknown, str]` in function `list.append`",
+      "source_context": "     671 |         if self.field.empty_strings_allowed:\n     672 |             lookup_conditions.append((self.field_path, \"\"))\n     673 |         if self.field.null:\n>>>  674 |             lookup_conditions.append((f\"{self.field_path}__isnull\", True))\n     675 |         return models.Q.create(lookup_conditions, connector=models.Q.OR)\n     676 | \n     677 |     def queryset(self, request, queryset):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L674"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 688,
+      "error_code": "bad-override",
+      "message": "Class member `EmptyFieldListFilter.expected_parameters` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     685 |             return queryset.filter(lookup_condition)\n     686 |         return queryset.exclude(lookup_condition)\n     687 | \n>>>  688 |     def expected_parameters(self):\n     689 |         return [self.lookup_kwarg]\n     690 | \n     691 |     def get_facet_counts(self, pk_attname, filtered_qs):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L688"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 691,
+      "error_code": "bad-override",
+      "message": "Class member `EmptyFieldListFilter.get_facet_counts` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     688 |     def expected_parameters(self):\n     689 |         return [self.lookup_kwarg]\n     690 | \n>>>  691 |     def get_facet_counts(self, pk_attname, filtered_qs):\n     692 |         lookup_condition = self.get_lookup_condition()\n     693 |         return {\n     694 |             \"empty__c\": models.Count(pk_attname, filter=lookup_condition),",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L691"
+    },
+    {
+      "file": "django/contrib/admin/filters.py",
+      "line": 698,
+      "error_code": "bad-override",
+      "message": "Class member `EmptyFieldListFilter.choices` overrides parent class `FieldListFilter` in an inconsistent manner",
+      "source_context": "     695 |             \"not_empty__c\": models.Count(pk_attname, filter=~lookup_condition),\n     696 |         }\n     697 | \n>>>  698 |     def choices(self, changelist):\n     699 |         add_facets = changelist.add_facets\n     700 |         facet_counts = self.get_facet_queryset(changelist) if add_facets else None\n     701 |         for lookup, title, count_field in (",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/filters.py#L698"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 213,
+      "error_code": "unbound-name",
+      "message": "`formfield` may be uninitialized",
+      "source_context": "     210 |                             request\n     211 |                         ),\n     212 |                     }\n>>>  213 |                 formfield.widget = widgets.RelatedFieldWidgetWrapper(\n     214 |                     formfield.widget,\n     215 |                     db_field.remote_field,\n     216 |                     self.admin_site,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L213"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 220,
+      "error_code": "unbound-name",
+      "message": "`formfield` may be uninitialized",
+      "source_context": "     217 |                     **wrapper_kwargs,\n     218 |                 )\n     219 | \n>>>  220 |             return formfield\n     221 | \n     222 |         # If we've got overrides for the formfield defined, use 'em. **kwargs\n     223 |         # passed to formfield_for_dbfield override the defaults.",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L220"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 713,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `model_admin`",
+      "source_context": "     710 |             def wrapper(*args, **kwargs):\n     711 |                 return self.admin_site.admin_view(view)(*args, **kwargs)\n     712 | \n>>>  713 |             wrapper.model_admin = self\n     714 |             return update_wrapper(wrapper, view)\n     715 | \n     716 |         info = self.opts.app_label, self.opts.model_name",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L713"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 1969,
+      "error_code": "unbound-name",
+      "message": "`form_validated` may be uninitialized",
+      "source_context": "    1966 |         # previously chosen to prevent the interface from getting confusing.\n    1967 |         if (\n    1968 |             request.method == \"POST\"\n>>> 1969 |             and not form_validated\n    1970 |             and \"_saveasnew\" in request.POST\n    1971 |         ):\n    1972 |             context[\"show_save\"] = False",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L1969"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 2101,
+      "error_code": "missing-attribute",
+      "message": "Object of class `type` has no attribute `get_default_prefix`",
+      "source_context": "    2098 |                 raise PermissionDenied\n    2099 |             FormSet = self.get_changelist_formset(request)\n    2100 |             modified_objects = self._get_list_editable_queryset(\n>>> 2101 |                 request, FormSet.get_default_prefix()\n    2102 |             )\n    2103 |             cl.formset = FormSet(request.POST, request.FILES, queryset=modified_objects)\n    2104 |             if cl.formset.is_valid():",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L2101"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 2471,
+      "error_code": "invalid-inheritance",
+      "message": "Invalid base class: `type[BaseInlineFormSet] | type[ModelForm] | bool | int | list[Unknown] | partial[Unknown | None] | Unknown | None`",
+      "source_context": "    2468 |         can_change = self.has_change_permission(request, obj) if request else True\n    2469 |         can_add = self.has_add_permission(request, obj) if request else True\n    2470 | \n>>> 2471 |         class DeleteProtectedModelForm(base_model_form):\n    2472 |             def hand_clean_DELETE(self):\n    2473 |                 \"\"\"\n    2474 |                 We don't validate the 'DELETE' field itself because on",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L2471"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 2531,
+      "error_code": "missing-attribute",
+      "message": "Object of class `type` has no attribute `form`",
+      "source_context": "    2528 |         return inlineformset_factory(self.parent_model, self.model, **defaults)\n    2529 | \n    2530 |     def _get_form_for_get_fields(self, request, obj=None):\n>>> 2531 |         return self.get_formset(request, obj, fields=None).form\n    2532 | \n    2533 |     def get_queryset(self, request):\n    2534 |         queryset = super().get_queryset(request)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L2531"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 2559,
+      "error_code": "bad-override",
+      "message": "Class member `InlineModelAdmin.has_add_permission` overrides parent class `BaseModelAdmin` in an inconsistent manner",
+      "source_context": "    2556 |             for perm in perms\n    2557 |         )\n    2558 | \n>>> 2559 |     def has_add_permission(self, request, obj):\n    2560 |         if self.opts.auto_created:\n    2561 |             # Auto-created intermediate models don't have their own\n    2562 |             # permissions. The user needs to have the change permission for the",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L2559"
+    },
+    {
+      "file": "django/contrib/admin/sites.py",
+      "line": 268,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `admin_site`",
+      "source_context": "     265 |             def wrapper(*args, **kwargs):\n     266 |                 return self.admin_view(view, cacheable)(*args, **kwargs)\n     267 | \n>>>  268 |             wrapper.admin_site = self\n     269 |             # Used by LoginRequiredMiddleware.\n     270 |             wrapper.login_url = reverse_lazy(\"admin:login\", current_app=self.name)\n     271 |             return update_wrapper(wrapper, view)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/sites.py#L268"
+    },
+    {
+      "file": "django/contrib/admin/sites.py",
+      "line": 608,
+      "error_code": "bad-override",
+      "message": "Class member `DefaultAdminSite._setup` overrides parent class `LazyObject` in an inconsistent manner",
+      "source_context": "     605 | \n     606 | \n     607 | class DefaultAdminSite(LazyObject):\n>>>  608 |     def _setup(self):\n     609 |         AdminSiteClass = import_string(apps.get_app_config(\"admin\").default_site)\n     610 |         self._wrapped = AdminSiteClass()\n     611 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/sites.py#L608"
+    },
+    {
+      "file": "django/contrib/admin/templatetags/log.py",
+      "line": 15,
+      "error_code": "bad-override",
+      "message": "Class member `AdminLogNode.render` overrides parent class `Node` in an inconsistent manner",
+      "source_context": "      12 |     def __repr__(self):\n      13 |         return \"<GetAdminLog Node>\"\n      14 | \n>>>   15 |     def render(self, context):\n      16 |         entries = context[\"log_entries\"]\n      17 |         if self.user is not None:\n      18 |             user_id = self.user",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/templatetags/log.py#L15"
+    },
+    {
+      "file": "django/contrib/admin/utils.py",
+      "line": 85,
+      "error_code": "bad-assignment",
+      "message": "`Node | Q | Unknown` is not assignable to `Q` (caused by inconsistent types when breaking cycles)",
+      "source_context": "      82 | \n      83 | def build_q_object_from_lookup_parameters(parameters):\n      84 |     q_object = models.Q()\n>>>   85 |     for param, param_item_list in parameters.items():\n      86 |         q_object &= reduce(or_, (models.Q((param, item)) for item in param_item_list))\n      87 |     return q_object\n      88 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L85"
+    },
+    {
+      "file": "django/contrib/admin/utils.py",
+      "line": 188,
+      "error_code": "bad-keyword-argument",
+      "message": "Multiple values for argument `force_collection` in function `django.db.models.deletion.Collector.__init__`",
+      "source_context": "     185 | \n     186 | class NestedObjects(Collector):\n     187 |     def __init__(self, *args, force_collection=True, **kwargs):\n>>>  188 |         super().__init__(*args, force_collection=force_collection, **kwargs)\n     189 |         self.edges = {}  # {from_instance: [to_instances]}\n     190 |         self.protected = set()\n     191 |         self.model_objs = defaultdict(set)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L188"
+    },
+    {
+      "file": "django/contrib/admin/utils.py",
+      "line": 196,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `NestedObjects.collect` overrides parent class `Collector` in an inconsistent manner",
+      "source_context": "     193 |     def add_edge(self, source, target):\n     194 |         self.edges.setdefault(source, []).append(target)\n     195 | \n>>>  196 |     def collect(self, objs, source=None, source_attr=None, **kwargs):\n     197 |         for obj in objs:\n     198 |             if source_attr and not source_attr.endswith(\"+\"):\n     199 |                 related_name = source_attr % {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L196"
+    },
+    {
+      "file": "django/contrib/admin/utils.py",
+      "line": 256,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `_meta`",
+      "source_context": "     253 |     if isinstance(obj, (models.Model, models.base.ModelBase)):\n     254 |         opts = obj._meta\n     255 |     elif isinstance(obj, models.query.QuerySet):\n>>>  256 |         opts = obj.model._meta\n     257 |     else:\n     258 |         opts = obj\n     259 |     return {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L256"
+    },
+    {
+      "file": "django/contrib/admin/views/main.py",
+      "line": 541,
+      "error_code": "missing-attribute",
+      "message": "Object of class `object` has no attribute `expected_parameters`",
+      "source_context": "     538 |         for filter_spec in self.filter_specs:\n     539 |             if (\n     540 |                 exclude_parameters is None\n>>>  541 |                 or filter_spec.expected_parameters() != exclude_parameters\n     542 |             ):\n     543 |                 new_qs = filter_spec.queryset(request, qs)\n     544 |                 if new_qs is not None:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/views/main.py#L541"
+    },
+    {
+      "file": "django/contrib/admin/widgets.py",
+      "line": 111,
+      "error_code": "not-iterable",
+      "message": "Type `lazy.__proxy__` is not iterable",
+      "source_context": "     108 |         context = super().get_context(name, value, attrs)\n     109 |         context[\"date_label\"] = _(\"Date:\")\n     110 |         context[\"time_label\"] = _(\"Time:\")\n>>>  111 |         for widget in context[\"widget\"][\"subwidgets\"]:\n     112 |             widget[\"attrs\"][\"aria-describedby\"] = f\"id_{name}_timezone_warning_helptext\"\n     113 |         return context\n     114 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/widgets.py#L111"
+    },
+    {
+      "file": "django/contrib/admin/widgets.py",
+      "line": 335,
+      "error_code": "bad-override",
+      "message": "Class member `RelatedFieldWidgetWrapper.get_context` overrides parent class `Widget` in an inconsistent manner",
+      "source_context": "     332 |             args=args,\n     333 |         )\n     334 | \n>>>  335 |     def get_context(self, name, value, attrs):\n     336 |         from django.contrib.admin.views.main import (\n     337 |             IS_POPUP_VAR,\n     338 |             SOURCE_MODEL_VAR,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/widgets.py#L335"
+    },
+    {
+      "file": "django/contrib/admin/widgets.py",
+      "line": 582,
+      "error_code": "missing-attribute",
+      "message": "Object of class `tuple` has no attribute `field`",
+      "source_context": "     579 |         )\n     580 |         to_field_name = remote_model_opts.get_field(to_field_name).attname\n     581 |         choices = (\n>>>  582 |             (getattr(obj, to_field_name), self.choices.field.label_from_instance(obj))\n     583 |             for obj in self.choices.queryset.using(self.db).filter(\n     584 |                 **{\"%s__in\" % to_field_name: selected_choices}\n     585 |             )",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/widgets.py#L582"
+    },
+    {
+      "file": "django/contrib/admindocs/middleware.py",
+      "line": 28,
+      "error_code": "not-iterable",
+      "message": "`in` is not supported between `Unknown` and `None`",
+      "source_context": "      25 |                 \"'django.contrib.auth.middleware.AuthenticationMiddleware'.\"\n      26 |             )\n      27 |         if request.method == \"HEAD\" and (\n>>>   28 |             request.META.get(\"REMOTE_ADDR\") in settings.INTERNAL_IPS\n      29 |             or (request.user.is_active and request.user.is_staff)\n      30 |         ):\n      31 |             response = HttpResponse()",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admindocs/middleware.py#L28"
+    },
+    {
+      "file": "django/contrib/admindocs/utils.py",
+      "line": 169,
+      "error_code": "unbound-name",
+      "message": "`docutils` may be uninitialized",
+      "source_context": "     166 | \n     167 | \n     168 | if docutils_is_available:\n>>>  169 |     docutils.parsers.rst.roles.register_canonical_role(\n     170 |         \"cmsreference\", default_reference_role\n     171 |     )\n     172 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admindocs/utils.py#L169"
+    },
+    {
+      "file": "django/contrib/admindocs/views.py",
+      "line": 50,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `BaseAdminDocsView.dispatch` overrides parent class `TemplateView` in an inconsistent manner",
+      "source_context": "      47 |     \"\"\"\n      48 | \n      49 |     @method_decorator(staff_member_required)\n>>>   50 |     def dispatch(self, request, *args, **kwargs):\n      51 |         if not utils.docutils_is_available:\n      52 |             # Display an error message for people without docutils\n      53 |             self.template_name = \"admin_doc/missing_docutils.html\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admindocs/views.py#L50"
+    },
+    {
+      "file": "django/contrib/admindocs/views.py",
+      "line": 364,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `map.__new__` called with arguments: (type[map[LiteralString]], (obj: object, /) -> str, tuple[Any])",
+      "source_context": "     361 |                     # correctly displayed.\n     362 |                     print_arguments = \", \".join(\n     363 |                         [\n>>>  364 |                             \"=\".join([arg_el[0], *map(repr, arg_el[1:])])\n     365 |                             for arg_el in arguments\n     366 |                         ]\n     367 |                     )",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admindocs/views.py#L364"
+    },
+    {
+      "file": "django/contrib/auth/__init__.py",
+      "line": 26,
+      "error_code": "not-iterable",
+      "message": "Type `None` is not iterable",
+      "source_context": "      23 | \n      24 | def _get_backends(return_tuples=False):\n      25 |     backends = []\n>>>   26 |     for backend_path in settings.AUTHENTICATION_BACKENDS:\n      27 |         backend = load_backend(backend_path)\n      28 |         backends.append((backend, backend_path) if return_tuples else backend)\n      29 |     if not backends:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/__init__.py#L26"
+    },
+    {
+      "file": "django/contrib/auth/__init__.py",
+      "line": 287,
+      "error_code": "not-iterable",
+      "message": "`in` is not supported between `Unknown` and `None`",
+      "source_context": "     284 |     except KeyError:\n     285 |         pass\n     286 |     else:\n>>>  287 |         if backend_path in settings.AUTHENTICATION_BACKENDS:\n     288 |             backend = load_backend(backend_path)\n     289 |             user = backend.get_user(user_id)\n     290 |             # Verify the session",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/__init__.py#L287"
+    },
+    {
+      "file": "django/contrib/auth/__init__.py",
+      "line": 309,
+      "error_code": "unbound-name",
+      "message": "`session_auth_hash` may be uninitialized",
+      "source_context": "     306 |                         for fallback_auth_hash in user.get_session_auth_fallback_hash()\n     307 |                     ):\n     308 |                         request.session.cycle_key()\n>>>  309 |                         request.session[HASH_SESSION_KEY] = session_auth_hash\n     310 |                     else:\n     311 |                         request.session.flush()\n     312 |                         user = None",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/__init__.py#L309"
+    },
+    {
+      "file": "django/contrib/auth/__init__.py",
+      "line": 328,
+      "error_code": "not-iterable",
+      "message": "`in` is not supported between `Unknown` and `None`",
+      "source_context": "     325 |     except KeyError:\n     326 |         pass\n     327 |     else:\n>>>  328 |         if backend_path in settings.AUTHENTICATION_BACKENDS:\n     329 |             backend = load_backend(backend_path)\n     330 |             user = await backend.aget_user(user_id)\n     331 |             # Verify the session",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/__init__.py#L328"
+    },
+    {
+      "file": "django/contrib/auth/__init__.py",
+      "line": 350,
+      "error_code": "unbound-name",
+      "message": "`session_auth_hash` may be uninitialized",
+      "source_context": "     347 |                         for fallback_auth_hash in user.get_session_auth_fallback_hash()\n     348 |                     ):\n     349 |                         await request.session.acycle_key()\n>>>  350 |                         await request.session.aset(HASH_SESSION_KEY, session_auth_hash)\n     351 |                     else:\n     352 |                         await request.session.aflush()\n     353 |                         user = None",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/__init__.py#L350"
+    },
+    {
+      "file": "django/contrib/auth/admin.py",
+      "line": 27,
+      "error_code": "bad-override",
+      "message": "Class member `GroupAdmin.search_fields` overrides parent class `ModelAdmin` in an inconsistent manner",
+      "source_context": "      24 | \n      25 | @admin.register(Group)\n      26 | class GroupAdmin(admin.ModelAdmin):\n>>>   27 |     search_fields = (\"name\",)\n      28 |     ordering = (\"name\",)\n      29 |     filter_horizontal = (\"permissions\",)\n      30 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/admin.py#L27"
+    },
+    {
+      "file": "django/contrib/auth/admin.py",
+      "line": 36,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `select_related`",
+      "source_context": "      33 |             qs = kwargs.get(\"queryset\", db_field.remote_field.model.objects)\n      34 |             # Avoid a major performance hit resolving permission names which\n      35 |             # triggers a content_type load:\n>>>   36 |             kwargs[\"queryset\"] = qs.select_related(\"content_type\")\n      37 |         return super().formfield_for_manytomany(db_field, request=request, **kwargs)\n      38 | \n      39 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/admin.py#L36"
+    },
+    {
+      "file": "django/contrib/auth/admin.py",
+      "line": 73,
+      "error_code": "bad-override",
+      "message": "Class member `UserAdmin.list_display` overrides parent class `ModelAdmin` in an inconsistent manner",
+      "source_context": "      70 |     form = UserChangeForm\n      71 |     add_form = AdminUserCreationForm\n      72 |     change_password_form = AdminPasswordChangeForm\n>>>   73 |     list_display = (\"username\", \"email\", \"first_name\", \"last_name\", \"is_staff\")\n      74 |     list_filter = (\"is_staff\", \"is_superuser\", \"is_active\", \"groups\")\n      75 |     search_fields = (\"username\", \"first_name\", \"last_name\", \"email\")\n      76 |     ordering = (\"username\",)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/admin.py#L73"
+    },
+    {
+      "file": "django/contrib/auth/admin.py",
+      "line": 77,
+      "error_code": "bad-override",
+      "message": "Class member `UserAdmin.filter_horizontal` overrides parent class `ModelAdmin` in an inconsistent manner",
+      "source_context": "      74 |     list_filter = (\"is_staff\", \"is_superuser\", \"is_active\", \"groups\")\n      75 |     search_fields = (\"username\", \"first_name\", \"last_name\", \"email\")\n      76 |     ordering = (\"username\",)\n>>>   77 |     filter_horizontal = (\n      78 |         \"groups\",\n      79 |         \"user_permissions\",\n      80 |     )",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/admin.py#L77"
+    },
+    {
+      "file": "django/contrib/auth/admin.py",
+      "line": 87,
+      "error_code": "bad-override",
+      "message": "Class member `UserAdmin.get_form` overrides parent class `ModelAdmin` in an inconsistent manner",
+      "source_context": "      84 |             return self.add_fieldsets\n      85 |         return super().get_fieldsets(request, obj)\n      86 | \n>>>   87 |     def get_form(self, request, obj=None, **kwargs):\n      88 |         \"\"\"\n      89 |         Use special form during user creation\n      90 |         \"\"\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/admin.py#L87"
+    },
+    {
+      "file": "django/contrib/auth/admin.py",
+      "line": 114,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `UserAdmin.add_view` overrides parent class `ModelAdmin` in an inconsistent manner",
+      "source_context": "     111 |         )\n     112 | \n     113 |     @method_decorator([sensitive_post_parameters(), csrf_protect])\n>>>  114 |     def add_view(self, request, form_url=\"\", extra_context=None):\n     115 |         if request.method in (\"GET\", \"HEAD\", \"OPTIONS\", \"TRACE\"):\n     116 |             return self._add_view(request, form_url, extra_context)\n     117 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/admin.py#L114"
+    },
+    {
+      "file": "django/contrib/auth/backends.py",
+      "line": 265,
+      "error_code": "bad-override",
+      "message": "Class member `RemoteUserBackend.authenticate` overrides parent class `ModelBackend` in an inconsistent manner",
+      "source_context": "     262 |     # Create a User object if not already in the database?\n     263 |     create_unknown_user = True\n     264 | \n>>>  265 |     def authenticate(self, request, remote_user):\n     266 |         \"\"\"\n     267 |         The username passed as ``remote_user`` is considered trusted. Return\n     268 |         the ``User`` object with the given username. Create a new ``User``",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/backends.py#L265"
+    },
+    {
+      "file": "django/contrib/auth/backends.py",
+      "line": 295,
+      "error_code": "bad-override",
+      "message": "Class member `RemoteUserBackend.aauthenticate` overrides parent class `ModelBackend` in an inconsistent manner",
+      "source_context": "     292 |         user = self.configure_user(request, user, created=created)\n     293 |         return user if self.user_can_authenticate(user) else None\n     294 | \n>>>  295 |     async def aauthenticate(self, request, remote_user):\n     296 |         \"\"\"See authenticate().\"\"\"\n     297 |         if not remote_user:\n     298 |             return",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/backends.py#L295"
+    },
+    {
+      "file": "django/contrib/auth/base_user.py",
+      "line": 94,
+      "error_code": "bad-assignment",
+      "message": "`LiteralString | bytes | Unknown` is not assignable to attribute `password` with type `CharField`",
+      "source_context": "      91 |         return True\n      92 | \n      93 |     def set_password(self, raw_password):\n>>>   94 |         self.password = make_password(raw_password)\n      95 |         self._password = raw_password\n      96 | \n      97 |     def check_password(self, raw_password):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/base_user.py#L94"
+    },
+    {
+      "file": "django/contrib/auth/base_user.py",
+      "line": 124,
+      "error_code": "bad-assignment",
+      "message": "`LiteralString | bytes | Unknown` is not assignable to attribute `password` with type `CharField`",
+      "source_context": "     121 | \n     122 |     def set_unusable_password(self):\n     123 |         # Set a value that will never be a valid hash\n>>>  124 |         self.password = make_password(None)\n     125 | \n     126 |     def has_usable_password(self):\n     127 |         \"\"\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/base_user.py#L124"
+    },
+    {
+      "file": "django/contrib/auth/base_user.py",
+      "line": 139,
+      "error_code": "not-iterable",
+      "message": "Type `None` is not iterable",
+      "source_context": "     136 |         return self._get_session_auth_hash()\n     137 | \n     138 |     def get_session_auth_fallback_hash(self):\n>>>  139 |         for fallback_secret in settings.SECRET_KEY_FALLBACKS:\n     140 |             yield self._get_session_auth_hash(secret=fallback_secret)\n     141 | \n     142 |     def _get_session_auth_hash(self, secret=None):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/base_user.py#L139"
+    },
+    {
+      "file": "django/contrib/auth/checks.py",
+      "line": 31,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `split`",
+      "source_context": "      28 |     if app_configs is None:\n      29 |         cls = apps.get_model(settings.AUTH_USER_MODEL)\n      30 |     else:\n>>>   31 |         app_label, model_name = settings.AUTH_USER_MODEL.split(\".\")\n      32 |         for app_config in app_configs:\n      33 |             if app_config.label == app_label:\n      34 |                 cls = app_config.get_model(model_name)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/checks.py#L31"
+    },
+    {
+      "file": "django/contrib/auth/checks.py",
+      "line": 88,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Warning` is not assignable to parameter `object` with type `Error` in function `list.append`",
+      "source_context": "      85 |             )\n      86 |         else:\n      87 |             errors.append(\n>>>   88 |                 checks.Warning(\n      89 |                     \"'%s.%s' is named as the 'USERNAME_FIELD', but it is not unique.\"\n      90 |                     % (cls._meta.object_name, cls.USERNAME_FIELD),\n      91 |                     hint=(",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/checks.py#L88"
+    },
+    {
+      "file": "django/contrib/auth/checks.py",
+      "line": 102,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Critical` is not assignable to parameter `object` with type `Error` in function `list.append`",
+      "source_context": "      99 | \n     100 |     if callable(cls().is_anonymous):\n     101 |         errors.append(\n>>>  102 |             checks.Critical(\n     103 |                 \"%s.is_anonymous must be an attribute or property rather than \"\n     104 |                 \"a method. Ignoring this is a security issue as anonymous \"\n     105 |                 \"users will be treated as authenticated!\" % cls,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/checks.py#L102"
+    },
+    {
+      "file": "django/contrib/auth/checks.py",
+      "line": 112,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Critical` is not assignable to parameter `object` with type `Error` in function `list.append`",
+      "source_context": "     109 |         )\n     110 |     if callable(cls().is_authenticated):\n     111 |         errors.append(\n>>>  112 |             checks.Critical(\n     113 |                 \"%s.is_authenticated must be an attribute or property rather \"\n     114 |                 \"than a method. Ignoring this is a security issue as anonymous \"\n     115 |                 \"users will be treated as authenticated!\" % cls,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/checks.py#L112"
+    },
+    {
+      "file": "django/contrib/auth/decorators.py",
+      "line": 64,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `login_url`",
+      "source_context": "      61 |                 return _redirect_to_login(request)\n      62 | \n      63 |         # Attributes used by LoginRequiredMiddleware.\n>>>   64 |         _view_wrapper.login_url = login_url\n      65 |         _view_wrapper.redirect_field_name = redirect_field_name\n      66 | \n      67 |         return wraps(view_func)(_view_wrapper)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/decorators.py#L64"
+    },
+    {
+      "file": "django/contrib/auth/forms.py",
+      "line": 51,
+      "error_code": "bad-override",
+      "message": "Class member `ReadOnlyPasswordHashField.widget` overrides parent class `Field` in an inconsistent manner",
+      "source_context": "      48 | \n      49 | \n      50 | class ReadOnlyPasswordHashField(forms.Field):\n>>>   51 |     widget = ReadOnlyPasswordHashWidget\n      52 | \n      53 |     def __init__(self, *args, **kwargs):\n      54 |         kwargs.setdefault(\"required\", False)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/forms.py#L51"
+    },
+    {
+      "file": "django/contrib/auth/forms.py",
+      "line": 550,
+      "error_code": "inconsistent-inheritance",
+      "message": "Field `set_password_and_save` has inconsistent types inherited from multiple base classes",
+      "source_context": "     547 |         return old_password\n     548 | \n     549 | \n>>>  550 | class AdminPasswordChangeForm(SetUnusablePasswordMixin, SetPasswordMixin, forms.Form):\n     551 |     \"\"\"\n     552 |     A form used to change the password of a user in the admin interface.\n     553 |     \"\"\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/forms.py#L550"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 125,
+      "error_code": "not-iterable",
+      "message": "Type `None` is not iterable",
+      "source_context": "     122 | @functools.lru_cache\n     123 | def get_hashers():\n     124 |     hashers = []\n>>>  125 |     for hasher_path in settings.PASSWORD_HASHERS:\n     126 |         hasher_cls = import_string(hasher_path)\n     127 |         hasher = hasher_cls()\n     128 |         if not getattr(hasher, \"algorithm\"):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L125"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 330,
+      "error_code": "bad-override",
+      "message": "Class member `PBKDF2PasswordHasher.encode` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     327 |     iterations = 1_500_000\n     328 |     digest = hashlib.sha256\n     329 | \n>>>  330 |     def encode(self, password, salt, iterations=None):\n     331 |         self._check_encode_args(password, salt)\n     332 |         iterations = iterations or self.iterations\n     333 |         password = force_str(password)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L330"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 339,
+      "error_code": "bad-override",
+      "message": "Class member `PBKDF2PasswordHasher.decode` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     336 |         hash = base64.b64encode(hash).decode(\"ascii\").strip()\n     337 |         return \"%s$%d$%s$%s\" % (self.algorithm, iterations, salt, hash)\n     338 | \n>>>  339 |     def decode(self, encoded):\n     340 |         algorithm, iterations, salt, hash = encoded.split(\"$\", 3)\n     341 |         assert algorithm == self.algorithm\n     342 |         return {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L339"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 349,
+      "error_code": "bad-override",
+      "message": "Class member `PBKDF2PasswordHasher.verify` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     346 |             \"salt\": salt,\n     347 |         }\n     348 | \n>>>  349 |     def verify(self, password, encoded):\n     350 |         decoded = self.decode(encoded)\n     351 |         encoded_2 = self.encode(password, decoded[\"salt\"], decoded[\"iterations\"])\n     352 |         return constant_time_compare(encoded, encoded_2)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L349"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 354,
+      "error_code": "bad-override",
+      "message": "Class member `PBKDF2PasswordHasher.safe_summary` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     351 |         encoded_2 = self.encode(password, decoded[\"salt\"], decoded[\"iterations\"])\n     352 |         return constant_time_compare(encoded, encoded_2)\n     353 | \n>>>  354 |     def safe_summary(self, encoded):\n     355 |         decoded = self.decode(encoded)\n     356 |         return {\n     357 |             _(\"algorithm\"): decoded[\"algorithm\"],",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L354"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 363,
+      "error_code": "bad-override",
+      "message": "Class member `PBKDF2PasswordHasher.must_update` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     360 |             _(\"hash\"): mask_hash(decoded[\"hash\"]),\n     361 |         }\n     362 | \n>>>  363 |     def must_update(self, encoded):\n     364 |         decoded = self.decode(encoded)\n     365 |         update_salt = must_update_salt(decoded[\"salt\"], self.salt_entropy)\n     366 |         return (decoded[\"iterations\"] != self.iterations) or update_salt",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L363"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 417,
+      "error_code": "bad-override",
+      "message": "Class member `Argon2PasswordHasher.decode` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     414 |         )\n     415 |         return self.algorithm + data.decode(\"ascii\")\n     416 | \n>>>  417 |     def decode(self, encoded):\n     418 |         argon2 = self._load_library()\n     419 |         algorithm, rest = encoded.split(\"$\", 1)\n     420 |         assert algorithm == self.algorithm",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L417"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 438,
+      "error_code": "bad-override",
+      "message": "Class member `Argon2PasswordHasher.verify` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     435 |             \"params\": params,\n     436 |         }\n     437 | \n>>>  438 |     def verify(self, password, encoded):\n     439 |         argon2 = self._load_library()\n     440 |         algorithm, rest = encoded.split(\"$\", 1)\n     441 |         assert algorithm == self.algorithm",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L438"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 447,
+      "error_code": "bad-override",
+      "message": "Class member `Argon2PasswordHasher.safe_summary` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     444 |         except argon2.exceptions.VerificationError:\n     445 |             return False\n     446 | \n>>>  447 |     def safe_summary(self, encoded):\n     448 |         decoded = self.decode(encoded)\n     449 |         return {\n     450 |             _(\"algorithm\"): decoded[\"algorithm\"],",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L447"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 460,
+      "error_code": "bad-override",
+      "message": "Class member `Argon2PasswordHasher.must_update` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     457 |             _(\"hash\"): mask_hash(decoded[\"hash\"]),\n     458 |         }\n     459 | \n>>>  460 |     def must_update(self, encoded):\n     461 |         decoded = self.decode(encoded)\n     462 |         current_params = decoded[\"params\"]\n     463 |         new_params = self.params()",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L460"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 508,
+      "error_code": "bad-override",
+      "message": "Class member `BCryptSHA256PasswordHasher.encode` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     505 |         bcrypt = self._load_library()\n     506 |         return bcrypt.gensalt(self.rounds)\n     507 | \n>>>  508 |     def encode(self, password, salt):\n     509 |         bcrypt = self._load_library()\n     510 |         password = force_bytes(password)\n     511 |         salt = force_bytes(salt)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L508"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 521,
+      "error_code": "bad-override",
+      "message": "Class member `BCryptSHA256PasswordHasher.decode` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     518 |         data = bcrypt.hashpw(password, salt)\n     519 |         return \"%s$%s\" % (self.algorithm, data.decode(\"ascii\"))\n     520 | \n>>>  521 |     def decode(self, encoded):\n     522 |         algorithm, empty, algostr, work_factor, data = encoded.split(\"$\", 4)\n     523 |         assert algorithm == self.algorithm\n     524 |         return {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L521"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 532,
+      "error_code": "bad-override",
+      "message": "Class member `BCryptSHA256PasswordHasher.verify` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     529 |             \"work_factor\": int(work_factor),\n     530 |         }\n     531 | \n>>>  532 |     def verify(self, password, encoded):\n     533 |         algorithm, data = encoded.split(\"$\", 1)\n     534 |         assert algorithm == self.algorithm\n     535 |         encoded_2 = self.encode(password, data.encode(\"ascii\"))",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L532"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 538,
+      "error_code": "bad-override",
+      "message": "Class member `BCryptSHA256PasswordHasher.safe_summary` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     535 |         encoded_2 = self.encode(password, data.encode(\"ascii\"))\n     536 |         return constant_time_compare(encoded, encoded_2)\n     537 | \n>>>  538 |     def safe_summary(self, encoded):\n     539 |         decoded = self.decode(encoded)\n     540 |         return {\n     541 |             _(\"algorithm\"): decoded[\"algorithm\"],",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L538"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 547,
+      "error_code": "bad-override",
+      "message": "Class member `BCryptSHA256PasswordHasher.must_update` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     544 |             _(\"checksum\"): mask_hash(decoded[\"checksum\"]),\n     545 |         }\n     546 | \n>>>  547 |     def must_update(self, encoded):\n     548 |         decoded = self.decode(encoded)\n     549 |         return decoded[\"work_factor\"] != self.rounds\n     550 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L547"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 577,
+      "error_code": "bad-override",
+      "message": "Class member `BCryptPasswordHasher.digest` overrides parent class `BCryptSHA256PasswordHasher` in an inconsistent manner",
+      "source_context": "     574 |     \"\"\"\n     575 | \n     576 |     algorithm = \"bcrypt\"\n>>>  577 |     digest = None\n     578 | \n     579 | \n     580 | class ScryptPasswordHasher(BasePasswordHasher):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L577"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 591,
+      "error_code": "bad-override",
+      "message": "Class member `ScryptPasswordHasher.encode` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     588 |     parallelism = 5\n     589 |     work_factor = 2**14\n     590 | \n>>>  591 |     def encode(self, password, salt, n=None, r=None, p=None):\n     592 |         self._check_encode_args(password, salt)\n     593 |         n = n or self.work_factor\n     594 |         r = r or self.block_size",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L591"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 608,
+      "error_code": "bad-override",
+      "message": "Class member `ScryptPasswordHasher.decode` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     605 |         hash_ = base64.b64encode(hash_).decode(\"ascii\").strip()\n     606 |         return \"%s$%d$%s$%d$%d$%s\" % (self.algorithm, n, force_str(salt), r, p, hash_)\n     607 | \n>>>  608 |     def decode(self, encoded):\n     609 |         algorithm, work_factor, salt, block_size, parallelism, hash_ = encoded.split(\n     610 |             \"$\", 6\n     611 |         )",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L608"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 622,
+      "error_code": "bad-override",
+      "message": "Class member `ScryptPasswordHasher.verify` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     619 |             \"hash\": hash_,\n     620 |         }\n     621 | \n>>>  622 |     def verify(self, password, encoded):\n     623 |         decoded = self.decode(encoded)\n     624 |         encoded_2 = self.encode(\n     625 |             password,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L622"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 633,
+      "error_code": "bad-override",
+      "message": "Class member `ScryptPasswordHasher.safe_summary` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     630 |         )\n     631 |         return constant_time_compare(encoded, encoded_2)\n     632 | \n>>>  633 |     def safe_summary(self, encoded):\n     634 |         decoded = self.decode(encoded)\n     635 |         return {\n     636 |             _(\"algorithm\"): decoded[\"algorithm\"],",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L633"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 644,
+      "error_code": "bad-override",
+      "message": "Class member `ScryptPasswordHasher.must_update` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     641 |             _(\"hash\"): mask_hash(decoded[\"hash\"]),\n     642 |         }\n     643 | \n>>>  644 |     def must_update(self, encoded):\n     645 |         decoded = self.decode(encoded)\n     646 |         return (\n     647 |             decoded[\"work_factor\"] != self.work_factor",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L644"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 665,
+      "error_code": "bad-override",
+      "message": "Class member `MD5PasswordHasher.encode` overrides parent class `BasePasswordHasher` in an inconsistent manner",
+      "source_context": "     662 | \n     663 |     algorithm = \"md5\"\n     664 | \n>>>  665 |     def encode(self, password, salt):\n     666 |         self._check_encode_args(password, salt)\n     667 |         password = force_str(password)\n     668 |         salt = force_str(salt)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L665"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "django/apps/registry.py",
+      "line": 99,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"apps\" for class \"AppConfig\"\n\u00a0\u00a0Expression of type \"Self@Apps\" cannot be assigned to attribute \"apps\" of class \"AppConfig\"\n\u00a0\u00a0\u00a0\u00a0\"Apps*\" is not assignable to \"None\"",
+      "source_context": "      96 |                     )\n      97 | \n      98 |                 self.app_configs[app_config.label] = app_config\n>>>   99 |                 app_config.apps = self\n     100 | \n     101 |             # Check for duplicate app names.\n     102 |             counts = Counter(",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/apps/registry.py#L99"
+    },
+    {
+      "file": "django/conf/__init__.py",
+      "line": 32,
+      "error_code": "reportSelfClsParameterName",
+      "message": "__new__ override should take a \"cls\" parameter",
+      "source_context": "      29 |     the value in memory but serializes to a settings.NAME attribute reference.\n      30 |     \"\"\"\n      31 | \n>>>   32 |     def __new__(self, value, setting_name):\n      33 |         return str.__new__(self, value)\n      34 | \n      35 |     def __init__(self, value, setting_name):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/conf/__init__.py#L32"
+    },
+    {
+      "file": "django/contrib/admin/checks.py",
+      "line": 1299,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"name\" is not a known attribute of \"None\"",
+      "source_context": "    1296 |                     \"Cannot exclude the field '%s', because it is the foreign key \"\n    1297 |                     \"to the parent model '%s'.\"\n    1298 |                     % (\n>>> 1299 |                         fk.name,\n    1300 |                         parent_model._meta.label,\n    1301 |                     ),\n    1302 |                     obj=obj.__class__,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/checks.py#L1299"
+    },
+    {
+      "file": "django/contrib/admin/models.py",
+      "line": 192,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"app_label\" for class \"ForeignKey\"\n\u00a0\u00a0Attribute \"app_label\" is unknown",
+      "source_context": "     189 |         \"\"\"\n     190 |         if self.content_type and self.object_id:\n     191 |             url_name = \"admin:%s_%s_change\" % (\n>>>  192 |                 self.content_type.app_label,\n     193 |                 self.content_type.model,\n     194 |             )\n     195 |             try:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/models.py#L192"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 439,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"Never\" is not iterable",
+      "source_context": "     436 |         # TODO: this should be handled by some parameter to the ChangeList.\n     437 |         ordering = self.get_ordering(request)\n     438 |         if ordering:\n>>>  439 |             qs = qs.order_by(*ordering)\n     440 |         return qs\n     441 | \n     442 |     def get_sortable_by(self, request):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L439"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 803,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"form\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "     800 |             and not self.has_change_permission(request, obj)\n     801 |         ):\n     802 |             exclude.extend(fields)\n>>>  803 |         if excluded is None and hasattr(self.form, \"_meta\") and self.form._meta.exclude:\n     804 |             # Take the custom ModelForm's Meta.exclude into account only if the\n     805 |             # ModelAdmin doesn't define its own.\n     806 |             exclude.extend(self.form._meta.exclude)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L803"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 806,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"form\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "     803 |         if excluded is None and hasattr(self.form, \"_meta\") and self.form._meta.exclude:\n     804 |             # Take the custom ModelForm's Meta.exclude into account only if the\n     805 |             # ModelAdmin doesn't define its own.\n>>>  806 |             exclude.extend(self.form._meta.exclude)\n     807 |         # if exclude is an empty list we pass None to be consistent with the\n     808 |         # default on modelform_factory\n     809 |         exclude = exclude or None",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L806"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 1182,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"Never\" is not iterable",
+      "source_context": "    1179 |         search_fields = self.get_search_fields(request)\n    1180 |         if search_fields and search_term:\n    1181 |             orm_lookups = []\n>>> 1182 |             for field in search_fields:\n    1183 |                 orm_lookups.append(construct_search(str(field)))\n    1184 | \n    1185 |             term_queries = []",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L1182"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 1261,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"constants\" is not a known attribute of module \"django.contrib.messages\"",
+      "source_context": "    1258 |         if not isinstance(level, int):\n    1259 |             # attempt to get the level if passed a string\n    1260 |             try:\n>>> 1261 |                 level = getattr(messages.constants, level.upper())\n    1262 |             except AttributeError:\n    1263 |                 levels = messages.constants.DEFAULT_TAGS.values()\n    1264 |                 levels_repr = \", \".join(\"`%s`\" % level for level in levels)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L1261"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 1659,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"None\" cannot be assigned to parameter \"auto_id\" of type \"str\" in function \"__init__\"\n\u00a0\u00a0\"None\" is not assignable to \"str\"",
+      "source_context": "    1656 |             # below. So no need to do anything here\n    1657 |             pass\n    1658 | \n>>> 1659 |         action_form = self.action_form(data, auto_id=None)\n    1660 |         action_form.fields[\"action\"].choices = self.get_action_choices(request)\n    1661 | \n    1662 |         # If the form's valid we can handle the action.",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L1659"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 2143,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"None\" cannot be assigned to parameter \"auto_id\" of type \"str\" in function \"__init__\"\n\u00a0\u00a0\"None\" is not assignable to \"str\"",
+      "source_context": "    2140 | \n    2141 |         # Build the action form and populate it with available actions.\n    2142 |         if actions:\n>>> 2143 |             action_form = self.action_form(auto_id=None)\n    2144 |             action_form.fields[\"action\"].choices = self.get_action_choices(request)\n    2145 |             media += action_form.media\n    2146 |         else:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L2143"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 2445,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"form\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "    2442 |         excluded = self.get_exclude(request, obj)\n    2443 |         exclude = [] if excluded is None else list(excluded)\n    2444 |         exclude.extend(self.get_readonly_fields(request, obj))\n>>> 2445 |         if excluded is None and hasattr(self.form, \"_meta\") and self.form._meta.exclude:\n    2446 |             # Take the custom ModelForm's Meta.exclude into account only if the\n    2447 |             # InlineModelAdmin doesn't define its own.\n    2448 |             exclude.extend(self.form._meta.exclude)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L2445"
+    },
+    {
+      "file": "django/contrib/admin/options.py",
+      "line": 2448,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"form\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "    2445 |         if excluded is None and hasattr(self.form, \"_meta\") and self.form._meta.exclude:\n    2446 |             # Take the custom ModelForm's Meta.exclude into account only if the\n    2447 |             # InlineModelAdmin doesn't define its own.\n>>> 2448 |             exclude.extend(self.form._meta.exclude)\n    2449 |         # If exclude is an empty list we use None, since that's the actual\n    2450 |         # default.\n    2451 |         exclude = exclude or None",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L2448"
+    },
+    {
+      "file": "django/contrib/admin/sites.py",
+      "line": 112,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"ModelBase\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "     109 |         if isinstance(model_or_iterable, ModelBase):\n     110 |             model_or_iterable = [model_or_iterable]\n     111 |         for model in model_or_iterable:\n>>>  112 |             if model._meta.abstract:\n     113 |                 raise ImproperlyConfigured(\n     114 |                     \"The model %s is abstract, so it cannot be registered with admin.\"\n     115 |                     % model.__name__",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/sites.py#L112"
+    },
+    {
+      "file": "django/contrib/admin/sites.py",
+      "line": 117,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"ModelBase\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "     114 |                     \"The model %s is abstract, so it cannot be registered with admin.\"\n     115 |                     % model.__name__\n     116 |                 )\n>>>  117 |             if model._meta.is_composite_pk:\n     118 |                 raise ImproperlyConfigured(\n     119 |                     \"The model %s has a composite primary key, so it cannot be \"\n     120 |                     \"registered with admin.\" % model.__name__",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/sites.py#L117"
+    },
+    {
+      "file": "django/contrib/admin/sites.py",
+      "line": 135,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"ModelBase\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "     132 | \n     133 |             # Ignore the registration if the model has been\n     134 |             # swapped out.\n>>>  135 |             if not model._meta.swapped:\n     136 |                 # If we got **options then dynamically construct a subclass of\n     137 |                 # admin_class with those **options.\n     138 |                 if options:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/sites.py#L135"
+    },
+    {
+      "file": "django/contrib/admin/utils.py",
+      "line": 253,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"base\" is not a known attribute of module \"django.db.models\"",
+      "source_context": "     250 | \n     251 |     `obj` may be a `Model` instance, `Model` subclass, or `QuerySet` instance.\n     252 |     \"\"\"\n>>>  253 |     if isinstance(obj, (models.Model, models.base.ModelBase)):\n     254 |         opts = obj._meta\n     255 |     elif isinstance(obj, models.query.QuerySet):\n     256 |         opts = obj.model._meta",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L253"
+    },
+    {
+      "file": "django/contrib/admin/utils.py",
+      "line": 274,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"query\" is not a known attribute of module \"django.db.models\"",
+      "source_context": "     271 |     If `obj` is a `QuerySet` instance, `n` is optional and the length of the\n     272 |     `QuerySet` is used.\n     273 |     \"\"\"\n>>>  274 |     if isinstance(obj, models.query.QuerySet):\n     275 |         if n is None:\n     276 |             n = obj.count()\n     277 |         obj = obj.model",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L274"
+    },
+    {
+      "file": "django/contrib/admin/utils.py",
+      "line": 309,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"model\" is not a known attribute of \"None\"",
+      "source_context": "     306 |                         if attr is sentinel:\n     307 |                             return None, None, None\n     308 |                 value = attr\n>>>  309 |             if hasattr(model_admin, \"model\") and hasattr(model_admin.model, name):\n     310 |                 attr = getattr(model_admin.model, name)\n     311 |         f = None\n     312 |     else:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L309"
+    },
+    {
+      "file": "django/contrib/admin/utils.py",
+      "line": 395,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"short_description\" is not a known attribute of \"None\"",
+      "source_context": "     392 |                 and hasattr(attr, \"fget\")\n     393 |                 and hasattr(attr.fget, \"short_description\")\n     394 |             ):\n>>>  395 |                 label = attr.fget.short_description\n     396 |             elif callable(attr):\n     397 |                 if attr.__name__ == \"<lambda>\":\n     398 |                     label = \"--\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L395"
+    },
+    {
+      "file": "django/contrib/admindocs/utils.py",
+      "line": 92,
+      "error_code": "reportTypedDictNotRequiredAccess",
+      "message": "Could not access item in TypedDict\n\u00a0\u00a0\"fragment\" is not a required key in \"_WriterParts\", so access may result in runtime exception",
+      "source_context": "      89 |         writer=writer_instance,\n      90 |         settings_overrides=overrides,\n      91 |     )\n>>>   92 |     return mark_safe(parts[\"fragment\"])\n      93 | \n      94 | \n      95 | #",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admindocs/utils.py#L92"
+    },
+    {
+      "file": "django/contrib/auth/decorators.py",
+      "line": 40,
+      "error_code": "reportRedeclaration",
+      "message": "Function declaration \"_view_wrapper\" is obscured by a declaration of the same name",
+      "source_context": "      37 | \n      38 |         if iscoroutinefunction(view_func):\n      39 | \n>>>   40 |             async def _view_wrapper(request, *args, **kwargs):\n      41 |                 auser = await request.auser()\n      42 |                 if iscoroutinefunction(test_func):\n      43 |                     test_pass = await test_func(auser)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/decorators.py#L40"
+    },
+    {
+      "file": "django/contrib/auth/decorators.py",
+      "line": 112,
+      "error_code": "reportRedeclaration",
+      "message": "Function declaration \"check_perms\" is obscured by a declaration of the same name",
+      "source_context": "     109 |     def decorator(view_func):\n     110 |         if iscoroutinefunction(view_func):\n     111 | \n>>>  112 |             async def check_perms(user):\n     113 |                 # First check if the user has the permission (even anon users).\n     114 |                 if await user.ahas_perms(perms):\n     115 |                     return True",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/decorators.py#L112"
+    },
+    {
+      "file": "django/contrib/auth/forms.py",
+      "line": 62,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"str | Unknown | None\" cannot be assigned to parameter \"obj\" of type \"Sized\" in function \"len\"\n\u00a0\u00a0Type \"str | Unknown | None\" is not assignable to type \"Sized\"\n\u00a0\u00a0\u00a0\u00a0\"None\" is incompatible with protocol \"Sized\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__len__\" is not present",
+      "source_context": "      59 | class UsernameField(forms.CharField):\n      60 |     def to_python(self, value):\n      61 |         value = super().to_python(value)\n>>>   62 |         if self.max_length is not None and len(value) > self.max_length:\n      63 |             # Normalization can increase the string length (e.g.\n      64 |             # \"\ufb00\" -> \"ff\", \"\u00bd\" -> \"1\u20442\") but cannot reduce it, so there is no\n      65 |             # point in normalizing invalid data. Moreover, Unicode",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/forms.py#L62"
+    },
+    {
+      "file": "django/contrib/auth/forms.py",
+      "line": 69,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"str | Unknown | None\" cannot be assigned to parameter \"unistr\" of type \"str\" in function \"normalize\"\n\u00a0\u00a0Type \"str | Unknown | None\" is not assignable to type \"str\"\n\u00a0\u00a0\u00a0\u00a0\"None\" is not assignable to \"str\"",
+      "source_context": "      66 |             # normalization is very slow on Windows and can be a DoS attack\n      67 |             # vector.\n      68 |             return value\n>>>   69 |         return unicodedata.normalize(\"NFKC\", value)\n      70 | \n      71 |     def widget_attrs(self, widget):\n      72 |         return {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/forms.py#L69"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 227,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"Never\" is not iterable",
+      "source_context": "     224 |     def _load_library(self):\n     225 |         if self.library is not None:\n     226 |             if isinstance(self.library, (tuple, list)):\n>>>  227 |                 name, mod_path = self.library\n     228 |             else:\n     229 |                 mod_path = self.library\n     230 |             try:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L227"
+    },
+    {
+      "file": "django/contrib/auth/hashers.py",
+      "line": 335,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"digest\" for class \"PBKDF2PasswordHasher*\"\n\u00a0\u00a0Could not bind method \"openssl_sha256\" because \"Self@PBKDF2PasswordHasher\" is not assignable to parameter \"string\"\n\u00a0\u00a0\u00a0\u00a0\"PBKDF2PasswordHasher*\" is incompatible with protocol \"Buffer\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__buffer__\" is not present",
+      "source_context": "     332 |         iterations = iterations or self.iterations\n     333 |         password = force_str(password)\n     334 |         salt = force_str(salt)\n>>>  335 |         hash = pbkdf2(password, salt, iterations, digest=self.digest)\n     336 |         hash = base64.b64encode(hash).decode(\"ascii\").strip()\n     337 |         return \"%s$%d$%s$%s\" % (self.algorithm, iterations, salt, hash)\n     338 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/hashers.py#L335"
+    },
+    {
+      "file": "django/contrib/auth/migrations/0001_initial.py",
+      "line": 103,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[False]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[False]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "     100 |                 (\n     101 |                     \"is_superuser\",\n     102 |                     models.BooleanField(\n>>>  103 |                         default=False,\n     104 |                         help_text=(\n     105 |                             \"Designates that this user has all permissions without \"\n     106 |                             \"explicitly assigning them.\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/migrations/0001_initial.py#L103"
+    },
+    {
+      "file": "django/contrib/auth/migrations/0001_initial.py",
+      "line": 145,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[False]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[False]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "     142 |                 (\n     143 |                     \"is_staff\",\n     144 |                     models.BooleanField(\n>>>  145 |                         default=False,\n     146 |                         help_text=(\n     147 |                             \"Designates whether the user can log into this admin site.\"\n     148 |                         ),",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/migrations/0001_initial.py#L145"
+    },
+    {
+      "file": "django/contrib/auth/migrations/0001_initial.py",
+      "line": 155,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[True]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[True]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "     152 |                 (\n     153 |                     \"is_active\",\n     154 |                     models.BooleanField(\n>>>  155 |                         default=True,\n     156 |                         verbose_name=\"active\",\n     157 |                         help_text=(\n     158 |                             \"Designates whether this user should be treated as active. \"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/migrations/0001_initial.py#L155"
+    },
+    {
+      "file": "django/contrib/auth/models.py",
+      "line": 325,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[False]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[False]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "     322 | \n     323 |     is_superuser = models.BooleanField(\n     324 |         _(\"superuser status\"),\n>>>  325 |         default=False,\n     326 |         help_text=_(\n     327 |             \"Designates that this user has all permissions without \"\n     328 |             \"explicitly assigning them.\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/models.py#L325"
+    },
+    {
+      "file": "django/contrib/auth/models.py",
+      "line": 473,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[False]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[False]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "     470 |     email = models.EmailField(_(\"email address\"), blank=True)\n     471 |     is_staff = models.BooleanField(\n     472 |         _(\"staff status\"),\n>>>  473 |         default=False,\n     474 |         help_text=_(\"Designates whether the user can log into this admin site.\"),\n     475 |     )\n     476 |     is_active = models.BooleanField(",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/models.py#L473"
+    },
+    {
+      "file": "django/contrib/auth/tokens.py",
+      "line": 92,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"str | None\" cannot be assigned to parameter \"algorithm\" of type \"str\" in function \"salted_hmac\"\n\u00a0\u00a0Type \"str | None\" is not assignable to type \"str\"\n\u00a0\u00a0\u00a0\u00a0\"None\" is not assignable to \"str\"",
+      "source_context": "      89 |             self.key_salt,\n      90 |             self._make_hash_value(user, timestamp),\n      91 |             secret=secret,\n>>>   92 |             algorithm=self.algorithm,\n      93 |         ).hexdigest()[\n      94 |             ::2\n      95 |         ]  # Limit to shorten the URL.",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/tokens.py#L92"
+    },
+    {
+      "file": "django/contrib/contenttypes/admin.py",
+      "line": 107,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"form\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "     104 |         if (\n     105 |             self.exclude is None\n     106 |             and hasattr(self.form, \"_meta\")\n>>>  107 |             and self.form._meta.exclude\n     108 |         ):\n     109 |             # Take the custom ModelForm's Meta.exclude into account only if the\n     110 |             # GenericInlineModelAdmin doesn't define its own.",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/contenttypes/admin.py#L107"
+    },
+    {
+      "file": "django/contrib/contenttypes/admin.py",
+      "line": 111,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_meta\" for class \"form\"\n\u00a0\u00a0Attribute \"_meta\" is unknown",
+      "source_context": "     108 |         ):\n     109 |             # Take the custom ModelForm's Meta.exclude into account only if the\n     110 |             # GenericInlineModelAdmin doesn't define its own.\n>>>  111 |             exclude.extend(self.form._meta.exclude)\n     112 |         exclude = exclude or None\n     113 |         can_delete = self.can_delete and self.has_delete_permission(request, obj)\n     114 |         defaults = {",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/contenttypes/admin.py#L111"
+    },
+    {
+      "file": "django/contrib/flatpages/migrations/0001_initial.py",
+      "line": 30,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[False]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[False]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "      27 |                 (\"content\", models.TextField(verbose_name=\"content\", blank=True)),\n      28 |                 (\n      29 |                     \"enable_comments\",\n>>>   30 |                     models.BooleanField(default=False, verbose_name=\"enable comments\"),\n      31 |                 ),\n      32 |                 (\n      33 |                     \"template_name\",",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/flatpages/migrations/0001_initial.py#L30"
+    },
+    {
+      "file": "django/contrib/flatpages/migrations/0001_initial.py",
+      "line": 47,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[False]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[False]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "      44 |                 (\n      45 |                     \"registration_required\",\n      46 |                     models.BooleanField(\n>>>   47 |                         default=False,\n      48 |                         help_text=(\n      49 |                             \"If this is checked, only logged-in users will be able to \"\n      50 |                             \"view the page.\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/flatpages/migrations/0001_initial.py#L47"
+    },
+    {
+      "file": "django/contrib/flatpages/models.py",
+      "line": 12,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[False]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[False]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "       9 |     url = models.CharField(_(\"URL\"), max_length=100, db_index=True)\n      10 |     title = models.CharField(_(\"title\"), max_length=200)\n      11 |     content = models.TextField(_(\"content\"), blank=True)\n>>>   12 |     enable_comments = models.BooleanField(_(\"enable comments\"), default=False)\n      13 |     template_name = models.CharField(\n      14 |         _(\"template name\"),\n      15 |         max_length=70,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/flatpages/models.py#L12"
+    },
+    {
+      "file": "django/contrib/flatpages/models.py",
+      "line": 24,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"__proxy__\" cannot be assigned to parameter \"help_text\" of type \"str\" in function \"__init__\"\n\u00a0\u00a0\"__proxy__\" is not assignable to \"str\"",
+      "source_context": "      21 |     )\n      22 |     registration_required = models.BooleanField(\n      23 |         _(\"registration required\"),\n>>>   24 |         help_text=_(\n      25 |             \"If this is checked, only logged-in users will be able to view the page.\"\n      26 |         ),\n      27 |         default=False,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/flatpages/models.py#L24"
+    },
+    {
+      "file": "django/contrib/flatpages/models.py",
+      "line": 27,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[False]\" cannot be assigned to parameter \"default\" of type \"type[NOT_PROVIDED]\" in function \"__init__\"\n\u00a0\u00a0Type \"Literal[False]\" is not assignable to type \"type[NOT_PROVIDED]\"",
+      "source_context": "      24 |         help_text=_(\n      25 |             \"If this is checked, only logged-in users will be able to view the page.\"\n      26 |         ),\n>>>   27 |         default=False,\n      28 |     )\n      29 |     sites = models.ManyToManyField(Site, verbose_name=_(\"sites\"))\n      30 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/flatpages/models.py#L27"
+    },
+    {
+      "file": "django/contrib/flatpages/templatetags/flatpages.py",
+      "line": 37,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"is_authenticated\" for class \"__proxy__\"\n\u00a0\u00a0Attribute \"is_authenticated\" is unknown",
+      "source_context": "      34 |         # was provided, filter the list to only public flatpages.\n      35 |         if self.user:\n      36 |             user = self.user.resolve(context)\n>>>   37 |             if not user.is_authenticated:\n      38 |                 flatpages = flatpages.filter(registration_required=False)\n      39 |         else:\n      40 |             flatpages = flatpages.filter(registration_required=False)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/flatpages/templatetags/flatpages.py#L37"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/base/features.py",
+      "line": 67,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"ops\" for class \"bool\"\n\u00a0\u00a0Attribute \"ops\" is unknown",
+      "source_context": "      64 | \n      65 |     @property\n      66 |     def supports_crosses_lookup(self):\n>>>   67 |         return \"crosses\" in self.connection.ops.gis_operators\n      68 | \n      69 |     @property\n      70 |     def supports_distances_lookups(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/base/features.py#L67"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/base/features.py",
+      "line": 75,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"ops\" for class \"bool\"\n\u00a0\u00a0Attribute \"ops\" is unknown",
+      "source_context": "      72 | \n      73 |     @property\n      74 |     def supports_relate_lookup(self):\n>>>   75 |         return \"relate\" in self.connection.ops.gis_operators\n      76 | \n      77 |     @property\n      78 |     def supports_isvalid_lookup(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/base/features.py#L75"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/base/features.py",
+      "line": 84,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"ops\" for class \"bool\"\n\u00a0\u00a0Attribute \"ops\" is unknown",
+      "source_context": "      81 |     # Is the aggregate supported by the database?\n      82 |     @property\n      83 |     def supports_collect_aggr(self):\n>>>   84 |         return models.Collect not in self.connection.ops.disallowed_aggregates\n      85 | \n      86 |     @property\n      87 |     def supports_extent_aggr(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/base/features.py#L84"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/base/features.py",
+      "line": 88,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"ops\" for class \"bool\"\n\u00a0\u00a0Attribute \"ops\" is unknown",
+      "source_context": "      85 | \n      86 |     @property\n      87 |     def supports_extent_aggr(self):\n>>>   88 |         return models.Extent not in self.connection.ops.disallowed_aggregates\n      89 | \n      90 |     @property\n      91 |     def supports_make_line_aggr(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/base/features.py#L88"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/base/features.py",
+      "line": 92,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"ops\" for class \"bool\"\n\u00a0\u00a0Attribute \"ops\" is unknown",
+      "source_context": "      89 | \n      90 |     @property\n      91 |     def supports_make_line_aggr(self):\n>>>   92 |         return models.MakeLine not in self.connection.ops.disallowed_aggregates\n      93 | \n      94 |     @property\n      95 |     def supports_union_aggr(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/base/features.py#L92"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/base/features.py",
+      "line": 96,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"ops\" for class \"bool\"\n\u00a0\u00a0Attribute \"ops\" is unknown",
+      "source_context": "      93 | \n      94 |     @property\n      95 |     def supports_union_aggr(self):\n>>>   96 |         return models.Union not in self.connection.ops.disallowed_aggregates\n      97 | \n      98 |     def __getattr__(self, name):\n      99 |         m = re.match(r\"has_(\\w*)_function$\", name)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/base/features.py#L96"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/base/features.py",
+      "line": 108,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"ops\" for class \"bool\"\n\u00a0\u00a0Attribute \"ops\" is unknown",
+      "source_context": "     105 |                     f'Is \"{func_name}\" missing from '\n     106 |                     \"BaseSpatialOperations.unsupported_functions?\"\n     107 |                 )\n>>>  108 |             return func_name not in self.connection.ops.unsupported_functions\n     109 |         raise AttributeError",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/base/features.py#L108"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/base/models.py",
+      "line": 125,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"Never\" is not iterable",
+      "source_context": "     122 |             if len(sphere_params) == 3:\n     123 |                 radius, flattening = sphere_params[0], sphere_params[2]\n     124 |             else:\n>>>  125 |                 radius, flattening = sphere_params\n     126 |             return 'SPHEROID[\"%s\",%s,%s]' % (sphere_name, radius, flattening)\n     127 | \n     128 |     def __str__(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/base/models.py#L125"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/postgis/adapter.py",
+      "line": 7,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"sql\" is unknown import symbol",
+      "source_context": "       4 | \n       5 | from django.contrib.gis.db.backends.postgis.pgraster import to_pgraster\n       6 | from django.contrib.gis.geos import GEOSGeometry\n>>>    7 | from django.db.backends.postgresql.psycopg_any import sql\n       8 | \n       9 | \n      10 | class PostGISAdapter:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/postgis/adapter.py#L7"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/postgis/operations.py",
+      "line": 140,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['bilateral']\" cannot be assigned to parameter \"raster\" of type \"bool\" in function \"__init__\"\n\u00a0\u00a0\"Literal['bilateral']\" is not assignable to \"bool\"",
+      "source_context": "     137 |         \"bbcontains\": PostGISOperator(op=\"~\", raster=True),\n     138 |         \"bboverlaps\": PostGISOperator(op=\"&&\", geography=True, raster=True),\n     139 |         \"contained\": PostGISOperator(op=\"@\", raster=True),\n>>>  140 |         \"overlaps_left\": PostGISOperator(op=\"&<\", raster=BILATERAL),\n     141 |         \"overlaps_right\": PostGISOperator(op=\"&>\", raster=BILATERAL),\n     142 |         \"overlaps_below\": PostGISOperator(op=\"&<|\"),\n     143 |         \"overlaps_above\": PostGISOperator(op=\"|&>\"),",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/postgis/operations.py#L140"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/postgis/operations.py",
+      "line": 148,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['bilateral']\" cannot be assigned to parameter \"raster\" of type \"bool\" in function \"__init__\"\n\u00a0\u00a0\"Literal['bilateral']\" is not assignable to \"bool\"",
+      "source_context": "     145 |         \"right\": PostGISOperator(op=\">>\"),\n     146 |         \"strictly_below\": PostGISOperator(op=\"<<|\"),\n     147 |         \"strictly_above\": PostGISOperator(op=\"|>>\"),\n>>>  148 |         \"same_as\": PostGISOperator(op=\"~=\", raster=BILATERAL),\n     149 |         \"exact\": PostGISOperator(op=\"~=\", raster=BILATERAL),  # alias of same_as\n     150 |         \"contains\": PostGISOperator(func=\"ST_Contains\", raster=BILATERAL),\n     151 |         \"contains_properly\": PostGISOperator(",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/postgis/operations.py#L148"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/postgis/operations.py",
+      "line": 152,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['bilateral']\" cannot be assigned to parameter \"raster\" of type \"bool\" in function \"__init__\"\n\u00a0\u00a0\"Literal['bilateral']\" is not assignable to \"bool\"",
+      "source_context": "     149 |         \"exact\": PostGISOperator(op=\"~=\", raster=BILATERAL),  # alias of same_as\n     150 |         \"contains\": PostGISOperator(func=\"ST_Contains\", raster=BILATERAL),\n     151 |         \"contains_properly\": PostGISOperator(\n>>>  152 |             func=\"ST_ContainsProperly\", raster=BILATERAL\n     153 |         ),\n     154 |         \"coveredby\": PostGISOperator(\n     155 |             func=\"ST_CoveredBy\", geography=True, raster=BILATERAL",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/postgis/operations.py#L152"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/postgis/operations.py",
+      "line": 155,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['bilateral']\" cannot be assigned to parameter \"raster\" of type \"bool\" in function \"__init__\"\n\u00a0\u00a0\"Literal['bilateral']\" is not assignable to \"bool\"",
+      "source_context": "     152 |             func=\"ST_ContainsProperly\", raster=BILATERAL\n     153 |         ),\n     154 |         \"coveredby\": PostGISOperator(\n>>>  155 |             func=\"ST_CoveredBy\", geography=True, raster=BILATERAL\n     156 |         ),\n     157 |         \"covers\": PostGISOperator(func=\"ST_Covers\", geography=True, raster=BILATERAL),\n     158 |         \"crosses\": PostGISOperator(func=\"ST_Crosses\"),",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/postgis/operations.py#L155"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/postgis/operations.py",
+      "line": 159,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['bilateral']\" cannot be assigned to parameter \"raster\" of type \"bool\" in function \"__init__\"\n\u00a0\u00a0\"Literal['bilateral']\" is not assignable to \"bool\"",
+      "source_context": "     156 |         ),\n     157 |         \"covers\": PostGISOperator(func=\"ST_Covers\", geography=True, raster=BILATERAL),\n     158 |         \"crosses\": PostGISOperator(func=\"ST_Crosses\"),\n>>>  159 |         \"disjoint\": PostGISOperator(func=\"ST_Disjoint\", raster=BILATERAL),\n     160 |         \"equals\": PostGISOperator(func=\"ST_Equals\"),\n     161 |         \"intersects\": PostGISOperator(\n     162 |             func=\"ST_Intersects\", geography=True, raster=BILATERAL",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/postgis/operations.py#L159"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/postgis/operations.py",
+      "line": 162,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['bilateral']\" cannot be assigned to parameter \"raster\" of type \"bool\" in function \"__init__\"\n\u00a0\u00a0\"Literal['bilateral']\" is not assignable to \"bool\"",
+      "source_context": "     159 |         \"disjoint\": PostGISOperator(func=\"ST_Disjoint\", raster=BILATERAL),\n     160 |         \"equals\": PostGISOperator(func=\"ST_Equals\"),\n     161 |         \"intersects\": PostGISOperator(\n>>>  162 |             func=\"ST_Intersects\", geography=True, raster=BILATERAL\n     163 |         ),\n     164 |         \"overlaps\": PostGISOperator(func=\"ST_Overlaps\", raster=BILATERAL),\n     165 |         \"relate\": PostGISOperator(func=\"ST_Relate\"),",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/postgis/operations.py#L162"
+    },
+    {
+      "file": "django/contrib/gis/db/backends/postgis/operations.py",
+      "line": 166,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['bilateral']\" cannot be assigned to parameter \"raster\" of type \"bool\" in function \"__init__\"\n\u00a0\u00a0\"Literal['bilateral']\" is not assignable to \"bool\"",
+      "source_context": "     163 |         ),\n     164 |         \"overlaps\": PostGISOperator(func=\"ST_Overlaps\", raster=BILATERAL),\n     165 |         \"relate\": PostGISOperator(func=\"ST_Relate\"),\n>>>  166 |         \"touches\": PostGISOperator(func=\"ST_Touches\", raster=BILATERAL),\n     167 |         \"within\": PostGISOperator(func=\"ST_Within\", raster=BILATERAL),\n     168 |         \"dwithin\": PostGISOperator(func=\"ST_DWithin\", geography=True, raster=BILATERAL),\n     169 |     }",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/backends/postgis/operations.py#L166"
+    },
+    {
+      "file": "django/contrib/gis/db/models/__init__.py",
+      "line": 19,
+      "error_code": "reportUnsupportedDunderAll",
+      "message": "Operation on \"__all__\" is not supported, so exported symbol list may be incorrect",
+      "source_context": "      16 |     RasterField,\n      17 | )\n      18 | \n>>>   19 | __all__ = models_all + aggregates_all\n      20 | __all__ += [\n      21 |     \"GeometryCollectionField\",\n      22 |     \"GeometryField\",",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/__init__.py#L19"
+    },
+    {
+      "file": "django/contrib/gis/db/models/functions.py",
+      "line": 17,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"type[django.db.models.lookups.Transform]\" is not assignable to declared type \"type[functions.Transform]\"\n\u00a0\u00a0\"django.db.models.lookups.Transform\" is not assignable to \"functions.Transform\"\n\u00a0\u00a0Type \"type[django.db.models.lookups.Transform]\" is not assignable to type \"type[functions.Transform]\"",
+      "source_context": "      14 |     Func,\n      15 |     IntegerField,\n      16 |     TextField,\n>>>   17 |     Transform,\n      18 |     Value,\n      19 | )\n      20 | from django.db.models.functions import Cast",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/functions.py#L17"
+    },
+    {
+      "file": "django/contrib/gis/db/models/functions.py",
+      "line": 194,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"int\" cannot be assigned to parameter \"object\" of type \"Unknown\" in function \"append\"",
+      "source_context": "     191 |     def __init__(self, expression, bbox=False, crs=False, precision=8, **extra):\n     192 |         expressions = [expression]\n     193 |         if precision is not None:\n>>>  194 |             expressions.append(self._handle_param(precision, \"precision\", int))\n     195 |         options = 0\n     196 |         if crs and bbox:\n     197 |             options = 3",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/functions.py#L194"
+    },
+    {
+      "file": "django/contrib/gis/db/models/functions.py",
+      "line": 202,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal[3, 1, 2, 0]\" cannot be assigned to parameter \"object\" of type \"Unknown\" in function \"append\"",
+      "source_context": "     199 |             options = 1\n     200 |         elif crs:\n     201 |             options = 2\n>>>  202 |         expressions.append(options)\n     203 |         super().__init__(*expressions, **extra)\n     204 | \n     205 |     def as_oracle(self, compiler, connection, **extra_context):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/functions.py#L202"
+    },
+    {
+      "file": "django/contrib/gis/db/models/functions.py",
+      "line": 241,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"int\" cannot be assigned to parameter \"object\" of type \"Unknown\" in function \"append\"",
+      "source_context": "     238 |     def __init__(self, expression, precision=8, **extra):\n     239 |         expressions = [expression]\n     240 |         if precision is not None:\n>>>  241 |             expressions.append(self._handle_param(precision, \"precision\", int))\n     242 |         super().__init__(*expressions, **extra)\n     243 | \n     244 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/functions.py#L241"
+    },
+    {
+      "file": "django/contrib/gis/db/models/functions.py",
+      "line": 402,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Unknown | int\" cannot be assigned to parameter \"object\" of type \"Unknown\" in function \"append\"",
+      "source_context": "     399 |     def __init__(self, expression, precision=None, **extra):\n     400 |         expressions = [expression]\n     401 |         if precision is not None:\n>>>  402 |             expressions.append(self._handle_param(precision, \"precision\", int))\n     403 |         super().__init__(*expressions, **extra)\n     404 | \n     405 |     def as_mysql(self, compiler, connection, **extra_context):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/functions.py#L402"
+    },
+    {
+      "file": "django/contrib/gis/db/models/functions.py",
+      "line": 432,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"lhs\" for class \"GeometryType*\"\n\u00a0\u00a0Attribute \"lhs\" is unknown",
+      "source_context": "     429 |     lookup_name = \"geom_type\"\n     430 | \n     431 |     def as_oracle(self, compiler, connection, **extra_context):\n>>>  432 |         lhs, params = compiler.compile(self.lhs)\n     433 |         sql = (\n     434 |             \"(SELECT DECODE(\"\n     435 |             f\"SDO_GEOMETRY.GET_GTYPE({lhs}),\"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/functions.py#L432"
+    },
+    {
+      "file": "django/contrib/gis/db/models/functions.py",
+      "line": 600,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"list[Unknown | int | float | Decimal]\" cannot be assigned to parameter \"iterable\" of type \"Iterable[Unknown]\" in function \"extend\"",
+      "source_context": "     597 |         expressions = [expression]\n     598 |         if nargs in (1, 2):\n     599 |             expressions.extend(\n>>>  600 |                 [self._handle_param(arg, \"\", NUMERIC_TYPES) for arg in args]\n     601 |             )\n     602 |         elif nargs == 4:\n     603 |             # Reverse origin and size param ordering",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/functions.py#L600"
+    },
+    {
+      "file": "django/contrib/gis/db/models/lookups.py",
+      "line": 46,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"band_index\" for class \"Value\"\n\u00a0\u00a0Attribute \"band_index\" is unknown",
+      "source_context": "      43 |         # increased to be consistent with the GDALRaster band indices.\n      44 |         if only_lhs:\n      45 |             self.band_rhs = 1\n>>>   46 |             self.band_lhs = self.lhs.band_index + 1\n      47 |             return\n      48 | \n      49 |         if isinstance(self.lhs, RasterBandTransform):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/db/models/lookups.py#L46"
+    },
+    {
+      "file": "django/contrib/gis/forms/fields.py",
+      "line": 113,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"float\" cannot be assigned to parameter \"tolerance\" of type \"int\" in function \"equals_exact\"\n\u00a0\u00a0\"float\" is not assignable to \"int\"",
+      "source_context": "     110 |             # If the initial value was not added by the browser, the geometry\n     111 |             # provided may be slightly different, the first time it is saved.\n     112 |             # The comparison is done with a very low tolerance.\n>>>  113 |             return not initial.equals_exact(data, tolerance=0.000001)\n     114 |         else:\n     115 |             # Check for change of state of existence\n     116 |             return bool(initial) != bool(data)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/forms/fields.py#L113"
+    },
+    {
+      "file": "django/contrib/gis/gdal/geometries.py",
+      "line": 98,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"encode\" for class \"memoryview[int]\"\n\u00a0\u00a0Attribute \"encode\" is unknown",
+      "source_context": "      95 |                         byref(c_char_p(wkt_m[\"wkt\"].encode())), None, byref(c_void_p())\n      96 |                     )\n      97 |             elif json_m:\n>>>   98 |                 g = self._from_json(geom_input.encode())\n      99 |             else:\n     100 |                 # Seeing if the input is a valid short-hand string\n     101 |                 # (e.g., 'Point', 'POLYGON').",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/geometries.py#L98"
+    },
+    {
+      "file": "django/contrib/gis/gdal/geometries.py",
+      "line": 140,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"wkt\" for class \"int\"\n\u00a0\u00a0Attribute \"wkt\" is unknown",
+      "source_context": "     137 |     def __getstate__(self):\n     138 |         srs = self.srs\n     139 |         if srs:\n>>>  140 |             srs = srs.wkt\n     141 |         else:\n     142 |             srs = None\n     143 |         return bytes(self.wkb), srs",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/geometries.py#L140"
+    },
+    {
+      "file": "django/contrib/gis/gdal/geometries.py",
+      "line": 336,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"int | str\" cannot be assigned to parameter \"srs_input\" of type \"str\" in function \"__init__\"\n\u00a0\u00a0Type \"int | str\" is not assignable to type \"str\"\n\u00a0\u00a0\u00a0\u00a0\"int\" is not assignable to \"str\"",
+      "source_context": "     333 |         if isinstance(srs, SpatialReference):\n     334 |             srs_ptr = srs.ptr\n     335 |         elif isinstance(srs, (int, str)):\n>>>  336 |             sr = SpatialReference(srs)\n     337 |             srs_ptr = sr.ptr\n     338 |         elif srs is None:\n     339 |             srs_ptr = None",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/geometries.py#L336"
+    },
+    {
+      "file": "django/contrib/gis/gdal/geometries.py",
+      "line": 352,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"srid\" for class \"int\"\n\u00a0\u00a0Attribute \"srid\" is unknown",
+      "source_context": "     349 |     def _get_srid(self):\n     350 |         srs = self.srs\n     351 |         if srs:\n>>>  352 |             return srs.srid\n     353 |         return None\n     354 | \n     355 |     def _set_srid(self, srid):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/geometries.py#L352"
+    },
+    {
+      "file": "django/contrib/gis/gdal/geometries.py",
+      "line": 442,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"srid\" for class \"int\"\n\u00a0\u00a0Attribute \"srid\" is unknown",
+      "source_context": "     439 |     def ewkt(self):\n     440 |         \"Return the EWKT representation of the Geometry.\"\n     441 |         srs = self.srs\n>>>  442 |         if srs and srs.srid:\n     443 |             return \"SRID=%s;%s\" % (srs.srid, self.wkt)\n     444 |         else:\n     445 |             return self.wkt",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/geometries.py#L442"
+    },
+    {
+      "file": "django/contrib/gis/gdal/geometries.py",
+      "line": 481,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"int | str\" cannot be assigned to parameter \"srs_input\" of type \"str\" in function \"__init__\"\n\u00a0\u00a0Type \"int | str\" is not assignable to type \"str\"\n\u00a0\u00a0\u00a0\u00a0\"int\" is not assignable to \"str\"",
+      "source_context": "     478 |         elif isinstance(coord_trans, SpatialReference):\n     479 |             capi.geom_transform_to(self.ptr, coord_trans.ptr)\n     480 |         elif isinstance(coord_trans, (int, str)):\n>>>  481 |             sr = SpatialReference(coord_trans)\n     482 |             capi.geom_transform_to(self.ptr, sr.ptr)\n     483 |         else:\n     484 |             raise TypeError(",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/geometries.py#L481"
+    },
+    {
+      "file": "django/contrib/gis/gdal/raster/band.py",
+      "line": 207,
+      "error_code": "reportCallIssue",
+      "message": "No overloads for \"__getitem__\" match the provided arguments",
+      "source_context": "     204 |             raise ValueError(\"Size is larger than raster.\")\n     205 | \n     206 |         # Create ctypes type array generator\n>>>  207 |         ctypes_array = GDAL_TO_CTYPES[self.datatype()] * (shape[0] * shape[1])\n     208 | \n     209 |         if data is None:\n     210 |             # Set read mode",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/raster/band.py#L207"
+    },
+    {
+      "file": "django/contrib/gis/gdal/raster/source.py",
+      "line": 318,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"int | str\" cannot be assigned to parameter \"srs_input\" of type \"str\" in function \"__init__\"\n\u00a0\u00a0Type \"int | str\" is not assignable to type \"str\"\n\u00a0\u00a0\u00a0\u00a0\"int\" is not assignable to \"str\"",
+      "source_context": "     315 |         if isinstance(value, SpatialReference):\n     316 |             srs = value\n     317 |         elif isinstance(value, (int, str)):\n>>>  318 |             srs = SpatialReference(value)\n     319 |         else:\n     320 |             raise ValueError(\"Could not create a SpatialReference from input.\")\n     321 |         capi.set_ds_projection_ref(self._ptr, srs.wkt.encode())",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/raster/source.py#L318"
+    },
+    {
+      "file": "django/contrib/gis/gdal/raster/source.py",
+      "line": 481,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"int\" cannot be assigned to parameter \"write\" of type \"bool\" in function \"__init__\"\n\u00a0\u00a0\"int\" is not assignable to \"bool\"",
+      "source_context": "     478 |                 c_void_p(),\n     479 |                 c_void_p(),\n     480 |             ),\n>>>  481 |             write=self._write,\n     482 |         )\n     483 | \n     484 |     def transform(",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/raster/source.py#L481"
+    },
+    {
+      "file": "django/contrib/gis/gdal/raster/source.py",
+      "line": 497,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"int | str\" cannot be assigned to parameter \"srs_input\" of type \"str\" in function \"__init__\"\n\u00a0\u00a0Type \"int | str\" is not assignable to type \"str\"\n\u00a0\u00a0\u00a0\u00a0\"int\" is not assignable to \"str\"",
+      "source_context": "     494 |         if isinstance(srs, SpatialReference):\n     495 |             target_srs = srs\n     496 |         elif isinstance(srs, (int, str)):\n>>>  497 |             target_srs = SpatialReference(srs)\n     498 |         else:\n     499 |             raise TypeError(\n     500 |                 \"Transform only accepts SpatialReference, string, and integer \"",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/gdal/raster/source.py#L497"
+    },
+    {
+      "file": "django/contrib/gis/geos/collections.py",
+      "line": 90,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"kml\" for class \"list[Unknown]\"\n\u00a0\u00a0Attribute \"kml\" is unknown",
+      "source_context": "      87 |     @property\n      88 |     def kml(self):\n      89 |         \"Return the KML for this Geometry Collection.\"\n>>>   90 |         return \"<MultiGeometry>%s</MultiGeometry>\" % \"\".join(g.kml for g in self)\n      91 | \n      92 |     @property\n      93 |     def tuple(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/collections.py#L90"
+    },
+    {
+      "file": "django/contrib/gis/geos/collections.py",
+      "line": 95,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"tuple\" for class \"list[Unknown]\"\n\u00a0\u00a0Attribute \"tuple\" is unknown",
+      "source_context": "      92 |     @property\n      93 |     def tuple(self):\n      94 |         \"Return a tuple of all the coordinates in this Geometry Collection\"\n>>>   95 |         return tuple(g.tuple for g in self)\n      96 | \n      97 |     coords = tuple\n      98 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/collections.py#L95"
+    },
+    {
+      "file": "django/contrib/gis/geos/collections.py",
+      "line": 118,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"_allowed\" for class \"type[GeometryCollection]\"\n\u00a0\u00a0Attribute \"_allowed\" is unknown",
+      "source_context": "     115 | \n     116 | # Setting the allowed types here since GeometryCollection is defined before\n     117 | # its subclasses.\n>>>  118 | GeometryCollection._allowed = (\n     119 |     Point,\n     120 |     LineString,\n     121 |     LinearRing,",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/collections.py#L118"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 99,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"read\" for class \"None\"\n\u00a0\u00a0Attribute \"read\" is unknown",
+      "source_context": "      96 |         return bytes(self.wkb)\n      97 | \n      98 |     def _from_pickle_wkb(self, wkb):\n>>>   99 |         return wkb_r().read(memoryview(wkb))\n     100 | \n     101 |     def __getstate__(self):\n     102 |         # The pickled state is simply a tuple of the WKB (in string form)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L99"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 118,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"read\" for class \"None\"\n\u00a0\u00a0Attribute \"read\" is unknown",
+      "source_context": "     115 | \n     116 |     @classmethod\n     117 |     def _from_wkb(cls, wkb):\n>>>  118 |         return wkb_r().read(wkb)\n     119 | \n     120 |     @staticmethod\n     121 |     def from_ewkt(ewkt):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L118"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 139,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"read\" for class \"None\"\n\u00a0\u00a0Attribute \"read\" is unknown",
+      "source_context": "     136 | \n     137 |     @staticmethod\n     138 |     def _from_wkt(wkt):\n>>>  139 |         return wkt_r().read(wkt)\n     140 | \n     141 |     @classmethod\n     142 |     def from_gml(cls, gml_string):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L139"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 402,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"write\" for class \"None\"\n\u00a0\u00a0Attribute \"write\" is unknown",
+      "source_context": "     399 |     @property\n     400 |     def wkt(self):\n     401 |         \"Return the WKT (Well-Known Text) representation of this Geometry.\"\n>>>  402 |         return wkt_w(dim=3 if self.hasz else 2, trim=True).write(self).decode()\n     403 | \n     404 |     @property\n     405 |     def hex(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L402"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 413,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"write_hex\" for class \"None\"\n\u00a0\u00a0Attribute \"write_hex\" is unknown",
+      "source_context": "     410 |         \"\"\"\n     411 |         # A possible faster, all-python, implementation:\n     412 |         #  str(self.wkb).encode('hex')\n>>>  413 |         return wkb_w(dim=3 if self.hasz else 2).write_hex(self)\n     414 | \n     415 |     @property\n     416 |     def hexewkb(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L413"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 422,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"write_hex\" for class \"None\"\n\u00a0\u00a0Attribute \"write_hex\" is unknown",
+      "source_context": "     419 |         extension of the WKB specification that includes SRID value that are\n     420 |         a part of this geometry.\n     421 |         \"\"\"\n>>>  422 |         return ewkb_w(dim=3 if self.hasz else 2).write_hex(self)\n     423 | \n     424 |     @property\n     425 |     def json(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L422"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 440,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"write\" for class \"None\"\n\u00a0\u00a0Attribute \"write\" is unknown",
+      "source_context": "     437 |         as a Python memoryview. SRID and Z values are not included, use the\n     438 |         `ewkb` property instead.\n     439 |         \"\"\"\n>>>  440 |         return wkb_w(3 if self.hasz else 2).write(self)\n     441 | \n     442 |     @property\n     443 |     def ewkb(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L440"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 449,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"write\" for class \"None\"\n\u00a0\u00a0Attribute \"write\" is unknown",
+      "source_context": "     446 |         This is an extension of the WKB specification that includes any SRID\n     447 |         value that are a part of this geometry.\n     448 |         \"\"\"\n>>>  449 |         return ewkb_w(3 if self.hasz else 2).write(self)\n     450 | \n     451 |     @property\n     452 |     def kml(self):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L449"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 678,
+      "error_code": "reportAssignmentType",
+      "message": "Expression with type \"tuple[Unknown, Unknown] | tuple[Unknown, Unknown, Unknown] | tuple[tuple[Unknown, Unknown] | tuple[Unknown, Unknown, Unknown], ...]\" cannot be assigned to target tuple\n\u00a0\u00a0Type \"tuple[Unknown, Unknown, Unknown]\" is incompatible with target tuple\n\u00a0\u00a0\u00a0\u00a0Tuple size mismatch; expected 2 but received 3",
+      "source_context": "     675 | \n     676 |         env = self.envelope\n     677 |         if isinstance(env, Point):\n>>>  678 |             xmin, ymin = env.tuple\n     679 |             xmax, ymax = xmin, ymin\n     680 |         else:\n     681 |             xmin, ymin = env[0][0]",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L678"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 769,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"read\" for class \"None\"\n\u00a0\u00a0Attribute \"read\" is unknown",
+      "source_context": "     766 |                 g = self._from_wkt(force_bytes(wkt_m[\"wkt\"]))\n     767 |             elif hex_regex.match(geo_input):\n     768 |                 # Handle HEXEWKB input.\n>>>  769 |                 g = wkb_r().read(force_bytes(geo_input))\n     770 |             elif json_regex.match(geo_input):\n     771 |                 # Handle GeoJSON input.\n     772 |                 ogr = gdal.OGRGeometry.from_json(geo_input)",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L769"
+    },
+    {
+      "file": "django/contrib/gis/geos/geometry.py",
+      "line": 782,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"read\" for class \"None\"\n\u00a0\u00a0Attribute \"read\" is unknown",
+      "source_context": "     779 |             g = geo_input\n     780 |         elif isinstance(geo_input, memoryview):\n     781 |             # When the input is a memoryview (WKB).\n>>>  782 |             g = wkb_r().read(geo_input)\n     783 |         elif isinstance(geo_input, GEOSGeometry):\n     784 |             g = capi.geom_clone(geo_input.ptr)\n     785 |         else:",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/geometry.py#L782"
+    },
+    {
+      "file": "django/contrib/gis/geos/mutable_list.py",
+      "line": 242,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"_allowed\" for class \"ListMixin*\"\n\u00a0\u00a0Attribute \"_allowed\" is unknown",
+      "source_context": "     239 | \n     240 |     def _check_allowed(self, items):\n     241 |         if hasattr(self, \"_allowed\"):\n>>>  242 |             if False in [isinstance(val, self._allowed) for val in items]:\n     243 |                 raise TypeError(\"Invalid type encountered in the arguments.\")\n     244 | \n     245 |     def _set_slice(self, index, values):",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/mutable_list.py#L242"
+    },
+    {
+      "file": "django/contrib/gis/geos/point.py",
+      "line": 52,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"geometries\" is not a known attribute of module \"django.contrib.gis.gdal\"",
+      "source_context": "      49 | \n      50 |     def _ogr_ptr(self):\n      51 |         return (\n>>>   52 |             gdal.geometries.Point._create_empty() if self.empty else super()._ogr_ptr()\n      53 |         )\n      54 | \n      55 |     @classmethod",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/point.py#L52"
+    },
+    {
+      "file": "django/contrib/gis/geos/polygon.py",
+      "line": 175,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"tuple\" for class \"list[Unknown]\"\n\u00a0\u00a0Attribute \"tuple\" is unknown",
+      "source_context": "     172 |     @property\n     173 |     def tuple(self):\n     174 |         \"Get the tuple for each ring in this Polygon.\"\n>>>  175 |         return tuple(self[i].tuple for i in range(len(self)))\n     176 | \n     177 |     coords = tuple\n     178 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/polygon.py#L175"
+    },
+    {
+      "file": "django/contrib/gis/geos/polygon.py",
+      "line": 183,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"kml\" for class \"list[Unknown]\"\n\u00a0\u00a0Attribute \"kml\" is unknown",
+      "source_context": "     180 |     def kml(self):\n     181 |         \"Return the KML representation of this Polygon.\"\n     182 |         inner_kml = \"\".join(\n>>>  183 |             \"<innerBoundaryIs>%s</innerBoundaryIs>\" % self[i + 1].kml\n     184 |             for i in range(self.num_interior_rings)\n     185 |         )\n     186 |         return \"<Polygon><outerBoundaryIs>%s</outerBoundaryIs>%s</Polygon>\" % (",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/polygon.py#L183"
+    },
+    {
+      "file": "django/contrib/gis/geos/polygon.py",
+      "line": 187,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"kml\" for class \"list[Unknown]\"\n\u00a0\u00a0Attribute \"kml\" is unknown",
+      "source_context": "     184 |             for i in range(self.num_interior_rings)\n     185 |         )\n     186 |         return \"<Polygon><outerBoundaryIs>%s</outerBoundaryIs>%s</Polygon>\" % (\n>>>  187 |             self[0].kml,\n     188 |             inner_kml,\n     189 |         )",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/polygon.py#L187"
+    },
+    {
+      "file": "django/contrib/gis/geos/prototypes/io.py",
+      "line": 338,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"wkt_r\" for class \"ThreadLocalIO\"\n\u00a0\u00a0Expression of type \"_WKTReader\" cannot be assigned to attribute \"wkt_r\" of class \"ThreadLocalIO\"\n\u00a0\u00a0\u00a0\u00a0\"_WKTReader\" is not assignable to \"None\"",
+      "source_context": "     335 | # These module-level routines return the I/O object that is local to the\n     336 | # thread. If the I/O object does not exist yet it will be initialized.\n     337 | def wkt_r():\n>>>  338 |     thread_context.wkt_r = thread_context.wkt_r or _WKTReader()\n     339 |     return thread_context.wkt_r\n     340 | \n     341 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/prototypes/io.py#L338"
+    },
+    {
+      "file": "django/contrib/gis/geos/prototypes/io.py",
+      "line": 344,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"wkt_w\" for class \"ThreadLocalIO\"\n\u00a0\u00a0Expression of type \"WKTWriter\" cannot be assigned to attribute \"wkt_w\" of class \"ThreadLocalIO\"\n\u00a0\u00a0\u00a0\u00a0\"WKTWriter\" is not assignable to \"None\"",
+      "source_context": "     341 | \n     342 | def wkt_w(dim=2, trim=False, precision=None):\n     343 |     if not thread_context.wkt_w:\n>>>  344 |         thread_context.wkt_w = WKTWriter(dim=dim, trim=trim, precision=precision)\n     345 |     else:\n     346 |         thread_context.wkt_w.outdim = dim\n     347 |         thread_context.wkt_w.trim = trim",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/prototypes/io.py#L344"
+    },
+    {
+      "file": "django/contrib/gis/geos/prototypes/io.py",
+      "line": 353,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"wkb_r\" for class \"ThreadLocalIO\"\n\u00a0\u00a0Expression of type \"_WKBReader\" cannot be assigned to attribute \"wkb_r\" of class \"ThreadLocalIO\"\n\u00a0\u00a0\u00a0\u00a0\"_WKBReader\" is not assignable to \"None\"",
+      "source_context": "     350 | \n     351 | \n     352 | def wkb_r():\n>>>  353 |     thread_context.wkb_r = thread_context.wkb_r or _WKBReader()\n     354 |     return thread_context.wkb_r\n     355 | \n     356 | ",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/prototypes/io.py#L353"
+    },
+    {
+      "file": "django/contrib/gis/geos/prototypes/io.py",
+      "line": 359,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"wkb_w\" for class \"ThreadLocalIO\"\n\u00a0\u00a0Expression of type \"WKBWriter\" cannot be assigned to attribute \"wkb_w\" of class \"ThreadLocalIO\"\n\u00a0\u00a0\u00a0\u00a0\"WKBWriter\" is not assignable to \"None\"",
+      "source_context": "     356 | \n     357 | def wkb_w(dim=2):\n     358 |     if not thread_context.wkb_w:\n>>>  359 |         thread_context.wkb_w = WKBWriter(dim=dim)\n     360 |     else:\n     361 |         thread_context.wkb_w.outdim = dim\n     362 |     return thread_context.wkb_w",
+      "github_link": "https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/gis/geos/prototypes/io.py#L359"
+    }
+  ]
+}

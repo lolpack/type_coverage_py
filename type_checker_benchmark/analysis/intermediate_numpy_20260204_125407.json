@@ -1,0 +1,1615 @@
+{
+  "package_name": "numpy",
+  "github_url": "https://github.com/numpy/numpy",
+  "commit_sha": "4900421c6d54b3db3cca89a9ace6ff563659edb3",
+  "summary": {
+    "pyright_errors": 9530,
+    "pyrefly_errors": 7844,
+    "false_positives": 1481,
+    "false_negatives": 1277
+  },
+  "false_positives": [
+    {
+      "file": "benchmarks/benchmarks/bench_function_base.py",
+      "line": 302,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `benchmark_name`",
+      "source_context": "     299 |         np.sort(self.worst)\n     300 | \n     301 |     # Retain old benchmark name for backward compatibility\n>>>  302 |     time_sort_worst.benchmark_name = \"bench_function_base.Sort.time_sort_worst\"\n     303 | \n     304 | \n     305 | class Where(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_function_base.py#L302"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_indexing.py",
+      "line": 33,
+      "error_code": "not-callable",
+      "message": "Expected a callable, got `ndarray[tuple[Any, ...], dtype[Any]]`",
+      "source_context": "      30 |         self.func = ns['run']\n      31 | \n      32 |     def time_op(self, dtype, indexes, sel, op):\n>>>   33 |         self.func()\n      34 | \n      35 | \n      36 | class IndexingWith1DArr(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_indexing.py#L33"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_indexing.py",
+      "line": 48,
+      "error_code": "bad-assignment",
+      "message": "`tuple[slice[Any, Any, Any], ndarray[tuple[int], dtype[signedinteger[_NBitIntP]]]]` is not assignable to attribute `index` with type `ndarray[tuple[int], dtype[signedinteger[_NBitIntP]]]`",
+      "source_context": "      45 |         self.index = np.arange(1000)\n      46 |         # index the second dimension:\n      47 |         if len(shape) == 3:\n>>>   48 |             self.index = (slice(None), self.index)\n      49 | \n      50 |     def time_getitem_ordered(self, shape, dtype):\n      51 |         self.arr[self.index]",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_indexing.py#L48"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ma.py",
+      "line": 166,
+      "error_code": "unbound-name",
+      "message": "`mdat` may be uninitialized",
+      "source_context": "     163 |             mdat = self.nmxs\n     164 |         elif msize == 'big':\n     165 |             mdat = self.nmxl\n>>>  166 |         getattr(mdat, method)()\n     167 | \n     168 | \n     169 | class MAFunctions2v(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ma.py#L166"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ma.py",
+      "line": 217,
+      "error_code": "unbound-name",
+      "message": "`mdat` may be uninitialized",
+      "source_context": "     214 |             mdat = self.nmxs\n     215 |         elif msize == 'big':\n     216 |             mdat = self.nmxl\n>>>  217 |         mdat.__getitem__(margs)\n     218 | \n     219 | \n     220 | class MAMethodSetItem(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ma.py#L217"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ma.py",
+      "line": 239,
+      "error_code": "unbound-name",
+      "message": "`mdat` may be uninitialized",
+      "source_context": "     236 |             mdat = self.nmxs\n     237 |         elif msize == 'big':\n     238 |             mdat = self.nmxl\n>>>  239 |         mdat.__setitem__(margs, mset)\n     240 | \n     241 | \n     242 | class Where(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ma.py#L239"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_manipulate.py",
+      "line": 84,
+      "error_code": "bad-assignment",
+      "message": "`tuple[Unknown, ...]` is not assignable to attribute `reshaped` with type `deque[Unknown]`",
+      "source_context": "      81 |         self.xarg = np.ones(shape=shape)\n      82 |         self.reshaped = deque(shape)\n      83 |         self.reshaped.rotate(1)\n>>>   84 |         self.reshaped = tuple(self.reshaped)\n      85 | \n      86 |     def time_expand_dims(self, shape):\n      87 |         np.expand_dims(self.xarg, axis=1)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_manipulate.py#L84"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_random.py",
+      "line": 21,
+      "error_code": "bad-assignment",
+      "message": "`tuple[float | tuple[int, int], ...]` is not assignable to attribute `params` with type `list[str]`",
+      "source_context": "      18 |         params = [float(x) for x in items]\n      19 | \n      20 |         self.func = getattr(np.random, name)\n>>>   21 |         self.params = tuple(params) + ((100, 100),)\n      22 | \n      23 |     def time_rng(self, name):\n      24 |         self.func(*self.params)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_random.py#L21"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_random.py",
+      "line": 98,
+      "error_code": "bad-assignment",
+      "message": "`Generator` is not assignable to attribute `rg` with type `RandomState`",
+      "source_context": "      95 |         if bitgen == 'numpy':\n      96 |             self.rg = np.random.RandomState()\n      97 |         else:\n>>>   98 |             self.rg = Generator(getattr(np.random, bitgen)())\n      99 |         self.rg.random()\n     100 |         self.int32info = np.iinfo(np.int32)\n     101 |         self.uint32info = np.iinfo(np.uint32)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_random.py#L98"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_random.py",
+      "line": 101,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy._core.getlimits.iinfo.__init__` called with arguments: (type[unsignedinteger[_32Bit]])",
+      "source_context": "      98 |             self.rg = Generator(getattr(np.random, bitgen)())\n      99 |         self.rg.random()\n     100 |         self.int32info = np.iinfo(np.int32)\n>>>  101 |         self.uint32info = np.iinfo(np.uint32)\n     102 |         self.uint64info = np.iinfo(np.uint64)\n     103 | \n     104 |     def time_raw(self, bitgen):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_random.py#L101"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_random.py",
+      "line": 155,
+      "error_code": "bad-assignment",
+      "message": "`Generator` is not assignable to attribute `rg` with type `RandomState`",
+      "source_context": "     152 |         if bitgen == 'numpy':\n     153 |             self.rg = np.random.RandomState(seed)\n     154 |         else:\n>>>  155 |             self.rg = Generator(getattr(np.random, bitgen)(seed))\n     156 |         self.rg.random()\n     157 | \n     158 |     def time_bounded(self, bitgen, args):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_random.py#L155"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_reduce.py",
+      "line": 55,
+      "error_code": "bad-assignment",
+      "message": "`ndarray[tuple[Any, ...], dtype[complexfloating[Any, Any]]]` is not assignable to attribute `data` with type `ndarray[tuple[int], dtype[float64]]`",
+      "source_context": "      52 |     def setup(self, dtype):\n      53 |         self.data = np.ones(200, dtype=dtype)\n      54 |         if dtype.startswith('complex'):\n>>>   55 |             self.data = self.data * self.data.T * 1j\n      56 | \n      57 |     def time_min(self, dtype):\n      58 |         np.min(self.data)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_reduce.py#L55"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_searchsorted.py",
+      "line": 32,
+      "error_code": "bad-assignment",
+      "message": "`None` is not assignable to attribute `sorter` with type `ndarray[tuple[Any, ...], dtype[signedinteger[_NBitIntP]]]`",
+      "source_context": "      29 |             rng.shuffle(self.arr)\n      30 |             self.sorter = self.arr.argsort()\n      31 |         else:\n>>>   32 |             self.sorter = None\n      33 | \n      34 |     def time_searchsorted(self, array_size, n_queries, query_order, use_sorter, seed):\n      35 |         np.searchsorted(self.arr, self.queries, sorter=self.sorter)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_searchsorted.py#L32"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_shape_base.py",
+      "line": 136,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `benchmark_name`",
+      "source_context": "     133 |             [arr.copy() for arr in self.arr_list]\n     134 | \n     135 |     # Retain old benchmark name for backward compat\n>>>  136 |     time_3d.benchmark_name = \"bench_shape_base.Block.time_3d\"\n     137 | \n     138 | \n     139 | class Kron(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_shape_base.py#L136"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 262,
+      "error_code": "unbound-name",
+      "message": "`mdat` may be uninitialized",
+      "source_context": "     259 |             mdat = self.xs\n     260 |         elif msize == 'big':\n     261 |             mdat = self.xl\n>>>  262 |         mdat.__getitem__(margs)\n     263 | \n     264 | \n     265 | class NDArraySetItem(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L262"
+    },
+    {
+      "file": "benchmarks/benchmarks/common.py",
+      "line": 204,
+      "error_code": "unbound-name",
+      "message": "`lsize` may be uninitialized",
+      "source_context": "     201 | \n     202 |     if rands:\n     203 |         if zeros:\n>>>  204 |             rands += [np.zeros(lsize, dtype)]\n     205 |         stride = len(rands)\n     206 |         for start, r in enumerate(rands):\n     207 |             array[start:len(r) * stride:stride] = r",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/common.py#L204"
+    },
+    {
+      "file": "doc/postprocess.py",
+      "line": 25,
+      "error_code": "unbound-name",
+      "message": "`lines` may be uninitialized",
+      "source_context": "      22 |                 lines = process_tex(f.readlines())\n      23 | \n      24 |         with open(fn, 'w', encoding=\"utf-8\") as f:\n>>>   25 |             f.write(\"\".join(lines))\n      26 | \n      27 | def process_html(fn, lines):\n      28 |     return lines",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/doc/postprocess.py#L25"
+    },
+    {
+      "file": "doc/source/conf.py",
+      "line": 563,
+      "error_code": "missing-attribute",
+      "message": "Object of class `type` has no attribute `_module_source`",
+      "source_context": "     560 | \n     561 |         # This can be removed when removing the decorator set_module. Fix issue #28629\n     562 |         if hasattr(obj, '_module_source'):\n>>>  563 |             obj.__module__, obj._module_source = obj._module_source, obj.__module__\n     564 | \n     565 |     if fn is None:\n     566 |         try:",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/doc/source/conf.py#L563"
+    },
+    {
+      "file": "doc/source/conf.py",
+      "line": 586,
+      "error_code": "unbound-name",
+      "message": "`source` may be uninitialized",
+      "source_context": "     583 |         fn = relpath(fn, start=dirname(numpy.__file__))\n     584 | \n     585 |     if lineno:\n>>>  586 |         linespec = \"#L%d-L%d\" % (lineno, lineno + len(source) - 1)\n     587 |     else:\n     588 |         linespec = \"\"\n     589 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/doc/source/conf.py#L586"
+    },
+    {
+      "file": "doc/source/conf.py",
+      "line": 591,
+      "error_code": "missing-attribute",
+      "message": "Object of class `type` has no attribute `_module_source`",
+      "source_context": "     588 |         linespec = \"\"\n     589 | \n     590 |     if isinstance(obj, type) and hasattr(obj, '_module_source'):\n>>>  591 |         obj.__module__, obj._module_source = obj._module_source, obj.__module__\n     592 | \n     593 |     if 'dev' in numpy.__version__:\n     594 |         return f\"https://github.com/numpy/numpy/blob/main/numpy/{fn}{linespec}\"",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/doc/source/conf.py#L591"
+    },
+    {
+      "file": "doc/source/reference/random/performance.py",
+      "line": 58,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy._typing._ufunc._UFunc_Nin1_Nout1.__call__` called with arguments: (DataFrame)",
+      "source_context": "      55 | \n      56 | columns = ['MT19937', 'PCG64', 'PCG64DXSM', 'Philox', 'SFC64', 'RandomState']\n      57 | table = pd.DataFrame(table)\n>>>   58 | order = np.log(table).mean().sort_values().index\n      59 | table = table.T\n      60 | table = table.reindex(columns)\n      61 | table = table.T",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/doc/source/reference/random/performance.py#L58"
+    },
+    {
+      "file": "doc/source/reference/random/performance.py",
+      "line": 66,
+      "error_code": "unsupported-operation",
+      "message": "`@` is not supported between `ndarray[tuple[int, int], dtype[Any]]` and `ndarray[tuple[int, int], dtype[float64]]`",
+      "source_context": "      63 | print(table.to_csv(float_format='%0.1f'))\n      64 | \n      65 | \n>>>   66 | rel = table.loc[:, ['RandomState']].to_numpy() @ np.ones(\n      67 |     (1, table.shape[1])) / table\n      68 | rel.pop('RandomState')\n      69 | rel = rel.T",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/doc/source/reference/random/performance.py#L66"
+    },
+    {
+      "file": "numpy/__init__.py",
+      "line": 102,
+      "error_code": "unbound-name",
+      "message": "`__NUMPY_SETUP__` may be uninitialized",
+      "source_context": "      99 | except NameError:\n     100 |     __NUMPY_SETUP__ = False\n     101 | \n>>>  102 | if __NUMPY_SETUP__:\n     103 |     sys.stderr.write('Running from numpy source directory.\\n')\n     104 | else:\n     105 |     # Allow distributors to run custom init code before importing numpy._core",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.py#L102"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4400,
+      "error_code": "bad-override",
+      "message": "Class member `integer.__truediv__` overrides parent class `number` in an inconsistent manner",
+      "source_context": "    4397 | \n    4398 |     @override  # type: ignore[override]\n    4399 |     @overload\n>>> 4400 |     def __truediv__(self, other: float | integer, /) -> float64: ...\n    4401 |     @overload\n    4402 |     def __truediv__(self, other: complex, /) -> complex128: ...\n    4403 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4400"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4406,
+      "error_code": "bad-override",
+      "message": "Class member `integer.__rtruediv__` overrides parent class `number` in an inconsistent manner",
+      "source_context": "    4403 | \n    4404 |     @override  # type: ignore[override]\n    4405 |     @overload\n>>> 4406 |     def __rtruediv__(self, other: float | integer, /) -> float64: ...\n    4407 |     @overload\n    4408 |     def __rtruediv__(self, other: complex, /) -> complex128: ...\n    4409 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4406"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4436,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__add__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4433 | \n    4434 |     @override  # type: ignore[override]\n    4435 |     @overload\n>>> 4436 |     def __add__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4437 |     @overload\n    4438 |     def __add__(self, other: float, /) -> float64: ...\n    4439 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4436"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4448,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__radd__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4445 | \n    4446 |     @override  # type: ignore[override]\n    4447 |     @overload\n>>> 4448 |     def __radd__(self, other: int | int8 | bool_, /) -> Self: ...\n    4449 |     @overload\n    4450 |     def __radd__(self, other: float, /) -> float64: ...\n    4451 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4448"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4460,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__sub__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4457 | \n    4458 |     @override  # type: ignore[override]\n    4459 |     @overload\n>>> 4460 |     def __sub__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4461 |     @overload\n    4462 |     def __sub__(self, other: float, /) -> float64: ...\n    4463 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4460"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4472,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rsub__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4469 | \n    4470 |     @override  # type: ignore[override]\n    4471 |     @overload\n>>> 4472 |     def __rsub__(self, other: int | int8 | bool_, /) -> Self: ...\n    4473 |     @overload\n    4474 |     def __rsub__(self, other: float, /) -> float64: ...\n    4475 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4472"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4484,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__mul__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4481 | \n    4482 |     @override  # type: ignore[override]\n    4483 |     @overload\n>>> 4484 |     def __mul__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4485 |     @overload\n    4486 |     def __mul__(self, other: float, /) -> float64: ...\n    4487 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4484"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4496,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rmul__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4493 | \n    4494 |     @override  # type: ignore[override]\n    4495 |     @overload\n>>> 4496 |     def __rmul__(self, other: int | int8 | bool_, /) -> Self: ...\n    4497 |     @overload\n    4498 |     def __rmul__(self, other: float, /) -> float64: ...\n    4499 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4496"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4508,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__pow__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4505 | \n    4506 |     @override  # type: ignore[override]\n    4507 |     @overload\n>>> 4508 |     def __pow__(self, other: int | int8 | bool_ | Self, mod: None = None, /) -> Self: ...\n    4509 |     @overload\n    4510 |     def __pow__(self, other: float, mod: None = None, /) -> float64: ...\n    4511 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4508"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4520,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rpow__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4517 | \n    4518 |     @override  # type: ignore[override]\n    4519 |     @overload\n>>> 4520 |     def __rpow__(self, other: int | int8 | bool_, mod: None = None, /) -> Self: ...\n    4521 |     @overload\n    4522 |     def __rpow__(self, other: float, mod: None = None, /) -> float64: ...\n    4523 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4520"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4534,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__floordiv__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4531 | \n    4532 |     @override  # type: ignore[override]\n    4533 |     @overload\n>>> 4534 |     def __floordiv__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4535 |     @overload\n    4536 |     def __floordiv__(self, other: float, /) -> float64: ...\n    4537 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4534"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4544,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rfloordiv__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4541 | \n    4542 |     @override  # type: ignore[override]\n    4543 |     @overload\n>>> 4544 |     def __rfloordiv__(self, other: int | int8 | bool_, /) -> Self: ...\n    4545 |     @overload\n    4546 |     def __rfloordiv__(self, other: float, /) -> float64: ...\n    4547 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4544"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4554,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__mod__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4551 | \n    4552 |     @override  # type: ignore[override]\n    4553 |     @overload\n>>> 4554 |     def __mod__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4555 |     @overload\n    4556 |     def __mod__(self, other: float, /) -> float64: ...\n    4557 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4554"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4564,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rmod__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4561 | \n    4562 |     @override  # type: ignore[override]\n    4563 |     @overload\n>>> 4564 |     def __rmod__(self, other: int | int8 | bool_, /) -> Self: ...\n    4565 |     @overload\n    4566 |     def __rmod__(self, other: float, /) -> float64: ...\n    4567 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4564"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4574,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__divmod__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4571 | \n    4572 |     @override  # type: ignore[override]\n    4573 |     @overload\n>>> 4574 |     def __divmod__(self, other: int | int8 | bool_ | Self, /) -> _2Tuple[Self]: ...\n    4575 |     @overload\n    4576 |     def __divmod__(self, other: float, /) -> _2Tuple[float64]: ...\n    4577 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4574"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4584,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rdivmod__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4581 | \n    4582 |     @override  # type: ignore[override]\n    4583 |     @overload\n>>> 4584 |     def __rdivmod__(self, other: int | int8 | bool_, /) -> _2Tuple[Self]: ...\n    4585 |     @overload\n    4586 |     def __rdivmod__(self, other: float, /) -> _2Tuple[float64]: ...\n    4587 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4584"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4596,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__lshift__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4593 | \n    4594 |     @override  # type: ignore[override]\n    4595 |     @overload\n>>> 4596 |     def __lshift__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4597 |     @overload\n    4598 |     def __lshift__(self, other: integer, /) -> signedinteger: ...\n    4599 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4596"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4602,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rlshift__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4599 | \n    4600 |     @override  # type: ignore[override]\n    4601 |     @overload\n>>> 4602 |     def __rlshift__(self, other: int | int8 | bool_, /) -> Self: ...\n    4603 |     @overload\n    4604 |     def __rlshift__(self, other: integer, /) -> signedinteger: ...\n    4605 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4602"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4608,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rshift__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4605 | \n    4606 |     @override  # type: ignore[override]\n    4607 |     @overload\n>>> 4608 |     def __rshift__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4609 |     @overload\n    4610 |     def __rshift__(self, other: integer, /) -> signedinteger: ...\n    4611 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4608"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4614,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rrshift__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4611 | \n    4612 |     @override  # type: ignore[override]\n    4613 |     @overload\n>>> 4614 |     def __rrshift__(self, other: int | int8 | bool_, /) -> Self: ...\n    4615 |     @overload\n    4616 |     def __rrshift__(self, other: integer, /) -> signedinteger: ...\n    4617 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4614"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4620,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__and__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4617 | \n    4618 |     @override  # type: ignore[override]\n    4619 |     @overload\n>>> 4620 |     def __and__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4621 |     @overload\n    4622 |     def __and__(self, other: integer, /) -> signedinteger: ...\n    4623 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4620"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4626,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rand__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4623 | \n    4624 |     @override  # type: ignore[override]\n    4625 |     @overload\n>>> 4626 |     def __rand__(self, other: int | int8 | bool_, /) -> Self: ...\n    4627 |     @overload\n    4628 |     def __rand__(self, other: integer, /) -> signedinteger: ...\n    4629 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4626"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4632,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__xor__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4629 | \n    4630 |     @override  # type: ignore[override]\n    4631 |     @overload\n>>> 4632 |     def __xor__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4633 |     @overload\n    4634 |     def __xor__(self, other: integer, /) -> signedinteger: ...\n    4635 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4632"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4638,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__rxor__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4635 | \n    4636 |     @override  # type: ignore[override]\n    4637 |     @overload\n>>> 4638 |     def __rxor__(self, other: int | int8 | bool_, /) -> Self: ...\n    4639 |     @overload\n    4640 |     def __rxor__(self, other: integer, /) -> signedinteger: ...\n    4641 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4638"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4644,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__or__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4641 | \n    4642 |     @override  # type: ignore[override]\n    4643 |     @overload\n>>> 4644 |     def __or__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4645 |     @overload\n    4646 |     def __or__(self, other: integer, /) -> signedinteger: ...\n    4647 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4644"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4650,
+      "error_code": "bad-override",
+      "message": "Class member `signedinteger.__ror__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4647 | \n    4648 |     @override  # type: ignore[override]\n    4649 |     @overload\n>>> 4650 |     def __ror__(self, other: int | int8 | bool_, /) -> Self: ...\n    4651 |     @overload\n    4652 |     def __ror__(self, other: integer, /) -> signedinteger: ...\n    4653 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4650"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4674,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__add__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4671 | \n    4672 |     @override  # type: ignore[override]\n    4673 |     @overload\n>>> 4674 |     def __add__(self, other: int | uint8 | bool_ | Self, /) -> Self: ...\n    4675 |     @overload\n    4676 |     def __add__(self, other: float, /) -> float64: ...\n    4677 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4674"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4686,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__radd__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4683 | \n    4684 |     @override  # type: ignore[override]\n    4685 |     @overload\n>>> 4686 |     def __radd__(self, other: int | uint8 | bool_, /) -> Self: ...\n    4687 |     @overload\n    4688 |     def __radd__(self, other: float, /) -> float64: ...\n    4689 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4686"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4698,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__sub__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4695 | \n    4696 |     @override  # type: ignore[override]\n    4697 |     @overload\n>>> 4698 |     def __sub__(self, other: int | uint8 | bool_ | Self, /) -> Self: ...\n    4699 |     @overload\n    4700 |     def __sub__(self, other: float, /) -> float64: ...\n    4701 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4698"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4710,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rsub__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4707 | \n    4708 |     @override  # type: ignore[override]\n    4709 |     @overload\n>>> 4710 |     def __rsub__(self, other: int | uint8 | bool_, /) -> Self: ...\n    4711 |     @overload\n    4712 |     def __rsub__(self, other: float, /) -> float64: ...\n    4713 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4710"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4722,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__mul__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4719 | \n    4720 |     @override  # type: ignore[override]\n    4721 |     @overload\n>>> 4722 |     def __mul__(self, other: int | uint8 | bool_ | Self, /) -> Self: ...\n    4723 |     @overload\n    4724 |     def __mul__(self, other: float, /) -> float64: ...\n    4725 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4722"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4734,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rmul__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4731 | \n    4732 |     @override  # type: ignore[override]\n    4733 |     @overload\n>>> 4734 |     def __rmul__(self, other: int | uint8 | bool_, /) -> Self: ...\n    4735 |     @overload\n    4736 |     def __rmul__(self, other: float, /) -> float64: ...\n    4737 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4734"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4746,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__pow__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4743 | \n    4744 |     @override  # type: ignore[override]\n    4745 |     @overload\n>>> 4746 |     def __pow__(self, other: int | uint8 | bool_ | Self, mod: None = None, /) -> Self: ...\n    4747 |     @overload\n    4748 |     def __pow__(self, other: float, mod: None = None, /) -> float64: ...\n    4749 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4746"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4758,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rpow__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4755 | \n    4756 |     @override  # type: ignore[override]\n    4757 |     @overload\n>>> 4758 |     def __rpow__(self, other: int | uint8 | bool_, mod: None = None, /) -> Self: ...\n    4759 |     @overload\n    4760 |     def __rpow__(self, other: float, mod: None = None, /) -> float64: ...\n    4761 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4758"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4772,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__floordiv__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4769 | \n    4770 |     @override  # type: ignore[override]\n    4771 |     @overload\n>>> 4772 |     def __floordiv__(self, other: int | uint8 | bool_ | Self, /) -> Self: ...\n    4773 |     @overload\n    4774 |     def __floordiv__(self, other: float, /) -> float64: ...\n    4775 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4772"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4782,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rfloordiv__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4779 | \n    4780 |     @override  # type: ignore[override]\n    4781 |     @overload\n>>> 4782 |     def __rfloordiv__(self, other: int | uint8 | bool_, /) -> Self: ...\n    4783 |     @overload\n    4784 |     def __rfloordiv__(self, other: float, /) -> float64: ...\n    4785 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4782"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4792,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__mod__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4789 | \n    4790 |     @override  # type: ignore[override]\n    4791 |     @overload\n>>> 4792 |     def __mod__(self, other: int | uint8 | bool_ | Self, /) -> Self: ...\n    4793 |     @overload\n    4794 |     def __mod__(self, other: float, /) -> float64: ...\n    4795 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4792"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4802,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rmod__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4799 | \n    4800 |     @override  # type: ignore[override]\n    4801 |     @overload\n>>> 4802 |     def __rmod__(self, other: int | uint8 | bool_, /) -> Self: ...\n    4803 |     @overload\n    4804 |     def __rmod__(self, other: float, /) -> float64: ...\n    4805 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4802"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4812,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__divmod__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4809 | \n    4810 |     @override  # type: ignore[override]\n    4811 |     @overload\n>>> 4812 |     def __divmod__(self, other: int | uint8 | bool_ | Self, /) -> _2Tuple[Self]: ...\n    4813 |     @overload\n    4814 |     def __divmod__(self, other: float, /) -> _2Tuple[float64]: ...\n    4815 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4812"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4822,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rdivmod__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4819 | \n    4820 |     @override  # type: ignore[override]\n    4821 |     @overload\n>>> 4822 |     def __rdivmod__(self, other: int | uint8 | bool_, /) -> _2Tuple[Self]: ...\n    4823 |     @overload\n    4824 |     def __rdivmod__(self, other: float, /) -> _2Tuple[float64]: ...\n    4825 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4822"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4834,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__lshift__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4831 | \n    4832 |     @override  # type: ignore[override]\n    4833 |     @overload\n>>> 4834 |     def __lshift__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4835 |     @overload\n    4836 |     def __lshift__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4837 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4834"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4842,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rlshift__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4839 | \n    4840 |     @override  # type: ignore[override]\n    4841 |     @overload\n>>> 4842 |     def __rlshift__(self, other: int | int8 | bool_, /) -> Self: ...\n    4843 |     @overload\n    4844 |     def __rlshift__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4845 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4842"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4850,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rshift__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4847 | \n    4848 |     @override  # type: ignore[override]\n    4849 |     @overload\n>>> 4850 |     def __rshift__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4851 |     @overload\n    4852 |     def __rshift__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4853 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4850"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4858,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rrshift__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4855 | \n    4856 |     @override  # type: ignore[override]\n    4857 |     @overload\n>>> 4858 |     def __rrshift__(self, other: int | int8 | bool_, /) -> Self: ...\n    4859 |     @overload\n    4860 |     def __rrshift__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4861 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4858"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4866,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__and__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4863 | \n    4864 |     @override  # type: ignore[override]\n    4865 |     @overload\n>>> 4866 |     def __and__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4867 |     @overload\n    4868 |     def __and__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4869 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4866"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4874,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rand__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4871 | \n    4872 |     @override  # type: ignore[override]\n    4873 |     @overload\n>>> 4874 |     def __rand__(self, other: int | int8 | bool_, /) -> Self: ...\n    4875 |     @overload\n    4876 |     def __rand__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4877 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4874"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4882,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__xor__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4879 | \n    4880 |     @override  # type: ignore[override]\n    4881 |     @overload\n>>> 4882 |     def __xor__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4883 |     @overload\n    4884 |     def __xor__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4885 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4882"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4890,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__rxor__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4887 | \n    4888 |     @override  # type: ignore[override]\n    4889 |     @overload\n>>> 4890 |     def __rxor__(self, other: int | int8 | bool_, /) -> Self: ...\n    4891 |     @overload\n    4892 |     def __rxor__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4893 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4890"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4898,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__or__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4895 | \n    4896 |     @override  # type: ignore[override]\n    4897 |     @overload\n>>> 4898 |     def __or__(self, other: int | int8 | bool_ | Self, /) -> Self: ...\n    4899 |     @overload\n    4900 |     def __or__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4901 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4898"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4906,
+      "error_code": "bad-override",
+      "message": "Class member `unsignedinteger.__ror__` overrides parent class `integer` in an inconsistent manner",
+      "source_context": "    4903 | \n    4904 |     @override  # type: ignore[override]\n    4905 |     @overload\n>>> 4906 |     def __ror__(self, other: int | int8 | bool_, /) -> Self: ...\n    4907 |     @overload\n    4908 |     def __ror__(self, other: unsignedinteger, /) -> unsignedinteger: ...\n    4909 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4906"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4936,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__add__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    4933 | \n    4934 |     @override  # type: ignore[override]\n    4935 |     @overload\n>>> 4936 |     def __add__(self, other: int | float16 | uint8 | int8 | bool_ | Self, /) -> Self: ...\n    4937 |     @overload\n    4938 |     def __add__(self, other: integer | floating, /) -> floating: ...\n    4939 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4936"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4946,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__radd__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    4943 | \n    4944 |     @override  # type: ignore[override]\n    4945 |     @overload\n>>> 4946 |     def __radd__(self, other: int | float16 | uint8 | int8 | bool_, /) -> Self: ...\n    4947 |     @overload\n    4948 |     def __radd__(self, other: integer | floating, /) -> floating: ...\n    4949 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4946"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4956,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__sub__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    4953 | \n    4954 |     @override  # type: ignore[override]\n    4955 |     @overload\n>>> 4956 |     def __sub__(self, other: int | float16 | uint8 | int8 | bool_ | Self, /) -> Self: ...\n    4957 |     @overload\n    4958 |     def __sub__(self, other: integer | floating, /) -> floating: ...\n    4959 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4956"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4966,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__rsub__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    4963 | \n    4964 |     @override  # type: ignore[override]\n    4965 |     @overload\n>>> 4966 |     def __rsub__(self, other: int | float16 | uint8 | int8 | bool_, /) -> Self: ...\n    4967 |     @overload\n    4968 |     def __rsub__(self, other: integer | floating, /) -> floating: ...\n    4969 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4966"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4976,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__mul__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    4973 | \n    4974 |     @override  # type: ignore[override]\n    4975 |     @overload\n>>> 4976 |     def __mul__(self, other: int | float16 | uint8 | int8 | bool_ | Self, /) -> Self: ...\n    4977 |     @overload\n    4978 |     def __mul__(self, other: integer | floating, /) -> floating: ...\n    4979 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4976"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4986,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__rmul__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    4983 | \n    4984 |     @override  # type: ignore[override]\n    4985 |     @overload\n>>> 4986 |     def __rmul__(self, other: int | float16 | uint8 | int8 | bool_, /) -> Self: ...\n    4987 |     @overload\n    4988 |     def __rmul__(self, other: integer | floating, /) -> floating: ...\n    4989 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4986"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 4996,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__pow__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    4993 | \n    4994 |     @override  # type: ignore[override]\n    4995 |     @overload\n>>> 4996 |     def __pow__(self, other: int | float16 | uint8 | int8 | bool_ | Self, mod: None = None, /) -> Self: ...\n    4997 |     @overload\n    4998 |     def __pow__(self, other: integer | floating, mod: None = None, /) -> floating: ...\n    4999 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L4996"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5006,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__rpow__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5003 | \n    5004 |     @override  # type: ignore[override]\n    5005 |     @overload\n>>> 5006 |     def __rpow__(self, other: int | float16 | uint8 | int8 | bool_, mod: None = None, /) -> Self: ...\n    5007 |     @overload\n    5008 |     def __rpow__(self, other: integer | floating, mod: None = None, /) -> floating: ...\n    5009 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5006"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5016,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__truediv__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5013 | \n    5014 |     @override  # type: ignore[override]\n    5015 |     @overload\n>>> 5016 |     def __truediv__(self, other: int | float16 | uint8 | int8 | bool_ | Self, /) -> Self: ...\n    5017 |     @overload\n    5018 |     def __truediv__(self, other: integer | floating, /) -> floating: ...\n    5019 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5016"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5026,
+      "error_code": "bad-override",
+      "message": "Class member `floating.__rtruediv__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5023 | \n    5024 |     @override  # type: ignore[override]\n    5025 |     @overload\n>>> 5026 |     def __rtruediv__(self, other: int | float16 | uint8 | int8 | bool_, /) -> Self: ...\n    5027 |     @overload\n    5028 |     def __rtruediv__(self, other: integer | floating, /) -> floating: ...\n    5029 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5026"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5109,
+      "error_code": "bad-override",
+      "message": "Class member `float64.__add__` overrides parent class `floating` in an inconsistent manner",
+      "source_context": "    5106 |     # these errors appear to be false positives.\n    5107 | \n    5108 |     @overload  # type: ignore[override]\n>>> 5109 |     def __add__(self, other: _Float64_co, /) -> float64: ...\n    5110 |     @overload\n    5111 |     def __add__(self, other: complexfloating[_64Bit, _64Bit], /) -> complex128: ...\n    5112 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5109"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5127,
+      "error_code": "bad-override",
+      "message": "Class member `float64.__sub__` overrides parent class `floating` in an inconsistent manner",
+      "source_context": "    5124 |     def __radd__(self, other: complex, /) -> float64 | complex128: ...\n    5125 | \n    5126 |     @overload  # type: ignore[override]\n>>> 5127 |     def __sub__(self, other: _Float64_co, /) -> float64: ...\n    5128 |     @overload\n    5129 |     def __sub__(self, other: complexfloating[_64Bit, _64Bit], /) -> complex128: ...\n    5130 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5127"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5145,
+      "error_code": "bad-override",
+      "message": "Class member `float64.__mul__` overrides parent class `floating` in an inconsistent manner",
+      "source_context": "    5142 |     def __rsub__(self, other: complex, /) -> float64 | complex128: ...\n    5143 | \n    5144 |     @overload  # type: ignore[override]\n>>> 5145 |     def __mul__(self, other: _Float64_co, /) -> float64: ...\n    5146 |     @overload\n    5147 |     def __mul__(self, other: complexfloating[_64Bit, _64Bit], /) -> complex128: ...\n    5148 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5145"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5163,
+      "error_code": "bad-override",
+      "message": "Class member `float64.__truediv__` overrides parent class `floating` in an inconsistent manner",
+      "source_context": "    5160 |     def __rmul__(self, other: complex, /) -> float64 | complex128: ...\n    5161 | \n    5162 |     @overload  # type: ignore[override]\n>>> 5163 |     def __truediv__(self, other: _Float64_co, /) -> float64: ...\n    5164 |     @overload\n    5165 |     def __truediv__(self, other: complexfloating[_64Bit, _64Bit], /) -> complex128: ...\n    5166 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5163"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5199,
+      "error_code": "bad-override",
+      "message": "Class member `float64.__pow__` overrides parent class `floating` in an inconsistent manner",
+      "source_context": "    5196 |     def __rfloordiv__(self, other: complex, /) -> float64 | complex128: ...\n    5197 | \n    5198 |     @overload  # type: ignore[override]\n>>> 5199 |     def __pow__(self, other: _Float64_co, mod: None = None, /) -> float64: ...\n    5200 |     @overload\n    5201 |     def __pow__(self, other: complexfloating[_64Bit, _64Bit], mod: None = None, /) -> complex128: ...\n    5202 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5199"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5254,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__add__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5251 |     def __abs__(self, /) -> floating[_NBitT1 | _NBitT2]: ...  # type: ignore[override]\n    5252 | \n    5253 |     @overload  # type: ignore[override]\n>>> 5254 |     def __add__(self, other: _Complex64_co, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5255 |     @overload\n    5256 |     def __add__(self, other: complex | float64 | complex128, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5257 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5254"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5261,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__radd__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5258 |     def __add__[NBitT: NBitBase](self, other: number[NBitT], /) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5259 | \n    5260 |     @overload  # type: ignore[override]\n>>> 5261 |     def __radd__(self, other: _Complex64_co, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5262 |     @overload\n    5263 |     def __radd__(self, other: complex, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5264 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5261"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5270,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__sub__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5267 |     ) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5268 | \n    5269 |     @overload  # type: ignore[override]\n>>> 5270 |     def __sub__(self, other: _Complex64_co, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5271 |     @overload\n    5272 |     def __sub__(self, other: complex | float64 | complex128, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5273 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5270"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5277,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__rsub__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5274 |     def __sub__[NBitT: NBitBase](self, other: number[NBitT], /) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5275 | \n    5276 |     @overload  # type: ignore[override]\n>>> 5277 |     def __rsub__(self, other: _Complex64_co, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5278 |     @overload\n    5279 |     def __rsub__(self, other: complex, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5280 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5277"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5286,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__mul__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5283 |     ) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5284 | \n    5285 |     @overload  # type: ignore[override]\n>>> 5286 |     def __mul__(self, other: _Complex64_co, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5287 |     @overload\n    5288 |     def __mul__(self, other: complex | float64 | complex128, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5289 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5286"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5293,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__rmul__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5290 |     def __mul__[NBitT: NBitBase](self, other: number[NBitT], /) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5291 | \n    5292 |     @overload  # type: ignore[override]\n>>> 5293 |     def __rmul__(self, other: _Complex64_co, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5294 |     @overload\n    5295 |     def __rmul__(self, other: complex, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5296 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5293"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5302,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__truediv__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5299 |     ) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5300 | \n    5301 |     @overload  # type: ignore[override]\n>>> 5302 |     def __truediv__(self, other: _Complex64_co, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5303 |     @overload\n    5304 |     def __truediv__(self, other: complex | float64 | complex128, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5305 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5302"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5311,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__rtruediv__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5308 |     ) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5309 | \n    5310 |     @overload  # type: ignore[override]\n>>> 5311 |     def __rtruediv__(self, other: _Complex64_co, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5312 |     @overload\n    5313 |     def __rtruediv__(self, other: complex, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5314 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5311"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5320,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__pow__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5317 |     ) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5318 | \n    5319 |     @overload  # type: ignore[override]\n>>> 5320 |     def __pow__(self, other: _Complex64_co, mod: None = None, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5321 |     @overload\n    5322 |     def __pow__(\n    5323 |         self, other: complex | float64 | complex128, mod: None = None, /",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5320"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5331,
+      "error_code": "bad-override",
+      "message": "Class member `complexfloating.__rpow__` overrides parent class `inexact` in an inconsistent manner",
+      "source_context": "    5328 |     ) -> complexfloating[_NBitT1, _NBitT2] | complexfloating[NBitT]: ...\n    5329 | \n    5330 |     @overload  # type: ignore[override]\n>>> 5331 |     def __rpow__(self, other: _Complex64_co, mod: None = None, /) -> complexfloating[_NBitT1, _NBitT2]: ...\n    5332 |     @overload\n    5333 |     def __rpow__(self, other: complex, mod: None = None, /) -> complexfloating[_NBitT1, _NBitT2] | complex128: ...\n    5334 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5331"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5358,
+      "error_code": "bad-override",
+      "message": "Class member `complex128.__add__` overrides parent class `complexfloating` in an inconsistent manner",
+      "source_context": "    5355 | \n    5356 |     # complex128-specific operator overrides\n    5357 |     @overload  # type: ignore[override]\n>>> 5358 |     def __add__(self, other: _Complex128_co, /) -> complex128: ...\n    5359 |     @overload\n    5360 |     def __add__[NBitT: NBitBase](self, other: complexfloating[NBitT], /) -> complexfloating[NBitT | _64Bit]: ...\n    5361 |     def __radd__(self, other: _Complex128_co, /) -> complex128: ...  # type: ignore[override]",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5358"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 5364,
+      "error_code": "bad-override",
+      "message": "Class member `complex128.__sub__` overrides parent class `complexfloating` in an inconsistent manner",
+      "source_context": "    5361 |     def __radd__(self, other: _Complex128_co, /) -> complex128: ...  # type: ignore[override]\n    5362 | \n    5363 |     @overload  # type: ignore[override]\n>>> 5364 |     def __sub__(self, other: _Complex128_co, /) -> complex128: ...\n    5365 |     @overload\n    5366 |     def __sub__[NBitT: NBitBase](self, other: complexfloating[NBitT], /) -> complexfloating[NBitT | _64Bit]: ...\n    5367 |     def __rsub__(self, other: _Complex128_co, /) -> complex128: ...  # type: ignore[override]",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L5364"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": ".spin/cmds.py",
+      "line": 8,
+      "error_code": "reportMissingImports",
+      "message": "Import \"click\" could not be resolved",
+      "source_context": "       5 | import subprocess\n       6 | import sys\n       7 | \n>>>    8 | import click\n       9 | import spin\n      10 | from spin.cmds import meson\n      11 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/.spin/cmds.py#L8"
+    },
+    {
+      "file": ".spin/cmds.py",
+      "line": 24,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"util\" is not a known attribute of module \"importlib\"",
+      "source_context": "      21 | \n      22 | def _get_numpy_tools(filename):\n      23 |     filepath = pathlib.Path('tools', filename)\n>>>   24 |     spec = importlib.util.spec_from_file_location(filename.stem, filepath)\n      25 |     module = importlib.util.module_from_spec(spec)\n      26 |     spec.loader.exec_module(module)\n      27 |     return module",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/.spin/cmds.py#L24"
+    },
+    {
+      "file": ".spin/cmds.py",
+      "line": 49,
+      "error_code": "reportMissingImports",
+      "message": "Import \"git.exc\" could not be resolved",
+      "source_context": "      46 |     $ spin authors -t $GH_TOKEN --revision-range v1.25.0..v1.26.0\n      47 |     \"\"\"\n      48 |     try:\n>>>   49 |         from git.exc import GitError\n      50 |         from github.GithubException import GithubException\n      51 |         changelog = _get_numpy_tools(pathlib.Path('changelog.py'))\n      52 |     except ModuleNotFoundError as e:",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/.spin/cmds.py#L49"
+    },
+    {
+      "file": ".spin/cmds.py",
+      "line": 207,
+      "error_code": "reportMissingImports",
+      "message": "Import \"scipy_doctest\" could not be resolved",
+      "source_context": "     204 |     \"\"\"  # noqa: E501\n     205 |     try:\n     206 |         # prevent obscure error later\n>>>  207 |         import scipy_doctest  # noqa: F401\n     208 |     except ModuleNotFoundError as e:\n     209 |         raise ModuleNotFoundError(\"scipy-doctest not installed\") from e\n     210 |     if scipy_doctest.__version__ < '1.8.0':",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/.spin/cmds.py#L207"
+    },
+    {
+      "file": ".spin/cmds.py",
+      "line": 281,
+      "error_code": "reportMissingModuleSource",
+      "message": "Import \"psutil\" could not be resolved from source",
+      "source_context": "     278 |     \"\"\"\n     279 |     import resource\n     280 | \n>>>  281 |     import psutil\n     282 | \n     283 |     mem = psutil.virtual_memory()\n     284 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/.spin/cmds.py#L281"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_core.py",
+      "line": 124,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     121 |         self.blarge = np.ones(1000000)\n     122 | \n     123 |     def time_mid(self):\n>>>  124 |         (self.amid * 2) + self.bmid\n     125 | \n     126 |     def time_mid2(self):\n     127 |         (self.amid + self.bmid) - 2",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_core.py#L124"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_core.py",
+      "line": 127,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     124 |         (self.amid * 2) + self.bmid\n     125 | \n     126 |     def time_mid2(self):\n>>>  127 |         (self.amid + self.bmid) - 2\n     128 | \n     129 |     def time_large(self):\n     130 |         (self.alarge * 2) + self.blarge",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_core.py#L127"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_core.py",
+      "line": 130,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     127 |         (self.amid + self.bmid) - 2\n     128 | \n     129 |     def time_large(self):\n>>>  130 |         (self.alarge * 2) + self.blarge\n     131 | \n     132 |     def time_large2(self):\n     133 |         (self.alarge + self.blarge) - 2",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_core.py#L130"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_core.py",
+      "line": 133,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     130 |         (self.alarge * 2) + self.blarge\n     131 | \n     132 |     def time_large2(self):\n>>>  133 |         (self.alarge + self.blarge) - 2\n     134 | \n     135 | \n     136 | class CorrConv(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_core.py#L133"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_overrides.py",
+      "line": 4,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"(dispatcher: _Dispatcher[Tss@array_function_dispatch] | None = None, module: str | None = None, verify: bool = True, docs_from_dispatcher: bool = False) -> ((FuncLikeT@array_function_dispatch) -> FuncLikeT@array_function_dispatch)\" is not assignable to declared type \"(...) -> ((...) -> None)\"\n\u00a0\u00a0Type \"(dispatcher: _Dispatcher[Tss@array_function_dispatch] | None = None, module: str | None = None, verify: bool = True, docs_from_dispatcher: bool = False) -> ((FuncLikeT@array_function_dispatch) -> FuncLikeT@array_function_dispatch)\" is not assignable to type \"(...) -> ((...) -> None)\"\n\u00a0\u00a0\u00a0\u00a0Function return type \"(FuncLikeT@array_function_dispatch) -> FuncLikeT@array_function_dispatch\" is incompatible with type \"(...) -> None\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"(FuncLikeT@array_function_dispatch) -> FuncLikeT@array_function_dispatch\" is not assignable to type \"(...) -> None\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Function return type \"FuncLikeT@array_function_dispatch\" is incompatible with type \"None\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"type* | ((...) -> object)\" is not assignable to type \"None\"",
+      "source_context": "       1 | from .common import Benchmark\n       2 | \n       3 | try:\n>>>    4 |     from numpy._core.overrides import array_function_dispatch\n       5 | except ImportError:\n       6 |     # Don't fail at import time with old Numpy versions\n       7 |     def array_function_dispatch(*args, **kwargs):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_overrides.py#L4"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_records.py",
+      "line": 22,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"_core\" is not a known attribute of module \"numpy\"",
+      "source_context": "      19 |         self.buffer = self.l50.tobytes() * self.fields_number\n      20 | \n      21 |     def time_fromarrays_w_dtype(self):\n>>>   22 |         np._core.records.fromarrays(self.arrays, dtype=self.dtype_)\n      23 | \n      24 |     def time_fromarrays_wo_dtype(self):\n      25 |         np._core.records.fromarrays(self.arrays)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_records.py#L22"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_records.py",
+      "line": 25,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"_core\" is not a known attribute of module \"numpy\"",
+      "source_context": "      22 |         np._core.records.fromarrays(self.arrays, dtype=self.dtype_)\n      23 | \n      24 |     def time_fromarrays_wo_dtype(self):\n>>>   25 |         np._core.records.fromarrays(self.arrays)\n      26 | \n      27 |     def time_fromarrays_formats_as_list(self):\n      28 |         np._core.records.fromarrays(self.arrays, formats=self.formats)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_records.py#L25"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_records.py",
+      "line": 28,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"_core\" is not a known attribute of module \"numpy\"",
+      "source_context": "      25 |         np._core.records.fromarrays(self.arrays)\n      26 | \n      27 |     def time_fromarrays_formats_as_list(self):\n>>>   28 |         np._core.records.fromarrays(self.arrays, formats=self.formats)\n      29 | \n      30 |     def time_fromarrays_formats_as_string(self):\n      31 |         np._core.records.fromarrays(self.arrays, formats=self.formats_str)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_records.py#L28"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_records.py",
+      "line": 31,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"_core\" is not a known attribute of module \"numpy\"",
+      "source_context": "      28 |         np._core.records.fromarrays(self.arrays, formats=self.formats)\n      29 | \n      30 |     def time_fromarrays_formats_as_string(self):\n>>>   31 |         np._core.records.fromarrays(self.arrays, formats=self.formats_str)\n      32 | \n      33 |     def time_frombytes_w_dtype(self):\n      34 |         np._core.records.fromstring(self.buffer, dtype=self.dtype_)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_records.py#L31"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_records.py",
+      "line": 34,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"_core\" is not a known attribute of module \"numpy\"",
+      "source_context": "      31 |         np._core.records.fromarrays(self.arrays, formats=self.formats_str)\n      32 | \n      33 |     def time_frombytes_w_dtype(self):\n>>>   34 |         np._core.records.fromstring(self.buffer, dtype=self.dtype_)\n      35 | \n      36 |     def time_frombytes_formats_as_list(self):\n      37 |         np._core.records.fromstring(self.buffer, formats=self.formats)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_records.py#L34"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_records.py",
+      "line": 37,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"_core\" is not a known attribute of module \"numpy\"",
+      "source_context": "      34 |         np._core.records.fromstring(self.buffer, dtype=self.dtype_)\n      35 | \n      36 |     def time_frombytes_formats_as_list(self):\n>>>   37 |         np._core.records.fromstring(self.buffer, formats=self.formats)\n      38 | \n      39 |     def time_frombytes_formats_as_string(self):\n      40 |         np._core.records.fromstring(self.buffer, formats=self.formats_str)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_records.py#L37"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_records.py",
+      "line": 40,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"_core\" is not a known attribute of module \"numpy\"",
+      "source_context": "      37 |         np._core.records.fromstring(self.buffer, formats=self.formats)\n      38 | \n      39 |     def time_frombytes_formats_as_string(self):\n>>>   40 |         np._core.records.fromstring(self.buffer, formats=self.formats_str)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_records.py#L40"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_scalar.py",
+      "line": 43,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "      40 |         # is one of the inputs.)\n      41 |         int32 = self.int32\n      42 |         other = self.num\n>>>   43 |         int32 + other\n      44 |         int32 + other\n      45 |         int32 + other\n      46 |         int32 + other",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_scalar.py#L43"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_scalar.py",
+      "line": 46,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "      43 |         int32 + other\n      44 |         int32 + other\n      45 |         int32 + other\n>>>   46 |         int32 + other\n      47 |         int32 + other\n      48 | \n      49 |     def time_add_int32arr_and_other(self, typename):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_scalar.py#L46"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_scalar.py",
+      "line": 53,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "      50 |         # `arr + scalar` hits the normal ufunc (array) paths.\n      51 |         int32 = self.int32arr\n      52 |         other = self.num\n>>>   53 |         int32 + other\n      54 |         int32 + other\n      55 |         int32 + other\n      56 |         int32 + other",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_scalar.py#L53"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_scalar.py",
+      "line": 56,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "      53 |         int32 + other\n      54 |         int32 + other\n      55 |         int32 + other\n>>>   56 |         int32 + other\n      57 |         int32 + other\n      58 | \n      59 |     def time_add_other_and_int32arr(self, typename):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_scalar.py#L56"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_scalar.py",
+      "line": 64,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "      61 |         # these paths could be optimized more easily\n      62 |         int32 = self.int32arr\n      63 |         other = self.num\n>>>   64 |         other + int32\n      65 |         other + int32\n      66 |         other + int32\n      67 |         other + int32",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_scalar.py#L64"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_scalar.py",
+      "line": 67,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "      64 |         other + int32\n      65 |         other + int32\n      66 |         other + int32\n>>>   67 |         other + int32\n      68 |         other + int32\n      69 | \n      70 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_scalar.py#L67"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 39,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"__name__\" is not a known attribute of \"None\"",
+      "source_context": "      36 | \n      37 | missing_ufuncs = all_ufuncs - bench_ufuncs\n      38 | if len(missing_ufuncs) > 0:\n>>>   39 |     missing_ufunc_names = [f.__name__ for f in missing_ufuncs]\n      40 |     raise NotImplementedError(\n      41 |         f\"Missing benchmarks for ufuncs {missing_ufunc_names!r}\")\n      42 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L39"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 74,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "      71 |         self.e = np.ones((100,), dtype=np.float64)\n      72 | \n      73 |     def time_broadcast(self):\n>>>   74 |         self.d - self.e\n      75 | \n      76 | \n      77 | class At(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L74"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 367,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     364 |         np.nonzero(self.b)\n     365 | \n     366 |     def time_not_bool(self):\n>>>  367 |         (~self.b)\n     368 | \n     369 |     def time_and_bool(self):\n     370 |         (self.b & self.b)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L367"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 370,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     367 |         (~self.b)\n     368 | \n     369 |     def time_and_bool(self):\n>>>  370 |         (self.b & self.b)\n     371 | \n     372 |     def time_or_bool(self):\n     373 |         (self.b | self.b)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L370"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 373,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     370 |         (self.b & self.b)\n     371 | \n     372 |     def time_or_bool(self):\n>>>  373 |         (self.b | self.b)\n     374 | \n     375 |     def time_and_bool_small(self):\n     376 |         (self.b_small & self.b_small)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L373"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 376,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     373 |         (self.b | self.b)\n     374 | \n     375 |     def time_and_bool_small(self):\n>>>  376 |         (self.b_small & self.b_small)\n     377 | \n     378 | \n     379 | class CustomInplace(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L376"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 394,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     391 |         np.bitwise_or(0, self.c, out=self.c)\n     392 | \n     393 |     def time_char_or_temp(self):\n>>>  394 |         0 | self.c | 0\n     395 | \n     396 |     def time_int_or(self):\n     397 |         np.bitwise_or(self.i, 0, out=self.i)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L394"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 401,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     398 |         np.bitwise_or(0, self.i, out=self.i)\n     399 | \n     400 |     def time_int_or_temp(self):\n>>>  401 |         0 | self.i | 0\n     402 | \n     403 |     def time_float_add(self):\n     404 |         np.add(self.f, 1., out=self.f)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L401"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 408,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     405 |         np.add(1., self.f, out=self.f)\n     406 | \n     407 |     def time_float_add_temp(self):\n>>>  408 |         1. + self.f + 1.\n     409 | \n     410 |     def time_double_add(self):\n     411 |         np.add(self.d, 1., out=self.d)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L408"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 415,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     412 |         np.add(1., self.d, out=self.d)\n     413 | \n     414 |     def time_double_add_temp(self):\n>>>  415 |         1. + self.d + 1.\n     416 | \n     417 | \n     418 | class CustomScalar(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L415"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 446,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     443 |         self.s = np.ones(1, dtype=dtype)\n     444 | \n     445 |     def time_less_than_binary(self, dtype):\n>>>  446 |         (self.x < self.y)\n     447 | \n     448 |     def time_less_than_scalar1(self, dtype):\n     449 |         (self.s < self.x)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L446"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 449,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     446 |         (self.x < self.y)\n     447 | \n     448 |     def time_less_than_scalar1(self, dtype):\n>>>  449 |         (self.s < self.x)\n     450 | \n     451 |     def time_less_than_scalar2(self, dtype):\n     452 |         (self.x < self.s)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L449"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 452,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     449 |         (self.s < self.x)\n     450 | \n     451 |     def time_less_than_scalar2(self, dtype):\n>>>  452 |         (self.x < self.s)\n     453 | \n     454 | \n     455 | class CustomScalarFloorDivideInt(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L452"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 466,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     463 |                     iinfo.min, iinfo.max, size=10000, dtype=dtype)\n     464 | \n     465 |     def time_floor_divide_int(self, dtype, divisor):\n>>>  466 |         self.x // divisor\n     467 | \n     468 | \n     469 | class CustomScalarFloorDivideUInt(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L466"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 480,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     477 |                     iinfo.min, iinfo.max, size=10000, dtype=dtype)\n     478 | \n     479 |     def time_floor_divide_uint(self, dtype, divisor):\n>>>  480 |         self.x // divisor\n     481 | \n     482 | \n     483 | class CustomArrayFloorDivideInt(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L480"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 495,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     492 |         self.y = np.random.randint(2, 32, size=size, dtype=dtype)\n     493 | \n     494 |     def time_floor_divide_int(self, dtype, size):\n>>>  495 |         self.x // self.y\n     496 | \n     497 | \n     498 | class Scalar(Benchmark):",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L495"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 505,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     502 |         self.z = complex(1.0, 1.0)\n     503 | \n     504 |     def time_add_scalar(self):\n>>>  505 |         (self.x + self.x)\n     506 | \n     507 |     def time_add_scalar_conv(self):\n     508 |         (self.x + 1.0)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L505"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 508,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     505 |         (self.x + self.x)\n     506 | \n     507 |     def time_add_scalar_conv(self):\n>>>  508 |         (self.x + 1.0)\n     509 | \n     510 |     def time_add_scalar_conv_complex(self):\n     511 |         (self.y + self.z)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L508"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 511,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     508 |         (self.x + 1.0)\n     509 | \n     510 |     def time_add_scalar_conv_complex(self):\n>>>  511 |         (self.y + self.z)\n     512 | \n     513 | \n     514 | class ArgPack:",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L511"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 593,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     590 |         np.power(self.a, 0.5)\n     591 | \n     592 |     def time_pow_2_op(self, dtype):\n>>>  593 |         self.a ** 2\n     594 | \n     595 |     def time_pow_half_op(self, dtype):\n     596 |         self.a ** 0.5",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L593"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc.py",
+      "line": 596,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused",
+      "source_context": "     593 |         self.a ** 2\n     594 | \n     595 |     def time_pow_half_op(self, dtype):\n>>>  596 |         self.a ** 0.5\n     597 | \n     598 |     def time_atan2(self, dtype):\n     599 |         np.arctan2(self.a, self.b)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc.py#L596"
+    },
+    {
+      "file": "benchmarks/benchmarks/bench_ufunc_strides.py",
+      "line": 5,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"_core\" is not a known attribute of module \"numpy\"",
+      "source_context": "       2 | \n       3 | from .common import Benchmark, get_data\n       4 | \n>>>    5 | UFUNCS = [obj for obj in np._core.umath.__dict__.values() if\n       6 |           isinstance(obj, np.ufunc)]\n       7 | UFUNCS_UNARY = [uf for uf in UFUNCS if \"O->O\" in uf.types]\n       8 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/benchmarks/benchmarks/bench_ufunc_strides.py#L5"
+    },
+    {
+      "file": "doc/source/user/conftest.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"dt_config\" is unknown import symbol",
+      "source_context": "       1 | # doctesting configuration from the main conftest\n>>>    2 | from numpy.conftest import dt_config  # noqa: F401\n       3 | \n       4 | #breakpoint()",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/doc/source/user/conftest.py#L2"
+    },
+    {
+      "file": "numpy/__init__.py",
+      "line": 90,
+      "error_code": "reportMissingModuleSource",
+      "message": "Import \".version\" could not be resolved from source",
+      "source_context": "      87 | import warnings\n      88 | \n      89 | # If a version with git hash was stored, use that instead\n>>>   90 | from . import version\n      91 | from ._expired_attrs_2_0 import __expired_attributes__\n      92 | from ._globals import _CopyMode, _NoValue\n      93 | from .version import __version__",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.py#L90"
+    },
+    {
+      "file": "numpy/__init__.py",
+      "line": 93,
+      "error_code": "reportMissingModuleSource",
+      "message": "Import \".version\" could not be resolved from source",
+      "source_context": "      90 | from . import version\n      91 | from ._expired_attrs_2_0 import __expired_attributes__\n      92 | from ._globals import _CopyMode, _NoValue\n>>>   93 | from .version import __version__\n      94 | \n      95 | # We first need to detect if we're being called as part of the numpy setup\n      96 | # procedure itself in a reliable manner.",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.py#L93"
+    },
+    {
+      "file": "numpy/__init__.py",
+      "line": 110,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"e\" is declared as Final and cannot be reassigned",
+      "source_context": "     107 | \n     108 |     try:\n     109 |         from numpy.__config__ import show_config\n>>>  110 |     except ImportError as e:\n     111 |         if isinstance(e, ModuleNotFoundError) and e.name == \"numpy.__config__\":\n     112 |             # The __config__ module itself was not found, so add this info:\n     113 |             msg = \"\"\"Error importing numpy: you should not try to import numpy from",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.py#L110"
+    },
+    {
+      "file": "numpy/__init__.py",
+      "line": 674,
+      "error_code": "reportUnsupportedDunderAll",
+      "message": "Operation on \"__all__\" is not supported, so exported symbol list may be incorrect",
+      "source_context": "     671 | \n     672 |     from ._array_api_info import __array_namespace_info__\n     673 | \n>>>  674 |     __all__ = list(\n     675 |         __numpy_submodules__ |\n     676 |         set(_core.__all__) |\n     677 |         set(_mat.__all__) |",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.py#L674"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 744,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"unsignedinteger[Any] | bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0Type \"unsignedinteger[Any] | bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "     741 | type _2D = tuple[int, int]\n     742 | type _2Tuple[T] = tuple[T, T]\n     743 | \n>>>  744 | type _ArrayUInt_co = NDArray[unsignedinteger | bool_]\n     745 | type _ArrayInt_co = NDArray[integer | bool_]\n     746 | type _ArrayFloat64_co = NDArray[floating[_64Bit] | float32 | float16 | integer | bool_]\n     747 | type _ArrayFloat_co = NDArray[floating | integer | bool_]",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L744"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 747,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"floating[Any] | integer[Any] | bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0Type \"floating[Any] | integer[Any] | bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "     744 | type _ArrayUInt_co = NDArray[unsignedinteger | bool_]\n     745 | type _ArrayInt_co = NDArray[integer | bool_]\n     746 | type _ArrayFloat64_co = NDArray[floating[_64Bit] | float32 | float16 | integer | bool_]\n>>>  747 | type _ArrayFloat_co = NDArray[floating | integer | bool_]\n     748 | type _ArrayComplex128_co = NDArray[number[_64Bit] | number[_32Bit] | float16 | integer | bool_]\n     749 | type _ArrayComplex_co = NDArray[inexact | integer | bool_]\n     750 | type _ArrayNumber_co = NDArray[number | bool_]",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L747"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 750,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"number[Any, Any] | bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0Type \"number[Any, Any] | bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "     747 | type _ArrayFloat_co = NDArray[floating | integer | bool_]\n     748 | type _ArrayComplex128_co = NDArray[number[_64Bit] | number[_32Bit] | float16 | integer | bool_]\n     749 | type _ArrayComplex_co = NDArray[inexact | integer | bool_]\n>>>  750 | type _ArrayNumber_co = NDArray[number | bool_]\n     751 | type _ArrayTD64_co = NDArray[timedelta64 | integer | bool_]\n     752 | \n     753 | type _ArrayString = ndarray[_AnyShape, dtype[str_] | dtypes.StringDType]",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L750"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 753,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"dtype[str_] | StringDType[Never]\" cannot be assigned to type variable \"_DTypeT_co@ndarray\"\n\u00a0\u00a0Type \"dtype[str_] | StringDType[Never]\" is not assignable to upper bound \"dtype[Any]\" for type variable \"_DTypeT_co@ndarray\"\n\u00a0\u00a0\u00a0\u00a0Type \"dtype[str_] | StringDType[Never]\" is not assignable to type \"dtype[Any]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"StringDType[Never]\" is not assignable to \"dtype[Any]\"",
+      "source_context": "     750 | type _ArrayNumber_co = NDArray[number | bool_]\n     751 | type _ArrayTD64_co = NDArray[timedelta64 | integer | bool_]\n     752 | \n>>>  753 | type _ArrayString = ndarray[_AnyShape, dtype[str_] | dtypes.StringDType]\n     754 | type _ArrayNumeric = NDArray[number | timedelta64 | object_]\n     755 | \n     756 | type _ScalarNotObject = bool_ | number | flexible | datetime64 | timedelta64",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L753"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 1107,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"_DTypeLike[ScalarT@_DTypeLike]\"\n\u00a0\u00a0Type \"ScalarT@__new__\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"generic[Any]*\" is not assignable to \"generic[Any]\"",
+      "source_context": "    1104 |     @overload\n    1105 |     def __new__[ScalarT: generic](\n    1106 |         cls,\n>>> 1107 |         dtype: _DTypeLike[ScalarT],\n    1108 |         align: py_bool = False,\n    1109 |         copy: py_bool = False,\n    1110 |         *,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L1107"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 1733,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"intp\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"signedinteger[_NBitIntP]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    1730 |         order: str | Sequence[str] | None = ...,\n    1731 |         *,\n    1732 |         stable: py_bool | None = ...,\n>>> 1733 |     ) -> NDArray[intp]: ...\n    1734 | \n    1735 |     @overload  # axis=None (default), out=None (default), keepdims=False (default)\n    1736 |     def argmax(self, /, axis: None = None, out: None = None, *, keepdims: L[False] = False) -> intp: ...",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L1733"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2149,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"void\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"void\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2146 |     @overload\n    2147 |     def __getitem__(self, key: _ToIndices, /) -> ndarray[_AnyShape, _DTypeT_co]: ...\n    2148 |     @overload  # can be of any shape\n>>> 2149 |     def __getitem__(self: NDArray[void], key: str, /) -> ndarray[_ShapeT_co | _AnyShape]: ...\n    2150 |     @overload\n    2151 |     def __getitem__(self: NDArray[void], key: list[str], /) -> ndarray[_ShapeT_co | _AnyShape, _dtype[void]]: ...\n    2152 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2149"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2155,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"_dtype | StringDType[Never]\" cannot be assigned to type variable \"_DTypeT_co@ndarray\"\n\u00a0\u00a0Type \"_dtype | StringDType[Never]\" is not assignable to upper bound \"dtype[Any]\" for type variable \"_DTypeT_co@ndarray\"\n\u00a0\u00a0\u00a0\u00a0Type \"_dtype | StringDType[Never]\" is not assignable to type \"dtype[Any]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"StringDType[Never]\" is not assignable to \"dtype[Any]\"",
+      "source_context": "    2152 | \n    2153 |     @overload  # flexible | object_ | bool\n    2154 |     def __setitem__(\n>>> 2155 |         self: ndarray[Any, _dtype[flexible | object_ | bool_] | dtypes.StringDType],\n    2156 |         key: _ToIndices,\n    2157 |         value: object,\n    2158 |         /,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2155"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2162,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"integer[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"integer[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2159 |     ) -> None: ...\n    2160 |     @overload  # integer\n    2161 |     def __setitem__(\n>>> 2162 |         self: NDArray[integer],\n    2163 |         key: _ToIndices,\n    2164 |         value: _ConvertibleToInt | _NestedSequence[_ConvertibleToInt] | _ArrayLikeInt_co,\n    2165 |         /,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2162"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2169,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"floating[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"floating[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2166 |     ) -> None: ...\n    2167 |     @overload  # floating\n    2168 |     def __setitem__(\n>>> 2169 |         self: NDArray[floating],\n    2170 |         key: _ToIndices,\n    2171 |         value: _ConvertibleToFloat | _NestedSequence[_ConvertibleToFloat | None] | _ArrayLikeFloat_co | None,\n    2172 |         /,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2169"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2176,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"complexfloating[Any, Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"complexfloating[Any, Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2173 |     ) -> None: ...\n    2174 |     @overload  # complexfloating\n    2175 |     def __setitem__(\n>>> 2176 |         self: NDArray[complexfloating],\n    2177 |         key: _ToIndices,\n    2178 |         value: _ConvertibleToComplex | _NestedSequence[_ConvertibleToComplex | None] | _ArrayLikeNumber_co | None,\n    2179 |         /,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2176"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2183,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"timedelta64[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"timedelta64[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2180 |     ) -> None: ...\n    2181 |     @overload  # timedelta64\n    2182 |     def __setitem__(\n>>> 2183 |         self: NDArray[timedelta64],\n    2184 |         key: _ToIndices,\n    2185 |         value: _ConvertibleToTD64 | _NestedSequence[_ConvertibleToTD64],\n    2186 |         /,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2183"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2190,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"datetime64[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"datetime64[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2187 |     ) -> None: ...\n    2188 |     @overload  # datetime64\n    2189 |     def __setitem__(\n>>> 2190 |         self: NDArray[datetime64],\n    2191 |         key: _ToIndices,\n    2192 |         value: _ConvertibleToDT64 | _NestedSequence[_ConvertibleToDT64],\n    2193 |         /,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2190"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2196,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"void\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"void\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2193 |         /,\n    2194 |     ) -> None: ...\n    2195 |     @overload  # void\n>>> 2196 |     def __setitem__(self: NDArray[void], key: str | list[str], value: object, /) -> None: ...\n    2197 |     @overload  # catch-all\n    2198 |     def __setitem__(self, key: _ToIndices, value: ArrayLike, /) -> None: ...\n    2199 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2196"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2220,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"Self@ndarray[_ShapeT_co@ndarray, _DTypeT_co@ndarray]\" cannot be assigned to type variable \"_ArrayT_co@flatiter\"\n\u00a0\u00a0Type \"ndarray[_ShapeT_co@ndarray, _DTypeT_co@ndarray]*\" is not assignable to upper bound \"ndarray[_AnyShape, dtype[Any]]\" for type variable \"_ArrayT_co@flatiter\"\n\u00a0\u00a0\u00a0\u00a0\"ndarray[_ShapeT_co@ndarray, _DTypeT_co@ndarray]*\" is not assignable to \"ndarray[_AnyShape, dtype[Any]]\"",
+      "source_context": "    2217 |     #\n    2218 |     def byteswap(self, inplace: py_bool = ...) -> Self: ...\n    2219 |     @property\n>>> 2220 |     def flat(self) -> flatiter[Self]: ...\n    2221 | \n    2222 |     @overload  # use the same output type as that of the underlying `generic`\n    2223 |     def item[T](self: NDArray[generic[T]], i0: SupportsIndex | tuple[SupportsIndex, ...] = ..., /, *args: SupportsIndex) -> T: ...",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2220"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2223,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"generic[T@item]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"generic[T@item]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2220 |     def flat(self) -> flatiter[Self]: ...\n    2221 | \n    2222 |     @overload  # use the same output type as that of the underlying `generic`\n>>> 2223 |     def item[T](self: NDArray[generic[T]], i0: SupportsIndex | tuple[SupportsIndex, ...] = ..., /, *args: SupportsIndex) -> T: ...\n    2224 |     @overload  # special casing for `StringDType`, which has no scalar type\n    2225 |     def item(\n    2226 |         self: ndarray[Any, dtypes.StringDType],",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2223"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2226,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"StringDType[Never]\" cannot be assigned to type variable \"_DTypeT_co@ndarray\"\n\u00a0\u00a0Type \"StringDType[Never]\" is not assignable to upper bound \"dtype[Any]\" for type variable \"_DTypeT_co@ndarray\"\n\u00a0\u00a0\u00a0\u00a0\"StringDType[Never]\" is not assignable to \"dtype[Any]\"",
+      "source_context": "    2223 |     def item[T](self: NDArray[generic[T]], i0: SupportsIndex | tuple[SupportsIndex, ...] = ..., /, *args: SupportsIndex) -> T: ...\n    2224 |     @overload  # special casing for `StringDType`, which has no scalar type\n    2225 |     def item(\n>>> 2226 |         self: ndarray[Any, dtypes.StringDType],\n    2227 |         arg0: SupportsIndex | tuple[SupportsIndex, ...] = ...,\n    2228 |         /,\n    2229 |         *args: SupportsIndex,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2226"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2284,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2281 |         keepdims: SupportsIndex = False,\n    2282 |         *,\n    2283 |         where: _ArrayLikeBool_co = True,\n>>> 2284 |     ) -> bool_ | NDArray[bool_]: ...\n    2285 |     @overload\n    2286 |     def all[ArrayT: ndarray](\n    2287 |         self,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2284"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2321,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2318 |         keepdims: SupportsIndex = False,\n    2319 |         *,\n    2320 |         where: _ArrayLikeBool_co = True,\n>>> 2321 |     ) -> bool_ | NDArray[bool_]: ...\n    2322 |     @overload\n    2323 |     def any[ArrayT: ndarray](\n    2324 |         self,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2321"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2353,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"void\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"void\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2350 |     ) -> None: ...\n    2351 |     @overload\n    2352 |     def partition(\n>>> 2353 |         self: NDArray[void],\n    2354 |         kth: _ArrayLikeInt,\n    2355 |         /,\n    2356 |         axis: SupportsIndex = -1,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2353"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2383,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"void\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"void\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2380 |     ) -> ndarray[_ShapeT_co, _dtype[intp]]: ...\n    2381 |     @overload  # void, axis: None\n    2382 |     def argpartition(\n>>> 2383 |         self: NDArray[void],\n    2384 |         kth: _ArrayLikeInt,\n    2385 |         /,\n    2386 |         axis: None,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2383"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2392,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"void\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"void\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2389 |     ) -> ndarray[tuple[int], _dtype[intp]]: ...\n    2390 |     @overload  # void, axis: index (default)\n    2391 |     def argpartition(\n>>> 2392 |         self: NDArray[void],\n    2393 |         kth: _ArrayLikeInt,\n    2394 |         /,\n    2395 |         axis: SupportsIndex = -1,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2392"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2435,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"intp\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"signedinteger[_NBitIntP]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2432 |         /,\n    2433 |         side: _SortSide = \"left\",\n    2434 |         sorter: _ArrayLikeInt_co | None = None,\n>>> 2435 |     ) -> NDArray[intp]: ...\n    2436 | \n    2437 |     def sort(\n    2438 |         self,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2435"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2482,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"ScalarT@take\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"generic[Any]*\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2479 | \n    2480 |     @overload\n    2481 |     def take[ScalarT: generic](\n>>> 2482 |         self: NDArray[ScalarT],\n    2483 |         indices: _IntLike_co,\n    2484 |         /,\n    2485 |         axis: SupportsIndex | None = ...,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2482"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2626,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"_DTypeLike[ScalarT@_DTypeLike]\"\n\u00a0\u00a0Type \"ScalarT@astype\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"generic[Any]*\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2623 |     @overload\n    2624 |     def astype[ScalarT: generic](\n    2625 |         self,\n>>> 2626 |         dtype: _DTypeLike[ScalarT],\n    2627 |         order: _OrderKACF = ...,\n    2628 |         casting: _CastingKind = ...,\n    2629 |         subok: py_bool = ...,",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2626"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2648,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"_DTypeLike[ScalarT@_DTypeLike]\"\n\u00a0\u00a0Type \"ScalarT@view\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"generic[Any]*\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2645 |     @overload  # (dtype: T)\n    2646 |     def view[DTypeT: _dtype](self, /, dtype: DTypeT | _HasDType[DTypeT]) -> ndarray[_ShapeT_co, DTypeT]: ...\n    2647 |     @overload  # (dtype: dtype[T])\n>>> 2648 |     def view[ScalarT: generic](self, /, dtype: _DTypeLike[ScalarT]) -> ndarray[_ShapeT_co, _dtype[ScalarT]]: ...\n    2649 |     @overload  # (type: T)\n    2650 |     def view[ArrayT: ndarray](self, /, *, type: type[ArrayT]) -> ArrayT: ...\n    2651 |     @overload  # (_: T)",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2648"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2660,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"_DTypeLike[ScalarT@_DTypeLike]\"\n\u00a0\u00a0Type \"ScalarT@getfield\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"generic[Any]*\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2657 | \n    2658 |     def setfield(self, val: ArrayLike, /, dtype: DTypeLike, offset: SupportsIndex = 0) -> None: ...\n    2659 |     @overload\n>>> 2660 |     def getfield[ScalarT: generic](self, /, dtype: _DTypeLike[ScalarT], offset: SupportsIndex = 0) -> NDArray[ScalarT]: ...\n    2661 |     @overload\n    2662 |     def getfield(self, /, dtype: DTypeLike, offset: SupportsIndex = 0) -> NDArray[Any]: ...\n    2663 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2660"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2664,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"integer[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"integer[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2661 |     @overload\n    2662 |     def getfield(self, /, dtype: DTypeLike, offset: SupportsIndex = 0) -> NDArray[Any]: ...\n    2663 | \n>>> 2664 |     def __index__(self: NDArray[integer], /) -> int: ...\n    2665 |     def __complex__(self: NDArray[number | bool_ | object_], /) -> complex: ...\n    2666 | \n    2667 |     def __len__(self) -> int: ...",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2664"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2680,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"StringDType[Never]\" cannot be assigned to type variable \"_DTypeT_co@ndarray\"\n\u00a0\u00a0Type \"StringDType[Never]\" is not assignable to upper bound \"dtype[Any]\" for type variable \"_DTypeT_co@ndarray\"\n\u00a0\u00a0\u00a0\u00a0\"StringDType[Never]\" is not assignable to \"dtype[Any]\"",
+      "source_context": "    2677 |     @overload  # == 1-d & dtype[T \\ object_]\n    2678 |     def __iter__[ScalarT: _ScalarNotObject](self: ndarray[tuple[int], _dtype[ScalarT]], /) -> Iterator[ScalarT]: ...\n    2679 |     @overload  # == 1-d & StringDType\n>>> 2680 |     def __iter__(self: ndarray[tuple[int], dtypes.StringDType], /) -> Iterator[str]: ...\n    2681 |     @overload  # >= 2-d\n    2682 |     def __iter__[DTypeT: _dtype](\n    2683 |         self: ndarray[tuple[int, int, *tuple[int, ...]], DTypeT], /",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2680"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2690,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2687 | \n    2688 |     #\n    2689 |     @overload\n>>> 2690 |     def __lt__(self: _ArrayNumber_co, other: _ArrayLikeNumber_co, /) -> NDArray[bool_]: ...\n    2691 |     @overload\n    2692 |     def __lt__(self: _ArrayTD64_co, other: _ArrayLikeTD64_co, /) -> NDArray[bool_]: ...\n    2693 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2690"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2694,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"datetime64[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"datetime64[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2691 |     @overload\n    2692 |     def __lt__(self: _ArrayTD64_co, other: _ArrayLikeTD64_co, /) -> NDArray[bool_]: ...\n    2693 |     @overload\n>>> 2694 |     def __lt__(self: NDArray[datetime64], other: _ArrayLikeDT64_co, /) -> NDArray[bool_]: ...\n    2695 |     @overload\n    2696 |     def __lt__(self: NDArray[bytes_], other: _ArrayLikeBytes_co, /) -> NDArray[bool_]: ...\n    2697 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2694"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2698,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2695 |     @overload\n    2696 |     def __lt__(self: NDArray[bytes_], other: _ArrayLikeBytes_co, /) -> NDArray[bool_]: ...\n    2697 |     @overload\n>>> 2698 |     def __lt__(self: _ArrayString, other: _ArrayLikeStr_co | _ArrayLikeString_co, /) -> NDArray[bool_]: ...\n    2699 |     @overload\n    2700 |     def __lt__(self: NDArray[object_], other: object, /) -> NDArray[bool_]: ...\n    2701 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2698"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2702,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2699 |     @overload\n    2700 |     def __lt__(self: NDArray[object_], other: object, /) -> NDArray[bool_]: ...\n    2701 |     @overload\n>>> 2702 |     def __lt__(self, other: _ArrayLikeObject_co, /) -> NDArray[bool_]: ...\n    2703 | \n    2704 |     #\n    2705 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2702"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2706,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2703 | \n    2704 |     #\n    2705 |     @overload\n>>> 2706 |     def __le__(self: _ArrayNumber_co, other: _ArrayLikeNumber_co, /) -> NDArray[bool_]: ...\n    2707 |     @overload\n    2708 |     def __le__(self: _ArrayTD64_co, other: _ArrayLikeTD64_co, /) -> NDArray[bool_]: ...\n    2709 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2706"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2710,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"datetime64[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"datetime64[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2707 |     @overload\n    2708 |     def __le__(self: _ArrayTD64_co, other: _ArrayLikeTD64_co, /) -> NDArray[bool_]: ...\n    2709 |     @overload\n>>> 2710 |     def __le__(self: NDArray[datetime64], other: _ArrayLikeDT64_co, /) -> NDArray[bool_]: ...\n    2711 |     @overload\n    2712 |     def __le__(self: NDArray[bytes_], other: _ArrayLikeBytes_co, /) -> NDArray[bool_]: ...\n    2713 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2710"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2714,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2711 |     @overload\n    2712 |     def __le__(self: NDArray[bytes_], other: _ArrayLikeBytes_co, /) -> NDArray[bool_]: ...\n    2713 |     @overload\n>>> 2714 |     def __le__(self: _ArrayString, other: _ArrayLikeStr_co | _ArrayLikeString_co, /) -> NDArray[bool_]: ...\n    2715 |     @overload\n    2716 |     def __le__(self: NDArray[object_], other: object, /) -> NDArray[bool_]: ...\n    2717 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2714"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2718,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2715 |     @overload\n    2716 |     def __le__(self: NDArray[object_], other: object, /) -> NDArray[bool_]: ...\n    2717 |     @overload\n>>> 2718 |     def __le__(self, other: _ArrayLikeObject_co, /) -> NDArray[bool_]: ...\n    2719 | \n    2720 |     #\n    2721 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2718"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2722,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2719 | \n    2720 |     #\n    2721 |     @overload\n>>> 2722 |     def __gt__(self: _ArrayNumber_co, other: _ArrayLikeNumber_co, /) -> NDArray[bool_]: ...\n    2723 |     @overload\n    2724 |     def __gt__(self: _ArrayTD64_co, other: _ArrayLikeTD64_co, /) -> NDArray[bool_]: ...\n    2725 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2722"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2726,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"datetime64[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"datetime64[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2723 |     @overload\n    2724 |     def __gt__(self: _ArrayTD64_co, other: _ArrayLikeTD64_co, /) -> NDArray[bool_]: ...\n    2725 |     @overload\n>>> 2726 |     def __gt__(self: NDArray[datetime64], other: _ArrayLikeDT64_co, /) -> NDArray[bool_]: ...\n    2727 |     @overload\n    2728 |     def __gt__(self: NDArray[bytes_], other: _ArrayLikeBytes_co, /) -> NDArray[bool_]: ...\n    2729 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2726"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2730,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2727 |     @overload\n    2728 |     def __gt__(self: NDArray[bytes_], other: _ArrayLikeBytes_co, /) -> NDArray[bool_]: ...\n    2729 |     @overload\n>>> 2730 |     def __gt__(self: _ArrayString, other: _ArrayLikeStr_co | _ArrayLikeString_co, /) -> NDArray[bool_]: ...\n    2731 |     @overload\n    2732 |     def __gt__(self: NDArray[object_], other: object, /) -> NDArray[bool_]: ...\n    2733 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2730"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2734,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2731 |     @overload\n    2732 |     def __gt__(self: NDArray[object_], other: object, /) -> NDArray[bool_]: ...\n    2733 |     @overload\n>>> 2734 |     def __gt__(self, other: _ArrayLikeObject_co, /) -> NDArray[bool_]: ...\n    2735 | \n    2736 |     #\n    2737 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2734"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2738,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2735 | \n    2736 |     #\n    2737 |     @overload\n>>> 2738 |     def __ge__(self: _ArrayNumber_co, other: _ArrayLikeNumber_co, /) -> NDArray[bool_]: ...\n    2739 |     @overload\n    2740 |     def __ge__(self: _ArrayTD64_co, other: _ArrayLikeTD64_co, /) -> NDArray[bool_]: ...\n    2741 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2738"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2742,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"datetime64[Any]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"datetime64[Any]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2739 |     @overload\n    2740 |     def __ge__(self: _ArrayTD64_co, other: _ArrayLikeTD64_co, /) -> NDArray[bool_]: ...\n    2741 |     @overload\n>>> 2742 |     def __ge__(self: NDArray[datetime64], other: _ArrayLikeDT64_co, /) -> NDArray[bool_]: ...\n    2743 |     @overload\n    2744 |     def __ge__(self: NDArray[bytes_], other: _ArrayLikeBytes_co, /) -> NDArray[bool_]: ...\n    2745 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2742"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2746,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2743 |     @overload\n    2744 |     def __ge__(self: NDArray[bytes_], other: _ArrayLikeBytes_co, /) -> NDArray[bool_]: ...\n    2745 |     @overload\n>>> 2746 |     def __ge__(self: _ArrayString, other: _ArrayLikeStr_co | _ArrayLikeString_co, /) -> NDArray[bool_]: ...\n    2747 |     @overload\n    2748 |     def __ge__(self: NDArray[object_], other: object, /) -> NDArray[bool_]: ...\n    2749 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2746"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2750,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2747 |     @overload\n    2748 |     def __ge__(self: NDArray[object_], other: object, /) -> NDArray[bool_]: ...\n    2749 |     @overload\n>>> 2750 |     def __ge__(self, other: _ArrayLikeObject_co, /) -> NDArray[bool_]: ...\n    2751 | \n    2752 |     # Unary ops\n    2753 | ",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2750"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2768,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_ | integer[Any] | floating[Any] | timedelta64[Any] | object_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0Type \"bool_ | integer[Any] | floating[Any] | timedelta64[Any] | object_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"object_\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2765 |         self: ndarray[ShapeT, _dtype[complexfloating[NBitT]]], /\n    2766 |     ) -> ndarray[ShapeT, _dtype[floating[NBitT]]]: ...\n    2767 |     @overload\n>>> 2768 |     def __abs__[ArrayT: NDArray[bool_ | integer | floating | timedelta64 | object_]](self: ArrayT, /) -> ArrayT: ...\n    2769 | \n    2770 |     def __invert__[ArrayT: NDArray[bool_ | integer | object_]](self: ArrayT, /) -> ArrayT: ...  # noqa: PYI019\n    2771 |     def __neg__[ArrayT: _ArrayNumeric](self: ArrayT, /) -> ArrayT: ...  # noqa: PYI019",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2768"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2771,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Type of parameter \"self\" must be a supertype of its class \"ndarray[_ShapeT_co@ndarray, _DTypeT_co@ndarray]\"",
+      "source_context": "    2768 |     def __abs__[ArrayT: NDArray[bool_ | integer | floating | timedelta64 | object_]](self: ArrayT, /) -> ArrayT: ...\n    2769 | \n    2770 |     def __invert__[ArrayT: NDArray[bool_ | integer | object_]](self: ArrayT, /) -> ArrayT: ...  # noqa: PYI019\n>>> 2771 |     def __neg__[ArrayT: _ArrayNumeric](self: ArrayT, /) -> ArrayT: ...  # noqa: PYI019\n    2772 |     def __pos__[ArrayT: _ArrayNumeric](self: ArrayT, /) -> ArrayT: ...  # noqa: PYI019\n    2773 | \n    2774 |     # Binary ops",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2771"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2778,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"ScalarT@__matmul__\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"number[Any, Any]*\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2775 | \n    2776 |     # TODO: Support the \"1d @ 1d -> scalar\" case\n    2777 |     @overload\n>>> 2778 |     def __matmul__[ScalarT: number](self: NDArray[ScalarT], other: _ArrayLikeBool_co, /) -> NDArray[ScalarT]: ...\n    2779 |     @overload\n    2780 |     def __matmul__(self: NDArray[bool_], other: _ArrayLikeBool_co, /) -> NDArray[bool_]: ...\n    2781 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2778"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2782,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"NDArray[ScalarT@NDArray]\"\n\u00a0\u00a0Type \"bool_\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"__init__.bool[builtins.bool]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2779 |     @overload\n    2780 |     def __matmul__(self: NDArray[bool_], other: _ArrayLikeBool_co, /) -> NDArray[bool_]: ...\n    2781 |     @overload\n>>> 2782 |     def __matmul__[ScalarT: number](self: NDArray[bool_], other: _ArrayLike[ScalarT], /) -> NDArray[ScalarT]: ...\n    2783 |     @overload\n    2784 |     def __matmul__(self: NDArray[floating[_64Bit]], other: _ArrayLikeFloat64_co, /) -> NDArray[float64]: ...\n    2785 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2782"
+    },
+    {
+      "file": "numpy/__init__.pyi",
+      "line": 2786,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Could not specialize type \"_ArrayLike[ScalarT@_ArrayLike]\"\n\u00a0\u00a0Type \"floating[_64Bit]\" is not assignable to type \"generic[Any]\"\n\u00a0\u00a0\u00a0\u00a0\"floating[_64Bit]\" is not assignable to \"generic[Any]\"",
+      "source_context": "    2783 |     @overload\n    2784 |     def __matmul__(self: NDArray[floating[_64Bit]], other: _ArrayLikeFloat64_co, /) -> NDArray[float64]: ...\n    2785 |     @overload\n>>> 2786 |     def __matmul__(self: _ArrayFloat64_co, other: _ArrayLike[floating[_64Bit]], /) -> NDArray[float64]: ...\n    2787 |     @overload\n    2788 |     def __matmul__(self: NDArray[complexfloating[_64Bit]], other: _ArrayLikeComplex128_co, /) -> NDArray[complex128]: ...\n    2789 |     @overload",
+      "github_link": "https://github.com/numpy/numpy/blob/4900421c6d54b3db3cca89a9ace6ff563659edb3/numpy/__init__.pyi#L2786"
+    }
+  ]
+}

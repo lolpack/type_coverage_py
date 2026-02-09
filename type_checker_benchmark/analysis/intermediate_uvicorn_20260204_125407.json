@@ -1,0 +1,311 @@
+{
+  "package_name": "uvicorn",
+  "github_url": "https://github.com/encode/uvicorn",
+  "commit_sha": "a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2",
+  "summary": {
+    "pyright_errors": 121,
+    "pyrefly_errors": 102,
+    "false_positives": 11,
+    "false_negatives": 26
+  },
+  "false_positives": [
+    {
+      "file": "tests/protocols/test_websocket.py",
+      "line": 404,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `status_code`",
+      "source_context": "     401 |     async with run_server(config):\n     402 |         with pytest.raises(websockets.exceptions.InvalidStatusCode) as exc_info:\n     403 |             await connect(f\"ws://127.0.0.1:{unused_tcp_port}\")\n>>>  404 |         assert exc_info.value.status_code == 500\n     405 | \n     406 | \n     407 | async def test_send_before_handshake(",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/protocols/test_websocket.py#L404"
+    },
+    {
+      "file": "tests/protocols/test_websocket.py",
+      "line": 420,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `status_code`",
+      "source_context": "     417 |     async with run_server(config):\n     418 |         with pytest.raises(websockets.exceptions.InvalidStatusCode) as exc_info:\n     419 |             await connect(f\"ws://127.0.0.1:{unused_tcp_port}\")\n>>>  420 |         assert exc_info.value.status_code == 500\n     421 | \n     422 | \n     423 | async def test_duplicate_handshake(ws_protocol_cls: WSProtocol, http_protocol_cls: HTTPProtocol, unused_tcp_port: int):",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/protocols/test_websocket.py#L420"
+    },
+    {
+      "file": "tests/protocols/test_websocket.py",
+      "line": 778,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `status_code`",
+      "source_context": "     775 |         with pytest.raises(websockets.exceptions.InvalidStatusCode) as exc_info:\n     776 |             async with websockets.client.connect(url):\n     777 |                 pass  # pragma: no cover\n>>>  778 |         assert exc_info.value.status_code == 403\n     779 | \n     780 |     config = Config(app=app, ws=ws_protocol_cls, http=http_protocol_cls, lifespan=\"off\", port=unused_tcp_port)\n     781 |     async with run_server(config):",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/protocols/test_websocket.py#L778"
+    },
+    {
+      "file": "tests/protocols/test_websocket.py",
+      "line": 951,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `status_code`",
+      "source_context": "     948 |         with pytest.raises(websockets.exceptions.InvalidStatusCode) as exc_info:\n     949 |             async with websockets.client.connect(url):\n     950 |                 pass  # pragma: no cover\n>>>  951 |         assert exc_info.value.status_code == 404\n     952 | \n     953 |     config = Config(app=app, ws=ws_protocol_cls, http=http_protocol_cls, lifespan=\"off\", port=unused_tcp_port)\n     954 |     async with run_server(config):",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/protocols/test_websocket.py#L951"
+    },
+    {
+      "file": "tests/protocols/test_websocket.py",
+      "line": 985,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `status_code`",
+      "source_context": "     982 |         with pytest.raises(websockets.exceptions.InvalidStatusCode) as exc_info:\n     983 |             async with websockets.client.connect(url):\n     984 |                 pass  # pragma: no cover\n>>>  985 |         assert exc_info.value.status_code == 404\n     986 | \n     987 |     config = Config(app=app, ws=ws_protocol_cls, http=http_protocol_cls, lifespan=\"off\", port=unused_tcp_port)\n     988 |     async with run_server(config):",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/protocols/test_websocket.py#L985"
+    },
+    {
+      "file": "tests/protocols/test_websocket.py",
+      "line": 1028,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `status_code`",
+      "source_context": "    1025 |         with pytest.raises(websockets.exceptions.InvalidStatusCode) as exc_info:\n    1026 |             async with websockets.client.connect(url):\n    1027 |                 pass  # pragma: no cover\n>>> 1028 |         assert exc_info.value.status_code == 404\n    1029 | \n    1030 |     config = Config(app=app, ws=ws_protocol_cls, http=http_protocol_cls, lifespan=\"off\", port=unused_tcp_port)\n    1031 |     async with run_server(config):",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/protocols/test_websocket.py#L1028"
+    },
+    {
+      "file": "tests/supervisors/test_multiprocess.py",
+      "line": 34,
+      "error_code": "missing-attribute",
+      "message": "No attribute `CREATE_NO_WINDOW` in module `subprocess`",
+      "source_context": "      31 | \n      32 |         subprocess.check_call(\n      33 |             [sys.executable, \"-c\", f\"from {module} import {name}; {name}.__wrapped__()\"],\n>>>   34 |             creationflags=subprocess.CREATE_NO_WINDOW,\n      35 |         )\n      36 | \n      37 |     return new_function",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/supervisors/test_multiprocess.py#L34"
+    },
+    {
+      "file": "tests/test_compat.py",
+      "line": 27,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `_pytest.raises.raises` called with arguments: (tuple[type[ValueError], type[TypeError]])",
+      "source_context": "      24 | \n      25 | def test_asyncio_run__passing_a_non_awaitable_callback_should_throw_error() -> None:\n      26 |     # TypeError on Python >= 3.14\n>>>   27 |     with pytest.raises((ValueError, TypeError)):\n      28 |         asyncio_run(lambda: None, loop_factory=CustomLoop)  # type: ignore",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/test_compat.py#L27"
+    },
+    {
+      "file": "uvicorn/logging.py",
+      "line": 99,
+      "error_code": "not-iterable",
+      "message": "Type `None` is not iterable",
+      "source_context": "      96 | \n      97 |     def formatMessage(self, record: logging.LogRecord) -> str:\n      98 |         recordcopy = copy(record)\n>>>   99 |         (\n     100 |             client_addr,\n     101 |             method,\n     102 |             full_path,",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/logging.py#L99"
+    },
+    {
+      "file": "uvicorn/protocols/websockets/websockets_impl.py",
+      "line": 61,
+      "error_code": "not-a-type",
+      "message": "Expected a type form, got instance of `type[Logger] | UnionType`",
+      "source_context": "      58 | \n      59 | class WebSocketProtocol(WebSocketServerProtocol):\n      60 |     extra_headers: list[tuple[str, str]]\n>>>   61 |     logger: logging.Logger | logging.LoggerAdapter[Any]\n      62 | \n      63 |     def __init__(\n      64 |         self,",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/websockets/websockets_impl.py#L61"
+    },
+    {
+      "file": "uvicorn/protocols/websockets/websockets_impl.py",
+      "line": 347,
+      "error_code": "unsupported-operation",
+      "message": "`None` is not subscriptable",
+      "source_context": "     344 |         elif self.initial_response is not None:\n     345 |             if message_type == \"websocket.http.response.body\":\n     346 |                 message = cast(\"WebSocketResponseBodyEvent\", message)\n>>>  347 |                 body = self.initial_response[2] + message[\"body\"]\n     348 |                 self.initial_response = self.initial_response[:2] + (body,)\n     349 |                 if not message.get(\"more_body\", False):\n     350 |                     self.closed_event.set()",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/websockets/websockets_impl.py#L347"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "tests/supervisors/test_reload.py",
+      "line": 294,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"watcher\" for class \"BaseReload\"\n\u00a0\u00a0Attribute \"watcher\" is unknown",
+      "source_context": "     291 | \n     292 |             assert isinstance(reloader, WatchFilesReload)\n     293 |             # just so we can make rust_timeout 100ms\n>>>  294 |             reloader.watcher = watch(\n     295 |                 sub_dir,\n     296 |                 watch_filter=None,\n     297 |                 stop_event=reloader.should_exit,",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/supervisors/test_reload.py#L294"
+    },
+    {
+      "file": "tests/test_config.py",
+      "line": 25,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"WSGIMiddleware\" is unknown import symbol",
+      "source_context": "      22 | from uvicorn._types import ASGIApplication, ASGIReceiveCallable, ASGISendCallable, Environ, Scope, StartResponse\n      23 | from uvicorn.config import Config, LoopFactoryType\n      24 | from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware\n>>>   25 | from uvicorn.middleware.wsgi import WSGIMiddleware\n      26 | from uvicorn.protocols.http.h11_impl import H11Protocol\n      27 | \n      28 | ",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/tests/test_config.py#L25"
+    },
+    {
+      "file": "uvicorn/__main__.py",
+      "line": 4,
+      "error_code": "reportCallIssue",
+      "message": "Arguments missing for parameters \"app\", \"host\", \"port\", \"uds\", \"fd\", \"loop\", \"http\", \"ws\", \"ws_max_size\", \"ws_max_queue\", \"ws_ping_interval\", \"ws_ping_timeout\", \"ws_per_message_deflate\", \"lifespan\", \"interface\", \"reload\", \"reload_dirs\", \"reload_includes\", \"reload_excludes\", \"reload_delay\", \"workers\", \"env_file\", \"log_config\", \"log_level\", \"access_log\", \"proxy_headers\", \"server_header\", \"date_header\", \"forwarded_allow_ips\", \"root_path\", \"limit_concurrency\", \"backlog\", \"limit_max_requests\", \"timeout_keep_alive\", \"timeout_graceful_shutdown\", \"timeout_worker_healthcheck\", \"ssl_keyfile\", \"ssl_certfile\", \"ssl_keyfile_password\", \"ssl_version\", \"ssl_cert_reqs\", \"ssl_ca_certs\", \"ssl_ciphers\", \"headers\", \"use_colors\", \"app_dir\", \"h11_max_incomplete_event_size\", \"factory\"",
+      "source_context": "       1 | import uvicorn\n       2 | \n       3 | if __name__ == \"__main__\":\n>>>    4 |     uvicorn.main()",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/__main__.py#L4"
+    },
+    {
+      "file": "uvicorn/config.py",
+      "line": 26,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"WSGIMiddleware\" is unknown import symbol",
+      "source_context": "      23 | from uvicorn.middleware.asgi2 import ASGI2Middleware\n      24 | from uvicorn.middleware.message_logger import MessageLoggerMiddleware\n      25 | from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware\n>>>   26 | from uvicorn.middleware.wsgi import WSGIMiddleware\n      27 | \n      28 | HTTPProtocolType = Literal[\"auto\", \"h11\", \"httptools\"]\n      29 | WSProtocolType = Literal[\"auto\", \"none\", \"websockets\", \"websockets-sansio\", \"wsproto\"]",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/config.py#L26"
+    },
+    {
+      "file": "uvicorn/config.py",
+      "line": 470,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"type[Any] | FunctionType | Any\" cannot be assigned to parameter \"app\" of type \"ASGI2Application\" in function \"__init__\"\n\u00a0\u00a0Type \"type[Any] | FunctionType | Any\" is not assignable to type \"ASGI2Application\"\n\u00a0\u00a0\u00a0\u00a0Type \"FunctionType\" is not assignable to type \"ASGI2Application\"",
+      "source_context": "     467 |             self.loaded_app = WSGIMiddleware(self.loaded_app)\n     468 |             self.ws_protocol_class = None\n     469 |         elif self.interface == \"asgi2\":\n>>>  470 |             self.loaded_app = ASGI2Middleware(self.loaded_app)\n     471 | \n     472 |         if logger.getEffectiveLevel() <= TRACE_LOG_LEVEL:\n     473 |             self.loaded_app = MessageLoggerMiddleware(self.loaded_app)",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/config.py#L470"
+    },
+    {
+      "file": "uvicorn/config.py",
+      "line": 475,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"MessageLoggerMiddleware | Unknown | ASGI2Middleware | type[Any] | FunctionType | Any\" cannot be assigned to parameter \"app\" of type \"ASGI3Application\" in function \"__init__\"\n\u00a0\u00a0Type \"MessageLoggerMiddleware | Unknown | ASGI2Middleware | type[Any] | FunctionType | Any\" is not assignable to type \"ASGI3Application\"\n\u00a0\u00a0\u00a0\u00a0Type \"MessageLoggerMiddleware\" is not assignable to type \"ASGI3Application\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Parameter 1: type \"Scope\" is incompatible with type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"Scope\" is not assignable to type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"LifespanScope\" is not assignable to type \"WWWScope\"",
+      "source_context": "     472 |         if logger.getEffectiveLevel() <= TRACE_LOG_LEVEL:\n     473 |             self.loaded_app = MessageLoggerMiddleware(self.loaded_app)\n     474 |         if self.proxy_headers:\n>>>  475 |             self.loaded_app = ProxyHeadersMiddleware(self.loaded_app, trusted_hosts=self.forwarded_allow_ips)\n     476 | \n     477 |         self.loaded = True\n     478 | ",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/config.py#L475"
+    },
+    {
+      "file": "uvicorn/lifespan/on.py",
+      "line": 86,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"LifespanScope\" cannot be assigned to parameter \"scope\" of type \"WWWScope\" in function \"__call__\"\n\u00a0\u00a0Type \"LifespanScope\" is not assignable to type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\"type\" is an incompatible type\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Literal['lifespan']\" is not assignable to type \"Literal['http']\"\n\u00a0\u00a0\u00a0\u00a0\"http_version\" is missing from \"LifespanScope\"\n\u00a0\u00a0\u00a0\u00a0\"method\" is missing from \"LifespanScope\"\n\u00a0\u00a0\u00a0\u00a0\"scheme\" is missing from \"LifespanScope\"\n\u00a0\u00a0\u00a0\u00a0\"path\" is missing from \"LifespanScope\"\n\u00a0\u00a0\u00a0\u00a0\"raw_path\" is missing from \"LifespanScope\"\n  ...",
+      "source_context": "      83 |                 \"asgi\": {\"version\": self.config.asgi_version, \"spec_version\": \"2.0\"},\n      84 |                 \"state\": self.state,\n      85 |             }\n>>>   86 |             await app(scope, self.receive, self.send)\n      87 |         except BaseException as exc:\n      88 |             self.asgi = None\n      89 |             self.error_occurred = True",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/lifespan/on.py#L86"
+    },
+    {
+      "file": "uvicorn/main.py",
+      "line": 618,
+      "error_code": "reportCallIssue",
+      "message": "Arguments missing for parameters \"app\", \"host\", \"port\", \"uds\", \"fd\", \"loop\", \"http\", \"ws\", \"ws_max_size\", \"ws_max_queue\", \"ws_ping_interval\", \"ws_ping_timeout\", \"ws_per_message_deflate\", \"lifespan\", \"interface\", \"reload\", \"reload_dirs\", \"reload_includes\", \"reload_excludes\", \"reload_delay\", \"workers\", \"env_file\", \"log_config\", \"log_level\", \"access_log\", \"proxy_headers\", \"server_header\", \"date_header\", \"forwarded_allow_ips\", \"root_path\", \"limit_concurrency\", \"backlog\", \"limit_max_requests\", \"timeout_keep_alive\", \"timeout_graceful_shutdown\", \"timeout_worker_healthcheck\", \"ssl_keyfile\", \"ssl_certfile\", \"ssl_keyfile_password\", \"ssl_version\", \"ssl_cert_reqs\", \"ssl_ca_certs\", \"ssl_ciphers\", \"headers\", \"use_colors\", \"app_dir\", \"h11_max_incomplete_event_size\", \"factory\"",
+      "source_context": "     615 | \n     616 | \n     617 | if __name__ == \"__main__\":\n>>>  618 |     main()  # pragma: no cover",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/main.py#L618"
+    },
+    {
+      "file": "uvicorn/protocols/http/h11_impl.py",
+      "line": 93,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@H11Protocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"add\"\n\u00a0\u00a0Type \"Self@H11Protocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "      90 |     def connection_made(  # type: ignore[override]\n      91 |         self, transport: asyncio.Transport\n      92 |     ) -> None:\n>>>   93 |         self.connections.add(self)\n      94 | \n      95 |         self.transport = transport\n      96 |         self.flow = FlowControl(transport)",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/h11_impl.py#L93"
+    },
+    {
+      "file": "uvicorn/protocols/http/h11_impl.py",
+      "line": 106,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@H11Protocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"discard\"\n\u00a0\u00a0Type \"Self@H11Protocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "     103 |             self.logger.log(TRACE_LOG_LEVEL, \"%sHTTP connection made\", prefix)\n     104 | \n     105 |     def connection_lost(self, exc: Exception | None) -> None:\n>>>  106 |         self.connections.discard(self)\n     107 | \n     108 |         if self.logger.level <= TRACE_LOG_LEVEL:\n     109 |             prefix = \"%s:%d - \" % self.client if self.client else \"\"",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/h11_impl.py#L106"
+    },
+    {
+      "file": "uvicorn/protocols/http/h11_impl.py",
+      "line": 255,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"((scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> CoroutineType[Any, Any, None]) | Any | Unknown | ASGI2Middleware | MessageLoggerMiddleware | ProxyHeadersMiddleware\" cannot be assigned to parameter \"app\" of type \"ASGI3Application\" in function \"run_asgi\"\n\u00a0\u00a0Type \"((scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> CoroutineType[Any, Any, None]) | Any | Unknown | ASGI2Middleware | MessageLoggerMiddleware | ProxyHeadersMiddleware\" is not assignable to type \"ASGI3Application\"\n\u00a0\u00a0\u00a0\u00a0Type \"MessageLoggerMiddleware\" is not assignable to type \"ASGI3Application\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Parameter 1: type \"Scope\" is incompatible with type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"Scope\" is not assignable to type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"LifespanScope\" is not assignable to type \"WWWScope\"",
+      "source_context": "     252 |                 # For the asyncio loop, we need to explicitly start with an empty context\n     253 |                 # as it can be polluted from previous ASGI runs.\n     254 |                 # See https://github.com/python/cpython/issues/140947 for details.\n>>>  255 |                 task = contextvars.Context().run(self.loop.create_task, self.cycle.run_asgi(app))\n     256 |                 # TODO: Replace the line above with the line below for Python >= 3.11\n     257 |                 # task = self.loop.create_task(self.cycle.run_asgi(app), context=contextvars.Context())\n     258 |                 task.add_done_callback(self.tasks.discard)",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/h11_impl.py#L255"
+    },
+    {
+      "file": "uvicorn/protocols/http/h11_impl.py",
+      "line": 284,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@H11Protocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"discard\"\n\u00a0\u00a0Type \"Self@H11Protocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"H11Protocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "     281 |             prefix = \"%s:%d - \" % self.client if self.client else \"\"\n     282 |             self.logger.log(TRACE_LOG_LEVEL, \"%sUpgrading to WebSocket\", prefix)\n     283 | \n>>>  284 |         self.connections.discard(self)\n     285 |         output = [event.method, b\" \", event.target, b\" HTTP/1.1\\r\\n\"]\n     286 |         for name, value in self.headers:\n     287 |             output += [name, b\": \", value, b\"\\r\\n\"]",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/h11_impl.py#L284"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 103,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@HttpToolsProtocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"add\"\n\u00a0\u00a0Type \"Self@HttpToolsProtocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "     100 |     def connection_made(  # type: ignore[override]\n     101 |         self, transport: asyncio.Transport\n     102 |     ) -> None:\n>>>  103 |         self.connections.add(self)\n     104 | \n     105 |         self.transport = transport\n     106 |         self.flow = FlowControl(transport)",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L103"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 116,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@HttpToolsProtocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"discard\"\n\u00a0\u00a0Type \"Self@HttpToolsProtocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "     113 |             self.logger.log(TRACE_LOG_LEVEL, \"%sHTTP connection made\", prefix)\n     114 | \n     115 |     def connection_lost(self, exc: Exception | None) -> None:\n>>>  116 |         self.connections.discard(self)\n     117 | \n     118 |         if self.logger.level <= TRACE_LOG_LEVEL:\n     119 |             prefix = \"%s:%d - \" % self.client if self.client else \"\"",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L116"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 173,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"feed_data\" is not a known attribute of \"None\"",
+      "source_context": "     170 |         self._unset_keepalive_if_required()\n     171 | \n     172 |         try:\n>>>  173 |             self.parser.feed_data(data)\n     174 |         except httptools.HttpParserError:\n     175 |             msg = \"Invalid HTTP request received.\"\n     176 |             self.logger.warning(msg)",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L173"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 190,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@HttpToolsProtocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"discard\"\n\u00a0\u00a0Type \"Self@HttpToolsProtocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"HttpToolsProtocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "     187 |             prefix = \"%s:%d - \" % self.client if self.client else \"\"\n     188 |             self.logger.log(TRACE_LOG_LEVEL, \"%sUpgrading to WebSocket\", prefix)\n     189 | \n>>>  190 |         self.connections.discard(self)\n     191 |         method = self.scope[\"method\"].encode()\n     192 |         output = [method, b\" \", self.url, b\" HTTP/1.1\\r\\n\"]\n     193 |         for name, value in self.scope[\"headers\"]:",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L190"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 248,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"get_http_version\" is not a known attribute of \"None\"",
+      "source_context": "     245 |         self.headers.append((name, value))\n     246 | \n     247 |     def on_headers_complete(self) -> None:\n>>>  248 |         http_version = self.parser.get_http_version()\n     249 |         method = self.parser.get_method()\n     250 |         self.scope[\"method\"] = method.decode(\"ascii\")\n     251 |         if http_version != \"1.1\":",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L248"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 253,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"should_upgrade\" is not a known attribute of \"None\"",
+      "source_context": "     250 |         self.scope[\"method\"] = method.decode(\"ascii\")\n     251 |         if http_version != \"1.1\":\n     252 |             self.scope[\"http_version\"] = http_version\n>>>  253 |         if self.parser.should_upgrade() and self._should_upgrade():\n     254 |             return\n     255 |         parsed_url = httptools.parse_url(self.url)\n     256 |         raw_path = parsed_url.path",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L253"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 295,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"((scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> CoroutineType[Any, Any, None]) | Any | Unknown | ASGI2Middleware | MessageLoggerMiddleware | ProxyHeadersMiddleware\" cannot be assigned to parameter \"app\" of type \"ASGI3Application\" in function \"run_asgi\"\n\u00a0\u00a0Type \"((scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> CoroutineType[Any, Any, None]) | Any | Unknown | ASGI2Middleware | MessageLoggerMiddleware | ProxyHeadersMiddleware\" is not assignable to type \"ASGI3Application\"\n\u00a0\u00a0\u00a0\u00a0Type \"MessageLoggerMiddleware\" is not assignable to type \"ASGI3Application\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Parameter 1: type \"Scope\" is incompatible with type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"Scope\" is not assignable to type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"LifespanScope\" is not assignable to type \"WWWScope\"",
+      "source_context": "     292 |             # For the asyncio loop, we need to explicitly start with an empty context\n     293 |             # as it can be polluted from previous ASGI runs.\n     294 |             # See https://github.com/python/cpython/issues/140947 for details.\n>>>  295 |             task = contextvars.Context().run(self.loop.create_task, self.cycle.run_asgi(app))\n     296 |             # TODO: Replace the line above with the line below for Python >= 3.11\n     297 |             # task = self.loop.create_task(self.cycle.run_asgi(app), context=contextvars.Context())\n     298 |             task.add_done_callback(self.tasks.discard)",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L295"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 303,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"tuple[RequestResponseCycle, ((scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> CoroutineType[Any, Any, None]) | Any | Unknown | ASGI2Middleware | MessageLoggerMiddleware | ProxyHeadersMiddleware]\" cannot be assigned to parameter \"x\" of type \"tuple[RequestResponseCycle, ASGI3Application]\" in function \"appendleft\"\n\u00a0\u00a0Type \"((scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> CoroutineType[Any, Any, None]) | Any | Unknown | ASGI2Middleware | MessageLoggerMiddleware | ProxyHeadersMiddleware\" is not assignable to type \"ASGI3Application\"\n\u00a0\u00a0\u00a0\u00a0Type \"MessageLoggerMiddleware\" is not assignable to type \"ASGI3Application\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Parameter 1: type \"Scope\" is incompatible with type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"Scope\" is not assignable to type \"WWWScope\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"LifespanScope\" is not assignable to type \"WWWScope\"",
+      "source_context": "     300 |         else:\n     301 |             # Pipelined HTTP requests need to be queued up.\n     302 |             self.flow.pause_reading()\n>>>  303 |             self.pipeline.appendleft((self.cycle, app))\n     304 | \n     305 |     def on_body(self, body: bytes) -> None:\n     306 |         if (self.parser.should_upgrade() and self._should_upgrade()) or self.cycle.response_complete:",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L303"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 306,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"should_upgrade\" is not a known attribute of \"None\"",
+      "source_context": "     303 |             self.pipeline.appendleft((self.cycle, app))\n     304 | \n     305 |     def on_body(self, body: bytes) -> None:\n>>>  306 |         if (self.parser.should_upgrade() and self._should_upgrade()) or self.cycle.response_complete:\n     307 |             return\n     308 |         self.cycle.body += body\n     309 |         if len(self.cycle.body) > HIGH_WATER_LIMIT:",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L306"
+    },
+    {
+      "file": "uvicorn/protocols/http/httptools_impl.py",
+      "line": 314,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"should_upgrade\" is not a known attribute of \"None\"",
+      "source_context": "     311 |         self.cycle.message_event.set()\n     312 | \n     313 |     def on_message_complete(self) -> None:\n>>>  314 |         if (self.parser.should_upgrade() and self._should_upgrade()) or self.cycle.response_complete:\n     315 |             return\n     316 |         self.cycle.more_body = False\n     317 |         self.cycle.message_event.set()",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/http/httptools_impl.py#L314"
+    },
+    {
+      "file": "uvicorn/protocols/websockets/websockets_sansio_impl.py",
+      "line": 105,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@WebSocketsSansIOProtocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"add\"\n\u00a0\u00a0Type \"Self@WebSocketsSansIOProtocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "     102 |     def connection_made(self, transport: BaseTransport) -> None:\n     103 |         \"\"\"Called when a connection is made.\"\"\"\n     104 |         transport = cast(Transport, transport)\n>>>  105 |         self.connections.add(self)\n     106 |         self.transport = transport\n     107 |         self.server = get_local_addr(transport)\n     108 |         self.client = get_remote_addr(transport)",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/websockets/websockets_sansio_impl.py#L105"
+    },
+    {
+      "file": "uvicorn/protocols/websockets/websockets_sansio_impl.py",
+      "line": 118,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@WebSocketsSansIOProtocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"remove\"\n\u00a0\u00a0Type \"Self@WebSocketsSansIOProtocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WebSocketsSansIOProtocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "     115 |     def connection_lost(self, exc: Exception | None) -> None:\n     116 |         code = 1005 if self.handshake_complete else 1006\n     117 |         self.queue.put_nowait({\"type\": \"websocket.disconnect\", \"code\": code})\n>>>  118 |         self.connections.remove(self)\n     119 | \n     120 |         if self.logger.level <= TRACE_LOG_LEVEL:\n     121 |             prefix = \"%s:%d - \" % self.client if self.client else \"\"",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/websockets/websockets_sansio_impl.py#L118"
+    },
+    {
+      "file": "uvicorn/protocols/websockets/wsproto_impl.py",
+      "line": 90,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@WSProtocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"add\"\n\u00a0\u00a0Type \"Self@WSProtocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "      87 |     def connection_made(  # type: ignore[override]\n      88 |         self, transport: asyncio.Transport\n      89 |     ) -> None:\n>>>   90 |         self.connections.add(self)\n      91 |         self.transport = transport\n      92 |         self.server = get_local_addr(transport)\n      93 |         self.client = get_remote_addr(transport)",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/websockets/wsproto_impl.py#L90"
+    },
+    {
+      "file": "uvicorn/protocols/websockets/wsproto_impl.py",
+      "line": 103,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Self@WSProtocol\" cannot be assigned to parameter \"element\" of type \"Protocols\" in function \"remove\"\n\u00a0\u00a0Type \"Self@WSProtocol\" is not assignable to type \"Protocols\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"H11Protocol\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"HttpToolsProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"WSProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"WebSocketProtocol\"\n\u00a0\u00a0\u00a0\u00a0\"WSProtocol*\" is not assignable to \"WebSocketsSansIOProtocol\"",
+      "source_context": "     100 |     def connection_lost(self, exc: Exception | None) -> None:\n     101 |         code = 1005 if self.handshake_complete else 1006\n     102 |         self.queue.put_nowait({\"type\": \"websocket.disconnect\", \"code\": code})\n>>>  103 |         self.connections.remove(self)\n     104 | \n     105 |         if self.logger.level <= TRACE_LOG_LEVEL:\n     106 |             prefix = \"%s:%d - \" % self.client if self.client else \"\"",
+      "github_link": "https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/websockets/wsproto_impl.py#L103"
+    }
+  ]
+}

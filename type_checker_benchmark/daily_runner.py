@@ -47,6 +47,7 @@ class ErrorMetrics(TypedDict, total=False):
     files_checked: int
     execution_time_s: float
     error_message: str | None
+    raw_output: str | None  # Raw stdout+stderr for detailed analysis
 
 
 class PackageResult(TypedDict, total=False):
@@ -190,7 +191,7 @@ def get_type_checker_versions() -> dict[str, str]:
         "pyright": ["pyright", "--version"],
         "pyrefly": ["pyrefly", "--version"],
         "ty": ["ty", "--version"],
-        "mypy": ["python -m mypy", "--version"],
+        "mypy": ["mypy", "--version"],
         "zuban": ["zuban", "--version"],
     }
 
@@ -494,7 +495,10 @@ def _write_dummy_pyright_config(package_path: Path) -> Path:
 
 
 def _write_dummy_mypy_config(package_path: Path) -> Path:
-    """Write a minimal mypy config with check_untyped_defs enabled.
+    """Write a minimal mypy config to override project configs.
+
+    Uses mypy's default settings for consistent benchmarking.
+    This overrides any project-specific mypy config.
 
     Args:
         package_path: Path to the package directory.
@@ -502,9 +506,9 @@ def _write_dummy_mypy_config(package_path: Path) -> Path:
     Returns:
         Path to the dummy config file.
     """
+    # Empty [mypy] section uses all defaults
+    # This overrides project configs but doesn't add non-default strictness
     config_content = """[mypy]
-check_untyped_defs = True
-ignore_missing_imports = True
 """
     config_path = package_path / "mypy.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
@@ -512,22 +516,30 @@ ignore_missing_imports = True
     return config_path
 
 
-def run_pyright(package_path: Path, timeout: int = SLOW_CHECKER_TIMEOUT) -> ErrorMetrics:
+def run_pyright(
+    package_path: Path,
+    timeout: int = SLOW_CHECKER_TIMEOUT,
+    check_path: Path | None = None,
+) -> ErrorMetrics:
     """Run Pyright on a package and count errors.
 
     Args:
-        package_path: Path to the package directory.
+        package_path: Path to the package directory (for config files).
         timeout: Timeout in seconds (default: 5 minutes).
+        check_path: Path to actually check (defaults to package_path).
 
     Returns:
         Error metrics dictionary.
     """
+    if check_path is None:
+        check_path = package_path
+
     # Write a dummy config to ensure consistent behavior and ignore existing configs
     _write_dummy_pyright_config(package_path)
 
     # Run pyright - it will automatically find our pyrightconfig.json in the package dir
     result = run_process_with_timeout(
-        ["pyright", "--outputjson", str(package_path)],
+        ["pyright", "--outputjson", str(check_path)],
         cwd=package_path,
         timeout=timeout,
     )
@@ -679,23 +691,30 @@ def run_ty(package_path: Path, timeout: int = DEFAULT_TIMEOUT) -> ErrorMetrics:
     }
 
 
-def run_mypy(package_path: Path, timeout: int = SLOW_CHECKER_TIMEOUT) -> ErrorMetrics:
+def run_mypy(
+    package_path: Path,
+    timeout: int = SLOW_CHECKER_TIMEOUT,
+    check_path: Path | None = None,
+) -> ErrorMetrics:
     """Run mypy on a package and count errors.
 
     Args:
-        package_path: Path to the package directory.
+        package_path: Path to the package directory (for config files).
         timeout: Timeout in seconds (default: 5 minutes).
+        check_path: Path to actually check (defaults to package_path).
 
     Returns:
         Error metrics dictionary.
     """
-    # Write a dummy config to ensure consistent behavior and check untyped defs
+    if check_path is None:
+        check_path = package_path
+
+    # Write a dummy config to ensure consistent behavior
     config_path = _write_dummy_mypy_config(package_path)
 
-    # Run mypy with our custom config that enables check_untyped_defs
-    # This ensures we check all code, not just annotated functions
+    # Run mypy with our custom config
     result = run_process_with_timeout(
-        [sys.executable, "-m", "mypy", "--config-file", str(config_path), str(package_path)],
+        [sys.executable, "-m", "mypy", "--config-file", str(config_path), str(check_path)],
         cwd=package_path,
         timeout=timeout,
     )
@@ -712,6 +731,18 @@ def run_mypy(package_path: Path, timeout: int = SLOW_CHECKER_TIMEOUT) -> ErrorMe
         }
 
     output = result["stdout"] + result["stderr"]
+
+    # Check if mypy stopped early due to syntax errors
+    if "errors prevented further checking" in output:
+        return {
+            "ok": False,
+            "error_count": 0,
+            "warning_count": 0,
+            "info_count": 0,
+            "files_checked": 0,
+            "execution_time_s": result["execution_time_s"],
+            "error_message": "Syntax errors prevented further checking",
+        }
 
     # Count mypy error lines (format: file.py:line: error: message)
     error_count = len(re.findall(r":\s*error:", output, re.IGNORECASE))
@@ -809,6 +840,16 @@ def run_type_checkers_for_package(
     """
     results: dict[str, ErrorMetrics] = {}
 
+    # Determine the target path to check
+    # Some packages have test files with intentional syntax errors
+    check_path = package_path
+    if package_name == "django":
+        # Django has intentional syntax error files in tests/ that stop mypy
+        # Check only the django/ source folder for all type checkers
+        django_src = package_path / "django"
+        if django_src.exists():
+            check_path = django_src
+
     for checker in type_checkers:
         if not is_type_checker_available(checker):
             print(f"    Skipping {checker}: not installed")
@@ -829,7 +870,18 @@ def run_type_checkers_for_package(
             continue
 
         print(f"    Running {checker}...")
-        metrics = runner(package_path, timeout)
+        if checker == "mypy":
+            metrics = run_mypy(package_path, timeout, check_path=check_path)
+        elif checker == "pyright":
+            metrics = run_pyright(package_path, timeout, check_path=check_path)
+        elif checker == "pyrefly":
+            metrics = run_pyrefly(check_path, timeout)
+        elif checker == "ty":
+            metrics = run_ty(check_path, timeout)
+        elif checker == "zuban":
+            metrics = run_zuban(check_path, timeout)
+        else:
+            metrics = runner(package_path, timeout)
         results[checker] = metrics
 
         if metrics.get("ok"):

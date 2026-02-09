@@ -1,0 +1,223 @@
+{
+  "package_name": "starlette",
+  "github_url": "https://github.com/encode/starlette",
+  "commit_sha": "2b73aecd8377e0c189943a5f30d3dbab134f6104",
+  "summary": {
+    "pyright_errors": 52,
+    "pyrefly_errors": 65,
+    "false_positives": 18,
+    "false_negatives": 8
+  },
+  "false_positives": [
+    {
+      "file": "starlette/_exception_handler.py",
+      "line": 63,
+      "error_code": "not-callable",
+      "message": "Expected a callable, got `Awaitable[Response]`",
+      "source_context": "      60 |             else:\n      61 |                 response = await run_in_threadpool(handler, conn, exc)\n      62 |             if response is not None:\n>>>   63 |                 await response(scope, receive, sender)\n      64 | \n      65 |     return wrapped_app",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/_exception_handler.py#L63"
+    },
+    {
+      "file": "starlette/applications.py",
+      "line": 101,
+      "error_code": "bad-argument-type",
+      "message": "Expected `P` to be a ParamSpec value in function `starlette.middleware.Middleware.__init__`",
+      "source_context": "      98 |     def add_middleware(self, middleware_class: _MiddlewareFactory[P], *args: P.args, **kwargs: P.kwargs) -> None:\n      99 |         if self.middleware_stack is not None:  # pragma: no cover\n     100 |             raise RuntimeError(\"Cannot add middleware after an application has started\")\n>>>  101 |         self.user_middleware.insert(0, Middleware(middleware_class, *args, **kwargs))\n     102 | \n     103 |     def add_exception_handler(\n     104 |         self,",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/applications.py#L101"
+    },
+    {
+      "file": "starlette/background.py",
+      "line": 14,
+      "error_code": "invalid-type-var",
+      "message": "Attribute `func` cannot depend on type variable `P`, which is not in the scope of class `BackgroundTask`",
+      "source_context": "      11 | \n      12 | class BackgroundTask:\n      13 |     def __init__(self, func: Callable[P, Any], *args: P.args, **kwargs: P.kwargs) -> None:\n>>>   14 |         self.func = func\n      15 |         self.args = args\n      16 |         self.kwargs = kwargs\n      17 |         self.is_async = is_async_callable(func)",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/background.py#L14"
+    },
+    {
+      "file": "starlette/background.py",
+      "line": 31,
+      "error_code": "bad-argument-type",
+      "message": "Expected `P` to be a ParamSpec value in function `BackgroundTask.__init__`",
+      "source_context": "      28 |         self.tasks = list(tasks) if tasks else []\n      29 | \n      30 |     def add_task(self, func: Callable[P, Any], *args: P.args, **kwargs: P.kwargs) -> None:\n>>>   31 |         task = BackgroundTask(func, *args, **kwargs)\n      32 |         self.tasks.append(task)\n      33 | \n      34 |     async def __call__(self) -> None:",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/background.py#L31"
+    },
+    {
+      "file": "starlette/concurrency.py",
+      "line": 31,
+      "error_code": "bad-assignment",
+      "message": "`partial[T]` is not assignable to variable `func` with type `(ParamSpec(P)) -> T`",
+      "source_context": "      28 | \n      29 | \n      30 | async def run_in_threadpool(func: Callable[P, T], *args: P.args, **kwargs: P.kwargs) -> T:\n>>>   31 |     func = functools.partial(func, *args, **kwargs)\n      32 |     return await anyio.to_thread.run_sync(func)\n      33 | \n      34 | ",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/concurrency.py#L31"
+    },
+    {
+      "file": "starlette/config.py",
+      "line": 70,
+      "error_code": "inconsistent-overload",
+      "message": "Implementation signature `(self: Self@Config, key: str, cast: ((Any) -> Any) | None = None, default: Any = ...) -> Any` does not accept all arguments that overload signature `(self: Self@Config, key: str, cast: type[T], default: T = ...) -> T` accepts",
+      "source_context": "      67 |     def __call__(self, key: str, *, default: None) -> str | None: ...\n      68 | \n      69 |     @overload\n>>>   70 |     def __call__(self, key: str, cast: type[T], default: T = ...) -> T: ...\n      71 | \n      72 |     @overload\n      73 |     def __call__(self, key: str, cast: type[str] = ..., default: str = ...) -> str: ...",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/config.py#L70"
+    },
+    {
+      "file": "starlette/middleware/__init__.py",
+      "line": 23,
+      "error_code": "invalid-type-var",
+      "message": "Attribute `cls` cannot depend on type variable `P`, which is not in the scope of class `Middleware`",
+      "source_context": "      20 | \n      21 | class Middleware:\n      22 |     def __init__(self, cls: _MiddlewareFactory[P], *args: P.args, **kwargs: P.kwargs) -> None:\n>>>   23 |         self.cls = cls\n      24 |         self.args = args\n      25 |         self.kwargs = kwargs\n      26 | ",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/middleware/__init__.py#L23"
+    },
+    {
+      "file": "starlette/middleware/sessions.py",
+      "line": 36,
+      "error_code": "bad-assignment",
+      "message": "`str` is not assignable to attribute `security_flags` with type `LiteralString`",
+      "source_context": "      33 |         if https_only:  # Secure flag can be used with HTTPS only\n      34 |             self.security_flags += \"; secure\"\n      35 |         if domain is not None:\n>>>   36 |             self.security_flags += f\"; domain={domain}\"\n      37 | \n      38 |     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:\n      39 |         if scope[\"type\"] not in (\"http\", \"websocket\"):  # pragma: no cover",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/middleware/sessions.py#L36"
+    },
+    {
+      "file": "starlette/middleware/wsgi.py",
+      "line": 70,
+      "error_code": "unsupported-operation",
+      "message": "`+` is not supported between `BytesIO` and `Literal[',']`",
+      "source_context": "      67 |         # case\n      68 |         value = value.decode(\"latin1\")\n      69 |         if corrected_name in environ:\n>>>   70 |             value = environ[corrected_name] + \",\" + value\n      71 |         environ[corrected_name] = value\n      72 |     return environ\n      73 | ",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/middleware/wsgi.py#L70"
+    },
+    {
+      "file": "starlette/requests.py",
+      "line": 123,
+      "error_code": "missing-attribute",
+      "message": "Object of class `NoneType` has no attribute `endswith`",
+      "source_context": "     120 |             # for url_for should still be the top level app root path.\n     121 |             app_root_path = base_url_scope.get(\"app_root_path\", base_url_scope.get(\"root_path\", \"\"))\n     122 |             path = app_root_path\n>>>  123 |             if not path.endswith(\"/\"):\n     124 |                 path += \"/\"\n     125 |             base_url_scope[\"path\"] = path\n     126 |             base_url_scope[\"query_string\"] = b\"\"",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/requests.py#L123"
+    },
+    {
+      "file": "starlette/routing.py",
+      "line": 674,
+      "error_code": "bad-assignment",
+      "message": "`BaseRoute | Unknown | None` is not assignable to `None` (caused by inconsistent types when breaking cycles)",
+      "source_context": "     671 | \n     672 |         partial = None\n     673 | \n>>>  674 |         for route in self.routes:\n     675 |             # Determine if any route matches the incoming scope,\n     676 |             # and hand over to the matching route if found.\n     677 |             match, child_scope = route.matches(scope)",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/routing.py#L674"
+    },
+    {
+      "file": "starlette/routing.py",
+      "line": 690,
+      "error_code": "unbound-name",
+      "message": "`partial_scope` may be uninitialized",
+      "source_context": "     687 |             # \u00a0Handle partial matches. These are cases where an endpoint is\n     688 |             # able to handle the request, but is not a preferred option.\n     689 |             # We use this in particular to deal with \"405 Method Not Allowed\".\n>>>  690 |             scope.update(partial_scope)\n     691 |             await partial.handle(scope, receive, send)\n     692 |             return\n     693 | ",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/routing.py#L690"
+    },
+    {
+      "file": "starlette/templating.py",
+      "line": 112,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.setdefault` called with arguments: (Literal['url_for'], (context: dict[str, Any], name: str, /, **path_params: Any) -> URL)",
+      "source_context": "     109 |             request: Request = context[\"request\"]\n     110 |             return request.url_for(name, **path_params)\n     111 | \n>>>  112 |         env.globals.setdefault(\"url_for\", url_for)\n     113 | \n     114 |     def get_template(self, name: str) -> jinja2.Template:\n     115 |         return self.env.get_template(name)",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/templating.py#L112"
+    },
+    {
+      "file": "tests/test_authentication.py",
+      "line": 27,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `BasicAuth.authenticate` overrides parent class `AuthenticationBackend` in an inconsistent manner",
+      "source_context": "      24 | \n      25 | \n      26 | class BasicAuth(AuthenticationBackend):\n>>>   27 |     async def authenticate(\n      28 |         self,\n      29 |         request: HTTPConnection,\n      30 |     ) -> tuple[AuthCredentials, SimpleUser] | None:",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/test_authentication.py#L27"
+    },
+    {
+      "file": "tests/test_config.py",
+      "line": 22,
+      "error_code": "assert-type",
+      "message": "assert_type(str, str | None) failed",
+      "source_context": "      19 |     assert_type(config(\"STR_DEFAULT\", default=\"\"), str)\n      20 |     assert_type(config(\"STR_CAST\", cast=str), str)\n      21 |     assert_type(config(\"STR_NONE\", default=None), str | None)\n>>>   22 |     assert_type(config(\"STR_CAST_NONE\", cast=str, default=None), str | None)\n      23 |     assert_type(config(\"STR_CAST_STR\", cast=str, default=\"\"), str)\n      24 | \n      25 |     assert_type(config(\"BOOL\", cast=bool), bool)",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/test_config.py#L22"
+    },
+    {
+      "file": "tests/test_config.py",
+      "line": 27,
+      "error_code": "assert-type",
+      "message": "assert_type(bool, bool | None) failed",
+      "source_context": "      24 | \n      25 |     assert_type(config(\"BOOL\", cast=bool), bool)\n      26 |     assert_type(config(\"BOOL_DEFAULT\", cast=bool, default=False), bool)\n>>>   27 |     assert_type(config(\"BOOL_NONE\", cast=bool, default=None), bool | None)\n      28 | \n      29 |     def cast_to_int(v: Any) -> int:\n      30 |         return int(v)",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/test_config.py#L27"
+    },
+    {
+      "file": "tests/test_routing.py",
+      "line": 697,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable",
+      "source_context": "     694 |     @contextlib.asynccontextmanager\n     695 |     async def lifespan(app: Starlette) -> AsyncIterator[Never]:\n     696 |         raise RuntimeError()\n>>>  697 |         yield  # pragma: no cover\n     698 | \n     699 |     router = Router(lifespan=lifespan)\n     700 |     startup_failed = False",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/test_routing.py#L697"
+    },
+    {
+      "file": "tests/test_testclient.py",
+      "line": 170,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable",
+      "source_context": "     167 |     @asynccontextmanager\n     168 |     async def lifespan(app: Starlette) -> AsyncGenerator[None, None]:\n     169 |         raise RuntimeError(\"Startup error\")\n>>>  170 |         yield\n     171 | \n     172 |     startup_error_app = Starlette(lifespan=lifespan)\n     173 | ",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/test_testclient.py#L170"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "starlette/config.py",
+      "line": 79,
+      "error_code": "reportInvalidTypeVarUse",
+      "message": "Type variable \"T\" may go unsolved if caller supplies no argument for parameter \"cast\"\n\u00a0\u00a0Provide an overload that specifies the return type when the argument is not supplied",
+      "source_context": "      76 |     def __call__(\n      77 |         self,\n      78 |         key: str,\n>>>   79 |         cast: Callable[[Any], T] = ...,\n      80 |         default: Any = ...,\n      81 |     ) -> T: ...\n      82 | ",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/config.py#L79"
+    },
+    {
+      "file": "starlette/middleware/base.py",
+      "line": 244,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"Never\" is not awaitable",
+      "source_context": "     241 |             await send({\"type\": \"http.response.body\", \"body\": b\"\", \"more_body\": False})\n     242 | \n     243 |         if self.background:\n>>>  244 |             await self.background()",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/middleware/base.py#L244"
+    },
+    {
+      "file": "starlette/requests.py",
+      "line": 102,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"(self: object) -> int\" is not assignable to declared type \"None\"\n\u00a0\u00a0\"FunctionType\" is not assignable to \"None\"",
+      "source_context": "      99 |     # Connection instances should never be considered equal\n     100 |     # unless `self is other`.\n     101 |     __eq__ = object.__eq__\n>>>  102 |     __hash__ = object.__hash__\n     103 | \n     104 |     @property\n     105 |     def app(self) -> Any:",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/requests.py#L102"
+    },
+    {
+      "file": "starlette/routing.py",
+      "line": 53,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"((Request[State]) -> (Awaitable[Response] | Response)) | partial[CoroutineType[Any, Any, T@run_in_threadpool]]\" is not assignable to declared type \"(Request[State]) -> Awaitable[Response]\"\n\u00a0\u00a0Type \"((Request[State]) -> (Awaitable[Response] | Response)) | partial[CoroutineType[Any, Any, T@run_in_threadpool]]\" is not assignable to type \"(Request[State]) -> Awaitable[Response]\"\n\u00a0\u00a0\u00a0\u00a0Type \"(Request[State]) -> (Awaitable[Response] | Response)\" is not assignable to type \"(Request[State]) -> Awaitable[Response]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Function return type \"Awaitable[Response] | Response\" is incompatible with type \"Awaitable[Response]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"Awaitable[Response] | Response\" is not assignable to type \"Awaitable[Response]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Response\" is incompatible with protocol \"Awaitable[Response]\"",
+      "source_context": "      50 |     Takes a function or coroutine `func(request) -> response`,\n      51 |     and returns an ASGI application.\n      52 |     \"\"\"\n>>>   53 |     f: Callable[[Request], Awaitable[Response]] = (\n      54 |         func if is_async_callable(func) else functools.partial(run_in_threadpool, func)\n      55 |     )\n      56 | ",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/routing.py#L53"
+    },
+    {
+      "file": "tests/middleware/test_gzip.py",
+      "line": 80,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"CoroutineType[Any, Any, ContentStream]\" cannot be assigned to parameter \"content\" of type \"ContentStream\" in function \"__init__\"\n\u00a0\u00a0Type \"CoroutineType[Any, Any, ContentStream]\" is not assignable to type \"ContentStream\"\n\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, ContentStream]\" is incompatible with protocol \"AsyncIterable[Content]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__aiter__\" is not present\n\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, ContentStream]\" is incompatible with protocol \"Iterable[Content]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__iter__\" is not present",
+      "source_context": "      77 |                 yield bytes\n      78 | \n      79 |         streaming = generator(bytes=b\"x\" * 400, count=10)\n>>>   80 |         return StreamingResponse(streaming, status_code=200)\n      81 | \n      82 |     app = Starlette(\n      83 |         routes=[Route(\"/\", endpoint=homepage)],",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/middleware/test_gzip.py#L80"
+    },
+    {
+      "file": "tests/middleware/test_gzip.py",
+      "line": 103,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"CoroutineType[Any, Any, ContentStream]\" cannot be assigned to parameter \"content\" of type \"ContentStream\" in function \"__init__\"\n\u00a0\u00a0Type \"CoroutineType[Any, Any, ContentStream]\" is not assignable to type \"ContentStream\"\n\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, ContentStream]\" is incompatible with protocol \"AsyncIterable[Content]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__aiter__\" is not present\n\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, ContentStream]\" is incompatible with protocol \"Iterable[Content]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__iter__\" is not present",
+      "source_context": "     100 |                 yield bytes\n     101 | \n     102 |         streaming = generator(bytes=b\"x\" * 400, count=10)\n>>>  103 |         return StreamingResponse(streaming, status_code=200)\n     104 | \n     105 |     app = Starlette(\n     106 |         routes=[Route(\"/\", endpoint=homepage)],",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/middleware/test_gzip.py#L103"
+    },
+    {
+      "file": "tests/middleware/test_gzip.py",
+      "line": 128,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"CoroutineType[Any, Any, ContentStream]\" cannot be assigned to parameter \"content\" of type \"ContentStream\" in function \"__init__\"\n\u00a0\u00a0Type \"CoroutineType[Any, Any, ContentStream]\" is not assignable to type \"ContentStream\"\n\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, ContentStream]\" is incompatible with protocol \"AsyncIterable[Content]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__aiter__\" is not present\n\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, ContentStream]\" is incompatible with protocol \"Iterable[Content]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__iter__\" is not present",
+      "source_context": "     125 |                 yield bytes\n     126 | \n     127 |         streaming = generator(bytes=b\"x\" * 400, count=10)\n>>>  128 |         return StreamingResponse(streaming, status_code=200, headers={\"Content-Encoding\": \"text\"})\n     129 | \n     130 |     app = Starlette(\n     131 |         routes=[Route(\"/\", endpoint=homepage)],",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/middleware/test_gzip.py#L128"
+    },
+    {
+      "file": "tests/middleware/test_gzip.py",
+      "line": 151,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"CoroutineType[Any, Any, ContentStream]\" cannot be assigned to parameter \"content\" of type \"ContentStream\" in function \"__init__\"\n\u00a0\u00a0Type \"CoroutineType[Any, Any, ContentStream]\" is not assignable to type \"ContentStream\"\n\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, ContentStream]\" is incompatible with protocol \"AsyncIterable[Content]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__aiter__\" is not present\n\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, ContentStream]\" is incompatible with protocol \"Iterable[Content]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__iter__\" is not present",
+      "source_context": "     148 |                 yield bytes\n     149 | \n     150 |         streaming = generator(bytes=b\"x\" * 400, count=10)\n>>>  151 |         return StreamingResponse(streaming, status_code=200, media_type=\"text/event-stream\")\n     152 | \n     153 |     app = Starlette(\n     154 |         routes=[Route(\"/\", endpoint=homepage)],",
+      "github_link": "https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/middleware/test_gzip.py#L151"
+    }
+  ]
+}

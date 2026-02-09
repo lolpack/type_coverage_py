@@ -1,0 +1,814 @@
+{
+  "package_name": "pandas",
+  "github_url": "https://github.com/pandas-dev/pandas",
+  "commit_sha": "2455fb9066628929be67011d01bb62a098cdb9ea",
+  "summary": {
+    "pyright_errors": 0,
+    "pyrefly_errors": 8798,
+    "false_positives": 5612,
+    "false_negatives": 0
+  },
+  "false_positives": [
+    {
+      "file": "asv_bench/benchmarks/algos/isin.py",
+      "line": 44,
+      "error_code": "bad-assignment",
+      "message": "`ExtensionArray | ndarray[tuple[Any, ...], dtype[Any]]` is not assignable to attribute `values` with type `list[bool]`",
+      "source_context": "      41 |             # dti has length=115777\n      42 |             dti = date_range(start=\"2015-10-26\", end=\"2016-01-01\", freq=\"50s\")\n      43 |             self.series = Series(dti)\n>>>   44 |             self.values = self.series._values[::3]\n      45 |             self.mismatched = [1, 2]\n      46 | \n      47 |         elif dtype in [\"category[object]\", \"category[int]\"]:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/algos/isin.py#L44"
+    },
+    {
+      "file": "asv_bench/benchmarks/algos/isin.py",
+      "line": 56,
+      "error_code": "bad-assignment",
+      "message": "`ndarray[tuple[Any, ...], dtype[Any]]` is not assignable to attribute `values` with type `list[bool]`",
+      "source_context": "      53 |             if dtype == \"category[object]\":\n      54 |                 arr = [f\"s{i:04d}\" for i in arr]\n      55 | \n>>>   56 |             self.values = np.random.choice(arr, sample_size)\n      57 |             self.series = Series(arr).astype(\"category\")\n      58 | \n      59 |         elif dtype in [\"str\", \"string[python]\", \"string[pyarrow]\"]:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/algos/isin.py#L56"
+    },
+    {
+      "file": "asv_bench/benchmarks/algos/isin.py",
+      "line": 71,
+      "error_code": "bad-assignment",
+      "message": "`list[int]` is not assignable to attribute `values` with type `list[bool]`",
+      "source_context": "      68 | \n      69 |         else:\n      70 |             self.series = Series(np.random.randint(1, 10, N)).astype(dtype)\n>>>   71 |             self.values = [1, 2]\n      72 | \n      73 |         self.cat_values = Categorical(self.values)\n      74 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/algos/isin.py#L71"
+    },
+    {
+      "file": "asv_bench/benchmarks/algos/isin.py",
+      "line": 253,
+      "error_code": "unbound-name",
+      "message": "`ser_vals` may be uninitialized",
+      "source_context": "     250 |         elif series_type == \"long_floats\":\n     251 |             ser_vals = np.arange(N_many, dtype=np.float64)\n     252 | \n>>>  253 |         self.series = Series(ser_vals).astype(object)\n     254 | \n     255 |         if vals_type == \"nans\":\n     256 |             values = np.full(10**4, np.nan)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/algos/isin.py#L253"
+    },
+    {
+      "file": "asv_bench/benchmarks/algos/isin.py",
+      "line": 264,
+      "error_code": "unbound-name",
+      "message": "`values` may be uninitialized",
+      "source_context": "     261 |         elif vals_type == \"long_floats\":\n     262 |             values = np.arange(N_many, dtype=np.float64)\n     263 | \n>>>  264 |         self.values = values.astype(object)\n     265 | \n     266 |     def time_isin(self, series_type, vals_type):\n     267 |         self.series.isin(self.values)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/algos/isin.py#L264"
+    },
+    {
+      "file": "asv_bench/benchmarks/algos/isin.py",
+      "line": 290,
+      "error_code": "unbound-name",
+      "message": "`array` may be uninitialized",
+      "source_context": "     287 |         if series_type == \"monotone_misses\":\n     288 |             array = np.arange(N) + MaxNumber\n     289 | \n>>>  290 |         self.series = Series(array).astype(dtype)\n     291 | \n     292 |         self.values = np.arange(MaxNumber).astype(dtype.lower())\n     293 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/algos/isin.py#L290"
+    },
+    {
+      "file": "asv_bench/benchmarks/algos/isin.py",
+      "line": 313,
+      "error_code": "unbound-name",
+      "message": "`vals` may be uninitialized",
+      "source_context": "     310 |         if series_type == \"monotone\":\n     311 |             vals = np.arange(N)\n     312 | \n>>>  313 |         self.values = vals.astype(dtype.lower())\n     314 |         M = 10**6 + 1\n     315 |         self.series = Series(np.arange(M)).astype(dtype)\n     316 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/algos/isin.py#L313"
+    },
+    {
+      "file": "asv_bench/benchmarks/arithmetic.py",
+      "line": 21,
+      "error_code": "missing-import",
+      "message": "Cannot find module `pandas.computation.expressions`",
+      "source_context": "      18 | try:\n      19 |     import pandas.core.computation.expressions as expr\n      20 | except ImportError:\n>>>   21 |     import pandas.computation.expressions as expr\n      22 | try:\n      23 |     import pandas.tseries.holiday\n      24 | except ImportError:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/arithmetic.py#L21"
+    },
+    {
+      "file": "asv_bench/benchmarks/arithmetic.py",
+      "line": 110,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `params`",
+      "source_context": "     107 | \n     108 |     # exclude comparisons from the params for time_frame_op_with_series_axis1\n     109 |     #  since they do not do alignment so raise\n>>>  110 |     time_frame_op_with_series_axis1.params = [params[0][6:]]\n     111 | \n     112 | \n     113 | class FrameWithFrameWide:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/arithmetic.py#L110"
+    },
+    {
+      "file": "asv_bench/benchmarks/arithmetic.py",
+      "line": 212,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy._core.getlimits.iinfo.__init__` called with arguments: (type[signedinteger[_16Bit]])",
+      "source_context": "     209 | \n     210 |         self.df_int = DataFrame(\n     211 |             np.random.randint(\n>>>  212 |                 np.iinfo(np.int16).min, np.iinfo(np.int16).max, size=(N, N)\n     213 |             )\n     214 |         )\n     215 |         self.df2_int = DataFrame(",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/arithmetic.py#L212"
+    },
+    {
+      "file": "asv_bench/benchmarks/arithmetic.py",
+      "line": 217,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy._core.getlimits.iinfo.__init__` called with arguments: (type[signedinteger[_16Bit]])",
+      "source_context": "     214 |         )\n     215 |         self.df2_int = DataFrame(\n     216 |             np.random.randint(\n>>>  217 |                 np.iinfo(np.int16).min, np.iinfo(np.int16).max, size=(N, N)\n     218 |             )\n     219 |         )\n     220 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/arithmetic.py#L217"
+    },
+    {
+      "file": "asv_bench/benchmarks/arithmetic.py",
+      "line": 391,
+      "error_code": "implicit-import",
+      "message": "Module `pandas.tseries.holiday` exists, but was not imported explicitly. You are relying on other modules to load it.",
+      "source_context": "     388 |         df[\"timedelta\"] + df[\"timedelta\"]\n     389 | \n     390 | \n>>>  391 | hcal = pd.tseries.holiday.USFederalHolidayCalendar()\n     392 | # These offsets currently raise a NotImplementedError with .apply_index()\n     393 | non_apply = [\n     394 |     pd.offsets.Day(),",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/arithmetic.py#L391"
+    },
+    {
+      "file": "asv_bench/benchmarks/array.py",
+      "line": 78,
+      "error_code": "missing-import",
+      "message": "Cannot find module `pyarrow`",
+      "source_context": "      75 | \n      76 |     def setup(self, multiple_chunks):\n      77 |         try:\n>>>   78 |             import pyarrow as pa\n      79 |         except ImportError as err:\n      80 |             raise NotImplementedError from err\n      81 |         strings = np.array([str(i) for i in range(10_000)], dtype=object)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/array.py#L78"
+    },
+    {
+      "file": "asv_bench/benchmarks/attrs_caching.py",
+      "line": 44,
+      "error_code": "not-callable",
+      "message": "Expected a callable, got `None`",
+      "source_context": "      41 |         self.series.array\n      42 | \n      43 |     def time_extract_array(self, dtype):\n>>>   44 |         extract_array(self.series)\n      45 | \n      46 |     def time_extract_array_numpy(self, dtype):\n      47 |         extract_array(self.series, extract_numpy=True)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/attrs_caching.py#L44"
+    },
+    {
+      "file": "asv_bench/benchmarks/attrs_caching.py",
+      "line": 47,
+      "error_code": "not-callable",
+      "message": "Expected a callable, got `None`",
+      "source_context": "      44 |         extract_array(self.series)\n      45 | \n      46 |     def time_extract_array_numpy(self, dtype):\n>>>   47 |         extract_array(self.series, extract_numpy=True)\n      48 | \n      49 | \n      50 | from .pandas_vb_common import setup  # noqa: F401 isort:skip",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/attrs_caching.py#L47"
+    },
+    {
+      "file": "asv_bench/benchmarks/categoricals.py",
+      "line": 13,
+      "error_code": "missing-import",
+      "message": "Cannot find module `pandas.types.concat`",
+      "source_context": "      10 |     from pandas.api.types import union_categoricals\n      11 | except ImportError:\n      12 |     try:\n>>>   13 |         from pandas.types.concat import union_categoricals\n      14 |     except ImportError:\n      15 |         pass\n      16 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/categoricals.py#L13"
+    },
+    {
+      "file": "asv_bench/benchmarks/categoricals.py",
+      "line": 87,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.random._generator.Generator.choice` called with arguments: (list[LiteralString] | list[NaTType | Timestamp] | ndarray[tuple[Any, ...], dtype[float64]] | ndarray[tuple[Any, ...], dtype[signedinteger[_NBitLong]]], int)",
+      "source_context": "      84 |         }\n      85 | \n      86 |         self.df = pd.DataFrame(\n>>>   87 |             {col: random_pick(cats, N) for col, cats in categories.items()}\n      88 |         )\n      89 | \n      90 |         for col in (\"int\", \"float\", \"timestamp\"):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/categoricals.py#L87"
+    },
+    {
+      "file": "asv_bench/benchmarks/categoricals.py",
+      "line": 288,
+      "error_code": "bad-index",
+      "message": "Cannot index into `Categorical`",
+      "source_context": "     285 |         self.data[self.list]\n     286 | \n     287 |     def time_getitem_bool_array(self, index):\n>>>  288 |         self.data[self.data == self.cat_scalar]\n     289 | \n     290 | \n     291 | class Indexing:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/categoricals.py#L288"
+    },
+    {
+      "file": "asv_bench/benchmarks/categoricals.py",
+      "line": 308,
+      "error_code": "missing-attribute",
+      "message": "Object of class `ndarray` has no attribute `intersection`",
+      "source_context": "     305 |         pd.DataFrame({\"a\": self.series, \"b\": self.series[:500]})\n     306 | \n     307 |     def time_intersection(self):\n>>>  308 |         self.index[:750].intersection(self.index[250:])\n     309 | \n     310 |     def time_unique(self):\n     311 |         self.index.unique()",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/categoricals.py#L308"
+    },
+    {
+      "file": "asv_bench/benchmarks/ctors.py",
+      "line": 128,
+      "error_code": "missing-attribute",
+      "message": "Object of class `DatetimeIndex` has no attribute `date`",
+      "source_context": "     125 |         dti = date_range(\"1900-01-01\", periods=N)\n     126 | \n     127 |         self.list_of_timestamps = dti.tolist()\n>>>  128 |         self.list_of_dates = dti.date.tolist()\n     129 |         self.list_of_datetimes = dti.to_pydatetime().tolist()\n     130 |         self.list_of_str = dti.strftime(\"%Y-%m-%d\").tolist()\n     131 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/ctors.py#L128"
+    },
+    {
+      "file": "asv_bench/benchmarks/dtypes.py",
+      "line": 68,
+      "error_code": "missing-attribute",
+      "message": "No attribute `ALL_EA_INT_DTYPES` in module `pandas._testing`",
+      "source_context": "      65 |     except AttributeError:\n      66 |         params = [\n      67 |             tm.ALL_INT_DTYPES\n>>>   68 |             + tm.ALL_EA_INT_DTYPES\n      69 |             + tm.FLOAT_DTYPES\n      70 |             + tm.COMPLEX_DTYPES\n      71 |             + tm.DATETIME64_DTYPES",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/dtypes.py#L68"
+    },
+    {
+      "file": "asv_bench/benchmarks/eval.py",
+      "line": 8,
+      "error_code": "missing-import",
+      "message": "Cannot find module `pandas.computation.expressions`",
+      "source_context": "       5 | try:\n       6 |     import pandas.core.computation.expressions as expr\n       7 | except ImportError:\n>>>    8 |     import pandas.computation.expressions as expr\n       9 | \n      10 | \n      11 | class Eval:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/eval.py#L8"
+    },
+    {
+      "file": "asv_bench/benchmarks/frame_ctor.py",
+      "line": 22,
+      "error_code": "missing-import",
+      "message": "Cannot find module `pandas.core.datetools`",
+      "source_context": "      19 |     )\n      20 | except ImportError:\n      21 |     # For compatibility with older versions\n>>>   22 |     from pandas.core.datetools import (\n      23 |         Hour,\n      24 |         Nano,\n      25 |     )",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/frame_ctor.py#L22"
+    },
+    {
+      "file": "asv_bench/benchmarks/frame_methods.py",
+      "line": 174,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `next` called with arguments: (Iterable[tuple[Any, ...]])",
+      "source_context": "     171 |         self.df4.itertuples()\n     172 | \n     173 |     def time_itertuples_read_first(self):\n>>>  174 |         next(self.df4.itertuples())\n     175 | \n     176 |     def time_itertuples(self):\n     177 |         for row in self.df4.itertuples():",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/frame_methods.py#L174"
+    },
+    {
+      "file": "asv_bench/benchmarks/frame_methods.py",
+      "line": 190,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `next` called with arguments: (Iterable[tuple[Any, ...]])",
+      "source_context": "     187 |         self.df4.itertuples()\n     188 | \n     189 |     def mem_itertuples_read_first(self):\n>>>  190 |         return next(self.df4.itertuples())\n     191 | \n     192 |     def peakmem_itertuples(self):\n     193 |         for row in self.df4.itertuples():",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/frame_methods.py#L190"
+    },
+    {
+      "file": "asv_bench/benchmarks/frame_methods.py",
+      "line": 206,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `next` called with arguments: (Iterable[tuple[Any, ...]])",
+      "source_context": "     203 |         self.df4.itertuples(index=False, name=None)\n     204 | \n     205 |     def time_itertuples_raw_read_first(self):\n>>>  206 |         next(self.df4.itertuples(index=False, name=None))\n     207 | \n     208 |     def time_itertuples_raw_tuples(self):\n     209 |         for row in self.df4.itertuples(index=False, name=None):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/frame_methods.py#L206"
+    },
+    {
+      "file": "asv_bench/benchmarks/frame_methods.py",
+      "line": 222,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `next` called with arguments: (Iterable[tuple[Any, ...]])",
+      "source_context": "     219 |         self.df4.itertuples(index=False, name=None)\n     220 | \n     221 |     def peakmem_itertuples_raw_read_first(self):\n>>>  222 |         next(self.df4.itertuples(index=False, name=None))\n     223 | \n     224 |     def peakmem_itertuples_raw(self):\n     225 |         for row in self.df4.itertuples(index=False, name=None):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/frame_methods.py#L222"
+    },
+    {
+      "file": "asv_bench/benchmarks/gil.py",
+      "line": 18,
+      "error_code": "missing-module-attribute",
+      "message": "Could not import `rolling_kurt` from `pandas`",
+      "source_context": "      15 | \n      16 | try:\n      17 |     from pandas import (\n>>>   18 |         rolling_kurt,\n      19 |         rolling_max,\n      20 |         rolling_mean,\n      21 |         rolling_median,",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L18"
+    },
+    {
+      "file": "asv_bench/benchmarks/gil.py",
+      "line": 21,
+      "error_code": "missing-module-attribute",
+      "message": "Could not import `rolling_median` from `pandas`",
+      "source_context": "      18 |         rolling_kurt,\n      19 |         rolling_max,\n      20 |         rolling_mean,\n>>>   21 |         rolling_median,\n      22 |         rolling_min,\n      23 |         rolling_skew,\n      24 |         rolling_std,",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L21"
+    },
+    {
+      "file": "asv_bench/benchmarks/gil.py",
+      "line": 24,
+      "error_code": "missing-module-attribute",
+      "message": "Could not import `rolling_std` from `pandas`",
+      "source_context": "      21 |         rolling_median,\n      22 |         rolling_min,\n      23 |         rolling_skew,\n>>>   24 |         rolling_std,\n      25 |         rolling_var,\n      26 |     )\n      27 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L24"
+    },
+    {
+      "file": "asv_bench/benchmarks/gil.py",
+      "line": 34,
+      "error_code": "missing-module-attribute",
+      "message": "Could not import `algos` from `pandas`",
+      "source_context": "      31 | try:\n      32 |     from pandas._libs import algos\n      33 | except ImportError:\n>>>   34 |     from pandas import algos\n      35 | \n      36 | from .pandas_vb_common import BaseIO  # isort:skip\n      37 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L34"
+    },
+    {
+      "file": "asv_bench/benchmarks/gil.py",
+      "line": 69,
+      "error_code": "unsupported-operation",
+      "message": "`None` is not subscriptable",
+      "source_context": "      66 |         @wraps(func)\n      67 |         def inner(*args, **kwargs):\n      68 |             if has_kwargs_list:\n>>>   69 |                 update_kwargs = lambda i: dict(kwargs, **kwargs_list[i])\n      70 |             else:\n      71 |                 update_kwargs = lambda i: kwargs\n      72 |             threads = []",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L69"
+    },
+    {
+      "file": "asv_bench/benchmarks/gil.py",
+      "line": 291,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.parsers.readers.read_csv` called with arguments: (Unknown | None)",
+      "source_context": "     288 | \n     289 |         @run_parallel(num_threads=2)\n     290 |         def parallel_read_csv():\n>>>  291 |             read_csv(self.fname)\n     292 | \n     293 |         self.parallel_read_csv = parallel_read_csv\n     294 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L291"
+    },
+    {
+      "file": "asv_bench/benchmarks/groupby.py",
+      "line": 244,
+      "error_code": "missing-attribute",
+      "message": "Object of class `DatetimeIndex` has no attribute `year`",
+      "source_context": "     241 | class DateAttributes:\n     242 |     def setup(self):\n     243 |         rng = date_range(\"1/1/2000\", \"12/31/2005\", freq=\"h\")\n>>>  244 |         self.year, self.month, self.day = rng.year, rng.month, rng.day\n     245 |         self.ts = Series(np.random.randn(len(rng)), index=rng)\n     246 | \n     247 |     def time_len_groupby_object(self):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/groupby.py#L244"
+    },
+    {
+      "file": "asv_bench/benchmarks/groupby.py",
+      "line": 535,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.random.mtrand.RandomState.randint` called with arguments: (Literal[0], int, size=int, dtype=Literal['int16', 'uint'])",
+      "source_context": "     532 |         if dtype == \"int\":\n     533 |             key = np.random.randint(0, size, size=size)\n     534 |         elif dtype in (\"int16\", \"uint\"):\n>>>  535 |             key = np.random.randint(0, size, size=size, dtype=dtype)\n     536 |         elif dtype == \"float\":\n     537 |             key = np.concatenate(\n     538 |                 [np.random.random(ngroups) * 0.1, np.random.random(ngroups) * 10.0]",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/groupby.py#L535"
+    },
+    {
+      "file": "asv_bench/benchmarks/groupby.py",
+      "line": 547,
+      "error_code": "unbound-name",
+      "message": "`key` may be uninitialized",
+      "source_context": "     544 | \n     545 |         cols = [f\"values{n}\" for n in range(ncols)]\n     546 |         df = DataFrame(values, columns=cols)\n>>>  547 |         df[\"key\"] = key\n     548 | \n     549 |         if len(cols) == 1:\n     550 |             cols = cols[0]",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/groupby.py#L547"
+    },
+    {
+      "file": "asv_bench/benchmarks/groupby.py",
+      "line": 951,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.random.mtrand.RandomState.randint` called with arguments: (Literal[1], float, tuple[Literal[20000], Literal[3]])",
+      "source_context": "     948 |         self.df2[\"jim\"] = self.df2[\"joe\"]\n     949 | \n     950 |         self.df3 = DataFrame(\n>>>  951 |             np.random.randint(1, (n / 10), (n, 3)), columns=[\"jim\", \"joe\", \"jolie\"]\n     952 |         )\n     953 |         self.df4 = self.df3.copy()\n     954 |         self.df4[\"jim\"] = self.df4[\"joe\"]",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/groupby.py#L951"
+    },
+    {
+      "file": "asv_bench/benchmarks/groupby.py",
+      "line": 1125,
+      "error_code": "bad-argument-type",
+      "message": "Argument `ndarray[tuple[int], dtype[float64]]` is not assignable to parameter `weights` with type `Sequence[Unknown] | Series | None` in function `pandas.core.groupby.groupby.GroupBy.sample`",
+      "source_context": "    1122 |         self.df.groupby(self.groups).sample(n=1)\n    1123 | \n    1124 |     def time_sample_weights(self):\n>>> 1125 |         self.df.groupby(self.groups).sample(n=1, weights=self.weights)\n    1126 | \n    1127 | \n    1128 | class Resample:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/groupby.py#L1125"
+    },
+    {
+      "file": "asv_bench/benchmarks/index_cached_properties.py",
+      "line": 31,
+      "error_code": "bad-assignment",
+      "message": "`DatetimeIndex` is not assignable to attribute `idx` with type `MultiIndex`",
+      "source_context": "      28 |                 [pd.date_range(\"1/1/2000\", freq=\"min\", periods=N // 2), [\"a\", \"b\"]]\n      29 |             )\n      30 |         elif index_type == \"DatetimeIndex\":\n>>>   31 |             self.idx = pd.date_range(\"1/1/2000\", freq=\"min\", periods=N)\n      32 |         elif index_type == \"Int64Index\":\n      33 |             self.idx = pd.Index(range(N), dtype=\"int64\")\n      34 |         elif index_type == \"PeriodIndex\":",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/index_cached_properties.py#L31"
+    },
+    {
+      "file": "asv_bench/benchmarks/index_cached_properties.py",
+      "line": 35,
+      "error_code": "bad-assignment",
+      "message": "`PeriodIndex` is not assignable to attribute `idx` with type `MultiIndex`",
+      "source_context": "      32 |         elif index_type == \"Int64Index\":\n      33 |             self.idx = pd.Index(range(N), dtype=\"int64\")\n      34 |         elif index_type == \"PeriodIndex\":\n>>>   35 |             self.idx = pd.period_range(\"1/1/2000\", freq=\"min\", periods=N)\n      36 |         elif index_type == \"RangeIndex\":\n      37 |             self.idx = pd.RangeIndex(start=0, stop=N)\n      38 |         elif index_type == \"IntervalIndex\":",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/index_cached_properties.py#L35"
+    },
+    {
+      "file": "asv_bench/benchmarks/index_cached_properties.py",
+      "line": 39,
+      "error_code": "bad-assignment",
+      "message": "`IntervalIndex` is not assignable to attribute `idx` with type `MultiIndex`",
+      "source_context": "      36 |         elif index_type == \"RangeIndex\":\n      37 |             self.idx = pd.RangeIndex(start=0, stop=N)\n      38 |         elif index_type == \"IntervalIndex\":\n>>>   39 |             self.idx = pd.IntervalIndex.from_arrays(range(N), range(1, N + 1))\n      40 |         elif index_type == \"TimedeltaIndex\":\n      41 |             self.idx = pd.TimedeltaIndex(range(N))\n      42 |         elif index_type == \"Float64Index\":",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/index_cached_properties.py#L39"
+    },
+    {
+      "file": "asv_bench/benchmarks/index_cached_properties.py",
+      "line": 43,
+      "error_code": "bad-assignment",
+      "message": "`Index` is not assignable to attribute `idx` with type `MultiIndex`",
+      "source_context": "      40 |         elif index_type == \"TimedeltaIndex\":\n      41 |             self.idx = pd.TimedeltaIndex(range(N))\n      42 |         elif index_type == \"Float64Index\":\n>>>   43 |             self.idx = pd.Index(range(N), dtype=\"float64\")\n      44 |         elif index_type == \"UInt64Index\":\n      45 |             self.idx = pd.Index(range(N), dtype=\"uint64\")\n      46 |         elif index_type == \"CategoricalIndex\":",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/index_cached_properties.py#L43"
+    },
+    {
+      "file": "asv_bench/benchmarks/index_cached_properties.py",
+      "line": 47,
+      "error_code": "bad-assignment",
+      "message": "`CategoricalIndex` is not assignable to attribute `idx` with type `MultiIndex`",
+      "source_context": "      44 |         elif index_type == \"UInt64Index\":\n      45 |             self.idx = pd.Index(range(N), dtype=\"uint64\")\n      46 |         elif index_type == \"CategoricalIndex\":\n>>>   47 |             self.idx = pd.CategoricalIndex(range(N), range(N))\n      48 |         else:\n      49 |             raise ValueError\n      50 |         assert len(self.idx) == N",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/index_cached_properties.py#L47"
+    },
+    {
+      "file": "asv_bench/benchmarks/index_object.py",
+      "line": 170,
+      "error_code": "missing-attribute",
+      "message": "Object of class `ndarray` has no attribute `append`",
+      "source_context": "     167 |         self.series_mask = Series(self.array_mask)\n     168 |         self.sorted = self.idx.sort_values()\n     169 |         half = N // 2\n>>>  170 |         self.non_unique = self.idx[:half].append(self.idx[:half])\n     171 |         self.non_unique_sorted = self.sorted[:half].repeat(2)\n     172 |         self.key = self.sorted[N // 4]\n     173 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/index_object.py#L170"
+    },
+    {
+      "file": "asv_bench/benchmarks/index_object.py",
+      "line": 199,
+      "error_code": "missing-attribute",
+      "message": "Object of class `ndarray` has no attribute `get_loc`",
+      "source_context": "     196 |         self.non_unique.get_loc(self.key)\n     197 | \n     198 |     def time_get_loc_non_unique_sorted(self, dtype):\n>>>  199 |         self.non_unique_sorted.get_loc(self.key)\n     200 | \n     201 | \n     202 | class Float64IndexMethod:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/index_object.py#L199"
+    },
+    {
+      "file": "asv_bench/benchmarks/inference.py",
+      "line": 100,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `list[int]`",
+      "source_context": "      97 |         N = 10**5\n      98 | \n      99 |         data = list(range(N))\n>>>  100 |         data[0] = NaT\n     101 |         data = np.array(data)\n     102 |         self.data = data\n     103 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/inference.py#L100"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/csv.py",
+      "line": 322,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.parsers.readers.read_csv` called with arguments: (Unknown | None, skiprows=Unknown, engine=Unknown)",
+      "source_context": "     319 |         df.to_csv(self.fname)\n     320 | \n     321 |     def time_skipprows(self, skiprows, engine):\n>>>  322 |         read_csv(self.fname, skiprows=skiprows, engine=engine)\n     323 | \n     324 | \n     325 | class ReadUint64Integers(StringIORewind):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/csv.py#L322"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/csv.py",
+      "line": 363,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.parsers.readers.read_csv` called with arguments: (Unknown | None, sep=Unknown, thousands=Unknown, engine=Unknown)",
+      "source_context": "     360 |         df.to_csv(self.fname, sep=sep)\n     361 | \n     362 |     def time_thousands(self, sep, thousands, engine):\n>>>  363 |         read_csv(self.fname, sep=sep, thousands=thousands, engine=engine)\n     364 | \n     365 | \n     366 | class ReadCSVComment(StringIORewind):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/csv.py#L363"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/csv.py",
+      "line": 446,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.parsers.readers.read_csv` called with arguments: (Unknown | None, engine=Unknown)",
+      "source_context": "     443 |         df.to_csv(self.fname, index=False)\n     444 | \n     445 |     def time_convert_post(self, engine):\n>>>  446 |         read_csv(self.fname, engine=engine).apply(Categorical)\n     447 | \n     448 |     def time_convert_direct(self, engine):\n     449 |         read_csv(self.fname, engine=engine, dtype=\"category\")",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/csv.py#L446"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/csv.py",
+      "line": 449,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.parsers.readers.read_csv` called with arguments: (Unknown | None, engine=Unknown, dtype=Literal['category'])",
+      "source_context": "     446 |         read_csv(self.fname, engine=engine).apply(Categorical)\n     447 | \n     448 |     def time_convert_direct(self, engine):\n>>>  449 |         read_csv(self.fname, engine=engine, dtype=\"category\")\n     450 | \n     451 | \n     452 | class ReadCSVParseDates(StringIORewind):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/csv.py#L449"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/csv.py",
+      "line": 508,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `open` called with arguments: (Unknown | None, Literal['w'], encoding=Literal['utf-8'])",
+      "source_context": "     505 |     param_names = [\"engine\"]\n     506 | \n     507 |     def setup(self, engine):\n>>>  508 |         with open(self.fname, \"w\", encoding=\"utf-8\") as f:\n     509 |             for i in range(self.num_rows):\n     510 |                 f.write(f\"{i}\\n\")\n     511 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/csv.py#L508"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/csv.py",
+      "line": 514,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.parsers.readers.read_csv` called with arguments: (Unknown | None, chunksize=int, engine=Unknown)",
+      "source_context": "     511 | \n     512 |     def mem_parser_chunks(self, engine):\n     513 |         # see gh-24805.\n>>>  514 |         result = read_csv(self.fname, chunksize=self.chunksize, engine=engine)\n     515 | \n     516 |         for _ in result:\n     517 |             pass",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/csv.py#L514"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/excel.py",
+      "line": 4,
+      "error_code": "missing-import",
+      "message": "Cannot find module `odf.opendocument`",
+      "source_context": "       1 | from io import BytesIO\n       2 | \n       3 | import numpy as np\n>>>    4 | from odf.opendocument import OpenDocumentSpreadsheet\n       5 | from odf.table import (\n       6 |     Table,\n       7 |     TableCell,",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/excel.py#L4"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/excel.py",
+      "line": 10,
+      "error_code": "missing-import",
+      "message": "Cannot find module `odf.text`",
+      "source_context": "       7 |     TableCell,\n       8 |     TableRow,\n       9 | )\n>>>   10 | from odf.text import P\n      11 | \n      12 | from pandas import (\n      13 |     DataFrame,",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/excel.py#L10"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/hdf.py",
+      "line": 57,
+      "error_code": "bad-override",
+      "message": "Class member `HDFStoreDataFrame.teardown` overrides parent class `BaseIO` in an inconsistent manner",
+      "source_context": "      54 |         self.store.append(\"table_wide\", self.df_wide)\n      55 |         self.store.append(\"table_wide2\", self.df_wide2)\n      56 | \n>>>   57 |     def teardown(self):\n      58 |         self.store.close()\n      59 |         self.remove(self.fname)\n      60 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/hdf.py#L57"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/hdf.py",
+      "line": 134,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `path_or_buf` with type `HDFStore | PathLike[str] | str` in function `pandas.io.pytables.read_hdf`",
+      "source_context": "     131 |         self.df1.to_hdf(self.fname, key=\"df1\", format=format)\n     132 | \n     133 |     def time_read_hdf(self, format):\n>>>  134 |         read_hdf(self.fname, \"df\")\n     135 | \n     136 |     def peakmem_read_hdf(self, format):\n     137 |         read_hdf(self.fname, \"df\")",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/hdf.py#L134"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/hdf.py",
+      "line": 137,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `path_or_buf` with type `HDFStore | PathLike[str] | str` in function `pandas.io.pytables.read_hdf`",
+      "source_context": "     134 |         read_hdf(self.fname, \"df\")\n     135 | \n     136 |     def peakmem_read_hdf(self, format):\n>>>  137 |         read_hdf(self.fname, \"df\")\n     138 | \n     139 |     def time_write_hdf(self, format):\n     140 |         self.df.to_hdf(self.fname, key=\"df\", format=format)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/hdf.py#L137"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/hdf.py",
+      "line": 140,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `path_or_buf` with type `HDFStore | PathLike[str] | str` in function `pandas.core.generic.NDFrame.to_hdf`",
+      "source_context": "     137 |         read_hdf(self.fname, \"df\")\n     138 | \n     139 |     def time_write_hdf(self, format):\n>>>  140 |         self.df.to_hdf(self.fname, key=\"df\", format=format)\n     141 | \n     142 | \n     143 | from ..pandas_vb_common import setup  # noqa: F401 isort:skip",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/hdf.py#L140"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/json.py",
+      "line": 37,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.json._json.read_json` called with arguments: (Unknown | None, orient=Unknown)",
+      "source_context": "      34 |         df.to_json(self.fname, orient=orient)\n      35 | \n      36 |     def time_read_json(self, orient, index):\n>>>   37 |         read_json(self.fname, orient=orient)\n      38 | \n      39 | \n      40 | class ReadJSONLines(BaseIO):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/json.py#L37"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/json.py",
+      "line": 59,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.json._json.read_json` called with arguments: (Unknown | None, orient=Literal['records'], lines=Literal[True])",
+      "source_context": "      56 |         df.to_json(self.fname, orient=\"records\", lines=True)\n      57 | \n      58 |     def time_read_json_lines(self, index):\n>>>   59 |         read_json(self.fname, orient=\"records\", lines=True)\n      60 | \n      61 |     def time_read_json_lines_concat(self, index):\n      62 |         concat(read_json(self.fname, orient=\"records\", lines=True, chunksize=25000))",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/json.py#L59"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/json.py",
+      "line": 62,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.json._json.read_json` called with arguments: (Unknown | None, orient=Literal['records'], lines=Literal[True], chunksize=Literal[25000])",
+      "source_context": "      59 |         read_json(self.fname, orient=\"records\", lines=True)\n      60 | \n      61 |     def time_read_json_lines_concat(self, index):\n>>>   62 |         concat(read_json(self.fname, orient=\"records\", lines=True, chunksize=25000))\n      63 | \n      64 |     def time_read_json_lines_nrows(self, index):\n      65 |         read_json(self.fname, orient=\"records\", lines=True, nrows=25000)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/json.py#L62"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/json.py",
+      "line": 65,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.json._json.read_json` called with arguments: (Unknown | None, orient=Literal['records'], lines=Literal[True], nrows=Literal[25000])",
+      "source_context": "      62 |         concat(read_json(self.fname, orient=\"records\", lines=True, chunksize=25000))\n      63 | \n      64 |     def time_read_json_lines_nrows(self, index):\n>>>   65 |         read_json(self.fname, orient=\"records\", lines=True, nrows=25000)\n      66 | \n      67 |     def peakmem_read_json_lines(self, index):\n      68 |         read_json(self.fname, orient=\"records\", lines=True)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/json.py#L65"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/json.py",
+      "line": 68,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.json._json.read_json` called with arguments: (Unknown | None, orient=Literal['records'], lines=Literal[True])",
+      "source_context": "      65 |         read_json(self.fname, orient=\"records\", lines=True, nrows=25000)\n      66 | \n      67 |     def peakmem_read_json_lines(self, index):\n>>>   68 |         read_json(self.fname, orient=\"records\", lines=True)\n      69 | \n      70 |     def peakmem_read_json_lines_concat(self, index):\n      71 |         concat(read_json(self.fname, orient=\"records\", lines=True, chunksize=25000))",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/json.py#L68"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/json.py",
+      "line": 71,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.json._json.read_json` called with arguments: (Unknown | None, orient=Literal['records'], lines=Literal[True], chunksize=Literal[25000])",
+      "source_context": "      68 |         read_json(self.fname, orient=\"records\", lines=True)\n      69 | \n      70 |     def peakmem_read_json_lines_concat(self, index):\n>>>   71 |         concat(read_json(self.fname, orient=\"records\", lines=True, chunksize=25000))\n      72 | \n      73 |     def peakmem_read_json_lines_nrows(self, index):\n      74 |         read_json(self.fname, orient=\"records\", lines=True, nrows=15000)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/json.py#L71"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/json.py",
+      "line": 74,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.io.json._json.read_json` called with arguments: (Unknown | None, orient=Literal['records'], lines=Literal[True], nrows=Literal[15000])",
+      "source_context": "      71 |         concat(read_json(self.fname, orient=\"records\", lines=True, chunksize=25000))\n      72 | \n      73 |     def peakmem_read_json_lines_nrows(self, index):\n>>>   74 |         read_json(self.fname, orient=\"records\", lines=True, nrows=15000)\n      75 | \n      76 | \n      77 | class NormalizeJSON(BaseIO):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/json.py#L74"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/pickle.py",
+      "line": 27,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `filepath_or_buffer` with type `PathLike[str] | ReadPickleBuffer | str` in function `pandas.io.pickle.read_pickle`",
+      "source_context": "      24 |         self.df.to_pickle(self.fname)\n      25 | \n      26 |     def time_read_pickle(self):\n>>>   27 |         read_pickle(self.fname)\n      28 | \n      29 |     def time_write_pickle(self):\n      30 |         self.df.to_pickle(self.fname)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/pickle.py#L27"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/pickle.py",
+      "line": 30,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `path` with type `PathLike[str] | WriteBuffer[bytes] | str` in function `pandas.core.generic.NDFrame.to_pickle`",
+      "source_context": "      27 |         read_pickle(self.fname)\n      28 | \n      29 |     def time_write_pickle(self):\n>>>   30 |         self.df.to_pickle(self.fname)\n      31 | \n      32 |     def peakmem_read_pickle(self):\n      33 |         read_pickle(self.fname)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/pickle.py#L30"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/pickle.py",
+      "line": 33,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `filepath_or_buffer` with type `PathLike[str] | ReadPickleBuffer | str` in function `pandas.io.pickle.read_pickle`",
+      "source_context": "      30 |         self.df.to_pickle(self.fname)\n      31 | \n      32 |     def peakmem_read_pickle(self):\n>>>   33 |         read_pickle(self.fname)\n      34 | \n      35 |     def peakmem_write_pickle(self):\n      36 |         self.df.to_pickle(self.fname)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/pickle.py#L33"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/pickle.py",
+      "line": 36,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `path` with type `PathLike[str] | WriteBuffer[bytes] | str` in function `pandas.core.generic.NDFrame.to_pickle`",
+      "source_context": "      33 |         read_pickle(self.fname)\n      34 | \n      35 |     def peakmem_write_pickle(self):\n>>>   36 |         self.df.to_pickle(self.fname)\n      37 | \n      38 | \n      39 | from ..pandas_vb_common import setup  # noqa: F401 isort:skip",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/pickle.py#L36"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/sql.py",
+      "line": 4,
+      "error_code": "missing-import",
+      "message": "Cannot find module `sqlalchemy`",
+      "source_context": "       1 | import sqlite3\n       2 | \n       3 | import numpy as np\n>>>    4 | from sqlalchemy import create_engine\n       5 | \n       6 | from pandas import (\n       7 |     DataFrame,",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/sql.py#L4"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/stata.py",
+      "line": 28,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy._core.getlimits.iinfo.__init__` called with arguments: (type[signedinteger[_8Bit]])",
+      "source_context": "      25 |         )\n      26 |         self.df[\"object\"] = Index([f\"i-{i}\" for i in range(self.N)], dtype=object)\n      27 |         self.df[\"int8_\"] = np.random.randint(\n>>>   28 |             np.iinfo(np.int8).min, np.iinfo(np.int8).max - 27, N\n      29 |         )\n      30 |         self.df[\"int16_\"] = np.random.randint(\n      31 |             np.iinfo(np.int16).min, np.iinfo(np.int16).max - 27, N",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/stata.py#L28"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/stata.py",
+      "line": 31,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy._core.getlimits.iinfo.__init__` called with arguments: (type[signedinteger[_16Bit]])",
+      "source_context": "      28 |             np.iinfo(np.int8).min, np.iinfo(np.int8).max - 27, N\n      29 |         )\n      30 |         self.df[\"int16_\"] = np.random.randint(\n>>>   31 |             np.iinfo(np.int16).min, np.iinfo(np.int16).max - 27, N\n      32 |         )\n      33 |         self.df[\"int32_\"] = np.random.randint(\n      34 |             np.iinfo(np.int32).min, np.iinfo(np.int32).max - 27, N",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/stata.py#L31"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/stata.py",
+      "line": 34,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy._core.getlimits.iinfo.__init__` called with arguments: (type[signedinteger[_32Bit]])",
+      "source_context": "      31 |             np.iinfo(np.int16).min, np.iinfo(np.int16).max - 27, N\n      32 |         )\n      33 |         self.df[\"int32_\"] = np.random.randint(\n>>>   34 |             np.iinfo(np.int32).min, np.iinfo(np.int32).max - 27, N\n      35 |         )\n      36 |         self.df[\"float32_\"] = np.array(np.random.randn(N), dtype=np.float32)\n      37 |         self.convert_dates = {\"index\": convert_dates}",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/stata.py#L34"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/stata.py",
+      "line": 38,
+      "error_code": "bad-argument-type",
+      "message": "Argument `dict[str, Unknown]` is not assignable to parameter `convert_dates` with type `dict[Hashable, str] | None` in function `pandas.core.frame.DataFrame.to_stata`",
+      "source_context": "      35 |         )\n      36 |         self.df[\"float32_\"] = np.array(np.random.randn(N), dtype=np.float32)\n      37 |         self.convert_dates = {\"index\": convert_dates}\n>>>   38 |         self.df.to_stata(self.fname, convert_dates=self.convert_dates)\n      39 | \n      40 |     def time_read_stata(self, convert_dates):\n      41 |         read_stata(self.fname)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/stata.py#L38"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/stata.py",
+      "line": 41,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `filepath_or_buffer` with type `PathLike[str] | ReadBuffer[bytes] | str` in function `pandas.io.stata.read_stata`",
+      "source_context": "      38 |         self.df.to_stata(self.fname, convert_dates=self.convert_dates)\n      39 | \n      40 |     def time_read_stata(self, convert_dates):\n>>>   41 |         read_stata(self.fname)\n      42 | \n      43 |     def time_write_stata(self, convert_dates):\n      44 |         self.df.to_stata(self.fname, convert_dates=self.convert_dates)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/stata.py#L41"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/stata.py",
+      "line": 44,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `path` with type `PathLike[str] | WriteBuffer[bytes] | str` in function `pandas.core.frame.DataFrame.to_stata`",
+      "source_context": "      41 |         read_stata(self.fname)\n      42 | \n      43 |     def time_write_stata(self, convert_dates):\n>>>   44 |         self.df.to_stata(self.fname, convert_dates=self.convert_dates)\n      45 | \n      46 | \n      47 | class StataMissing(Stata):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/stata.py#L44"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/stata.py",
+      "line": 54,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Unknown | None` is not assignable to parameter `path` with type `PathLike[str] | WriteBuffer[bytes] | str` in function `pandas.core.frame.DataFrame.to_stata`",
+      "source_context": "      51 |             missing_data = np.random.randn(self.N)\n      52 |             missing_data[missing_data < 0] = np.nan\n      53 |             self.df[f\"missing_{i}\"] = missing_data\n>>>   54 |         self.df.to_stata(self.fname, convert_dates=self.convert_dates)\n      55 | \n      56 | \n      57 | from ..pandas_vb_common import setup  # noqa: F401 isort:skip",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/stata.py#L54"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/style.py",
+      "line": 78,
+      "error_code": "bad-assignment",
+      "message": "`StylerRenderer` is not assignable to attribute `st` with type `Styler`",
+      "source_context": "      75 |         ir = int(len(self.df.index) / 4 * 3)\n      76 |         # apply a formatting function\n      77 |         # subset is flexible but hinders vectorised solutions\n>>>   78 |         self.st = self.df.style.format(\n      79 |             \"{:,.3f}\",\n      80 |             subset=IndexSlice[\"row_1\" : f\"row_{ir}\", \"float_1\" : f\"float_{ic}\"],\n      81 |         )",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/style.py#L78"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/style.py",
+      "line": 86,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Index | ndarray[tuple[Any, ...], dtype[Any]] | Any` is not assignable to parameter `subset` with type `Index | Sequence[Unknown] | slice[Any, Any, Any] | None` in function `pandas.io.formats.style.Styler.hide`",
+      "source_context": "      83 |     def _style_apply_format_hide(self):\n      84 |         self.st = self.df.style.map(lambda v: \"color: red;\")\n      85 |         self.st.format(\"{:.3f}\")\n>>>   86 |         self.st.hide(self.st.index[1:], axis=0)\n      87 |         self.st.hide(self.st.columns[1:], axis=1)\n      88 | \n      89 |     def _style_tooltips(self):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/style.py#L86"
+    },
+    {
+      "file": "asv_bench/benchmarks/io/style.py",
+      "line": 92,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Index | ndarray[tuple[Any, ...], dtype[Any]] | Any` is not assignable to parameter `subset` with type `Index | Sequence[Unknown] | slice[Any, Any, Any] | None` in function `pandas.io.formats.style.Styler.hide`",
+      "source_context": "      89 |     def _style_tooltips(self):\n      90 |         ttips = DataFrame(\"abc\", index=self.df.index[::2], columns=self.df.columns[::2])\n      91 |         self.st = self.df.style.set_tooltips(ttips)\n>>>   92 |         self.st.hide(self.st.index[12:], axis=0)\n      93 |         self.st.hide(self.st.columns[12:], axis=1)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/io/style.py#L92"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 20,
+      "error_code": "missing-module-attribute",
+      "message": "Could not import `ordered_merge` from `pandas`",
+      "source_context": "      17 | try:\n      18 |     from pandas import merge_ordered\n      19 | except ImportError:\n>>>   20 |     from pandas import ordered_merge as merge_ordered\n      21 | \n      22 | \n      23 | class Concat:",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L20"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 40,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `pandas.core.reshape.concat.concat` called with arguments: (list[Series | ndarray[tuple[Any, ...], dtype[Any]] | Unknown], axis=Unknown, sort=Literal[False])",
+      "source_context": "      37 |         self.mixed_ndims = [df, df.head(N // 2)]\n      38 | \n      39 |     def time_concat_series(self, axis):\n>>>   40 |         concat(self.series, axis=axis, sort=False)\n      41 | \n      42 |     def time_concat_small_frames(self, axis):\n      43 |         concat(self.small_frames, axis=axis)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L40"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 132,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.lib._shape_base_impl.tile` called with arguments: (ExtensionArray | ndarray[tuple[Any, ...], dtype[Any]], Literal[10])",
+      "source_context": "     129 |             np.random.randn(len(index2), 4), index=index2, columns=[\"A\", \"B\", \"C\", \"D\"]\n     130 |         )\n     131 | \n>>>  132 |         self.key1 = np.tile(level1.take(codes1), 10)\n     133 |         self.key2 = np.tile(level2.take(codes2), 10)\n     134 |         self.df = DataFrame(\n     135 |             {",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L132"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 174,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.random.mtrand.RandomState.randint` called with arguments: (Literal[1], float, tuple[Literal[5000], Literal[2]])",
+      "source_context": "     171 |     def setup(self):\n     172 |         N = 5000\n     173 |         self.left = DataFrame(\n>>>  174 |             np.random.randint(1, N / 50, (N, 2)), columns=[\"jim\", \"joe\"]\n     175 |         )\n     176 |         self.right = DataFrame(\n     177 |             np.random.randint(1, N / 50, (N, 2)), columns=[\"jolie\", \"jolia\"]",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L174"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 177,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.random.mtrand.RandomState.randint` called with arguments: (Literal[1], float, tuple[Literal[5000], Literal[2]])",
+      "source_context": "     174 |             np.random.randint(1, N / 50, (N, 2)), columns=[\"jim\", \"joe\"]\n     175 |         )\n     176 |         self.right = DataFrame(\n>>>  177 |             np.random.randint(1, N / 50, (N, 2)), columns=[\"jolie\", \"jolia\"]\n     178 |         ).set_index(\"jolie\")\n     179 | \n     180 |     def time_left_outer_join_index(self):",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L177"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 234,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.lib._shape_base_impl.tile` called with arguments: (ExtensionArray | ndarray[tuple[Any, ...], dtype[Any]], Literal[10])",
+      "source_context": "     231 |         N = 10000\n     232 |         indices = Index([f\"i-{i}\" for i in range(N)], dtype=object).values\n     233 |         indices2 = Index([f\"i-{i}\" for i in range(N)], dtype=object).values\n>>>  234 |         key = np.tile(indices[:8000], 10)\n     235 |         key2 = np.tile(indices2[:8000], 10)\n     236 |         self.left = DataFrame(\n     237 |             {\"key\": key, \"key2\": key2, \"value\": np.random.randn(80000)}",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L234"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 372,
+      "error_code": "missing-attribute",
+      "message": "Object of class `ndarray` has no attribute `dt`",
+      "source_context": "     369 |         )\n     370 |         self.right = DataFrame(\n     371 |             {\n>>>  372 |                 \"key\": keys[:8000].dt.as_unit(unit_right),\n     373 |                 \"value2\": np.random.randn(8000),\n     374 |             }\n     375 |         )",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L372"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 454,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.random.mtrand.RandomState.randint` called with arguments: (Literal[0], float, Literal[200000])",
+      "source_context": "     451 | \n     452 |         df1 = DataFrame(\n     453 |             {\n>>>  454 |                 \"time\": np.random.randint(0, one_count / 20, one_count),\n     455 |                 \"key\": np.random.choice(list(string.ascii_uppercase), one_count),\n     456 |                 \"key2\": np.random.randint(0, 25, one_count),\n     457 |                 \"value1\": np.random.randn(one_count),",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L454"
+    },
+    {
+      "file": "asv_bench/benchmarks/join_merge.py",
+      "line": 462,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy.random.mtrand.RandomState.randint` called with arguments: (Literal[0], float, Literal[1000000])",
+      "source_context": "     459 |         )\n     460 |         df2 = DataFrame(\n     461 |             {\n>>>  462 |                 \"time\": np.random.randint(0, two_count / 20, two_count),\n     463 |                 \"key\": np.random.choice(list(string.ascii_uppercase), two_count),\n     464 |                 \"key2\": np.random.randint(0, 25, two_count),\n     465 |                 \"value2\": np.random.randn(two_count),",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/join_merge.py#L462"
+    },
+    {
+      "file": "asv_bench/benchmarks/libs.py",
+      "line": 28,
+      "error_code": "missing-import",
+      "message": "Cannot find module `pandas.util.decorators`",
+      "source_context": "      25 | try:\n      26 |     from pandas.util import cache_readonly\n      27 | except ImportError:\n>>>   28 |     from pandas.util.decorators import cache_readonly\n      29 | \n      30 | \n      31 | # TODO: share with something in pd._testing?",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/libs.py#L28"
+    },
+    {
+      "file": "asv_bench/benchmarks/libs.py",
+      "line": 65,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `numpy._core.shape_base.vstack` called with arguments: (list[ExtensionArray | ndarray[tuple[int], dtype[Any]] | ndarray[tuple[Any, ...], dtype[float64]]])",
+      "source_context": "      62 |         K = 10\n      63 |         key1 = Index([f\"i-{i}\" for i in range(N)], dtype=object).values.repeat(K)\n      64 |         key2 = Index([f\"i-{i}\" for i in range(N)], dtype=object).values.repeat(K)\n>>>   65 |         col_array = np.vstack([key1, key2, np.random.randn(N * K)])\n      66 |         col_array2 = col_array.copy()\n      67 |         col_array2[:, :10000] = np.nan\n      68 |         self.col_array_list = list(col_array)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/libs.py#L65"
+    },
+    {
+      "file": "asv_bench/benchmarks/libs.py",
+      "line": 98,
+      "error_code": "bad-argument-type",
+      "message": "Argument `(self: Self@CacheReadonly.setup.Foo) -> Literal[5]` is not assignable to parameter `obj` with type `DataFrame | Index | Series` in function `pandas.core.util.hashing.hash_pandas_object`",
+      "source_context": "      95 | class CacheReadonly:\n      96 |     def setup(self):\n      97 |         class Foo:\n>>>   98 |             @cache_readonly\n      99 |             def prop(self):\n     100 |                 return 5\n     101 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/libs.py#L98"
+    },
+    {
+      "file": "asv_bench/benchmarks/multiindex_object.py",
+      "line": 81,
+      "error_code": "bad-assignment",
+      "message": "`MultiIndex | tuple[float, ...]` is not assignable to attribute `mi_unused_levels` with type `MultiIndex`",
+      "source_context": "      78 |         arrays = [np.random.randint(0, 8192, size), np.random.randint(0, 1024, size)]\n      79 |         mask = np.random.rand(size) < 0.1\n      80 |         self.mi_unused_levels = MultiIndex.from_arrays(arrays)\n>>>   81 |         self.mi_unused_levels = self.mi_unused_levels[mask]\n      82 | \n      83 |     def time_remove_unused_levels(self):\n      84 |         self.mi_unused_levels.remove_unused_levels()",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/multiindex_object.py#L81"
+    },
+    {
+      "file": "asv_bench/benchmarks/multiindex_object.py",
+      "line": 174,
+      "error_code": "missing-attribute",
+      "message": "Object of class `tuple` has no attribute `sortlevel`",
+      "source_context": "     171 |         self.mi = self.mi.take(np.random.permutation(np.arange(100000)))\n     172 | \n     173 |     def time_sortlevel_int64(self):\n>>>  174 |         self.mi_int.sortlevel()\n     175 | \n     176 |     def time_sortlevel_zero(self):\n     177 |         self.mi.sortlevel(0)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/multiindex_object.py#L174"
+    },
+    {
+      "file": "asv_bench/benchmarks/pandas_vb_common.py",
+      "line": 20,
+      "error_code": "missing-import",
+      "message": "Cannot find module `pandas.util.testing`",
+      "source_context": "      17 | try:\n      18 |     import pandas._testing as tm\n      19 | except ImportError:\n>>>   20 |     import pandas.util.testing as tm  # noqa: F401\n      21 | \n      22 | \n      23 | numeric_dtypes = [",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/pandas_vb_common.py#L20"
+    },
+    {
+      "file": "asv_bench/benchmarks/period.py",
+      "line": 24,
+      "error_code": "missing-attribute",
+      "message": "Object of class `DatetimeIndex` has no attribute `to_pydatetime`",
+      "source_context": "      21 | \n      22 |     def setup(self, freq, is_offset):\n      23 |         self.rng = date_range(\"1985\", periods=1000)\n>>>   24 |         self.rng2 = date_range(\"1985\", periods=1000).to_pydatetime()\n      25 |         self.ints = list(range(2000, 3000))\n      26 |         self.daily_ints = (\n      27 |             date_range(\"1/1/2000\", periods=1000, freq=freq).strftime(\"%Y%m%d\").map(int)",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/period.py#L24"
+    },
+    {
+      "file": "asv_bench/benchmarks/period.py",
+      "line": 76,
+      "error_code": "bad-assignment",
+      "message": "`Series` is not assignable to attribute `vector` with type `PeriodIndex`",
+      "source_context": "      73 |         if typ == \"index\":\n      74 |             self.vector = PeriodIndex(data * 1000, freq=\"M\")\n      75 |         elif typ == \"series\":\n>>>   76 |             self.vector = Series(data * 1000)\n      77 | \n      78 |     def time_drop_duplicates(self, typ):\n      79 |         self.vector.drop_duplicates()",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/period.py#L76"
+    },
+    {
+      "file": "asv_bench/benchmarks/period.py",
+      "line": 104,
+      "error_code": "missing-attribute",
+      "message": "Object of class `ndarray` has no attribute `intersection`",
+      "source_context": "     101 |         DataFrame({\"a\": self.series, \"b\": self.series[:500]})\n     102 | \n     103 |     def time_intersection(self):\n>>>  104 |         self.index[:750].intersection(self.index[250:])\n     105 | \n     106 |     def time_unique(self):\n     107 |         self.index.unique()",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/period.py#L104"
+    },
+    {
+      "file": "asv_bench/benchmarks/plotting.py",
+      "line": 23,
+      "error_code": "missing-import",
+      "message": "Cannot find module `pandas.tools.plotting`",
+      "source_context": "      20 | try:\n      21 |     from pandas.plotting import andrews_curves\n      22 | except ImportError:\n>>>   23 |     from pandas.tools.plotting import andrews_curves\n      24 | \n      25 | from pandas.plotting._core import _get_plot_backend\n      26 | ",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/plotting.py#L23"
+    },
+    {
+      "file": "asv_bench/benchmarks/plotting.py",
+      "line": 122,
+      "error_code": "missing-attribute",
+      "message": "Object of class `ModuleType` has no attribute `plot`",
+      "source_context": "     119 |         mod = importlib.util.module_from_spec(\n     120 |             importlib.machinery.ModuleSpec(\"pandas_dummy_backend\", None)\n     121 |         )\n>>>  122 |         mod.plot = lambda *args, **kwargs: 1\n     123 | \n     124 |         with contextlib.ExitStack() as stack:\n     125 |             stack.enter_context(",
+      "github_link": "https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/plotting.py#L122"
+    }
+  ],
+  "false_negatives": []
+}

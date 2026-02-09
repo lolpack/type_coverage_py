@@ -1,0 +1,1151 @@
+{
+  "package_name": "fastapi",
+  "github_url": "https://github.com/fastapi/fastapi",
+  "commit_sha": "5ca11c59e36e8a177cec8341861a26a084415a11",
+  "summary": {
+    "pyright_errors": 1518,
+    "pyrefly_errors": 810,
+    "false_positives": 42,
+    "false_negatives": 434
+  },
+  "false_positives": [
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_an_py310.py",
+      "line": 19,
+      "error_code": "bad-typed-dict-key",
+      "message": "`str | None` is not assignable to TypedDict key `name` with type `str`",
+      "source_context": "      16 | ):\n      17 |     if item_id in items:\n      18 |         item = items[item_id]\n>>>   19 |         item[\"name\"] = name\n      20 |         item[\"size\"] = size\n      21 |         return item\n      22 |     else:",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py310.py#L19"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_an_py310.py",
+      "line": 24,
+      "error_code": "bad-typed-dict-key",
+      "message": "`dict[str, int | str | None]` is not assignable to TypedDict key with type `dict[str, int | str]`",
+      "source_context": "      21 |         return item\n      22 |     else:\n      23 |         item = {\"name\": name, \"size\": size}\n>>>   24 |         items[item_id] = item\n      25 |         return JSONResponse(status_code=status.HTTP_201_CREATED, content=item)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py310.py#L24"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_an_py39.py",
+      "line": 19,
+      "error_code": "bad-typed-dict-key",
+      "message": "`str | None` is not assignable to TypedDict key `name` with type `str`",
+      "source_context": "      16 | ):\n      17 |     if item_id in items:\n      18 |         item = items[item_id]\n>>>   19 |         item[\"name\"] = name\n      20 |         item[\"size\"] = size\n      21 |         return item\n      22 |     else:",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py39.py#L19"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_an_py39.py",
+      "line": 24,
+      "error_code": "bad-typed-dict-key",
+      "message": "`dict[str, int | str | None]` is not assignable to TypedDict key with type `dict[str, int | str]`",
+      "source_context": "      21 |         return item\n      22 |     else:\n      23 |         item = {\"name\": name, \"size\": size}\n>>>   24 |         items[item_id] = item\n      25 |         return JSONResponse(status_code=status.HTTP_201_CREATED, content=item)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py39.py#L24"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_py310.py",
+      "line": 17,
+      "error_code": "bad-typed-dict-key",
+      "message": "`str | None` is not assignable to TypedDict key `name` with type `str`",
+      "source_context": "      14 | ):\n      15 |     if item_id in items:\n      16 |         item = items[item_id]\n>>>   17 |         item[\"name\"] = name\n      18 |         item[\"size\"] = size\n      19 |         return item\n      20 |     else:",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_py310.py#L17"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_py310.py",
+      "line": 22,
+      "error_code": "bad-typed-dict-key",
+      "message": "`dict[str, int | str | None]` is not assignable to TypedDict key with type `dict[str, int | str]`",
+      "source_context": "      19 |         return item\n      20 |     else:\n      21 |         item = {\"name\": name, \"size\": size}\n>>>   22 |         items[item_id] = item\n      23 |         return JSONResponse(status_code=status.HTTP_201_CREATED, content=item)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_py310.py#L22"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_py39.py",
+      "line": 19,
+      "error_code": "bad-typed-dict-key",
+      "message": "`str | None` is not assignable to TypedDict key `name` with type `str`",
+      "source_context": "      16 | ):\n      17 |     if item_id in items:\n      18 |         item = items[item_id]\n>>>   19 |         item[\"name\"] = name\n      20 |         item[\"size\"] = size\n      21 |         return item\n      22 |     else:",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_py39.py#L19"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_py39.py",
+      "line": 24,
+      "error_code": "bad-typed-dict-key",
+      "message": "`dict[str, int | str | None]` is not assignable to TypedDict key with type `dict[str, int | str]`",
+      "source_context": "      21 |         return item\n      22 |     else:\n      23 |         item = {\"name\": name, \"size\": size}\n>>>   24 |         items[item_id] = item\n      25 |         return JSONResponse(status_code=status.HTTP_201_CREATED, content=item)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_py39.py#L24"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial002_an_py310.py",
+      "line": 24,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, list[dict[str, str]]])",
+      "source_context": "      21 |     if commons.q:\n      22 |         response.update({\"q\": commons.q})\n      23 |     items = fake_items_db[commons.skip : commons.skip + commons.limit]\n>>>   24 |     response.update({\"items\": items})\n      25 |     return response",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial002_an_py310.py#L24"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial002_an_py39.py",
+      "line": 24,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, list[dict[str, str]]])",
+      "source_context": "      21 |     if commons.q:\n      22 |         response.update({\"q\": commons.q})\n      23 |     items = fake_items_db[commons.skip : commons.skip + commons.limit]\n>>>   24 |     response.update({\"items\": items})\n      25 |     return response",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial002_an_py39.py#L24"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial002_py310.py",
+      "line": 22,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, list[dict[str, str]]])",
+      "source_context": "      19 |     if commons.q:\n      20 |         response.update({\"q\": commons.q})\n      21 |     items = fake_items_db[commons.skip : commons.skip + commons.limit]\n>>>   22 |     response.update({\"items\": items})\n      23 |     return response",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial002_py310.py#L22"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial002_py39.py",
+      "line": 24,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, list[dict[str, str]]])",
+      "source_context": "      21 |     if commons.q:\n      22 |         response.update({\"q\": commons.q})\n      23 |     items = fake_items_db[commons.skip : commons.skip + commons.limit]\n>>>   24 |     response.update({\"items\": items})\n      25 |     return response",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial002_py39.py#L24"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial004_an_py310.py",
+      "line": 24,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, list[dict[str, str]]])",
+      "source_context": "      21 |     if commons.q:\n      22 |         response.update({\"q\": commons.q})\n      23 |     items = fake_items_db[commons.skip : commons.skip + commons.limit]\n>>>   24 |     response.update({\"items\": items})\n      25 |     return response",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial004_an_py310.py#L24"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial004_an_py39.py",
+      "line": 24,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, list[dict[str, str]]])",
+      "source_context": "      21 |     if commons.q:\n      22 |         response.update({\"q\": commons.q})\n      23 |     items = fake_items_db[commons.skip : commons.skip + commons.limit]\n>>>   24 |     response.update({\"items\": items})\n      25 |     return response",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial004_an_py39.py#L24"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial004_py310.py",
+      "line": 22,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, list[dict[str, str]]])",
+      "source_context": "      19 |     if commons.q:\n      20 |         response.update({\"q\": commons.q})\n      21 |     items = fake_items_db[commons.skip : commons.skip + commons.limit]\n>>>   22 |     response.update({\"items\": items})\n      23 |     return response",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial004_py310.py#L22"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial004_py39.py",
+      "line": 24,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, list[dict[str, str]]])",
+      "source_context": "      21 |     if commons.q:\n      22 |         response.update({\"q\": commons.q})\n      23 |     items = fake_items_db[commons.skip : commons.skip + commons.limit]\n>>>   24 |     response.update({\"items\": items})\n      25 |     return response",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial004_py39.py#L24"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py310.py",
+      "line": 26,
+      "error_code": "bad-override",
+      "message": "Class member `HeroUpdate.name` overrides parent class `HeroBase` in an inconsistent manner",
+      "source_context": "      23 | \n      24 | \n      25 | class HeroUpdate(HeroBase):\n>>>   26 |     name: str | None = None\n      27 |     age: int | None = None\n      28 |     secret_name: str | None = None\n      29 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py310.py#L26"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py39.py",
+      "line": 26,
+      "error_code": "bad-override",
+      "message": "Class member `HeroUpdate.name` overrides parent class `HeroBase` in an inconsistent manner",
+      "source_context": "      23 | \n      24 | \n      25 | class HeroUpdate(HeroBase):\n>>>   26 |     name: Union[str, None] = None\n      27 |     age: Union[int, None] = None\n      28 |     secret_name: Union[str, None] = None\n      29 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py39.py#L26"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_py310.py",
+      "line": 24,
+      "error_code": "bad-override",
+      "message": "Class member `HeroUpdate.name` overrides parent class `HeroBase` in an inconsistent manner",
+      "source_context": "      21 | \n      22 | \n      23 | class HeroUpdate(HeroBase):\n>>>   24 |     name: str | None = None\n      25 |     age: int | None = None\n      26 |     secret_name: str | None = None\n      27 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_py310.py#L24"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_py39.py",
+      "line": 26,
+      "error_code": "bad-override",
+      "message": "Class member `HeroUpdate.name` overrides parent class `HeroBase` in an inconsistent manner",
+      "source_context": "      23 | \n      24 | \n      25 | class HeroUpdate(HeroBase):\n>>>   26 |     name: Union[str, None] = None\n      27 |     age: Union[int, None] = None\n      28 |     secret_name: Union[str, None] = None\n      29 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_py39.py#L26"
+    },
+    {
+      "file": "fastapi/_compat/v2.py",
+      "line": 157,
+      "error_code": "bad-specialization",
+      "message": "`Annotated` needs at least one piece of metadata in addition to the type",
+      "source_context": "     154 |                 Field(**field_dict[\"attributes\"]),\n     155 |             )\n     156 |             self._type_adapter: TypeAdapter[Any] = TypeAdapter(\n>>>  157 |                 Annotated[annotated_args],\n     158 |                 config=self.config,\n     159 |             )\n     160 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/fastapi/_compat/v2.py#L157"
+    },
+    {
+      "file": "fastapi/dependencies/utils.py",
+      "line": 556,
+      "error_code": "unbound-name",
+      "message": "`cm` may be uninitialized",
+      "source_context": "     553 |         cm = asynccontextmanager(dependant.call)(**sub_values)\n     554 |     elif dependant.is_gen_callable:\n     555 |         cm = contextmanager_in_threadpool(contextmanager(dependant.call)(**sub_values))\n>>>  556 |     return await stack.enter_async_context(cm)\n     557 | \n     558 | \n     559 | @dataclass",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/fastapi/dependencies/utils.py#L556"
+    },
+    {
+      "file": "fastapi/openapi/models.py",
+      "line": 354,
+      "error_code": "bad-override",
+      "message": "Class member `HTTPBearer.scheme` overrides parent class `HTTPBase` in an inconsistent manner",
+      "source_context": "     351 | \n     352 | \n     353 | class HTTPBearer(HTTPBase):\n>>>  354 |     scheme: Literal[\"bearer\"] = \"bearer\"\n     355 |     bearerFormat: Optional[str] = None\n     356 | \n     357 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/fastapi/openapi/models.py#L354"
+    },
+    {
+      "file": "fastapi/openapi/utils.py",
+      "line": 355,
+      "error_code": "unbound-name",
+      "message": "`status_code` may be uninitialized",
+      "source_context": "     352 |                 if status_code_param is not None:\n     353 |                     if isinstance(status_code_param.default, int):\n     354 |                         status_code = str(status_code_param.default)\n>>>  355 |             operation.setdefault(\"responses\", {}).setdefault(status_code, {})[\n     356 |                 \"description\"\n     357 |             ] = route.response_description\n     358 |             if route_response_media_type and is_body_allowed_for_status_code(",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/fastapi/openapi/utils.py#L355"
+    },
+    {
+      "file": "fastapi/openapi/utils.py",
+      "line": 373,
+      "error_code": "unbound-name",
+      "message": "`status_code` may be uninitialized",
+      "source_context": "     370 |                     else:\n     371 |                         response_schema = {}\n     372 |                 operation.setdefault(\"responses\", {}).setdefault(\n>>>  373 |                     status_code, {}\n     374 |                 ).setdefault(\"content\", {}).setdefault(route_response_media_type, {})[\n     375 |                     \"schema\"\n     376 |                 ] = response_schema",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/fastapi/openapi/utils.py#L373"
+    },
+    {
+      "file": "scripts/docs.py",
+      "line": 360,
+      "error_code": "bad-typed-dict-key",
+      "message": "Expected string literal key, got `str`",
+      "source_context": "     357 |             # Skip languages that are not yet ready\n     358 |             continue\n     359 |         code = lang_path.name\n>>>  360 |         languages.append({code: f\"/{code}/\"})\n     361 |     for lang_dict in languages:\n     362 |         code = list(lang_dict.keys())[0]\n     363 |         url = lang_dict[code]",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/scripts/docs.py#L360"
+    },
+    {
+      "file": "tests/test_custom_middleware_exception.py",
+      "line": 50,
+      "error_code": "not-callable",
+      "message": "Expected a callable, got `APIRouter`",
+      "source_context": "      47 | \n      48 |     async def __call__(self, scope, receive, send):\n      49 |         if scope[\"type\"] != \"http\" or self.max_content_size is None:\n>>>   50 |             await self.app(scope, receive, send)\n      51 |             return\n      52 | \n      53 |         wrapper = self.receive_wrapper(receive)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_custom_middleware_exception.py#L50"
+    },
+    {
+      "file": "tests/test_custom_middleware_exception.py",
+      "line": 54,
+      "error_code": "not-callable",
+      "message": "Expected a callable, got `APIRouter`",
+      "source_context": "      51 |             return\n      52 | \n      53 |         wrapper = self.receive_wrapper(receive)\n>>>   54 |         await self.app(scope, wrapper, send)\n      55 | \n      56 | \n      57 | @router.post(\"/middleware\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_custom_middleware_exception.py#L54"
+    },
+    {
+      "file": "tests/test_dependency_after_yield_streaming.py",
+      "line": 117,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `_pytest.raises.raises` called with arguments: (tuple[type[ValueError], type[Exception]])",
+      "source_context": "     114 | \n     115 | def test_broken_session_stream_raise():\n     116 |     # Can raise ValueError on Pydantic v2 and ExceptionGroup on Pydantic v1\n>>>  117 |     with pytest.raises((ValueError, Exception)):\n     118 |         client.get(\"/broken-session-stream\")\n     119 | \n     120 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_dependency_after_yield_streaming.py#L117"
+    },
+    {
+      "file": "tests/test_inherited_custom_class.py",
+      "line": 17,
+      "error_code": "bad-override",
+      "message": "Class member `MyUuid.__class__` overrides parent class `object` in an inconsistent manner",
+      "source_context": "      14 |         return self.uuid\n      15 | \n      16 |     @property  # type: ignore\n>>>   17 |     def __class__(self):\n      18 |         return uuid.UUID\n      19 | \n      20 |     @property",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_inherited_custom_class.py#L17"
+    },
+    {
+      "file": "tests/test_inherited_custom_class.py",
+      "line": 21,
+      "error_code": "bad-override",
+      "message": "Class member `MyUuid.__dict__` overrides parent class `object` in an inconsistent manner",
+      "source_context": "      18 |         return uuid.UUID\n      19 | \n      20 |     @property\n>>>   21 |     def __dict__(self):\n      22 |         \"\"\"Spoof a missing __dict__ by raising TypeError, this is how\n      23 |         asyncpg.pgroto.pgproto.UUID behaves\"\"\"\n      24 |         raise TypeError(\"vars() argument must have __dict__ attribute\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_inherited_custom_class.py#L21"
+    },
+    {
+      "file": "tests/test_jsonable_encoder.py",
+      "line": 50,
+      "error_code": "bad-override",
+      "message": "Class member `Unserializable.__dict__` overrides parent class `object` in an inconsistent manner",
+      "source_context": "      47 |         raise NotImplementedError()\n      48 | \n      49 |     @property\n>>>   50 |     def __dict__(self):\n      51 |         raise NotImplementedError()\n      52 | \n      53 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_jsonable_encoder.py#L50"
+    },
+    {
+      "file": "tests/test_tutorial/test_body_nested_models/test_tutorial001_tutorial002_tutorial003.py",
+      "line": 137,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, dict[Unknown, Unknown] | str])",
+      "source_context": "     134 | def test_openapi_schema(client: TestClient, mod_name: str):\n     135 |     tags_schema = {\"default\": [], \"title\": \"Tags\"}\n     136 |     if mod_name.startswith(\"tutorial001\"):\n>>>  137 |         tags_schema.update(UNTYPED_LIST_SCHEMA)\n     138 |     elif mod_name.startswith(\"tutorial002\"):\n     139 |         tags_schema.update(LIST_OF_STR_SCHEMA)\n     140 |     elif mod_name.startswith(\"tutorial003\"):",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_tutorial/test_body_nested_models/test_tutorial001_tutorial002_tutorial003.py#L137"
+    },
+    {
+      "file": "tests/test_tutorial/test_body_nested_models/test_tutorial001_tutorial002_tutorial003.py",
+      "line": 141,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (dict[str, bool | str | dict[str, str]])",
+      "source_context": "     138 |     elif mod_name.startswith(\"tutorial002\"):\n     139 |         tags_schema.update(LIST_OF_STR_SCHEMA)\n     140 |     elif mod_name.startswith(\"tutorial003\"):\n>>>  141 |         tags_schema.update(SET_OF_STR_SCHEMA)\n     142 | \n     143 |     response = client.get(\"/openapi.json\")\n     144 |     assert response.status_code == 200, response.text",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_tutorial/test_body_nested_models/test_tutorial001_tutorial002_tutorial003.py#L141"
+    },
+    {
+      "file": "tests/test_tutorial/test_custom_response/test_tutorial008.py",
+      "line": 13,
+      "error_code": "bad-assignment",
+      "message": "`str` is not assignable to attribute `some_file_path` with type `Literal['large-video-file.mp4']`",
+      "source_context": "      10 | \n      11 | def test_get(tmp_path: Path):\n      12 |     file_path: Path = tmp_path / \"large-video-file.mp4\"\n>>>   13 |     tutorial008_py39.some_file_path = str(file_path)\n      14 |     test_content = b\"Fake video bytes\"\n      15 |     file_path.write_bytes(test_content)\n      16 |     response = client.get(\"/\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_tutorial/test_custom_response/test_tutorial008.py#L13"
+    },
+    {
+      "file": "tests/test_tutorial/test_custom_response/test_tutorial009.py",
+      "line": 13,
+      "error_code": "bad-assignment",
+      "message": "`str` is not assignable to attribute `some_file_path` with type `Literal['large-video-file.mp4']`",
+      "source_context": "      10 | \n      11 | def test_get(tmp_path: Path):\n      12 |     file_path: Path = tmp_path / \"large-video-file.mp4\"\n>>>   13 |     tutorial009_py39.some_file_path = str(file_path)\n      14 |     test_content = b\"Fake video bytes\"\n      15 |     file_path.write_bytes(test_content)\n      16 |     response = client.get(\"/\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_tutorial/test_custom_response/test_tutorial009.py#L13"
+    },
+    {
+      "file": "tests/test_tutorial/test_custom_response/test_tutorial009b.py",
+      "line": 13,
+      "error_code": "bad-assignment",
+      "message": "`str` is not assignable to attribute `some_file_path` with type `Literal['large-video-file.mp4']`",
+      "source_context": "      10 | \n      11 | def test_get(tmp_path: Path):\n      12 |     file_path: Path = tmp_path / \"large-video-file.mp4\"\n>>>   13 |     tutorial009b_py39.some_file_path = str(file_path)\n      14 |     test_content = b\"Fake video bytes\"\n      15 |     file_path.write_bytes(test_content)\n      16 |     response = client.get(\"/\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_tutorial/test_custom_response/test_tutorial009b.py#L13"
+    },
+    {
+      "file": "tests/test_tutorial/test_settings/test_app01.py",
+      "line": 37,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `errors`",
+      "source_context": "      34 | \n      35 |     with pytest.raises(ValidationError) as exc_info:\n      36 |         importlib.import_module(mod_name)\n>>>   37 |     assert exc_info.value.errors() == [\n      38 |         {\n      39 |             \"loc\": (\"admin_email\",),\n      40 |             \"msg\": \"Field required\",",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_tutorial/test_settings/test_app01.py#L37"
+    },
+    {
+      "file": "tests/test_ws_router.py",
+      "line": 185,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `code`",
+      "source_context": "     182 |     with pytest.raises(WebSocketDisconnect) as e:\n     183 |         with client.websocket_connect(\"/no-router/\"):\n     184 |             pass  # pragma: no cover\n>>>  185 |     assert e.value.code == status.WS_1000_NORMAL_CLOSURE\n     186 | \n     187 | \n     188 | def websocket_middleware(middleware_func):",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_ws_router.py#L185"
+    },
+    {
+      "file": "tests/test_ws_router.py",
+      "line": 231,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `code`",
+      "source_context": "     228 |         with client.websocket_connect(\"/depends-validate/\"):\n     229 |             pass  # pragma: no cover\n     230 |     # the validation error does produce a close message\n>>>  231 |     assert e.value.code == status.WS_1008_POLICY_VIOLATION\n     232 |     # and no error is leaked\n     233 |     assert caught == []\n     234 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_ws_router.py#L231"
+    },
+    {
+      "file": "tests/test_ws_router.py",
+      "line": 253,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `code`",
+      "source_context": "     250 |     with pytest.raises(WebSocketDisconnect) as e:\n     251 |         with client.websocket_connect(\"/depends-err/\"):\n     252 |             pass  # pragma: no cover\n>>>  253 |     assert e.value.code == status.WS_1006_ABNORMAL_CLOSURE\n     254 |     assert \"NotImplementedError\" in e.value.reason\n     255 | \n     256 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_ws_router.py#L253"
+    },
+    {
+      "file": "tests/test_ws_router.py",
+      "line": 270,
+      "error_code": "missing-attribute",
+      "message": "Object of class `BaseException` has no attribute `code`",
+      "source_context": "     267 |     with pytest.raises(WebSocketDisconnect) as e:\n     268 |         with client.websocket_connect(\"/custom_error/\"):\n     269 |             pass  # pragma: no cover\n>>>  270 |     assert e.value.code == 1002\n     271 |     assert \"foo\" in e.value.reason",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_ws_router.py#L270"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_an_py310.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"status\" is unknown import symbol",
+      "source_context": "       1 | from typing import Annotated\n       2 | \n>>>    3 | from fastapi import Body, FastAPI, status\n       4 | from fastapi.responses import JSONResponse\n       5 | \n       6 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py310.py#L3"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_an_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"status\" is unknown import symbol",
+      "source_context": "       1 | from typing import Annotated, Union\n       2 | \n>>>    3 | from fastapi import Body, FastAPI, status\n       4 | from fastapi.responses import JSONResponse\n       5 | \n       6 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py39.py#L3"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_py310.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"status\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import Body, FastAPI, status\n       2 | from fastapi.responses import JSONResponse\n       3 | \n       4 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_py310.py#L1"
+    },
+    {
+      "file": "docs_src/additional_status_codes/tutorial001_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"status\" is unknown import symbol",
+      "source_context": "       1 | from typing import Union\n       2 | \n>>>    3 | from fastapi import Body, FastAPI, status\n       4 | from fastapi.responses import JSONResponse\n       5 | \n       6 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_py39.py#L3"
+    },
+    {
+      "file": "docs_src/advanced_middleware/tutorial001_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"HTTPSRedirectMiddleware\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/advanced_middleware/tutorial001_py39.py#L2"
+    },
+    {
+      "file": "docs_src/advanced_middleware/tutorial002_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TrustedHostMiddleware\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.middleware.trustedhost import TrustedHostMiddleware\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/advanced_middleware/tutorial002_py39.py#L2"
+    },
+    {
+      "file": "docs_src/advanced_middleware/tutorial003_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"GZipMiddleware\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.middleware.gzip import GZipMiddleware\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/advanced_middleware/tutorial003_py39.py#L2"
+    },
+    {
+      "file": "docs_src/app_testing/app_a_py39/test_main.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi.testclient import TestClient\n       2 | \n       3 | from .main import app\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/app_a_py39/test_main.py#L1"
+    },
+    {
+      "file": "docs_src/app_testing/app_b_an_py310/test_main.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi.testclient import TestClient\n       2 | \n       3 | from .main import app\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/app_b_an_py310/test_main.py#L1"
+    },
+    {
+      "file": "docs_src/app_testing/app_b_an_py39/test_main.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi.testclient import TestClient\n       2 | \n       3 | from .main import app\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/app_b_an_py39/test_main.py#L1"
+    },
+    {
+      "file": "docs_src/app_testing/app_b_py310/test_main.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi.testclient import TestClient\n       2 | \n       3 | from .main import app\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/app_b_py310/test_main.py#L1"
+    },
+    {
+      "file": "docs_src/app_testing/app_b_py39/test_main.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi.testclient import TestClient\n       2 | \n       3 | from .main import app\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/app_b_py39/test_main.py#L1"
+    },
+    {
+      "file": "docs_src/app_testing/tutorial001_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.testclient import TestClient\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/tutorial001_py39.py#L2"
+    },
+    {
+      "file": "docs_src/app_testing/tutorial002_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.testclient import TestClient\n       3 | from fastapi.websockets import WebSocket\n       4 | \n       5 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/tutorial002_py39.py#L2"
+    },
+    {
+      "file": "docs_src/app_testing/tutorial003_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.testclient import TestClient\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/tutorial003_py39.py#L2"
+    },
+    {
+      "file": "docs_src/app_testing/tutorial004_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": "       1 | from contextlib import asynccontextmanager\n       2 | \n       3 | from fastapi import FastAPI\n>>>    4 | from fastapi.testclient import TestClient\n       5 | \n       6 | items = {}\n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/app_testing/tutorial004_py39.py#L4"
+    },
+    {
+      "file": "docs_src/authentication_error_status_code/tutorial001_an_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"status\" is unknown import symbol",
+      "source_context": "       1 | from typing import Annotated\n       2 | \n>>>    3 | from fastapi import Depends, FastAPI, HTTPException, status\n       4 | from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer\n       5 | \n       6 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/authentication_error_status_code/tutorial001_an_py39.py#L3"
+    },
+    {
+      "file": "docs_src/behind_a_proxy/tutorial001_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Request\n       2 | \n       3 | app = FastAPI()\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/behind_a_proxy/tutorial001_py39.py#L1"
+    },
+    {
+      "file": "docs_src/behind_a_proxy/tutorial002_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Request\n       2 | \n       3 | app = FastAPI(root_path=\"/api/v1\")\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/behind_a_proxy/tutorial002_py39.py#L1"
+    },
+    {
+      "file": "docs_src/behind_a_proxy/tutorial003_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Request\n       2 | \n       3 | app = FastAPI(\n       4 |     servers=[",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/behind_a_proxy/tutorial003_py39.py#L1"
+    },
+    {
+      "file": "docs_src/behind_a_proxy/tutorial004_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Request\n       2 | \n       3 | app = FastAPI(\n       4 |     servers=[",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/behind_a_proxy/tutorial004_py39.py#L1"
+    },
+    {
+      "file": "docs_src/cors/tutorial001_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"CORSMiddleware\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.middleware.cors import CORSMiddleware\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/cors/tutorial001_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_docs_ui/tutorial002_py39.py",
+      "line": 7,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"StaticFiles\" is unknown import symbol",
+      "source_context": "       4 |     get_swagger_ui_html,\n       5 |     get_swagger_ui_oauth2_redirect_html,\n       6 | )\n>>>    7 | from fastapi.staticfiles import StaticFiles\n       8 | \n       9 | app = FastAPI(docs_url=None, redoc_url=None)\n      10 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_docs_ui/tutorial002_py39.py#L7"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial001_an_py310.py",
+      "line": 5,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       2 | from collections.abc import Callable\n       3 | from typing import Annotated\n       4 | \n>>>    5 | from fastapi import Body, FastAPI, Request, Response\n       6 | from fastapi.routing import APIRoute\n       7 | \n       8 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial001_an_py310.py#L5"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial001_an_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | import gzip\n       2 | from typing import Annotated, Callable\n       3 | \n>>>    4 | from fastapi import Body, FastAPI, Request, Response\n       5 | from fastapi.routing import APIRoute\n       6 | \n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial001_an_py39.py#L4"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial001_py310.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | import gzip\n       2 | from collections.abc import Callable\n       3 | \n>>>    4 | from fastapi import Body, FastAPI, Request, Response\n       5 | from fastapi.routing import APIRoute\n       6 | \n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial001_py310.py#L4"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial001_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | import gzip\n       2 | from typing import Callable\n       3 | \n>>>    4 | from fastapi import Body, FastAPI, Request, Response\n       5 | from fastapi.routing import APIRoute\n       6 | \n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial001_py39.py#L4"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial002_an_py310.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | from collections.abc import Callable\n       2 | from typing import Annotated\n       3 | \n>>>    4 | from fastapi import Body, FastAPI, HTTPException, Request, Response\n       5 | from fastapi.exceptions import RequestValidationError\n       6 | from fastapi.routing import APIRoute\n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial002_an_py310.py#L4"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial002_an_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | from typing import Annotated, Callable\n       2 | \n>>>    3 | from fastapi import Body, FastAPI, HTTPException, Request, Response\n       4 | from fastapi.exceptions import RequestValidationError\n       5 | from fastapi.routing import APIRoute\n       6 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial002_an_py39.py#L3"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial002_py310.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | from collections.abc import Callable\n       2 | \n>>>    3 | from fastapi import Body, FastAPI, HTTPException, Request, Response\n       4 | from fastapi.exceptions import RequestValidationError\n       5 | from fastapi.routing import APIRoute\n       6 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial002_py310.py#L3"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial002_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | from typing import Callable\n       2 | \n>>>    3 | from fastapi import Body, FastAPI, HTTPException, Request, Response\n       4 | from fastapi.exceptions import RequestValidationError\n       5 | from fastapi.routing import APIRoute\n       6 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial002_py39.py#L3"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial003_py310.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | import time\n       2 | from collections.abc import Callable\n       3 | \n>>>    4 | from fastapi import APIRouter, FastAPI, Request, Response\n       5 | from fastapi.routing import APIRoute\n       6 | \n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial003_py310.py#L4"
+    },
+    {
+      "file": "docs_src/custom_request_and_route/tutorial003_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | import time\n       2 | from typing import Callable\n       3 | \n>>>    4 | from fastapi import APIRouter, FastAPI, Request, Response\n       5 | from fastapi.routing import APIRoute\n       6 | \n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_request_and_route/tutorial003_py39.py#L4"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial002_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"HTMLResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import HTMLResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial002_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial003_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"HTMLResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import HTMLResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial003_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial004_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"HTMLResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import HTMLResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial004_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial005_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"PlainTextResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import PlainTextResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial005_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial006_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"RedirectResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import RedirectResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial006_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial006b_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"RedirectResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import RedirectResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial006b_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial006c_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"RedirectResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import RedirectResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial006c_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial007_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"StreamingResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import StreamingResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial007_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial008_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"StreamingResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import StreamingResponse\n       3 | \n       4 | some_file_path = \"large-video-file.mp4\"\n       5 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial008_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial009_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"FileResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import FileResponse\n       3 | \n       4 | some_file_path = \"large-video-file.mp4\"\n       5 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial009_py39.py#L2"
+    },
+    {
+      "file": "docs_src/custom_response/tutorial009b_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"FileResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import FileResponse\n       3 | \n       4 | some_file_path = \"large-video-file.mp4\"\n       5 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/custom_response/tutorial009b_py39.py#L2"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial013_an_py310.py",
+      "line": 11,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       8 | engine = create_engine(\"postgresql+psycopg://postgres:postgres@localhost/db\")\n       9 | \n      10 | \n>>>   11 | class User(SQLModel, table=True):\n      12 |     id: int | None = Field(default=None, primary_key=True)\n      13 |     name: str\n      14 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial013_an_py310.py#L11"
+    },
+    {
+      "file": "docs_src/dependencies/tutorial014_an_py310.py",
+      "line": 11,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       8 | engine = create_engine(\"postgresql+psycopg://postgres:postgres@localhost/db\")\n       9 | \n      10 | \n>>>   11 | class User(SQLModel, table=True):\n      12 |     id: int | None = Field(default=None, primary_key=True)\n      13 |     name: str\n      14 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependencies/tutorial014_an_py310.py#L11"
+    },
+    {
+      "file": "docs_src/dependency_testing/tutorial001_an_py310.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": "       1 | from typing import Annotated\n       2 | \n       3 | from fastapi import Depends, FastAPI\n>>>    4 | from fastapi.testclient import TestClient\n       5 | \n       6 | app = FastAPI()\n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependency_testing/tutorial001_an_py310.py#L4"
+    },
+    {
+      "file": "docs_src/dependency_testing/tutorial001_an_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": "       1 | from typing import Annotated, Union\n       2 | \n       3 | from fastapi import Depends, FastAPI\n>>>    4 | from fastapi.testclient import TestClient\n       5 | \n       6 | app = FastAPI()\n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependency_testing/tutorial001_an_py39.py#L4"
+    },
+    {
+      "file": "docs_src/dependency_testing/tutorial001_py310.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import Depends, FastAPI\n>>>    2 | from fastapi.testclient import TestClient\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependency_testing/tutorial001_py310.py#L2"
+    },
+    {
+      "file": "docs_src/dependency_testing/tutorial001_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": "       1 | from typing import Union\n       2 | \n       3 | from fastapi import Depends, FastAPI\n>>>    4 | from fastapi.testclient import TestClient\n       5 | \n       6 | app = FastAPI()\n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/dependency_testing/tutorial001_py39.py#L4"
+    },
+    {
+      "file": "docs_src/handling_errors/tutorial003_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Request\n       2 | from fastapi.responses import JSONResponse\n       3 | \n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/handling_errors/tutorial003_py39.py#L1"
+    },
+    {
+      "file": "docs_src/handling_errors/tutorial005_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Request\n       2 | from fastapi.encoders import jsonable_encoder\n       3 | from fastapi.exceptions import RequestValidationError\n       4 | from fastapi.responses import JSONResponse",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/handling_errors/tutorial005_py39.py#L1"
+    },
+    {
+      "file": "docs_src/middleware/tutorial001_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": "       1 | import time\n       2 | \n>>>    3 | from fastapi import FastAPI, Request\n       4 | \n       5 | app = FastAPI()\n       6 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/middleware/tutorial001_py39.py#L3"
+    },
+    {
+      "file": "docs_src/path_operation_advanced_configuration/tutorial006_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Request\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Request\n       2 | \n       3 | app = FastAPI()\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/path_operation_advanced_configuration/tutorial006_py39.py#L1"
+    },
+    {
+      "file": "docs_src/request_files/tutorial002_an_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"HTMLResponse\" is unknown import symbol",
+      "source_context": "       1 | from typing import Annotated\n       2 | \n       3 | from fastapi import FastAPI, File, UploadFile\n>>>    4 | from fastapi.responses import HTMLResponse\n       5 | \n       6 | app = FastAPI()\n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/request_files/tutorial002_an_py39.py#L4"
+    },
+    {
+      "file": "docs_src/request_files/tutorial002_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"HTMLResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI, File, UploadFile\n>>>    2 | from fastapi.responses import HTMLResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/request_files/tutorial002_py39.py#L2"
+    },
+    {
+      "file": "docs_src/request_files/tutorial003_an_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"HTMLResponse\" is unknown import symbol",
+      "source_context": "       1 | from typing import Annotated\n       2 | \n       3 | from fastapi import FastAPI, File, UploadFile\n>>>    4 | from fastapi.responses import HTMLResponse\n       5 | \n       6 | app = FastAPI()\n       7 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/request_files/tutorial003_an_py39.py#L4"
+    },
+    {
+      "file": "docs_src/request_files/tutorial003_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"HTMLResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI, File, UploadFile\n>>>    2 | from fastapi.responses import HTMLResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/request_files/tutorial003_py39.py#L2"
+    },
+    {
+      "file": "docs_src/response_change_status_code/tutorial001_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Response, status\n       2 | \n       3 | app = FastAPI()\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_change_status_code/tutorial001_py39.py#L1"
+    },
+    {
+      "file": "docs_src/response_cookies/tutorial001_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"JSONResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import JSONResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_cookies/tutorial001_py39.py#L2"
+    },
+    {
+      "file": "docs_src/response_cookies/tutorial002_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Response\n       2 | \n       3 | app = FastAPI()\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_cookies/tutorial002_py39.py#L1"
+    },
+    {
+      "file": "docs_src/response_directly/tutorial002_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Response\n       2 | \n       3 | app = FastAPI()\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_directly/tutorial002_py39.py#L1"
+    },
+    {
+      "file": "docs_src/response_headers/tutorial001_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"JSONResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import JSONResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_headers/tutorial001_py39.py#L2"
+    },
+    {
+      "file": "docs_src/response_headers/tutorial002_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Response\n       2 | \n       3 | app = FastAPI()\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_headers/tutorial002_py39.py#L1"
+    },
+    {
+      "file": "docs_src/response_model/tutorial003_02_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Response\n       2 | from fastapi.responses import JSONResponse, RedirectResponse\n       3 | \n       4 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_model/tutorial003_02_py39.py#L1"
+    },
+    {
+      "file": "docs_src/response_model/tutorial003_03_py39.py",
+      "line": 2,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"RedirectResponse\" is unknown import symbol",
+      "source_context": "       1 | from fastapi import FastAPI\n>>>    2 | from fastapi.responses import RedirectResponse\n       3 | \n       4 | app = FastAPI()\n       5 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_model/tutorial003_03_py39.py#L2"
+    },
+    {
+      "file": "docs_src/response_model/tutorial003_04_py310.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Response\n       2 | from fastapi.responses import RedirectResponse\n       3 | \n       4 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_model/tutorial003_04_py310.py#L1"
+    },
+    {
+      "file": "docs_src/response_model/tutorial003_04_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": "       1 | from typing import Union\n       2 | \n>>>    3 | from fastapi import FastAPI, Response\n       4 | from fastapi.responses import RedirectResponse\n       5 | \n       6 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_model/tutorial003_04_py39.py#L3"
+    },
+    {
+      "file": "docs_src/response_model/tutorial003_05_py310.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, Response\n       2 | from fastapi.responses import RedirectResponse\n       3 | \n       4 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_model/tutorial003_05_py310.py#L1"
+    },
+    {
+      "file": "docs_src/response_model/tutorial003_05_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"Response\" is unknown import symbol",
+      "source_context": "       1 | from typing import Union\n       2 | \n>>>    3 | from fastapi import FastAPI, Response\n       4 | from fastapi.responses import RedirectResponse\n       5 | \n       6 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_model/tutorial003_05_py39.py#L3"
+    },
+    {
+      "file": "docs_src/response_status_code/tutorial002_py39.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"status\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi import FastAPI, status\n       2 | \n       3 | app = FastAPI()\n       4 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/response_status_code/tutorial002_py39.py#L1"
+    },
+    {
+      "file": "docs_src/security/tutorial007_an_py39.py",
+      "line": 4,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"status\" is unknown import symbol",
+      "source_context": "       1 | import secrets\n       2 | from typing import Annotated\n       3 | \n>>>    4 | from fastapi import Depends, FastAPI, HTTPException, status\n       5 | from fastapi.security import HTTPBasic, HTTPBasicCredentials\n       6 | \n       7 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/security/tutorial007_an_py39.py#L4"
+    },
+    {
+      "file": "docs_src/security/tutorial007_py39.py",
+      "line": 3,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"status\" is unknown import symbol",
+      "source_context": "       1 | import secrets\n       2 | \n>>>    3 | from fastapi import Depends, FastAPI, HTTPException, status\n       4 | from fastapi.security import HTTPBasic, HTTPBasicCredentials\n       5 | \n       6 | app = FastAPI()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/security/tutorial007_py39.py#L3"
+    },
+    {
+      "file": "docs_src/settings/app02_an_py39/test_main.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi.testclient import TestClient\n       2 | \n       3 | from .config import Settings\n       4 | from .main import app, get_settings",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/settings/app02_an_py39/test_main.py#L1"
+    },
+    {
+      "file": "docs_src/settings/app02_py39/test_main.py",
+      "line": 1,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"TestClient\" is unknown import symbol",
+      "source_context": ">>>    1 | from fastapi.testclient import TestClient\n       2 | \n       3 | from .config import Settings\n       4 | from .main import app, get_settings",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/settings/app02_py39/test_main.py#L1"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py310.py",
+      "line": 7,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       4 | from sqlmodel import Field, Session, SQLModel, create_engine, select\n       5 | \n       6 | \n>>>    7 | class Hero(SQLModel, table=True):\n       8 |     id: int | None = Field(default=None, primary_key=True)\n       9 |     name: str = Field(index=True)\n      10 |     age: int | None = Field(default=None, index=True)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py310.py#L7"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py310.py",
+      "line": 41,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      38 | \n      39 | \n      40 | @app.post(\"/heroes/\")\n>>>   41 | def create_hero(hero: Hero, session: SessionDep) -> Hero:\n      42 |     session.add(hero)\n      43 |     session.commit()\n      44 |     session.refresh(hero)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py310.py#L41"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py310.py",
+      "line": 50,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      47 | \n      48 | @app.get(\"/heroes/\")\n      49 | def read_heroes(\n>>>   50 |     session: SessionDep,\n      51 |     offset: int = 0,\n      52 |     limit: Annotated[int, Query(le=100)] = 100,\n      53 | ) -> list[Hero]:",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py310.py#L50"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py310.py",
+      "line": 59,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      56 | \n      57 | \n      58 | @app.get(\"/heroes/{hero_id}\")\n>>>   59 | def read_hero(hero_id: int, session: SessionDep) -> Hero:\n      60 |     hero = session.get(Hero, hero_id)\n      61 |     if not hero:\n      62 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py310.py#L59"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py310.py",
+      "line": 67,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      64 | \n      65 | \n      66 | @app.delete(\"/heroes/{hero_id}\")\n>>>   67 | def delete_hero(hero_id: int, session: SessionDep):\n      68 |     hero = session.get(Hero, hero_id)\n      69 |     if not hero:\n      70 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py310.py#L67"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py39.py",
+      "line": 7,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       4 | from sqlmodel import Field, Session, SQLModel, create_engine, select\n       5 | \n       6 | \n>>>    7 | class Hero(SQLModel, table=True):\n       8 |     id: Union[int, None] = Field(default=None, primary_key=True)\n       9 |     name: str = Field(index=True)\n      10 |     age: Union[int, None] = Field(default=None, index=True)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py39.py#L7"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py39.py",
+      "line": 41,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      38 | \n      39 | \n      40 | @app.post(\"/heroes/\")\n>>>   41 | def create_hero(hero: Hero, session: SessionDep) -> Hero:\n      42 |     session.add(hero)\n      43 |     session.commit()\n      44 |     session.refresh(hero)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py39.py#L41"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py39.py",
+      "line": 50,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      47 | \n      48 | @app.get(\"/heroes/\")\n      49 | def read_heroes(\n>>>   50 |     session: SessionDep,\n      51 |     offset: int = 0,\n      52 |     limit: Annotated[int, Query(le=100)] = 100,\n      53 | ) -> list[Hero]:",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py39.py#L50"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py39.py",
+      "line": 59,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      56 | \n      57 | \n      58 | @app.get(\"/heroes/{hero_id}\")\n>>>   59 | def read_hero(hero_id: int, session: SessionDep) -> Hero:\n      60 |     hero = session.get(Hero, hero_id)\n      61 |     if not hero:\n      62 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py39.py#L59"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_an_py39.py",
+      "line": 67,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      64 | \n      65 | \n      66 | @app.delete(\"/heroes/{hero_id}\")\n>>>   67 | def delete_hero(hero_id: int, session: SessionDep):\n      68 |     hero = session.get(Hero, hero_id)\n      69 |     if not hero:\n      70 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_an_py39.py#L67"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_py310.py",
+      "line": 5,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       2 | from sqlmodel import Field, Session, SQLModel, create_engine, select\n       3 | \n       4 | \n>>>    5 | class Hero(SQLModel, table=True):\n       6 |     id: int | None = Field(default=None, primary_key=True)\n       7 |     name: str = Field(index=True)\n       8 |     age: int | None = Field(default=None, index=True)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_py310.py#L5"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial001_py39.py",
+      "line": 7,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       4 | from sqlmodel import Field, Session, SQLModel, create_engine, select\n       5 | \n       6 | \n>>>    7 | class Hero(SQLModel, table=True):\n       8 |     id: Union[int, None] = Field(default=None, primary_key=True)\n       9 |     name: str = Field(index=True)\n      10 |     age: Union[int, None] = Field(default=None, index=True)",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial001_py39.py#L7"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py310.py",
+      "line": 12,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       9 |     age: int | None = Field(default=None, index=True)\n      10 | \n      11 | \n>>>   12 | class Hero(HeroBase, table=True):\n      13 |     id: int | None = Field(default=None, primary_key=True)\n      14 |     secret_name: str\n      15 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py310.py#L12"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py310.py",
+      "line": 57,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      54 | \n      55 | \n      56 | @app.post(\"/heroes/\", response_model=HeroPublic)\n>>>   57 | def create_hero(hero: HeroCreate, session: SessionDep):\n      58 |     db_hero = Hero.model_validate(hero)\n      59 |     session.add(db_hero)\n      60 |     session.commit()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py310.py#L57"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py310.py",
+      "line": 67,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      64 | \n      65 | @app.get(\"/heroes/\", response_model=list[HeroPublic])\n      66 | def read_heroes(\n>>>   67 |     session: SessionDep,\n      68 |     offset: int = 0,\n      69 |     limit: Annotated[int, Query(le=100)] = 100,\n      70 | ):",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py310.py#L67"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py310.py",
+      "line": 76,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      73 | \n      74 | \n      75 | @app.get(\"/heroes/{hero_id}\", response_model=HeroPublic)\n>>>   76 | def read_hero(hero_id: int, session: SessionDep):\n      77 |     hero = session.get(Hero, hero_id)\n      78 |     if not hero:\n      79 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py310.py#L76"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py310.py",
+      "line": 84,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      81 | \n      82 | \n      83 | @app.patch(\"/heroes/{hero_id}\", response_model=HeroPublic)\n>>>   84 | def update_hero(hero_id: int, hero: HeroUpdate, session: SessionDep):\n      85 |     hero_db = session.get(Hero, hero_id)\n      86 |     if not hero_db:\n      87 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py310.py#L84"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py310.py",
+      "line": 97,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      94 | \n      95 | \n      96 | @app.delete(\"/heroes/{hero_id}\")\n>>>   97 | def delete_hero(hero_id: int, session: SessionDep):\n      98 |     hero = session.get(Hero, hero_id)\n      99 |     if not hero:\n     100 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py310.py#L97"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py39.py",
+      "line": 12,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       9 |     age: Union[int, None] = Field(default=None, index=True)\n      10 | \n      11 | \n>>>   12 | class Hero(HeroBase, table=True):\n      13 |     id: Union[int, None] = Field(default=None, primary_key=True)\n      14 |     secret_name: str\n      15 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py39.py#L12"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py39.py",
+      "line": 57,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      54 | \n      55 | \n      56 | @app.post(\"/heroes/\", response_model=HeroPublic)\n>>>   57 | def create_hero(hero: HeroCreate, session: SessionDep):\n      58 |     db_hero = Hero.model_validate(hero)\n      59 |     session.add(db_hero)\n      60 |     session.commit()",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py39.py#L57"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py39.py",
+      "line": 67,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      64 | \n      65 | @app.get(\"/heroes/\", response_model=list[HeroPublic])\n      66 | def read_heroes(\n>>>   67 |     session: SessionDep,\n      68 |     offset: int = 0,\n      69 |     limit: Annotated[int, Query(le=100)] = 100,\n      70 | ):",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py39.py#L67"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py39.py",
+      "line": 76,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      73 | \n      74 | \n      75 | @app.get(\"/heroes/{hero_id}\", response_model=HeroPublic)\n>>>   76 | def read_hero(hero_id: int, session: SessionDep):\n      77 |     hero = session.get(Hero, hero_id)\n      78 |     if not hero:\n      79 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py39.py#L76"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py39.py",
+      "line": 84,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      81 | \n      82 | \n      83 | @app.patch(\"/heroes/{hero_id}\", response_model=HeroPublic)\n>>>   84 | def update_hero(hero_id: int, hero: HeroUpdate, session: SessionDep):\n      85 |     hero_db = session.get(Hero, hero_id)\n      86 |     if not hero_db:\n      87 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py39.py#L84"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_an_py39.py",
+      "line": 97,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression",
+      "source_context": "      94 | \n      95 | \n      96 | @app.delete(\"/heroes/{hero_id}\")\n>>>   97 | def delete_hero(hero_id: int, session: SessionDep):\n      98 |     hero = session.get(Hero, hero_id)\n      99 |     if not hero:\n     100 |         raise HTTPException(status_code=404, detail=\"Hero not found\")",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_an_py39.py#L97"
+    },
+    {
+      "file": "docs_src/sql_databases/tutorial002_py310.py",
+      "line": 10,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Incorrect keyword arguments for __init_subclass__ method",
+      "source_context": "       7 |     age: int | None = Field(default=None, index=True)\n       8 | \n       9 | \n>>>   10 | class Hero(HeroBase, table=True):\n      11 |     id: int | None = Field(default=None, primary_key=True)\n      12 |     secret_name: str\n      13 | ",
+      "github_link": "https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/sql_databases/tutorial002_py310.py#L10"
+    }
+  ]
+}

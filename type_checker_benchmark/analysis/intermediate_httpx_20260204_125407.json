@@ -1,0 +1,271 @@
+{
+  "package_name": "httpx",
+  "github_url": "https://github.com/encode/httpx",
+  "commit_sha": "ae1b9f66238f75ced3ced5e4485408435de10768",
+  "summary": {
+    "pyright_errors": 51,
+    "pyrefly_errors": 67,
+    "false_positives": 24,
+    "false_negatives": 8
+  },
+  "false_positives": [
+    {
+      "file": "httpx/_content.py",
+      "line": 104,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable",
+      "source_context": "     101 | \n     102 |     async def __aiter__(self) -> AsyncIterator[bytes]:\n     103 |         raise StreamClosed()\n>>>  104 |         yield b\"\"  # pragma: no cover\n     105 | \n     106 | \n     107 | def encode_content(",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_content.py#L104"
+    },
+    {
+      "file": "httpx/_main.py",
+      "line": 109,
+      "error_code": "missing-attribute",
+      "message": "Object of class `Lexer` has no attribute `name`",
+      "source_context": "     106 |         mime_type, _, _ = content_type.partition(\";\")\n     107 |         try:\n     108 |             return typing.cast(\n>>>  109 |                 str, pygments.lexers.get_lexer_for_mimetype(mime_type.strip()).name\n     110 |             )\n     111 |         except pygments.util.ClassNotFound:  # pragma: no cover\n     112 |             pass",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_main.py#L109"
+    },
+    {
+      "file": "httpx/_models.py",
+      "line": 135,
+      "error_code": "bad-argument-type",
+      "message": "Argument `AnyStr` is not assignable to parameter `match_type_of` with type `TypeVar[AnyStr]` in function `httpx._utils.to_bytes_or_str`",
+      "source_context": "     132 | ) -> typing.Iterator[tuple[typing.AnyStr, typing.AnyStr]]:\n     133 |     for k, v in items:\n     134 |         if to_str(k.lower()) in SENSITIVE_HEADERS:\n>>>  135 |             v = to_bytes_or_str(\"[secure]\", match_type_of=v)\n     136 |         yield k, v\n     137 | \n     138 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_models.py#L135"
+    },
+    {
+      "file": "httpx/_models.py",
+      "line": 1257,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `_CookieCompatRequest.add_unredirected_header` overrides parent class `Request` in an inconsistent manner",
+      "source_context": "    1254 |             )\n    1255 |             self.request = request\n    1256 | \n>>> 1257 |         def add_unredirected_header(self, key: str, value: str) -> None:\n    1258 |             super().add_unredirected_header(key, value)\n    1259 |             self.request.headers[key] = value\n    1260 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_models.py#L1257"
+    },
+    {
+      "file": "httpx/_multipart.py",
+      "line": 156,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `Mapping[str, str]`",
+      "source_context": "     153 |             # note that unlike requests, we ignore the content_type provided in the 3rd\n     154 |             # tuple element if it is also included in the headers requests does\n     155 |             # the opposite (it overwrites the headerwith the 3rd tuple element)\n>>>  156 |             headers[\"Content-Type\"] = content_type\n     157 | \n     158 |         if isinstance(fileobj, io.StringIO):\n     159 |             raise TypeError(",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_multipart.py#L156"
+    },
+    {
+      "file": "httpx/_transports/default.py",
+      "line": 105,
+      "error_code": "bad-assignment",
+      "message": "`type[HTTPError] | None` is not assignable to `None` (caused by inconsistent types when breaking cycles)",
+      "source_context": "     102 |     except Exception as exc:\n     103 |         mapped_exc = None\n     104 | \n>>>  105 |         for from_exc, to_exc in HTTPCORE_EXC_MAP.items():\n     106 |             if not isinstance(exc, from_exc):\n     107 |                 continue\n     108 |             # We want to map to the most specific exception we can find.",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_transports/default.py#L105"
+    },
+    {
+      "file": "httpx/_transports/default.py",
+      "line": 111,
+      "error_code": "invalid-argument",
+      "message": "Expected class object, got `Never`",
+      "source_context": "     108 |             # We want to map to the most specific exception we can find.\n     109 |             # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to\n     110 |             # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.\n>>>  111 |             if mapped_exc is None or issubclass(to_exc, mapped_exc):\n     112 |                 mapped_exc = to_exc\n     113 | \n     114 |         if mapped_exc is None:  # pragma: no cover",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_transports/default.py#L111"
+    },
+    {
+      "file": "httpx/_types.py",
+      "line": 97,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable",
+      "source_context": "      94 |         raise NotImplementedError(\n      95 |             \"The '__iter__' method must be implemented.\"\n      96 |         )  # pragma: no cover\n>>>   97 |         yield b\"\"  # pragma: no cover\n      98 | \n      99 |     def close(self) -> None:\n     100 |         \"\"\"",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_types.py#L97"
+    },
+    {
+      "file": "httpx/_types.py",
+      "line": 111,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable",
+      "source_context": "     108 |         raise NotImplementedError(\n     109 |             \"The '__aiter__' method must be implemented.\"\n     110 |         )  # pragma: no cover\n>>>  111 |         yield b\"\"  # pragma: no cover\n     112 | \n     113 |     async def aclose(self) -> None:\n     114 |         pass",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_types.py#L111"
+    },
+    {
+      "file": "httpx/_urlparse.py",
+      "line": 289,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `re.Pattern.match` called with arguments: (str)",
+      "source_context": "     286 |                 raise InvalidURL(f\"Invalid URL component '{key}'\")\n     287 | \n     288 |     # The URL_REGEX will always match, but may have empty components.\n>>>  289 |     url_match = URL_REGEX.match(url)\n     290 |     assert url_match is not None\n     291 |     url_dict = url_match.groupdict()\n     292 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_urlparse.py#L289"
+    },
+    {
+      "file": "httpx/_urlparse.py",
+      "line": 305,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `re.Pattern.match` called with arguments: (str)",
+      "source_context": "     302 |     frag = kwargs.get(\"fragment\", url_dict[\"fragment\"])\n     303 | \n     304 |     # The AUTHORITY_REGEX will always match, but may have empty components.\n>>>  305 |     authority_match = AUTHORITY_REGEX.match(authority)\n     306 |     assert authority_match is not None\n     307 |     authority_dict = authority_match.groupdict()\n     308 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_urlparse.py#L305"
+    },
+    {
+      "file": "tests/client/test_async_client.py",
+      "line": 35,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `_pytest.raises.raises` called with arguments: (tuple[type[UnsupportedProtocol], type[LocalProtocolError]])",
+      "source_context": "      32 | @pytest.mark.anyio\n      33 | async def test_get_invalid_url(server, url):\n      34 |     async with httpx.AsyncClient() as client:\n>>>   35 |         with pytest.raises((httpx.UnsupportedProtocol, httpx.LocalProtocolError)):\n      36 |             await client.get(url)\n      37 | \n      38 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_async_client.py#L35"
+    },
+    {
+      "file": "tests/client/test_async_client.py",
+      "line": 195,
+      "error_code": "bad-override",
+      "message": "Class member `Transport.__aenter__` overrides parent class `AsyncBaseTransport` in an inconsistent manner",
+      "source_context": "     192 |             # might want to additionally override `__aenter__`/`__aexit__`.\n     193 |             self.events.append(\"transport.aclose\")\n     194 | \n>>>  195 |         async def __aenter__(self):\n     196 |             await super().__aenter__()\n     197 |             self.events.append(\"transport.__aenter__\")\n     198 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_async_client.py#L195"
+    },
+    {
+      "file": "tests/client/test_async_client.py",
+      "line": 199,
+      "error_code": "bad-override",
+      "message": "Class member `Transport.__aexit__` overrides parent class `AsyncBaseTransport` in an inconsistent manner",
+      "source_context": "     196 |             await super().__aenter__()\n     197 |             self.events.append(\"transport.__aenter__\")\n     198 | \n>>>  199 |         async def __aexit__(self, *args):\n     200 |             await super().__aexit__(*args)\n     201 |             self.events.append(\"transport.__aexit__\")\n     202 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_async_client.py#L199"
+    },
+    {
+      "file": "tests/client/test_async_client.py",
+      "line": 228,
+      "error_code": "bad-override",
+      "message": "Class member `Transport.__aenter__` overrides parent class `AsyncBaseTransport` in an inconsistent manner",
+      "source_context": "     225 |             # might want to additionally override `__aenter__`/`__aexit__`.\n     226 |             self.events.append(f\"{self.name}.aclose\")\n     227 | \n>>>  228 |         async def __aenter__(self):\n     229 |             await super().__aenter__()\n     230 |             self.events.append(f\"{self.name}.__aenter__\")\n     231 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_async_client.py#L228"
+    },
+    {
+      "file": "tests/client/test_async_client.py",
+      "line": 232,
+      "error_code": "bad-override",
+      "message": "Class member `Transport.__aexit__` overrides parent class `AsyncBaseTransport` in an inconsistent manner",
+      "source_context": "     229 |             await super().__aenter__()\n     230 |             self.events.append(f\"{self.name}.__aenter__\")\n     231 | \n>>>  232 |         async def __aexit__(self, *args):\n     233 |             await super().__aexit__(*args)\n     234 |             self.events.append(f\"{self.name}.__aexit__\")\n     235 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_async_client.py#L232"
+    },
+    {
+      "file": "tests/client/test_async_client.py",
+      "line": 351,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable",
+      "source_context": "     348 |             async def __aiter__(self) -> typing.AsyncIterator[bytes]:\n     349 |                 yield b\"Hello\"\n     350 |                 raise KeyboardInterrupt()\n>>>  351 |                 yield b\", world\"  # pragma: no cover\n     352 | \n     353 |             async def aclose(self) -> None:\n     354 |                 nonlocal stream_was_closed",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_async_client.py#L351"
+    },
+    {
+      "file": "tests/client/test_client.py",
+      "line": 43,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `_pytest.raises.raises` called with arguments: (tuple[type[UnsupportedProtocol], type[LocalProtocolError]])",
+      "source_context": "      40 | )\n      41 | def test_get_invalid_url(server, url):\n      42 |     with httpx.Client() as client:\n>>>   43 |         with pytest.raises((httpx.UnsupportedProtocol, httpx.LocalProtocolError)):\n      44 |             client.get(url)\n      45 | \n      46 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_client.py#L43"
+    },
+    {
+      "file": "tests/client/test_client.py",
+      "line": 244,
+      "error_code": "bad-override",
+      "message": "Class member `Transport.__enter__` overrides parent class `BaseTransport` in an inconsistent manner",
+      "source_context": "     241 |             # might want to additionally override `__enter__`/`__exit__`.\n     242 |             self.events.append(\"transport.close\")\n     243 | \n>>>  244 |         def __enter__(self):\n     245 |             super().__enter__()\n     246 |             self.events.append(\"transport.__enter__\")\n     247 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_client.py#L244"
+    },
+    {
+      "file": "tests/client/test_client.py",
+      "line": 248,
+      "error_code": "bad-override",
+      "message": "Class member `Transport.__exit__` overrides parent class `BaseTransport` in an inconsistent manner",
+      "source_context": "     245 |             super().__enter__()\n     246 |             self.events.append(\"transport.__enter__\")\n     247 | \n>>>  248 |         def __exit__(self, *args):\n     249 |             super().__exit__(*args)\n     250 |             self.events.append(\"transport.__exit__\")\n     251 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_client.py#L248"
+    },
+    {
+      "file": "tests/client/test_client.py",
+      "line": 276,
+      "error_code": "bad-override",
+      "message": "Class member `Transport.__enter__` overrides parent class `BaseTransport` in an inconsistent manner",
+      "source_context": "     273 |             # might want to additionally override `__enter__`/`__exit__`.\n     274 |             self.events.append(f\"{self.name}.close\")\n     275 | \n>>>  276 |         def __enter__(self):\n     277 |             super().__enter__()\n     278 |             self.events.append(f\"{self.name}.__enter__\")\n     279 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_client.py#L276"
+    },
+    {
+      "file": "tests/client/test_client.py",
+      "line": 280,
+      "error_code": "bad-override",
+      "message": "Class member `Transport.__exit__` overrides parent class `BaseTransport` in an inconsistent manner",
+      "source_context": "     277 |             super().__enter__()\n     278 |             self.events.append(f\"{self.name}.__enter__\")\n     279 | \n>>>  280 |         def __exit__(self, *args):\n     281 |             super().__exit__(*args)\n     282 |             self.events.append(f\"{self.name}.__exit__\")\n     283 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/client/test_client.py#L280"
+    },
+    {
+      "file": "tests/models/test_headers.py",
+      "line": 175,
+      "error_code": "bad-argument-type",
+      "message": "Argument `dict[bytes, str]` is not assignable to parameter `headers` with type `Headers | Mapping[bytes, bytes] | Mapping[str, str] | Sequence[tuple[bytes, bytes]] | Sequence[tuple[str, str]] | None` in function `httpx._models.Headers.__init__`",
+      "source_context": "     172 |     Some headers should be obfuscated because they contain sensitive data.\n     173 |     \"\"\"\n     174 |     value = \"s3kr3t\"\n>>>  175 |     h = httpx.Headers({header: value})\n     176 |     assert repr(h) == \"Headers({'%s': '[secure]'})\" % header\n     177 | \n     178 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/models/test_headers.py#L175"
+    },
+    {
+      "file": "tests/models/test_headers.py",
+      "line": 213,
+      "error_code": "bad-argument-type",
+      "message": "Argument `dict[str, bytes]` is not assignable to parameter `headers` with type `Headers | Mapping[bytes, bytes] | Mapping[str, str] | Sequence[tuple[bytes, bytes]] | Sequence[tuple[str, str]] | None` in function `httpx._models.Response.__init__`",
+      "source_context": "     210 |     ),\n     211 | )\n     212 | def test_parse_header_links(value, expected):\n>>>  213 |     all_links = httpx.Response(200, headers={\"link\": value}).links.values()\n     214 |     assert all(link in all_links for link in expected)\n     215 | \n     216 | ",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/tests/models/test_headers.py#L213"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "httpx/__init__.py",
+      "line": 15,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"(url: str, method: str, params: list[tuple[str, str]], content: str, data: list[tuple[str, str]], files: list[tuple[str, Unknown]], json: str, headers: list[tuple[str, str]], cookies: list[tuple[str, str]], auth: tuple[str, str] | None, proxy: str, timeout: float, follow_redirects: bool, verify: bool, http2: bool, download: BinaryIO | None, verbose: bool) -> None\" is not assignable to declared type \"() -> None\"\n\u00a0\u00a0Type \"(url: str, method: str, params: list[tuple[str, str]], content: str, data: list[tuple[str, str]], files: list[tuple[str, Unknown]], json: str, headers: list[tuple[str, str]], cookies: list[tuple[str, str]], auth: tuple[str, str] | None, proxy: str, timeout: float, follow_redirects: bool, verify: bool, http2: bool, download: BinaryIO | None, verbose: bool) -> None\" is not assignable to type \"() -> None\"\n\u00a0\u00a0\u00a0\u00a0Extra parameter \"url\"\n\u00a0\u00a0\u00a0\u00a0Extra parameter \"method\"\n\u00a0\u00a0\u00a0\u00a0Extra parameter \"params\"\n\u00a0\u00a0\u00a0\u00a0Extra parameter \"content\"\n\u00a0\u00a0\u00a0\u00a0Extra parameter \"data\"\n\u00a0\u00a0\u00a0\u00a0Extra parameter \"files\"\n\u00a0\u00a0\u00a0\u00a0Extra parameter \"json\"\n  ...",
+      "source_context": "      12 | from ._urls import *\n      13 | \n      14 | try:\n>>>   15 |     from ._main import main\n      16 | except ImportError:  # pragma: no cover\n      17 | \n      18 |     def main() -> None:  # type: ignore",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/__init__.py#L15"
+    },
+    {
+      "file": "httpx/_content.py",
+      "line": 57,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"read\" for class \"Iterable[bytes]\"\n\u00a0\u00a0Attribute \"read\" is unknown",
+      "source_context": "      54 |         self._is_stream_consumed = True\n      55 |         if hasattr(self._stream, \"read\"):\n      56 |             # File-like interfaces should use 'read' directly.\n>>>   57 |             chunk = self._stream.read(self.CHUNK_SIZE)\n      58 |             while chunk:\n      59 |                 yield chunk\n      60 |                 chunk = self._stream.read(self.CHUNK_SIZE)",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_content.py#L57"
+    },
+    {
+      "file": "httpx/_content.py",
+      "line": 60,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"read\" for class \"Iterable[bytes]\"\n\u00a0\u00a0Attribute \"read\" is unknown",
+      "source_context": "      57 |             chunk = self._stream.read(self.CHUNK_SIZE)\n      58 |             while chunk:\n      59 |                 yield chunk\n>>>   60 |                 chunk = self._stream.read(self.CHUNK_SIZE)\n      61 |         else:\n      62 |             # Otherwise iterate.\n      63 |             for part in self._stream:",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_content.py#L60"
+    },
+    {
+      "file": "httpx/_content.py",
+      "line": 82,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"aread\" for class \"AsyncIterable[bytes]\"\n\u00a0\u00a0Attribute \"aread\" is unknown",
+      "source_context": "      79 |         self._is_stream_consumed = True\n      80 |         if hasattr(self._stream, \"aread\"):\n      81 |             # File-like interfaces should use 'aread' directly.\n>>>   82 |             chunk = await self._stream.aread(self.CHUNK_SIZE)\n      83 |             while chunk:\n      84 |                 yield chunk\n      85 |                 chunk = await self._stream.aread(self.CHUNK_SIZE)",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_content.py#L82"
+    },
+    {
+      "file": "httpx/_content.py",
+      "line": 85,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"aread\" for class \"AsyncIterable[bytes]\"\n\u00a0\u00a0Attribute \"aread\" is unknown",
+      "source_context": "      82 |             chunk = await self._stream.aread(self.CHUNK_SIZE)\n      83 |             while chunk:\n      84 |                 yield chunk\n>>>   85 |                 chunk = await self._stream.aread(self.CHUNK_SIZE)\n      86 |         else:\n      87 |             # Otherwise iterate.\n      88 |             async for part in self._stream:",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_content.py#L85"
+    },
+    {
+      "file": "httpx/_transports/default.py",
+      "line": 132,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"close\" for class \"Iterable[bytes]\"\n\u00a0\u00a0Attribute \"close\" is unknown",
+      "source_context": "     129 | \n     130 |     def close(self) -> None:\n     131 |         if hasattr(self._httpcore_stream, \"close\"):\n>>>  132 |             self._httpcore_stream.close()\n     133 | \n     134 | \n     135 | class HTTPTransport(BaseTransport):",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_transports/default.py#L132"
+    },
+    {
+      "file": "httpx/_transports/default.py",
+      "line": 276,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"aclose\" for class \"AsyncIterable[bytes]\"\n\u00a0\u00a0Attribute \"aclose\" is unknown",
+      "source_context": "     273 | \n     274 |     async def aclose(self) -> None:\n     275 |         if hasattr(self._httpcore_stream, \"aclose\"):\n>>>  276 |             await self._httpcore_stream.aclose()\n     277 | \n     278 | \n     279 | class AsyncHTTPTransport(AsyncBaseTransport):",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_transports/default.py#L276"
+    },
+    {
+      "file": "httpx/_transports/wsgi.py",
+      "line": 146,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"Never\" is not iterable",
+      "source_context": "     143 |         status_code = int(seen_status.split()[0])\n     144 |         headers = [\n     145 |             (key.encode(\"ascii\"), value.encode(\"ascii\"))\n>>>  146 |             for key, value in seen_response_headers\n     147 |         ]\n     148 | \n     149 |         return Response(status_code, headers=headers, stream=stream)",
+      "github_link": "https://github.com/encode/httpx/blob/ae1b9f66238f75ced3ced5e4485408435de10768/httpx/_transports/wsgi.py#L146"
+    }
+  ]
+}

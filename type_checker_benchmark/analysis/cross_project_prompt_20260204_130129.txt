@@ -1,0 +1,809 @@
+Analyze these pyrefly false positives across 10 Python projects.
+Find the top 10 most impactful false positive patterns that should be fixed.
+
+For each pattern, provide:
+1. The error code and a descriptive title
+2. Why this is a false positive (pyrefly reports error but pyright does not)
+3. The root cause in pyrefly
+4. One representative example with source code
+5. Recommended fix for pyrefly
+
+## Summary by Error Code
+
+### bad-override (174 occurrences across projects)
+**requests**: src/requests/adapters.py:515
+Message: Class member `HTTPAdapter.close` overrides parent class `BaseAdapter` in an inconsistent manner
+```python
+     512 | 
+     513 |         return conn
+     514 | 
+>>>  515 |     def close(self):
+     516 |         """Disposes of any internal state.
+     517 | 
+     518 |         Currently, this closes the PoolManager and any active ProxyManager,
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L515)
+
+**requests**: src/requests/adapters.py:592
+Message: Class member `HTTPAdapter.send` overrides parent class `BaseAdapter` in an inconsistent manner
+```python
+     589 | 
+     590 |         return headers
+     591 | 
+>>>  592 |     def send(
+     593 |         self, request, stream=False, timeout=None, verify=True, cert=None, proxies=None
+     594 |     ):
+     595 |         """Sends PreparedRequest object. Returns Response object.
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L592)
+
+**requests**: src/requests/cookies.py:234
+Message: Class member `RequestsCookieJar.keys` overrides parent class `MutableMapping` in an inconsistent manner
+```python
+     231 |         for cookie in iter(self):
+     232 |             yield cookie.name
+     233 | 
+>>>  234 |     def keys(self):
+     235 |         """Dict-like keys() that returns a list of names of cookies from the
+     236 |         jar.
+     237 | 
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/cookies.py#L234)
+
+### no-matching-overload (60 occurrences across projects)
+**flask**: tests/test_helpers.py:253
+Message: No matching overload found for function `flask.helpers.stream_with_context` called with arguments: ((hello: Unknown) -> Generator[Literal['!'] | Unknown, Unknown, None])
+```python
+     250 |     def test_streaming_with_context_as_decorator(self, app, client):
+     251 |         @app.route("/")
+     252 |         def index():
+>>>  253 |             @flask.stream_with_context
+     254 |             def generate(hello):
+     255 |                 yield hello
+     256 |                 yield flask.request.args["name"]
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_helpers.py#L253)
+
+**flask**: src/flask/app.py:494
+Message: No matching overload found for function `typing.MutableMapping.update` called with arguments: (url_for=BoundMethod[Self@Flask, (self: Self@Flask, /, endpoint: str, *, _anchor: str | None = None, _method: str | None = None, _scheme: str | None = None, _external: bool | None = None, **values: Any) -> str], get_flashed_messages=(with_categories: bool = False, category_filter: Iterable[str] = ...) -> list[str] | list[tuple[str, str]], config=Config, request=RequestProxy, session=SessionMixinProxy, g=_AppCtxGlobalsProxy)
+```python
+     491 |             options["auto_reload"] = auto_reload
+     492 | 
+     493 |         rv = self.jinja_environment(self, **options)
+>>>  494 |         rv.globals.update(
+     495 |             url_for=self.url_for,
+     496 |             get_flashed_messages=get_flashed_messages,
+     497 |             config=self.config,
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L494)
+
+**flask**: src/flask/templating.py:177
+Message: No matching overload found for function `flask.helpers.stream_with_context` called with arguments: (Iterator[str])
+```python
+     174 |             app, _async_wrapper=app.ensure_sync, template=template, context=context
+     175 |         )
+     176 | 
+>>>  177 |     return stream_with_context(generate())
+     178 | 
+     179 | 
+     180 | def stream_template(
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L177)
+
+### missing-attribute (58 occurrences across projects)
+**requests**: src/requests/utils.py:542
+Message: Object of class `bool` has no attribute `strip`
+```python
+     539 |     content_type, params = _parse_content_type_header(content_type)
+     540 | 
+     541 |     if "charset" in params:
+>>>  542 |         return params["charset"].strip("'\"")
+     543 | 
+     544 |     if "text" in content_type:
+     545 |         return "ISO-8859-1"
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L542)
+
+**flask**: tests/test_basic.py:76
+Message: Object of class `FunctionType` has no attribute `provide_automatic_options`
+```python
+      73 |     def index():
+      74 |         return "Hello World!"
+      75 | 
+>>>   76 |     index.provide_automatic_options = False
+      77 |     app.route("/")(index)
+      78 |     rv = app.test_client().open("/", method="OPTIONS")
+      79 |     assert rv.status_code == 405
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_basic.py#L76)
+
+**flask**: tests/test_basic.py:86
+Message: Object of class `FunctionType` has no attribute `provide_automatic_options`
+```python
+      83 |     def index2():
+      84 |         return "Hello World!"
+      85 | 
+>>>   86 |     index2.provide_automatic_options = True
+      87 |     app.route("/", methods=["OPTIONS"])(index2)
+      88 |     rv = app.test_client().open("/", method="OPTIONS")
+      89 |     assert sorted(rv.allow) == ["OPTIONS"]
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_basic.py#L86)
+
+### bad-argument-type (48 occurrences across projects)
+**flask**: tests/test_json.py:63
+Message: Argument `StringIO` is not assignable to parameter `fp` with type `IO[TypeVar[AnyStr]]` in function `flask.json.load`
+```python
+      60 | 
+      61 |     flask.json.dump(test_data, out)
+      62 |     out.seek(0)
+>>>   63 |     rv = flask.json.load(out)
+      64 |     assert rv == test_data
+      65 | 
+      66 | 
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_json.py#L63)
+
+**flask**: src/flask/app.py:1409
+Message: Argument `tuple[None]` is not assignable to parameter `*iterables` with type `Iterable[str]` in function `itertools.chain.__new__`
+```python
+    1406 |         for func in ctx._after_request_functions:
+    1407 |             response = self.ensure_sync(func)(response)
+    1408 | 
+>>> 1409 |         for name in chain(ctx.request.blueprints, (None,)):
+    1410 |             if name in self.after_request_funcs:
+    1411 |                 for func in reversed(self.after_request_funcs[name]):
+    1412 |                     response = self.ensure_sync(func)(response)
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L1409)
+
+**flask**: src/flask/app.py:1436
+Message: Argument `tuple[None]` is not assignable to parameter `*iterables` with type `Iterable[str]` in function `itertools.chain.__new__`
+```python
+    1433 |         .. versionchanged:: 0.9
+    1434 |             Added the ``exc`` argument.
+    1435 |         """
+>>> 1436 |         for name in chain(ctx.request.blueprints, (None,)):
+    1437 |             if name in self.teardown_request_funcs:
+    1438 |                 for func in reversed(self.teardown_request_funcs[name]):
+    1439 |                     self.ensure_sync(func)(exc)
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L1436)
+
+### bad-assignment (33 occurrences across projects)
+**requests**: tests/test_requests.py:687
+Message: `(url: Unknown) -> tuple[Literal['user'], Literal['pass']]` is not assignable to attribute `get_netrc_auth` with type `(url: Unknown, raise_errors: bool | Unknown = False) -> tuple[str, str] | None`
+```python
+     684 |             def get_netrc_auth_mock(url):
+     685 |                 return auth
+     686 | 
+>>>  687 |             requests.sessions.get_netrc_auth = get_netrc_auth_mock
+     688 | 
+     689 |             # Should use netrc and work.
+     690 |             r = requests.get(url)
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L687)
+
+**requests**: src/requests/compat.py:33
+Message: `ModuleType | None` is not assignable to `None` (caused by inconsistent types when breaking cycles)
+```python
+      30 | def _resolve_char_detection():
+      31 |     """Find supported character detection libraries."""
+      32 |     chardet = None
+>>>   33 |     for lib in ("chardet", "charset_normalizer"):
+      34 |         if chardet is None:
+      35 |             try:
+      36 |                 chardet = importlib.import_module(lib)
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/compat.py#L33)
+
+**flask**: src/flask/logging.py:38
+Message: `Logger | None` is not assignable to `Logger` (caused by inconsistent types when breaking cycles)
+```python
+      35 |     level = logger.getEffectiveLevel()
+      36 |     current = logger
+      37 | 
+>>>   38 |     while current:
+      39 |         if any(handler.level <= level for handler in current.handlers):
+      40 |             return True
+      41 | 
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/logging.py#L38)
+
+### unbound-name (32 occurrences across projects)
+**requests**: src/requests/models.py:839
+Message: `self` may be uninitialized
+```python
+     836 |                         break
+     837 |                     yield chunk
+     838 | 
+>>>  839 |             self._content_consumed = True
+     840 | 
+     841 |         if self._content_consumed and isinstance(self._content, bool):
+     842 |             raise StreamConsumedError()
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/models.py#L839)
+
+**requests**: src/requests/utils.py:747
+Message: `old_value` may be uninitialized
+```python
+     744 |         yield
+     745 |     finally:
+     746 |         if value_changed:
+>>>  747 |             if old_value is None:
+     748 |                 del os.environ[env_name]
+     749 |             else:
+     750 |                 os.environ[env_name] = old_value
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L747)
+
+**requests**: src/requests/utils.py:750
+Message: `old_value` may be uninitialized
+```python
+     747 |             if old_value is None:
+     748 |                 del os.environ[env_name]
+     749 |             else:
+>>>  750 |                 os.environ[env_name] = old_value
+     751 | 
+     752 | 
+     753 | def should_bypass_proxies(url, no_proxy):
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L750)
+
+### unsupported-operation (29 occurrences across projects)
+**requests**: src/requests/utils.py:425
+Message: Cannot set item in `dict[str, None]`
+```python
+     422 |         name, value = item.split("=", 1)
+     423 |         if value[:1] == value[-1:] == '"':
+     424 |             value = unquote_header_value(value[1:-1])
+>>>  425 |         result[name] = value
+     426 |     return result
+     427 | 
+     428 | 
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L425)
+
+**starlette**: starlette/middleware/wsgi.py:70
+Message: `+` is not supported between `BytesIO` and `Literal[',']`
+```python
+      67 |         # case
+      68 |         value = value.decode("latin1")
+      69 |         if corrected_name in environ:
+>>>   70 |             value = environ[corrected_name] + "," + value
+      71 |         environ[corrected_name] = value
+      72 |     return environ
+      73 | 
+```
+[GitHub](https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/middleware/wsgi.py#L70)
+
+**uvicorn**: uvicorn/protocols/websockets/websockets_impl.py:347
+Message: `None` is not subscriptable
+```python
+     344 |         elif self.initial_response is not None:
+     345 |             if message_type == "websocket.http.response.body":
+     346 |                 message = cast("WebSocketResponseBodyEvent", message)
+>>>  347 |                 body = self.initial_response[2] + message["body"]
+     348 |                 self.initial_response = self.initial_response[:2] + (body,)
+     349 |                 if not message.get("more_body", False):
+     350 |                     self.closed_event.set()
+```
+[GitHub](https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/websockets/websockets_impl.py#L347)
+
+### missing-import (24 occurrences across projects)
+**requests**: tests/test_lowlevel.py:7
+Message: Cannot find module `tests.testserver.server`
+```python
+       4 | 
+       5 | import requests
+       6 | from requests.compat import JSONDecodeError
+>>>    7 | from tests.testserver.server import Server, consume_socket_content
+       8 | 
+       9 | from .utils import override_environ
+      10 | 
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_lowlevel.py#L7)
+
+**requests**: tests/test_requests.py:60
+Message: Cannot find module `utils`
+```python
+      57 | from . import SNIMissingWarning
+      58 | from .compat import StringIO
+      59 | from .testserver.server import TLSServer, consume_socket_content
+>>>   60 | from .utils import override_environ
+      61 | 
+      62 | # Requests to this URL should always fail with a connection timeout (nothing
+      63 | # listening on that port)
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L60)
+
+**requests**: tests/test_testserver.py:8
+Message: Cannot find module `tests.testserver.server`
+```python
+       5 | import pytest
+       6 | 
+       7 | import requests
+>>>    8 | from tests.testserver.server import Server
+       9 | 
+      10 | 
+      11 | class TestTestServer:
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_testserver.py#L8)
+
+### bad-typed-dict-key (12 occurrences across projects)
+**fastapi**: docs_src/additional_status_codes/tutorial001_an_py310.py:19
+Message: `str | None` is not assignable to TypedDict key `name` with type `str`
+```python
+      16 | ):
+      17 |     if item_id in items:
+      18 |         item = items[item_id]
+>>>   19 |         item["name"] = name
+      20 |         item["size"] = size
+      21 |         return item
+      22 |     else:
+```
+[GitHub](https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py310.py#L19)
+
+**fastapi**: docs_src/additional_status_codes/tutorial001_an_py310.py:24
+Message: `dict[str, int | str | None]` is not assignable to TypedDict key with type `dict[str, int | str]`
+```python
+      21 |         return item
+      22 |     else:
+      23 |         item = {"name": name, "size": size}
+>>>   24 |         items[item_id] = item
+      25 |         return JSONResponse(status_code=status.HTTP_201_CREATED, content=item)
+```
+[GitHub](https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py310.py#L24)
+
+**fastapi**: docs_src/additional_status_codes/tutorial001_an_py39.py:19
+Message: `str | None` is not assignable to TypedDict key `name` with type `str`
+```python
+      16 | ):
+      17 |     if item_id in items:
+      18 |         item = items[item_id]
+>>>   19 |         item["name"] = name
+      20 |         item["size"] = size
+      21 |         return item
+      22 |     else:
+```
+[GitHub](https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/docs_src/additional_status_codes/tutorial001_an_py39.py#L19)
+
+### bad-param-name-override (9 occurrences across projects)
+**django**: django/contrib/admin/checks.py:1266
+Message: Class member `InlineModelAdminChecks.check` overrides parent class `BaseModelAdminChecks` in an inconsistent manner
+```python
+    1263 | 
+    1264 | 
+    1265 | class InlineModelAdminChecks(BaseModelAdminChecks):
+>>> 1266 |     def check(self, inline_obj, **kwargs):
+    1267 |         parent_model = inline_obj.parent_model
+    1268 |         return [
+    1269 |             *super().check(inline_obj),
+```
+[GitHub](https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/checks.py#L1266)
+
+**django**: django/contrib/admin/utils.py:196
+Message: Class member `NestedObjects.collect` overrides parent class `Collector` in an inconsistent manner
+```python
+     193 |     def add_edge(self, source, target):
+     194 |         self.edges.setdefault(source, []).append(target)
+     195 | 
+>>>  196 |     def collect(self, objs, source=None, source_attr=None, **kwargs):
+     197 |         for obj in objs:
+     198 |             if source_attr and not source_attr.endswith("+"):
+     199 |                 related_name = source_attr % {
+```
+[GitHub](https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/utils.py#L196)
+
+**django**: django/contrib/admindocs/views.py:50
+Message: Class member `BaseAdminDocsView.dispatch` overrides parent class `TemplateView` in an inconsistent manner
+```python
+      47 |     """
+      48 | 
+      49 |     @method_decorator(staff_member_required)
+>>>   50 |     def dispatch(self, request, *args, **kwargs):
+      51 |         if not utils.docutils_is_available:
+      52 |             # Display an error message for people without docutils
+      53 |             self.template_name = "admin_doc/missing_docutils.html"
+```
+[GitHub](https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admindocs/views.py#L50)
+
+### not-iterable (9 occurrences across projects)
+**django**: django/contrib/admin/widgets.py:111
+Message: Type `lazy.__proxy__` is not iterable
+```python
+     108 |         context = super().get_context(name, value, attrs)
+     109 |         context["date_label"] = _("Date:")
+     110 |         context["time_label"] = _("Time:")
+>>>  111 |         for widget in context["widget"]["subwidgets"]:
+     112 |             widget["attrs"]["aria-describedby"] = f"id_{name}_timezone_warning_helptext"
+     113 |         return context
+     114 | 
+```
+[GitHub](https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/widgets.py#L111)
+
+**django**: django/contrib/admindocs/middleware.py:28
+Message: `in` is not supported between `Unknown` and `None`
+```python
+      25 |                 "'django.contrib.auth.middleware.AuthenticationMiddleware'."
+      26 |             )
+      27 |         if request.method == "HEAD" and (
+>>>   28 |             request.META.get("REMOTE_ADDR") in settings.INTERNAL_IPS
+      29 |             or (request.user.is_active and request.user.is_staff)
+      30 |         ):
+      31 |             response = HttpResponse()
+```
+[GitHub](https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admindocs/middleware.py#L28)
+
+**django**: django/contrib/auth/__init__.py:26
+Message: Type `None` is not iterable
+```python
+      23 | 
+      24 | def _get_backends(return_tuples=False):
+      25 |     backends = []
+>>>   26 |     for backend_path in settings.AUTHENTICATION_BACKENDS:
+      27 |         backend = load_backend(backend_path)
+      28 |         backends.append((backend, backend_path) if return_tuples else backend)
+      29 |     if not backends:
+```
+[GitHub](https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/auth/__init__.py#L26)
+
+### unexpected-keyword (8 occurrences across projects)
+**requests**: src/requests/adapters.py:661
+Message: Unexpected keyword argument `request` in function `BaseException.__init__`
+```python
+     658 |             )
+     659 | 
+     660 |         except (ProtocolError, OSError) as err:
+>>>  661 |             raise ConnectionError(err, request=request)
+     662 | 
+     663 |         except MaxRetryError as e:
+     664 |             if isinstance(e.reason, ConnectTimeoutError):
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L661)
+
+**requests**: src/requests/adapters.py:679
+Message: Unexpected keyword argument `request` in function `BaseException.__init__`
+```python
+     676 |                 # This branch is for urllib3 v1.22 and later.
+     677 |                 raise SSLError(e, request=request)
+     678 | 
+>>>  679 |             raise ConnectionError(e, request=request)
+     680 | 
+     681 |         except ClosedPoolError as e:
+     682 |             raise ConnectionError(e, request=request)
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L679)
+
+**requests**: src/requests/adapters.py:682
+Message: Unexpected keyword argument `request` in function `BaseException.__init__`
+```python
+     679 |             raise ConnectionError(e, request=request)
+     680 | 
+     681 |         except ClosedPoolError as e:
+>>>  682 |             raise ConnectionError(e, request=request)
+     683 | 
+     684 |         except _ProxyError as e:
+     685 |             raise ProxyError(e)
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L682)
+
+### not-callable (7 occurrences across projects)
+**flask**: src/flask/app.py:1585
+Message: Expected a callable, got `Response`
+```python
+    1582 |             except:
+    1583 |                 error = sys.exc_info()[1]
+    1584 |                 raise
+>>> 1585 |             return response(environ, start_response)
+    1586 |         finally:
+    1587 |             if "werkzeug.debug.preserve_context" in environ:
+    1588 |                 environ["werkzeug.debug.preserve_context"](ctx)
+```
+[GitHub](https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L1585)
+
+**fastapi**: tests/test_custom_middleware_exception.py:50
+Message: Expected a callable, got `APIRouter`
+```python
+      47 | 
+      48 |     async def __call__(self, scope, receive, send):
+      49 |         if scope["type"] != "http" or self.max_content_size is None:
+>>>   50 |             await self.app(scope, receive, send)
+      51 |             return
+      52 | 
+      53 |         wrapper = self.receive_wrapper(receive)
+```
+[GitHub](https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_custom_middleware_exception.py#L50)
+
+**fastapi**: tests/test_custom_middleware_exception.py:54
+Message: Expected a callable, got `APIRouter`
+```python
+      51 |             return
+      52 | 
+      53 |         wrapper = self.receive_wrapper(receive)
+>>>   54 |         await self.app(scope, wrapper, send)
+      55 | 
+      56 | 
+      57 | @router.post("/middleware")
+```
+[GitHub](https://github.com/fastapi/fastapi/blob/5ca11c59e36e8a177cec8341861a26a084415a11/tests/test_custom_middleware_exception.py#L54)
+
+### inconsistent-overload (7 occurrences across projects)
+**starlette**: starlette/config.py:70
+Message: Implementation signature `(self: Self@Config, key: str, cast: ((Any) -> Any) | None = None, default: Any = ...) -> Any` does not accept all arguments that overload signature `(self: Self@Config, key: str, cast: type[T], default: T = ...) -> T` accepts
+```python
+      67 |     def __call__(self, key: str, *, default: None) -> str | None: ...
+      68 | 
+      69 |     @overload
+>>>   70 |     def __call__(self, key: str, cast: type[T], default: T = ...) -> T: ...
+      71 | 
+      72 |     @overload
+      73 |     def __call__(self, key: str, cast: type[str] = ..., default: str = ...) -> str: ...
+```
+[GitHub](https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/starlette/config.py#L70)
+
+**aiohttp**: aiohttp/client.py:916
+Message: Implementation signature `(self: Self@ClientSession, url: str | Unknown, *, method: str = ..., protocols: Collection[str] = ..., timeout: ClientWSTimeout | _SENTINEL = _SENTINEL.sentinel, receive_timeout: float | None = None, autoclose: bool = True, autoping: bool = True, heartbeat: float | None = None, auth: BasicAuth | None = None, origin: str | None = None, params: Unknown = None, headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, proxy: str | Unknown | None = None, proxy_auth: BasicAuth | None = None, ssl: Fingerprint | SSLContext | bool = True, server_hostname: str | None = None, proxy_headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, compress: int = 0, max_msg_size: int = ..., decode_text: bool = True) -> _BaseRequestContextManager[ClientWebSocketResponse[bool]]` does not accept all arguments that overload signature `(self: Self@ClientSession, url: str | Unknown, *, decode_text: Literal[True] = ..., **kwargs: Unpack[_WSConnectOptions]) -> _BaseRequestContextManager[ClientWebSocketResponse[Literal[True]]]` accepts
+```python
+     913 |     if sys.version_info >= (3, 11) and TYPE_CHECKING:
+     914 | 
+     915 |         @overload
+>>>  916 |         def ws_connect(
+     917 |             self,
+     918 |             url: StrOrURL,
+     919 |             *,
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L916)
+
+**aiohttp**: aiohttp/client.py:925
+Message: Implementation signature `(self: Self@ClientSession, url: str | Unknown, *, method: str = ..., protocols: Collection[str] = ..., timeout: ClientWSTimeout | _SENTINEL = _SENTINEL.sentinel, receive_timeout: float | None = None, autoclose: bool = True, autoping: bool = True, heartbeat: float | None = None, auth: BasicAuth | None = None, origin: str | None = None, params: Unknown = None, headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, proxy: str | Unknown | None = None, proxy_auth: BasicAuth | None = None, ssl: Fingerprint | SSLContext | bool = True, server_hostname: str | None = None, proxy_headers: Iterable[tuple[str | Unknown, str]] | Mapping[str, str] | Mapping[Unknown, str] | Unknown | None = None, compress: int = 0, max_msg_size: int = ..., decode_text: bool = True) -> _BaseRequestContextManager[ClientWebSocketResponse[bool]]` does not accept all arguments that overload signature `(self: Self@ClientSession, url: str | Unknown, *, decode_text: Literal[False], **kwargs: Unpack[_WSConnectOptions]) -> _BaseRequestContextManager[ClientWebSocketResponse[Literal[False]]]` accepts
+```python
+     922 |         ) -> "_BaseRequestContextManager[ClientWebSocketResponse[Literal[True]]]": ...
+     923 | 
+     924 |         @overload
+>>>  925 |         def ws_connect(
+     926 |             self,
+     927 |             url: StrOrURL,
+     928 |             *,
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/client.py#L925)
+
+### unreachable (7 occurrences across projects)
+**starlette**: tests/test_routing.py:697
+Message: This `yield` expression is unreachable
+```python
+     694 |     @contextlib.asynccontextmanager
+     695 |     async def lifespan(app: Starlette) -> AsyncIterator[Never]:
+     696 |         raise RuntimeError()
+>>>  697 |         yield  # pragma: no cover
+     698 | 
+     699 |     router = Router(lifespan=lifespan)
+     700 |     startup_failed = False
+```
+[GitHub](https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/test_routing.py#L697)
+
+**starlette**: tests/test_testclient.py:170
+Message: This `yield` expression is unreachable
+```python
+     167 |     @asynccontextmanager
+     168 |     async def lifespan(app: Starlette) -> AsyncGenerator[None, None]:
+     169 |         raise RuntimeError("Startup error")
+>>>  170 |         yield
+     171 | 
+     172 |     startup_error_app = Starlette(lifespan=lifespan)
+     173 | 
+```
+[GitHub](https://github.com/encode/starlette/blob/2b73aecd8377e0c189943a5f30d3dbab134f6104/tests/test_testclient.py#L170)
+
+**aiohttp**: tests/test_client_request.py:1960
+Message: This `yield` expression is unreachable
+```python
+    1957 |     # Create an empty async generator
+    1958 |     async def gen() -> AsyncIterator[bytes]:
+    1959 |         return
+>>> 1960 |         yield  # pragma: no cover  # This makes it a generator but never executes
+    1961 | 
+    1962 |     await req.update_body(gen())
+    1963 | 
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L1960)
+
+### implicit-import (5 occurrences across projects)
+**aiohttp**: tests/test_http_parser.py:120
+Message: Module `aiohttp.http_parser` exists, but was not imported explicitly. You are relying on other modules to load it.
+```python
+     117 | 
+     118 | @pytest.mark.skipif(NO_EXTENSIONS, reason="Extensions available but not imported")
+     119 | def test_c_parser_loaded() -> None:
+>>>  120 |     assert "HttpRequestParserC" in dir(aiohttp.http_parser)
+     121 |     assert "HttpResponseParserC" in dir(aiohttp.http_parser)
+     122 |     assert "RawRequestMessageC" in dir(aiohttp.http_parser)
+     123 |     assert "RawResponseMessageC" in dir(aiohttp.http_parser)
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_http_parser.py#L120)
+
+**aiohttp**: tests/test_http_parser.py:123
+Message: Module `aiohttp.http_parser` exists, but was not imported explicitly. You are relying on other modules to load it.
+```python
+     120 |     assert "HttpRequestParserC" in dir(aiohttp.http_parser)
+     121 |     assert "HttpResponseParserC" in dir(aiohttp.http_parser)
+     122 |     assert "RawRequestMessageC" in dir(aiohttp.http_parser)
+>>>  123 |     assert "RawResponseMessageC" in dir(aiohttp.http_parser)
+     124 | 
+     125 | 
+     126 | def test_parse_headers(parser: HttpRequestParser) -> None:
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_http_parser.py#L123)
+
+**aiohttp**: tests/test_http_parser.py:1267
+Message: Module `aiohttp.http_parser` exists, but was not imported explicitly. You are relying on other modules to load it.
+```python
+    1264 | 
+    1265 | @pytest.mark.dev_mode
+    1266 | @pytest.mark.skipif(
+>>> 1267 |     "HttpRequestParserC" not in dir(aiohttp.http_parser),
+    1268 |     reason="C based HTTP parser not available",
+    1269 | )
+    1270 | async def test_http_response_parser_bad_chunked_strict_c(
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_http_parser.py#L1267)
+
+### missing-module-attribute (5 occurrences across projects)
+**pandas**: asv_bench/benchmarks/gil.py:18
+Message: Could not import `rolling_kurt` from `pandas`
+```python
+      15 | 
+      16 | try:
+      17 |     from pandas import (
+>>>   18 |         rolling_kurt,
+      19 |         rolling_max,
+      20 |         rolling_mean,
+      21 |         rolling_median,
+```
+[GitHub](https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L18)
+
+**pandas**: asv_bench/benchmarks/gil.py:21
+Message: Could not import `rolling_median` from `pandas`
+```python
+      18 |         rolling_kurt,
+      19 |         rolling_max,
+      20 |         rolling_mean,
+>>>   21 |         rolling_median,
+      22 |         rolling_min,
+      23 |         rolling_skew,
+      24 |         rolling_std,
+```
+[GitHub](https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L21)
+
+**pandas**: asv_bench/benchmarks/gil.py:24
+Message: Could not import `rolling_std` from `pandas`
+```python
+      21 |         rolling_median,
+      22 |         rolling_min,
+      23 |         rolling_skew,
+>>>   24 |         rolling_std,
+      25 |         rolling_var,
+      26 |     )
+      27 | 
+```
+[GitHub](https://github.com/pandas-dev/pandas/blob/2455fb9066628929be67011d01bb62a098cdb9ea/asv_bench/benchmarks/gil.py#L24)
+
+### invalid-inheritance (4 occurrences across projects)
+**requests**: src/requests/exceptions.py:32
+Message: Invalid base class: `simplejson.scanner.JSONDecodeError | json.decoder.JSONDecodeError`
+```python
+      29 |     """A JSON error occurred."""
+      30 | 
+      31 | 
+>>>   32 | class JSONDecodeError(InvalidJSONError, CompatJSONDecodeError):
+      33 |     """Couldn't decode the text into json"""
+      34 | 
+      35 |     def __init__(self, *args, **kwargs):
+```
+[GitHub](https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/exceptions.py#L32)
+
+**django**: django/contrib/admin/options.py:2471
+Message: Invalid base class: `type[BaseInlineFormSet] | type[ModelForm] | bool | int | list[Unknown] | partial[Unknown | None] | Unknown | None`
+```python
+    2468 |         can_change = self.has_change_permission(request, obj) if request else True
+    2469 |         can_add = self.has_add_permission(request, obj) if request else True
+    2470 | 
+>>> 2471 |         class DeleteProtectedModelForm(base_model_form):
+    2472 |             def hand_clean_DELETE(self):
+    2473 |                 """
+    2474 |                 We don't validate the 'DELETE' field itself because on
+```
+[GitHub](https://github.com/django/django/blob/13299a6203f4bc3e5b2552c96a51ff2b15da3c43/django/contrib/admin/options.py#L2471)
+
+**aiohttp**: aiohttp/helpers.py:121
+Message: Invalid expression form for base class: `namedtuple("BasicAuth", ["login", "password", "encoding"])`
+```python
+     118 | json_re = re.compile(r"(?:application/|[\w.-]+/[\w.+-]+?\+)json$", re.IGNORECASE)
+     119 | 
+     120 | 
+>>>  121 | class BasicAuth(namedtuple("BasicAuth", ["login", "password", "encoding"])):
+     122 |     """Http basic authentication helper."""
+     123 | 
+     124 |     def __new__(
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/helpers.py#L121)
+
+### not-a-type (4 occurrences across projects)
+**uvicorn**: uvicorn/protocols/websockets/websockets_impl.py:61
+Message: Expected a type form, got instance of `type[Logger] | UnionType`
+```python
+      58 | 
+      59 | class WebSocketProtocol(WebSocketServerProtocol):
+      60 |     extra_headers: list[tuple[str, str]]
+>>>   61 |     logger: logging.Logger | logging.LoggerAdapter[Any]
+      62 | 
+      63 |     def __init__(
+      64 |         self,
+```
+[GitHub](https://github.com/encode/uvicorn/blob/a148fc5a7173ddfd85a07fdcd3b84f6ee547dfc2/uvicorn/protocols/websockets/websockets_impl.py#L61)
+
+**aiohttp**: aiohttp/connector.py:1248
+Message: Expected a type form, got instance of `tuple[Unknown, ...] | tuple[type[SSLCertVerificationError]]`
+```python
+    1245 |                 ):
+    1246 |                     kwargs["ssl_shutdown_timeout"] = self._ssl_shutdown_timeout
+    1247 |                 return await self._loop.create_connection(*args, **kwargs, sock=sock)
+>>> 1248 |         except cert_errors as exc:
+    1249 |             raise ClientConnectorCertificateError(req.connection_key, exc) from exc
+    1250 |         except ssl_errors as exc:
+    1251 |             raise ClientConnectorSSLError(req.connection_key, exc) from exc
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L1248)
+
+**aiohttp**: aiohttp/connector.py:1357
+Message: Expected a type form, got instance of `tuple[Unknown, ...] | tuple[type[SSLCertVerificationError]]`
+```python
+    1354 |                             if not self._cleanup_closed_disabled:
+    1355 |                                 self._cleanup_closed_transports.append(tls_transport)
+    1356 |                             raise
+>>> 1357 |         except cert_errors as exc:
+    1358 |             raise ClientConnectorCertificateError(req.connection_key, exc) from exc
+    1359 |         except ssl_errors as exc:
+    1360 |             raise ClientConnectorSSLError(req.connection_key, exc) from exc
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/connector.py#L1357)
+
+### invalid-annotation (4 occurrences across projects)
+**aiohttp**: aiohttp/test_utils.py:256
+Message: `__init__` method self type cannot reference class type parameter `_Request`
+```python
+     253 |     __test__ = False
+     254 | 
+     255 |     @overload
+>>>  256 |     def __init__(
+     257 |         self: "TestClient[Request, Application]",
+     258 |         server: TestServer,
+     259 |         *,
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/aiohttp/test_utils.py#L256)
+
+**aiohttp**: tests/test_benchmarks_client_request.py:22
+Message: `Unpack` with a `TypedDict` is only allowed in a **kwargs annotation
+```python
+      19 | if sys.version_info >= (3, 11):
+      20 |     from typing import Unpack
+      21 | 
+>>>   22 |     _RequestMaker = Callable[[str, URL, Unpack[ClientRequestArgs]], ClientRequest]
+      23 | else:
+      24 |     _RequestMaker = Any
+      25 | 
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_benchmarks_client_request.py#L22)
+
+**aiohttp**: tests/test_client_request.py:37
+Message: `Unpack` with a `TypedDict` is only allowed in a **kwargs annotation
+```python
+      34 | if sys.version_info >= (3, 11):
+      35 |     from typing import Unpack
+      36 | 
+>>>   37 |     _RequestMaker = Callable[[str, URL, Unpack[ClientRequestArgs]], ClientRequest]
+      38 | else:
+      39 |     _RequestMaker = Any
+      40 | 
+```
+[GitHub](https://github.com/aio-libs/aiohttp/blob/df0d897466b723cde92696dfb2887f253671870c/tests/test_client_request.py#L37)

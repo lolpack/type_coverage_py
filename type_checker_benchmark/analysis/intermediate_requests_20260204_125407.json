@@ -1,0 +1,519 @@
+{
+  "package_name": "requests",
+  "github_url": "https://github.com/psf/requests",
+  "commit_sha": "421b8733cf17e4dee8be237e7412b095772c2323",
+  "summary": {
+    "pyright_errors": 212,
+    "pyrefly_errors": 165,
+    "false_positives": 21,
+    "false_negatives": 42
+  },
+  "false_positives": [
+    {
+      "file": "tests/test_lowlevel.py",
+      "line": 7,
+      "error_code": "missing-import",
+      "message": "Cannot find module `tests.testserver.server`",
+      "source_context": "       4 | \n       5 | import requests\n       6 | from requests.compat import JSONDecodeError\n>>>    7 | from tests.testserver.server import Server, consume_socket_content\n       8 | \n       9 | from .utils import override_environ\n      10 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_lowlevel.py#L7"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 60,
+      "error_code": "missing-import",
+      "message": "Cannot find module `utils`",
+      "source_context": "      57 | from . import SNIMissingWarning\n      58 | from .compat import StringIO\n      59 | from .testserver.server import TLSServer, consume_socket_content\n>>>   60 | from .utils import override_environ\n      61 | \n      62 | # Requests to this URL should always fail with a connection timeout (nothing\n      63 | # listening on that port)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L60"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 687,
+      "error_code": "bad-assignment",
+      "message": "`(url: Unknown) -> tuple[Literal['user'], Literal['pass']]` is not assignable to attribute `get_netrc_auth` with type `(url: Unknown, raise_errors: bool | Unknown = False) -> tuple[str, str] | None`",
+      "source_context": "     684 |             def get_netrc_auth_mock(url):\n     685 |                 return auth\n     686 | \n>>>  687 |             requests.sessions.get_netrc_auth = get_netrc_auth_mock\n     688 | \n     689 |             # Should use netrc and work.\n     690 |             r = requests.get(url)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L687"
+    },
+    {
+      "file": "tests/test_testserver.py",
+      "line": 8,
+      "error_code": "missing-import",
+      "message": "Cannot find module `tests.testserver.server`",
+      "source_context": "       5 | import pytest\n       6 | \n       7 | import requests\n>>>    8 | from tests.testserver.server import Server\n       9 | \n      10 | \n      11 | class TestTestServer:",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_testserver.py#L8"
+    },
+    {
+      "file": "src/requests/adapters.py",
+      "line": 515,
+      "error_code": "bad-override",
+      "message": "Class member `HTTPAdapter.close` overrides parent class `BaseAdapter` in an inconsistent manner",
+      "source_context": "     512 | \n     513 |         return conn\n     514 | \n>>>  515 |     def close(self):\n     516 |         \"\"\"Disposes of any internal state.\n     517 | \n     518 |         Currently, this closes the PoolManager and any active ProxyManager,",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L515"
+    },
+    {
+      "file": "src/requests/adapters.py",
+      "line": 592,
+      "error_code": "bad-override",
+      "message": "Class member `HTTPAdapter.send` overrides parent class `BaseAdapter` in an inconsistent manner",
+      "source_context": "     589 | \n     590 |         return headers\n     591 | \n>>>  592 |     def send(\n     593 |         self, request, stream=False, timeout=None, verify=True, cert=None, proxies=None\n     594 |     ):\n     595 |         \"\"\"Sends PreparedRequest object. Returns Response object.",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L592"
+    },
+    {
+      "file": "src/requests/adapters.py",
+      "line": 661,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `request` in function `BaseException.__init__`",
+      "source_context": "     658 |             )\n     659 | \n     660 |         except (ProtocolError, OSError) as err:\n>>>  661 |             raise ConnectionError(err, request=request)\n     662 | \n     663 |         except MaxRetryError as e:\n     664 |             if isinstance(e.reason, ConnectTimeoutError):",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L661"
+    },
+    {
+      "file": "src/requests/adapters.py",
+      "line": 679,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `request` in function `BaseException.__init__`",
+      "source_context": "     676 |                 # This branch is for urllib3 v1.22 and later.\n     677 |                 raise SSLError(e, request=request)\n     678 | \n>>>  679 |             raise ConnectionError(e, request=request)\n     680 | \n     681 |         except ClosedPoolError as e:\n     682 |             raise ConnectionError(e, request=request)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L679"
+    },
+    {
+      "file": "src/requests/adapters.py",
+      "line": 682,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `request` in function `BaseException.__init__`",
+      "source_context": "     679 |             raise ConnectionError(e, request=request)\n     680 | \n     681 |         except ClosedPoolError as e:\n>>>  682 |             raise ConnectionError(e, request=request)\n     683 | \n     684 |         except _ProxyError as e:\n     685 |             raise ProxyError(e)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L682"
+    },
+    {
+      "file": "src/requests/compat.py",
+      "line": 33,
+      "error_code": "bad-assignment",
+      "message": "`ModuleType | None` is not assignable to `None` (caused by inconsistent types when breaking cycles)",
+      "source_context": "      30 | def _resolve_char_detection():\n      31 |     \"\"\"Find supported character detection libraries.\"\"\"\n      32 |     chardet = None\n>>>   33 |     for lib in (\"chardet\", \"charset_normalizer\"):\n      34 |         if chardet is None:\n      35 |             try:\n      36 |                 chardet = importlib.import_module(lib)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/compat.py#L33"
+    },
+    {
+      "file": "src/requests/cookies.py",
+      "line": 234,
+      "error_code": "bad-override",
+      "message": "Class member `RequestsCookieJar.keys` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     231 |         for cookie in iter(self):\n     232 |             yield cookie.name\n     233 | \n>>>  234 |     def keys(self):\n     235 |         \"\"\"Dict-like keys() that returns a list of names of cookies from the\n     236 |         jar.\n     237 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/cookies.py#L234"
+    },
+    {
+      "file": "src/requests/cookies.py",
+      "line": 251,
+      "error_code": "bad-override",
+      "message": "Class member `RequestsCookieJar.values` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     248 |         for cookie in iter(self):\n     249 |             yield cookie.value\n     250 | \n>>>  251 |     def values(self):\n     252 |         \"\"\"Dict-like values() that returns a list of values of cookies from the\n     253 |         jar.\n     254 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/cookies.py#L251"
+    },
+    {
+      "file": "src/requests/cookies.py",
+      "line": 268,
+      "error_code": "bad-override",
+      "message": "Class member `RequestsCookieJar.items` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     265 |         for cookie in iter(self):\n     266 |             yield cookie.name, cookie.value\n     267 | \n>>>  268 |     def items(self):\n     269 |         \"\"\"Dict-like items() that returns a list of name-value tuples from the\n     270 |         jar. Allows client-code to call ``dict(RequestsCookieJar)`` and get a\n     271 |         vanilla python dict of key value pairs.",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/cookies.py#L268"
+    },
+    {
+      "file": "src/requests/cookies.py",
+      "line": 358,
+      "error_code": "bad-override",
+      "message": "Class member `RequestsCookieJar.update` overrides parent class `MutableMapping` in an inconsistent manner",
+      "source_context": "     355 |             cookie.value = cookie.value.replace('\\\\\"', \"\")\n     356 |         return super().set_cookie(cookie, *args, **kwargs)\n     357 | \n>>>  358 |     def update(self, other):\n     359 |         \"\"\"Updates this jar with cookies from another CookieJar or dict-like\"\"\"\n     360 |         if isinstance(other, cookielib.CookieJar):\n     361 |             for cookie in other:",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/cookies.py#L358"
+    },
+    {
+      "file": "src/requests/cookies.py",
+      "line": 489,
+      "error_code": "missing-argument",
+      "message": "Missing argument `port_specified` in function `http.cookiejar.Cookie.__init__`",
+      "source_context": "     486 |     result[\"domain_initial_dot\"] = result[\"domain\"].startswith(\".\")\n     487 |     result[\"path_specified\"] = bool(result[\"path\"])\n     488 | \n>>>  489 |     return cookielib.Cookie(**result)\n     490 | \n     491 | \n     492 | def morsel_to_cookie(morsel):",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/cookies.py#L489"
+    },
+    {
+      "file": "src/requests/exceptions.py",
+      "line": 32,
+      "error_code": "invalid-inheritance",
+      "message": "Invalid base class: `simplejson.scanner.JSONDecodeError | json.decoder.JSONDecodeError`",
+      "source_context": "      29 |     \"\"\"A JSON error occurred.\"\"\"\n      30 | \n      31 | \n>>>   32 | class JSONDecodeError(InvalidJSONError, CompatJSONDecodeError):\n      33 |     \"\"\"Couldn't decode the text into json\"\"\"\n      34 | \n      35 |     def __init__(self, *args, **kwargs):",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/exceptions.py#L32"
+    },
+    {
+      "file": "src/requests/models.py",
+      "line": 839,
+      "error_code": "unbound-name",
+      "message": "`self` may be uninitialized",
+      "source_context": "     836 |                         break\n     837 |                     yield chunk\n     838 | \n>>>  839 |             self._content_consumed = True\n     840 | \n     841 |         if self._content_consumed and isinstance(self._content, bool):\n     842 |             raise StreamConsumedError()",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/models.py#L839"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 425,
+      "error_code": "unsupported-operation",
+      "message": "Cannot set item in `dict[str, None]`",
+      "source_context": "     422 |         name, value = item.split(\"=\", 1)\n     423 |         if value[:1] == value[-1:] == '\"':\n     424 |             value = unquote_header_value(value[1:-1])\n>>>  425 |         result[name] = value\n     426 |     return result\n     427 | \n     428 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L425"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 542,
+      "error_code": "missing-attribute",
+      "message": "Object of class `bool` has no attribute `strip`",
+      "source_context": "     539 |     content_type, params = _parse_content_type_header(content_type)\n     540 | \n     541 |     if \"charset\" in params:\n>>>  542 |         return params[\"charset\"].strip(\"'\\\"\")\n     543 | \n     544 |     if \"text\" in content_type:\n     545 |         return \"ISO-8859-1\"",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L542"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 747,
+      "error_code": "unbound-name",
+      "message": "`old_value` may be uninitialized",
+      "source_context": "     744 |         yield\n     745 |     finally:\n     746 |         if value_changed:\n>>>  747 |             if old_value is None:\n     748 |                 del os.environ[env_name]\n     749 |             else:\n     750 |                 os.environ[env_name] = old_value",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L747"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 750,
+      "error_code": "unbound-name",
+      "message": "`old_value` may be uninitialized",
+      "source_context": "     747 |             if old_value is None:\n     748 |                 del os.environ[env_name]\n     749 |             else:\n>>>  750 |                 os.environ[env_name] = old_value\n     751 | \n     752 | \n     753 | def should_bypass_proxies(url, no_proxy):",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L750"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "src/requests/__init__.py",
+      "line": 110,
+      "error_code": "reportPrivateImportUsage",
+      "message": "\"__version__\" is not exported from module \"urllib3\"",
+      "source_context": "     107 | # Check imported dependencies for compatibility.\n     108 | try:\n     109 |     check_compatibility(\n>>>  110 |         urllib3.__version__, chardet_version, charset_normalizer_version\n     111 |     )\n     112 | except (AssertionError, ValueError):\n     113 |     warnings.warn(",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/__init__.py#L110"
+    },
+    {
+      "file": "src/requests/__init__.py",
+      "line": 114,
+      "error_code": "reportPrivateImportUsage",
+      "message": "\"__version__\" is not exported from module \"urllib3\"",
+      "source_context": "     111 |     )\n     112 | except (AssertionError, ValueError):\n     113 |     warnings.warn(\n>>>  114 |         f\"urllib3 ({urllib3.__version__}) or chardet \"\n     115 |         f\"({chardet_version})/charset_normalizer ({charset_normalizer_version}) \"\n     116 |         \"doesn't match a supported version!\",\n     117 |         RequestsDependencyWarning,",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/__init__.py#L114"
+    },
+    {
+      "file": "src/requests/adapters.py",
+      "line": 61,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"type[SOCKSProxyManager]\" is not assignable to declared type \"(...) -> NoReturn\"\n\u00a0\u00a0Type \"type[SOCKSProxyManager]\" is not assignable to type \"(...) -> NoReturn\"\n\u00a0\u00a0\u00a0\u00a0Function return type \"SOCKSProxyManager\" is incompatible with type \"NoReturn\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"SOCKSProxyManager\" is not assignable to type \"NoReturn\"",
+      "source_context": "      58 | )\n      59 | \n      60 | try:\n>>>   61 |     from urllib3.contrib.socks import SOCKSProxyManager\n      62 | except ImportError:\n      63 | \n      64 |     def SOCKSProxyManager(*args, **kwargs):",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L61"
+    },
+    {
+      "file": "src/requests/adapters.py",
+      "line": 357,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"encoding\" for class \"Response\"\n\u00a0\u00a0Expression of type \"Unknown | Literal['ISO-8859-1', 'utf-8'] | None\" cannot be assigned to attribute \"encoding\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0Type \"Unknown | Literal['ISO-8859-1', 'utf-8'] | None\" is not assignable to type \"None\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Literal['ISO-8859-1']\" is not assignable to \"None\"",
+      "source_context": "     354 |         response.headers = CaseInsensitiveDict(getattr(resp, \"headers\", {}))\n     355 | \n     356 |         # Set encoding.\n>>>  357 |         response.encoding = get_encoding_from_headers(response.headers)\n     358 |         response.raw = resp\n     359 |         response.reason = response.raw.reason\n     360 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L357"
+    },
+    {
+      "file": "src/requests/adapters.py",
+      "line": 362,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"url\" for class \"Response\"\n\u00a0\u00a0Expression of type \"str\" cannot be assigned to attribute \"url\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"str\" is not assignable to \"None\"",
+      "source_context": "     359 |         response.reason = response.raw.reason\n     360 | \n     361 |         if isinstance(req.url, bytes):\n>>>  362 |             response.url = req.url.decode(\"utf-8\")\n     363 |         else:\n     364 |             response.url = req.url\n     365 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/adapters.py#L362"
+    },
+    {
+      "file": "src/requests/compat.py",
+      "line": 16,
+      "error_code": "reportPrivateImportUsage",
+      "message": "\"__version__\" is not exported from module \"urllib3\"",
+      "source_context": "      13 | # -------\n      14 | # urllib3\n      15 | # -------\n>>>   16 | from urllib3 import __version__ as urllib3_version\n      17 | \n      18 | # Detect which major version of urllib3 is being used.\n      19 | try:",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/compat.py#L16"
+    },
+    {
+      "file": "src/requests/compat.py",
+      "line": 67,
+      "error_code": "reportMissingModuleSource",
+      "message": "Import \"simplejson\" could not be resolved from source",
+      "source_context": "      64 |     import json\n      65 | \n      66 | if has_simplejson:\n>>>   67 |     from simplejson import JSONDecodeError\n      68 | else:\n      69 |     from json import JSONDecodeError\n      70 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/compat.py#L67"
+    },
+    {
+      "file": "src/requests/help.py",
+      "line": 80,
+      "error_code": "reportPrivateImportUsage",
+      "message": "\"__version__\" is not exported from module \"urllib3\"",
+      "source_context": "      77 |         }\n      78 | \n      79 |     implementation_info = _implementation()\n>>>   80 |     urllib3_info = {\"version\": urllib3.__version__}\n      81 |     charset_normalizer_info = {\"version\": None}\n      82 |     chardet_info = {\"version\": None}\n      83 |     if charset_normalizer:",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/help.py#L80"
+    },
+    {
+      "file": "src/requests/models.py",
+      "line": 373,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Unknown | None\" cannot be assigned to parameter \"url\" of type \"str\" in function \"prepare_auth\"\n\u00a0\u00a0Type \"Unknown | None\" is not assignable to type \"str\"\n\u00a0\u00a0\u00a0\u00a0\"None\" is not assignable to \"str\"",
+      "source_context": "     370 |         self.prepare_headers(headers)\n     371 |         self.prepare_cookies(cookies)\n     372 |         self.prepare_body(data, files, json)\n>>>  373 |         self.prepare_auth(auth, url)\n     374 | \n     375 |         # Note that prepare_auth must be last to enable authentication schemes\n     376 |         # such as OAuth to work on a fully prepared request.",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/models.py#L373"
+    },
+    {
+      "file": "src/requests/models.py",
+      "line": 482,
+      "error_code": "reportCallIssue",
+      "message": "No overloads for \"urlunparse\" match the provided arguments",
+      "source_context": "     479 |             else:\n     480 |                 query = enc_params\n     481 | \n>>>  482 |         url = requote_uri(urlunparse([scheme, netloc, path, None, query, fragment]))\n     483 |         self.url = url\n     484 | \n     485 |     def prepare_headers(self, headers):",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/models.py#L482"
+    },
+    {
+      "file": "src/requests/models.py",
+      "line": 604,
+      "error_code": "reportCallIssue",
+      "message": "Object of type \"tuple[Unknown, ...]\" is not callable\n\u00a0\u00a0Attribute \"__call__\" is unknown",
+      "source_context": "     601 |                 auth = HTTPBasicAuth(*auth)\n     602 | \n     603 |             # Allow auth to make its changes.\n>>>  604 |             r = auth(self)\n     605 | \n     606 |             # Update self to reflect the auth changes.\n     607 |             self.__dict__.update(r.__dict__)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/models.py#L604"
+    },
+    {
+      "file": "src/requests/models.py",
+      "line": 822,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"stream\" for class \"None\"\n\u00a0\u00a0Attribute \"stream\" is unknown",
+      "source_context": "     819 |             # Special case for urllib3.\n     820 |             if hasattr(self.raw, \"stream\"):\n     821 |                 try:\n>>>  822 |                     yield from self.raw.stream(chunk_size, decode_content=True)\n     823 |                 except ProtocolError as e:\n     824 |                     raise ChunkedEncodingError(e)\n     825 |                 except DecodeError as e:",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/models.py#L822"
+    },
+    {
+      "file": "src/requests/models.py",
+      "line": 875,
+      "error_code": "reportOperatorIssue",
+      "message": "Operator \"+\" not supported for types \"bytes | str | Unknown\" and \"Unknown | bytes | str\"\n\u00a0\u00a0Operator \"+\" not supported for types \"bytes\" and \"str\"\n\u00a0\u00a0Operator \"+\" not supported for types \"str\" and \"bytes\"",
+      "source_context": "     872 |             chunk_size=chunk_size, decode_unicode=decode_unicode\n     873 |         ):\n     874 |             if pending is not None:\n>>>  875 |                 chunk = pending + chunk\n     876 | \n     877 |             if delimiter:\n     878 |                 lines = chunk.split(delimiter)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/models.py#L875"
+    },
+    {
+      "file": "src/requests/sessions.py",
+      "line": 492,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"type[CaseInsensitiveDict]\" cannot be assigned to parameter \"dict_class\" of type \"type[OrderedDict[Unknown, Unknown]]\" in function \"merge_setting\"\n\u00a0\u00a0\"type[CaseInsensitiveDict]\" is not assignable to \"type[OrderedDict[Unknown, Unknown]]\"\n\u00a0\u00a0Type \"type[CaseInsensitiveDict]\" is not assignable to type \"type[OrderedDict[Unknown, Unknown]]\"",
+      "source_context": "     489 |             data=request.data,\n     490 |             json=request.json,\n     491 |             headers=merge_setting(\n>>>  492 |                 request.headers, self.headers, dict_class=CaseInsensitiveDict\n     493 |             ),\n     494 |             params=merge_setting(request.params, self.params),\n     495 |             auth=merge_setting(auth, self.auth),",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/sessions.py#L492"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 43,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"proxy_bypass_environment\" is unknown import symbol",
+      "source_context": "      40 |     integer_types,\n      41 |     is_urllib3_1,\n      42 |     proxy_bypass,\n>>>   43 |     proxy_bypass_environment,\n      44 |     quote,\n      45 |     str,\n      46 |     unquote,",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L43"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 147,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"len\" for class \"bytes\"\n\u00a0\u00a0Attribute \"len\" is unknown",
+      "source_context": "     144 |         total_length = len(o)\n     145 | \n     146 |     elif hasattr(o, \"len\"):\n>>>  147 |         total_length = o.len\n     148 | \n     149 |     elif hasattr(o, \"fileno\"):\n     150 |         try:",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L147"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 151,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"fileno\" for class \"bytes\"\n\u00a0\u00a0Attribute \"fileno\" is unknown",
+      "source_context": "     148 | \n     149 |     elif hasattr(o, \"fileno\"):\n     150 |         try:\n>>>  151 |             fileno = o.fileno()\n     152 |         except (io.UnsupportedOperation, AttributeError):\n     153 |             # AttributeError is a surprising exception, seeing as how we've just checked\n     154 |             # that `hasattr(o, 'fileno')`.  It happens for objects obtained via",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L151"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 162,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"mode\" for class \"bytes\"\n\u00a0\u00a0Attribute \"mode\" is unknown",
+      "source_context": "     159 | \n     160 |             # Having used fstat to determine the file length, we need to\n     161 |             # confirm that this file was opened up in binary mode.\n>>>  162 |             if \"b\" not in o.mode:\n     163 |                 warnings.warn(\n     164 |                     (\n     165 |                         \"Requests has determined the content-length for this \"",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L162"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 177,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"tell\" for class \"bytes\"\n\u00a0\u00a0Attribute \"tell\" is unknown",
+      "source_context": "     174 | \n     175 |     if hasattr(o, \"tell\"):\n     176 |         try:\n>>>  177 |             current_position = o.tell()\n     178 |         except OSError:\n     179 |             # This can happen in some weird situations, such as when the file\n     180 |             # is actually a special file descriptor like stdin. In this",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L177"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 190,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"seek\" for class \"bytes\"\n\u00a0\u00a0Attribute \"seek\" is unknown",
+      "source_context": "     187 |                 # StringIO and BytesIO have seek but no usable fileno\n     188 |                 try:\n     189 |                     # seek to end of file\n>>>  190 |                     o.seek(0, 2)\n     191 |                     total_length = o.tell()\n     192 | \n     193 |                     # seek back to current position to support",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L190"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 195,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"seek\" for class \"bytes\"\n\u00a0\u00a0Attribute \"seek\" is unknown",
+      "source_context": "     192 | \n     193 |                     # seek back to current position to support\n     194 |                     # partially read file-like objects\n>>>  195 |                     o.seek(current_position or 0)\n     196 |                 except OSError:\n     197 |                     total_length = 0\n     198 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L195"
+    },
+    {
+      "file": "src/requests/utils.py",
+      "line": 997,
+      "error_code": "reportCallIssue",
+      "message": "No overloads for \"join\" match the provided arguments",
+      "source_context": "     994 |     if auth:\n     995 |         # parse_url doesn't provide the netloc with auth\n     996 |         # so we'll add it ourselves.\n>>>  997 |         netloc = \"@\".join([auth, netloc])\n     998 |     if scheme is None:\n     999 |         scheme = new_scheme\n    1000 |     if path is None:",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/src/requests/utils.py#L997"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 338,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"raw\" for class \"Response\"\n\u00a0\u00a0Expression of type \"BytesIO\" cannot be assigned to attribute \"raw\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"BytesIO\" is not assignable to \"None\"",
+      "source_context": "     335 | \n     336 |         # Create Response to avoid https://github.com/kevin1024/pytest-httpbin/issues/33\n     337 |         resp = requests.Response()\n>>>  338 |         resp.raw = io.BytesIO(b\"the content\")\n     339 |         resp.request = prep\n     340 |         setattr(resp.raw, \"release_conn\", lambda *args: args)\n     341 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L338"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 343,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"status_code\" for class \"Response\"\n\u00a0\u00a0Expression of type \"Literal[302]\" cannot be assigned to attribute \"status_code\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"Literal[302]\" is not assignable to \"None\"",
+      "source_context": "     340 |         setattr(resp.raw, \"release_conn\", lambda *args: args)\n     341 | \n     342 |         # Mimic a redirect response\n>>>  343 |         resp.status_code = 302\n     344 |         resp.headers[\"location\"] = httpbin(\"get\")\n     345 | \n     346 |         # Run request through resolve_redirect",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L343"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 427,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"cookies\" for class \"Session\"\n\u00a0\u00a0Expression of type \"CookieJar\" cannot be assigned to attribute \"cookies\" of class \"Session\"\n\u00a0\u00a0\u00a0\u00a0\"CookieJar\" is not assignable to \"RequestsCookieJar\"",
+      "source_context": "     424 |         cj = cookielib.CookieJar()\n     425 |         cookiejar_from_dict({\"foo\": \"bar\"}, cj)\n     426 |         s = requests.session()\n>>>  427 |         s.cookies = cj\n     428 |         r = s.get(httpbin(\"cookies\"))\n     429 |         # Make sure the cookie was sent\n     430 |         assert r.json()[\"cookies\"][\"foo\"] == \"bar\"",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L427"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 504,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['Fifth']\" cannot be assigned to parameter \"key\" of type \"Literal['Third', 'Fourth']\" in function \"__setitem__\"\n\u00a0\u00a0Type \"Literal['Fifth']\" is not assignable to type \"Literal['Third', 'Fourth']\"\n\u00a0\u00a0\u00a0\u00a0\"Literal['Fifth']\" is not assignable to type \"Literal['Third']\"\n\u00a0\u00a0\u00a0\u00a0\"Literal['Fifth']\" is not assignable to type \"Literal['Fourth']\"",
+      "source_context": "     501 |         ses.headers[\"First\"] = \"1\"\n     502 |         ses.headers[\"Second\"] = \"2\"\n     503 |         headers = collections.OrderedDict([(\"Third\", \"3\"), (\"Fourth\", \"4\")])\n>>>  504 |         headers[\"Fifth\"] = \"5\"\n     505 |         headers[\"Second\"] = \"222\"\n     506 |         req = requests.Request(\"GET\", httpbin(\"get\"), headers=headers)\n     507 |         prep = ses.prepare_request(req)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L504"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 542,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"auth\" for class \"Session\"\n\u00a0\u00a0Expression of type \"tuple[Literal['user'], Literal['pass']]\" cannot be assigned to attribute \"auth\" of class \"Session\"\n\u00a0\u00a0\u00a0\u00a0\"tuple[Literal['user'], Literal['pass']]\" is not assignable to \"None\"",
+      "source_context": "     539 |         assert r.status_code == 401\n     540 | \n     541 |         s = requests.session()\n>>>  542 |         s.auth = auth\n     543 |         r = s.get(url)\n     544 |         assert r.status_code == 200\n     545 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L542"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 704,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"auth\" for class \"Session\"\n\u00a0\u00a0Expression of type \"tuple[Literal['wronguser'], Literal['wrongpass']]\" cannot be assigned to attribute \"auth\" of class \"Session\"\n\u00a0\u00a0\u00a0\u00a0\"tuple[Literal['wronguser'], Literal['wrongpass']]\" is not assignable to \"None\"",
+      "source_context": "     701 |             assert r.status_code == 200\n     702 | \n     703 |             # Given auth should override and fail.\n>>>  704 |             s.auth = wrong_auth\n     705 |             r = s.get(url)\n     706 |             assert r.status_code == 401\n     707 |         finally:",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L704"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 753,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"auth\" for class \"Session\"\n\u00a0\u00a0Expression of type \"HTTPDigestAuth\" cannot be assigned to attribute \"auth\" of class \"Session\"\n\u00a0\u00a0\u00a0\u00a0\"HTTPDigestAuth\" is not assignable to \"None\"",
+      "source_context": "     750 |             print(r.headers[\"WWW-Authenticate\"])\n     751 | \n     752 |             s = requests.session()\n>>>  753 |             s.auth = HTTPDigestAuth(\"user\", \"pass\")\n     754 |             r = s.get(url)\n     755 |             assert r.status_code == 200\n     756 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L753"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 798,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"auth\" for class \"Session\"\n\u00a0\u00a0Expression of type \"HTTPDigestAuth\" cannot be assigned to attribute \"auth\" of class \"Session\"\n\u00a0\u00a0\u00a0\u00a0\"HTTPDigestAuth\" is not assignable to \"None\"",
+      "source_context": "     795 |             assert r.status_code == 401\n     796 | \n     797 |             s = requests.session()\n>>>  798 |             s.auth = auth\n     799 |             r = s.get(url)\n     800 |             assert r.status_code == 401\n     801 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L798"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1215,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"auth\" for class \"Session\"\n\u00a0\u00a0Expression of type \"DummyAuth\" cannot be assigned to attribute \"auth\" of class \"Session\"\n\u00a0\u00a0\u00a0\u00a0\"DummyAuth\" is not assignable to \"None\"",
+      "source_context": "    1212 |         assert not req.auth\n    1213 | \n    1214 |         s = requests.Session()\n>>> 1215 |         s.auth = DummyAuth()\n    1216 | \n    1217 |         prep = s.prepare_request(req)\n    1218 |         resp = s.send(prep)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1215"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1448,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"raw\" for class \"Response\"\n\u00a0\u00a0Expression of type \"BytesIO\" cannot be assigned to attribute \"raw\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"BytesIO\" is not assignable to \"None\"",
+      "source_context": "    1445 | \n    1446 |         # also for streaming\n    1447 |         r = requests.Response()\n>>> 1448 |         r.raw = io.BytesIO(b\"the content\")\n    1449 |         r.encoding = \"ascii\"\n    1450 |         chunks = r.iter_content(decode_unicode=True)\n    1451 |         assert all(isinstance(chunk, str) for chunk in chunks)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1448"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1456,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"url\" for class \"Response\"\n\u00a0\u00a0Expression of type \"Literal['unicode URL']\" cannot be assigned to attribute \"url\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"Literal['unicode URL']\" is not assignable to \"None\"",
+      "source_context": "    1453 |     def test_response_reason_unicode(self):\n    1454 |         # check for unicode HTTP status\n    1455 |         r = requests.Response()\n>>> 1456 |         r.url = \"unicode URL\"\n    1457 |         r.reason = \"Komponenttia ei l\u00f6ydy\".encode()\n    1458 |         r.status_code = 404\n    1459 |         r.encoding = None",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1456"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1465,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"url\" for class \"Response\"\n\u00a0\u00a0Expression of type \"Literal['some url']\" cannot be assigned to attribute \"url\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"Literal['some url']\" is not assignable to \"None\"",
+      "source_context": "    1462 |     def test_response_reason_unicode_fallback(self):\n    1463 |         # check raise_status falls back to ISO-8859-1\n    1464 |         r = requests.Response()\n>>> 1465 |         r.url = \"some url\"\n    1466 |         reason = \"Komponenttia ei l\u00f6ydy\"\n    1467 |         r.reason = reason.encode(\"latin-1\")\n    1468 |         r.status_code = 500",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1465"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1468,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"status_code\" for class \"Response\"\n\u00a0\u00a0Expression of type \"Literal[500]\" cannot be assigned to attribute \"status_code\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"Literal[500]\" is not assignable to \"None\"",
+      "source_context": "    1465 |         r.url = \"some url\"\n    1466 |         reason = \"Komponenttia ei l\u00f6ydy\"\n    1467 |         r.reason = reason.encode(\"latin-1\")\n>>> 1468 |         r.status_code = 500\n    1469 |         r.encoding = None\n    1470 |         with pytest.raises(requests.exceptions.HTTPError) as e:\n    1471 |             r.raise_for_status()",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1468"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1479,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"raw\" for class \"Response\"\n\u00a0\u00a0Expression of type \"BytesIO\" cannot be assigned to attribute \"raw\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"BytesIO\" is not assignable to \"None\"",
+      "source_context": "    1476 |         raise a TypeError.\n    1477 |         \"\"\"\n    1478 |         r = requests.Response()\n>>> 1479 |         r.raw = io.BytesIO(b\"the content\")\n    1480 |         chunks = r.iter_content(1)\n    1481 |         assert all(len(chunk) == 1 for chunk in chunks)\n    1482 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1479"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1484,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"raw\" for class \"Response\"\n\u00a0\u00a0Expression of type \"BytesIO\" cannot be assigned to attribute \"raw\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"BytesIO\" is not assignable to \"None\"",
+      "source_context": "    1481 |         assert all(len(chunk) == 1 for chunk in chunks)\n    1482 | \n    1483 |         r = requests.Response()\n>>> 1484 |         r.raw = io.BytesIO(b\"the content\")\n    1485 |         chunks = r.iter_content(None)\n    1486 |         assert list(chunks) == [b\"the content\"]\n    1487 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1484"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1489,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"raw\" for class \"Response\"\n\u00a0\u00a0Expression of type \"BytesIO\" cannot be assigned to attribute \"raw\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"BytesIO\" is not assignable to \"None\"",
+      "source_context": "    1486 |         assert list(chunks) == [b\"the content\"]\n    1487 | \n    1488 |         r = requests.Response()\n>>> 1489 |         r.raw = io.BytesIO(b\"the content\")\n    1490 |         with pytest.raises(TypeError):\n    1491 |             chunks = r.iter_content(\"1024\")\n    1492 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1489"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1504,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"raw\" for class \"Response\"\n\u00a0\u00a0Expression of type \"Mock\" cannot be assigned to attribute \"raw\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"Mock\" is not assignable to \"None\"",
+      "source_context": "    1501 |     )\n    1502 |     def test_iter_content_wraps_exceptions(self, httpbin, exception, args, expected):\n    1503 |         r = requests.Response()\n>>> 1504 |         r.raw = mock.Mock()\n    1505 |         # ReadTimeoutError can't be initialized by mock\n    1506 |         # so we'll manually create the instance with args\n    1507 |         r.raw.stream.side_effect = exception(*args)",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1504"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 1507,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"stream\" for class \"None\"\n\u00a0\u00a0Attribute \"stream\" is unknown",
+      "source_context": "    1504 |         r.raw = mock.Mock()\n    1505 |         # ReadTimeoutError can't be initialized by mock\n    1506 |         # so we'll manually create the instance with args\n>>> 1507 |         r.raw.stream.side_effect = exception(*args)\n    1508 | \n    1509 |         with pytest.raises(expected):\n    1510 |             next(r.iter_content(1024))",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L1507"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 2571,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"status_code\" for class \"Response\"\n\u00a0\u00a0Expression of type \"int\" cannot be assigned to attribute \"status_code\" of class \"Response\"\n\u00a0\u00a0\u00a0\u00a0\"int\" is not assignable to \"None\"",
+      "source_context": "    2568 |         r = requests.Response()\n    2569 | \n    2570 |         try:\n>>> 2571 |             r.status_code = int(self.redirects.pop(0))\n    2572 |         except IndexError:\n    2573 |             r.status_code = 200\n    2574 | ",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L2571"
+    },
+    {
+      "file": "tests/test_requests.py",
+      "line": 2689,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Retry\" cannot be assigned to parameter \"max_retries\" of type \"int\" in function \"__init__\"\n\u00a0\u00a0\"Retry\" is not assignable to \"int\"",
+      "source_context": "    2686 |     from urllib3.util import Retry\n    2687 | \n    2688 |     s = requests.Session()\n>>> 2689 |     s.mount(\"http://\", HTTPAdapter(max_retries=Retry(total=2, status_forcelist=[500])))\n    2690 | \n    2691 |     with pytest.raises(RetryError):\n    2692 |         s.get(httpbin(\"status/500\"))",
+      "github_link": "https://github.com/psf/requests/blob/421b8733cf17e4dee8be237e7412b095772c2323/tests/test_requests.py#L2689"
+    }
+  ]
+}

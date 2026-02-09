@@ -1,0 +1,735 @@
+{
+  "package_name": "flask",
+  "github_url": "https://github.com/pallets/flask",
+  "commit_sha": "663198d7b453ffdbe86d0e0238b1feafde6ce569",
+  "summary": {
+    "pyright_errors": 204,
+    "pyrefly_errors": 213,
+    "false_positives": 43,
+    "false_negatives": 47
+  },
+  "false_positives": [
+    {
+      "file": "tests/test_basic.py",
+      "line": 76,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `provide_automatic_options`",
+      "source_context": "      73 |     def index():\n      74 |         return \"Hello World!\"\n      75 | \n>>>   76 |     index.provide_automatic_options = False\n      77 |     app.route(\"/\")(index)\n      78 |     rv = app.test_client().open(\"/\", method=\"OPTIONS\")\n      79 |     assert rv.status_code == 405",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_basic.py#L76"
+    },
+    {
+      "file": "tests/test_basic.py",
+      "line": 86,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `provide_automatic_options`",
+      "source_context": "      83 |     def index2():\n      84 |         return \"Hello World!\"\n      85 | \n>>>   86 |     index2.provide_automatic_options = True\n      87 |     app.route(\"/\", methods=[\"OPTIONS\"])(index2)\n      88 |     rv = app.test_client().open(\"/\", method=\"OPTIONS\")\n      89 |     assert sorted(rv.allow) == [\"OPTIONS\"]",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_basic.py#L86"
+    },
+    {
+      "file": "tests/test_basic.py",
+      "line": 1365,
+      "error_code": "unbound-name",
+      "message": "`error` may be uninitialized",
+      "source_context": "    1362 |     try:\n    1363 |         raise RuntimeError(\"Test case where BuildError is not current.\")\n    1364 |     except RuntimeError:\n>>> 1365 |         pytest.raises(BuildError, app.handle_url_build_error, error, \"spam\", {})\n    1366 | \n    1367 |     # Test a custom handler.\n    1368 |     def handler(error, endpoint, values):",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_basic.py#L1365"
+    },
+    {
+      "file": "tests/test_helpers.py",
+      "line": 253,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `flask.helpers.stream_with_context` called with arguments: ((hello: Unknown) -> Generator[Literal['!'] | Unknown, Unknown, None])",
+      "source_context": "     250 |     def test_streaming_with_context_as_decorator(self, app, client):\n     251 |         @app.route(\"/\")\n     252 |         def index():\n>>>  253 |             @flask.stream_with_context\n     254 |             def generate(hello):\n     255 |                 yield hello\n     256 |                 yield flask.request.args[\"name\"]",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_helpers.py#L253"
+    },
+    {
+      "file": "tests/test_json.py",
+      "line": 63,
+      "error_code": "bad-argument-type",
+      "message": "Argument `StringIO` is not assignable to parameter `fp` with type `IO[TypeVar[AnyStr]]` in function `flask.json.load`",
+      "source_context": "      60 | \n      61 |     flask.json.dump(test_data, out)\n      62 |     out.seek(0)\n>>>   63 |     rv = flask.json.load(out)\n      64 |     assert rv == test_data\n      65 | \n      66 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_json.py#L63"
+    },
+    {
+      "file": "tests/test_templating.py",
+      "line": 407,
+      "error_code": "bad-override",
+      "message": "Class member `MyFlask.create_global_jinja_loader` overrides parent class `Flask` in an inconsistent manner",
+      "source_context": "     404 | \n     405 | def test_custom_template_loader(client):\n     406 |     class MyFlask(flask.Flask):\n>>>  407 |         def create_global_jinja_loader(self):\n     408 |             from jinja2 import DictLoader\n     409 | \n     410 |             return DictLoader({\"index.html\": \"Hello Custom World!\"})",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_templating.py#L407"
+    },
+    {
+      "file": "tests/test_templating.py",
+      "line": 494,
+      "error_code": "bad-override",
+      "message": "Class member `_TestHandler.handle` overrides parent class `Handler` in an inconsistent manner",
+      "source_context": "     491 |     called = []\n     492 | \n     493 |     class _TestHandler(logging.Handler):\n>>>  494 |         def handle(self, record):\n     495 |             called.append(True)\n     496 |             text = str(record.msg)\n     497 |             assert \"1: trying loader of application 'blueprintapp'\" in text",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_templating.py#L494"
+    },
+    {
+      "file": "tests/test_views.py",
+      "line": 50,
+      "error_code": "bad-override",
+      "message": "Class member `Other.get` overrides parent class `Index` in an inconsistent manner",
+      "source_context": "      47 |             raise ZeroDivisionError\n      48 | \n      49 |     class Other(Index):\n>>>   50 |         def get(self):\n      51 |             return \"GET\"\n      52 | \n      53 |         def post(self):",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_views.py#L50"
+    },
+    {
+      "file": "tests/test_views.py",
+      "line": 53,
+      "error_code": "bad-override",
+      "message": "Class member `Other.post` overrides parent class `Index` in an inconsistent manner",
+      "source_context": "      50 |         def get(self):\n      51 |             return \"GET\"\n      52 | \n>>>   53 |         def post(self):\n      54 |             return \"POST\"\n      55 | \n      56 |     view = Index.as_view(\"index\")",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_views.py#L53"
+    },
+    {
+      "file": "tests/test_views.py",
+      "line": 57,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FunctionType` has no attribute `view_class`",
+      "source_context": "      54 |             return \"POST\"\n      55 | \n      56 |     view = Index.as_view(\"index\")\n>>>   57 |     view.view_class = Other\n      58 |     app.add_url_rule(\"/\", view_func=view)\n      59 |     common_test(app)\n      60 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_views.py#L57"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 442,
+      "error_code": "bad-return",
+      "message": "Returned type `BufferedReader[_BufferedReaderStream]` is not assignable to declared return type `IO[TypeVar[AnyStr]]`",
+      "source_context": "     439 |         path = os.path.join(self.root_path, resource)\n     440 | \n     441 |         if mode == \"rb\":\n>>>  442 |             return open(path, mode)  # pyright: ignore\n     443 | \n     444 |         return open(path, mode, encoding=encoding)\n     445 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L442"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 494,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `typing.MutableMapping.update` called with arguments: (url_for=BoundMethod[Self@Flask, (self: Self@Flask, /, endpoint: str, *, _anchor: str | None = None, _method: str | None = None, _scheme: str | None = None, _external: bool | None = None, **values: Any) -> str], get_flashed_messages=(with_categories: bool = False, category_filter: Iterable[str] = ...) -> list[str] | list[tuple[str, str]], config=Config, request=RequestProxy, session=SessionMixinProxy, g=_AppCtxGlobalsProxy)",
+      "source_context": "     491 |             options[\"auto_reload\"] = auto_reload\n     492 | \n     493 |         rv = self.jinja_environment(self, **options)\n>>>  494 |         rv.globals.update(\n     495 |             url_for=self.url_for,\n     496 |             get_flashed_messages=get_flashed_messages,\n     497 |             config=self.config,",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L494"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 1293,
+      "error_code": "bad-unpacking",
+      "message": "Cannot unpack tuple[ResponseValue, HeadersValue] | tuple[ResponseValue, int] | tuple[ResponseValue, int, HeadersValue] | tuple[Unknown, ...] (of size 3) into 2 values",
+      "source_context": "    1290 |             # decide if a 2-tuple has status or headers\n    1291 |             elif len_rv == 2:\n    1292 |                 if isinstance(rv[1], (Headers, dict, tuple, list)):\n>>> 1293 |                     rv, headers = rv  # pyright: ignore\n    1294 |                 else:\n    1295 |                     rv, status = rv  # type: ignore[assignment,misc]\n    1296 |             # other sized tuples are not allowed",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L1293"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 1409,
+      "error_code": "bad-argument-type",
+      "message": "Argument `tuple[None]` is not assignable to parameter `*iterables` with type `Iterable[str]` in function `itertools.chain.__new__`",
+      "source_context": "    1406 |         for func in ctx._after_request_functions:\n    1407 |             response = self.ensure_sync(func)(response)\n    1408 | \n>>> 1409 |         for name in chain(ctx.request.blueprints, (None,)):\n    1410 |             if name in self.after_request_funcs:\n    1411 |                 for func in reversed(self.after_request_funcs[name]):\n    1412 |                     response = self.ensure_sync(func)(response)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L1409"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 1436,
+      "error_code": "bad-argument-type",
+      "message": "Argument `tuple[None]` is not assignable to parameter `*iterables` with type `Iterable[str]` in function `itertools.chain.__new__`",
+      "source_context": "    1433 |         .. versionchanged:: 0.9\n    1434 |             Added the ``exc`` argument.\n    1435 |         \"\"\"\n>>> 1436 |         for name in chain(ctx.request.blueprints, (None,)):\n    1437 |             if name in self.teardown_request_funcs:\n    1438 |                 for func in reversed(self.teardown_request_funcs[name]):\n    1439 |                     self.ensure_sync(func)(exc)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L1436"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 1585,
+      "error_code": "not-callable",
+      "message": "Expected a callable, got `Response`",
+      "source_context": "    1582 |             except:\n    1583 |                 error = sys.exc_info()[1]\n    1584 |                 raise\n>>> 1585 |             return response(environ, start_response)\n    1586 |         finally:\n    1587 |             if \"werkzeug.debug.preserve_context\" in environ:\n    1588 |                 environ[\"werkzeug.debug.preserve_context\"](ctx)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L1585"
+    },
+    {
+      "file": "src/flask/blueprints.py",
+      "line": 126,
+      "error_code": "bad-return",
+      "message": "Returned type `BufferedReader[_BufferedReaderStream]` is not assignable to declared return type `IO[TypeVar[AnyStr]]`",
+      "source_context": "     123 |         path = os.path.join(self.root_path, resource)\n     124 | \n     125 |         if mode == \"rb\":\n>>>  126 |             return open(path, mode)  # pyright: ignore\n     127 | \n     128 |         return open(path, mode, encoding=encoding)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/blueprints.py#L126"
+    },
+    {
+      "file": "src/flask/cli.py",
+      "line": 348,
+      "error_code": "bad-argument-type",
+      "message": "Argument `str | Any | None` is not assignable to parameter `path` with type `str` in function `prepare_import`",
+      "source_context": "     345 |                 path, name = (\n     346 |                     re.split(r\":(?![\\\\/])\", self.app_import_path, maxsplit=1) + [None]\n     347 |                 )[:2]\n>>>  348 |                 import_name = prepare_import(path)\n     349 |                 app = locate_app(import_name, name)\n     350 |             else:\n     351 |                 for path in (\"wsgi.py\", \"app.py\"):",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/cli.py#L348"
+    },
+    {
+      "file": "src/flask/ctx.py",
+      "line": 202,
+      "error_code": "bad-context-manager",
+      "message": "Cannot use `None` as a context manager",
+      "source_context": "     199 |     ctx = ctx.copy()\n     200 | \n     201 |     def wrapper(*args: t.Any, **kwargs: t.Any) -> t.Any:\n>>>  202 |         with ctx:\n     203 |             return ctx.app.ensure_sync(f)(*args, **kwargs)\n     204 | \n     205 |     return update_wrapper(wrapper, f)  # type: ignore[return-value]",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/ctx.py#L202"
+    },
+    {
+      "file": "src/flask/ctx.py",
+      "line": 396,
+      "error_code": "bad-return",
+      "message": "Returned type `SessionMixin | None` is not assignable to declared return type `SessionMixin`",
+      "source_context": "     393 |             if self._session is None:\n     394 |                 self._session = si.make_null_session(self.app)\n     395 | \n>>>  396 |         return self._session\n     397 | \n     398 |     def match_request(self) -> None:\n     399 |         \"\"\"Apply routing to the current request, storing either the matched",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/ctx.py#L396"
+    },
+    {
+      "file": "src/flask/json/__init__.py",
+      "line": 135,
+      "error_code": "bad-argument-type",
+      "message": "Argument `IO[TypeVar[AnyStr]]` is not assignable to parameter `fp` with type `SupportsRead[bytes | str]` in function `json.load`",
+      "source_context": "     132 |     if current_app:\n     133 |         return current_app.json.load(fp, **kwargs)\n     134 | \n>>>  135 |     return _json.load(fp, **kwargs)\n     136 | \n     137 | \n     138 | def jsonify(*args: t.Any, **kwargs: t.Any) -> Response:",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/json/__init__.py#L135"
+    },
+    {
+      "file": "src/flask/json/provider.py",
+      "line": 73,
+      "error_code": "bad-argument-type",
+      "message": "Argument `TypeVar[AnyStr]` is not assignable to parameter `s` with type `bytes | str` in function `JSONProvider.loads`",
+      "source_context": "      70 |         :param fp: A file opened for reading text or UTF-8 bytes.\n      71 |         :param kwargs: May be passed to the underlying JSON library.\n      72 |         \"\"\"\n>>>   73 |         return self.loads(fp.read(), **kwargs)\n      74 | \n      75 |     def _prepare_response_obj(\n      76 |         self, args: tuple[t.Any, ...], kwargs: dict[str, t.Any]",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/json/provider.py#L73"
+    },
+    {
+      "file": "src/flask/logging.py",
+      "line": 38,
+      "error_code": "bad-assignment",
+      "message": "`Logger | None` is not assignable to `Logger` (caused by inconsistent types when breaking cycles)",
+      "source_context": "      35 |     level = logger.getEffectiveLevel()\n      36 |     current = logger\n      37 | \n>>>   38 |     while current:\n      39 |         if any(handler.level <= level for handler in current.handlers):\n      40 |             return True\n      41 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/logging.py#L38"
+    },
+    {
+      "file": "src/flask/sansio/app.py",
+      "line": 690,
+      "error_code": "bad-argument-type",
+      "message": "Argument `str | T_template_filter | None` is not assignable to parameter `name` with type `str | None` in function `App.add_template_filter`",
+      "source_context": "     687 |             return name\n     688 | \n     689 |         def decorator(f: T_template_filter) -> T_template_filter:\n>>>  690 |             self.add_template_filter(f, name=name)\n     691 |             return f\n     692 | \n     693 |         return decorator",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/app.py#L690"
+    },
+    {
+      "file": "src/flask/sansio/app.py",
+      "line": 747,
+      "error_code": "bad-argument-type",
+      "message": "Argument `str | T_template_test | None` is not assignable to parameter `name` with type `str | None` in function `App.add_template_test`",
+      "source_context": "     744 |             return name\n     745 | \n     746 |         def decorator(f: T_template_test) -> T_template_test:\n>>>  747 |             self.add_template_test(f, name=name)\n     748 |             return f\n     749 | \n     750 |         return decorator",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/app.py#L747"
+    },
+    {
+      "file": "src/flask/sansio/app.py",
+      "line": 801,
+      "error_code": "bad-argument-type",
+      "message": "Argument `str | T_template_global | None` is not assignable to parameter `name` with type `str | None` in function `App.add_template_global`",
+      "source_context": "     798 |             return name\n     799 | \n     800 |         def decorator(f: T_template_global) -> T_template_global:\n>>>  801 |             self.add_template_global(f, name=name)\n     802 |             return f\n     803 | \n     804 |         return decorator",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/app.py#L801"
+    },
+    {
+      "file": "src/flask/sansio/blueprints.py",
+      "line": 470,
+      "error_code": "bad-argument-type",
+      "message": "Argument `str | T_template_filter | None` is not assignable to parameter `name` with type `str | None` in function `Blueprint.add_app_template_filter`",
+      "source_context": "     467 |             return name\n     468 | \n     469 |         def decorator(f: T_template_filter) -> T_template_filter:\n>>>  470 |             self.add_app_template_filter(f, name=name)\n     471 |             return f\n     472 | \n     473 |         return decorator",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/blueprints.py#L470"
+    },
+    {
+      "file": "src/flask/sansio/blueprints.py",
+      "line": 526,
+      "error_code": "bad-argument-type",
+      "message": "Argument `str | T_template_test | None` is not assignable to parameter `name` with type `str | None` in function `Blueprint.add_app_template_test`",
+      "source_context": "     523 |             return name\n     524 | \n     525 |         def decorator(f: T_template_test) -> T_template_test:\n>>>  526 |             self.add_app_template_test(f, name=name)\n     527 |             return f\n     528 | \n     529 |         return decorator",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/blueprints.py#L526"
+    },
+    {
+      "file": "src/flask/sansio/blueprints.py",
+      "line": 584,
+      "error_code": "bad-argument-type",
+      "message": "Argument `str | T_template_global | None` is not assignable to parameter `name` with type `str | None` in function `Blueprint.add_app_template_global`",
+      "source_context": "     581 |             return name\n     582 | \n     583 |         def decorator(f: T_template_global) -> T_template_global:\n>>>  584 |             self.add_app_template_global(f, name=name)\n     585 |             return f\n     586 | \n     587 |         return decorator",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/blueprints.py#L584"
+    },
+    {
+      "file": "src/flask/sessions.py",
+      "line": 86,
+      "error_code": "missing-attribute",
+      "message": "Method `__getitem__` inherited from class `Mapping` has no implementation and cannot be accessed via `super()`",
+      "source_context": "      83 | \n      84 |     def __getitem__(self, key: str) -> t.Any:\n      85 |         self.accessed = True\n>>>   86 |         return super().__getitem__(key)\n      87 | \n      88 |     def get(self, key: str, default: t.Any = None) -> t.Any:\n      89 |         self.accessed = True",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sessions.py#L86"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 177,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `flask.helpers.stream_with_context` called with arguments: (Iterator[str])",
+      "source_context": "     174 |             app, _async_wrapper=app.ensure_sync, template=template, context=context\n     175 |         )\n     176 | \n>>>  177 |     return stream_with_context(generate())\n     178 | \n     179 | \n     180 | def stream_template(",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L177"
+    },
+    {
+      "file": "src/flask/testing.py",
+      "line": 217,
+      "error_code": "missing-attribute",
+      "message": "Object of class `dict` has no attribute `get_request`",
+      "source_context": "     214 |             if isinstance(args[0], werkzeug.test.EnvironBuilder):\n     215 |                 builder = copy(args[0])\n     216 |                 builder.environ_base = self._copy_environ(builder.environ_base or {})  # type: ignore[arg-type]\n>>>  217 |                 request = builder.get_request()\n     218 |             elif isinstance(args[0], dict):\n     219 |                 request = EnvironBuilder.from_environ(\n     220 |                     args[0], app=self.application, environ_base=self._copy_environ({})",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/testing.py#L217"
+    },
+    {
+      "file": "src/flask/testing.py",
+      "line": 225,
+      "error_code": "missing-attribute",
+      "message": "Object of class `dict` has no attribute `environ`",
+      "source_context": "     222 |             else:\n     223 |                 # isinstance(args[0], BaseRequest)\n     224 |                 request = copy(args[0])\n>>>  225 |                 request.environ = self._copy_environ(request.environ)\n     226 |         else:\n     227 |             # request is None\n     228 |             request = self._request_from_builder_args(args, kwargs)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/testing.py#L225"
+    },
+    {
+      "file": "examples/tutorial/flaskr/__init__.py",
+      "line": 3,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": "       1 | import os\n       2 | \n>>>    3 | from flask import Flask\n       4 | \n       5 | \n       6 | def create_app(test_config=None):",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/flaskr/__init__.py#L3"
+    },
+    {
+      "file": "examples/tutorial/flaskr/auth.py",
+      "line": 3,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": "       1 | import functools\n       2 | \n>>>    3 | from flask import Blueprint\n       4 | from flask import flash\n       5 | from flask import g\n       6 | from flask import redirect",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/flaskr/auth.py#L3"
+    },
+    {
+      "file": "examples/tutorial/flaskr/auth.py",
+      "line": 6,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": "       3 | from flask import Blueprint\n       4 | from flask import flash\n       5 | from flask import g\n>>>    6 | from flask import redirect\n       7 | from flask import render_template\n       8 | from flask import request\n       9 | from flask import session",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/flaskr/auth.py#L6"
+    },
+    {
+      "file": "examples/tutorial/flaskr/blog.py",
+      "line": 1,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": ">>>    1 | from flask import Blueprint\n       2 | from flask import flash\n       3 | from flask import g\n       4 | from flask import redirect",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/flaskr/blog.py#L1"
+    },
+    {
+      "file": "examples/tutorial/flaskr/blog.py",
+      "line": 4,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": "       1 | from flask import Blueprint\n       2 | from flask import flash\n       3 | from flask import g\n>>>    4 | from flask import redirect\n       5 | from flask import render_template\n       6 | from flask import request\n       7 | from flask import url_for",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/flaskr/blog.py#L4"
+    },
+    {
+      "file": "examples/javascript/js_example/__init__.py",
+      "line": 1,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": ">>>    1 | from flask import Flask\n       2 | \n       3 | app = Flask(__name__)\n       4 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/javascript/js_example/__init__.py#L1"
+    },
+    {
+      "file": "examples/javascript/js_example/views.py",
+      "line": 1,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": ">>>    1 | from flask import jsonify\n       2 | from flask import render_template\n       3 | from flask import request\n       4 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/javascript/js_example/views.py#L1"
+    },
+    {
+      "file": "examples/celery/src/task_app/__init__.py",
+      "line": 4,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": "       1 | from celery import Celery\n       2 | from celery import Task\n       3 | from flask import Flask\n>>>    4 | from flask import render_template\n       5 | \n       6 | \n       7 | def create_app() -> Flask:",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/celery/src/task_app/__init__.py#L4"
+    },
+    {
+      "file": "examples/tutorial/tests/test_auth.py",
+      "line": 2,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": "       1 | import pytest\n>>>    2 | from flask import g\n       3 | from flask import session\n       4 | \n       5 | from flaskr.db import get_db",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/tests/test_auth.py#L2"
+    },
+    {
+      "file": "examples/javascript/tests/test_js_example.py",
+      "line": 2,
+      "error_code": "missing-import",
+      "message": "Cannot find module `flask`",
+      "source_context": "       1 | import pytest\n>>>    2 | from flask import template_rendered\n       3 | \n       4 | \n       5 | @pytest.mark.parametrize(",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/javascript/tests/test_js_example.py#L2"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "examples/celery/make_celery.py",
+      "line": 1,
+      "error_code": "reportMissingImports",
+      "message": "Import \"task_app\" could not be resolved",
+      "source_context": ">>>    1 | from task_app import create_app\n       2 | \n       3 | flask_app = create_app()\n       4 | celery_app = flask_app.extensions[\"celery\"]",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/celery/make_celery.py#L1"
+    },
+    {
+      "file": "examples/javascript/js_example/__init__.py",
+      "line": 5,
+      "error_code": "reportMissingImports",
+      "message": "Import \"js_example\" could not be resolved",
+      "source_context": "       2 | \n       3 | app = Flask(__name__)\n       4 | \n>>>    5 | from js_example import views  # noqa: E402, F401",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/javascript/js_example/__init__.py#L5"
+    },
+    {
+      "file": "examples/javascript/tests/conftest.py",
+      "line": 3,
+      "error_code": "reportMissingImports",
+      "message": "Import \"js_example\" could not be resolved",
+      "source_context": "       1 | import pytest\n       2 | \n>>>    3 | from js_example import app\n       4 | \n       5 | \n       6 | @pytest.fixture(name=\"app\")",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/javascript/tests/conftest.py#L3"
+    },
+    {
+      "file": "examples/tutorial/tests/conftest.py",
+      "line": 6,
+      "error_code": "reportMissingImports",
+      "message": "Import \"flaskr\" could not be resolved",
+      "source_context": "       3 | \n       4 | import pytest\n       5 | \n>>>    6 | from flaskr import create_app\n       7 | from flaskr.db import get_db\n       8 | from flaskr.db import init_db\n       9 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/tests/conftest.py#L6"
+    },
+    {
+      "file": "examples/tutorial/tests/test_blog.py",
+      "line": 3,
+      "error_code": "reportMissingImports",
+      "message": "Import \"flaskr.db\" could not be resolved",
+      "source_context": "       1 | import pytest\n       2 | \n>>>    3 | from flaskr.db import get_db\n       4 | \n       5 | \n       6 | def test_index(client, auth):",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/tests/test_blog.py#L3"
+    },
+    {
+      "file": "examples/tutorial/tests/test_db.py",
+      "line": 5,
+      "error_code": "reportMissingImports",
+      "message": "Import \"flaskr.db\" could not be resolved",
+      "source_context": "       2 | \n       3 | import pytest\n       4 | \n>>>    5 | from flaskr.db import get_db\n       6 | \n       7 | \n       8 | def test_get_close_db(app):",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/tests/test_db.py#L5"
+    },
+    {
+      "file": "examples/tutorial/tests/test_factory.py",
+      "line": 1,
+      "error_code": "reportMissingImports",
+      "message": "Import \"flaskr\" could not be resolved",
+      "source_context": ">>>    1 | from flaskr import create_app\n       2 | \n       3 | \n       4 | def test_config():",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/examples/tutorial/tests/test_factory.py#L1"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 884,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"show_exception\" for class \"Exception\"\n\u00a0\u00a0Attribute \"show_exception\" is unknown",
+      "source_context": "     881 |         if isinstance(e, BadRequestKeyError) and (\n     882 |             self.debug or self.config[\"TRAP_BAD_REQUEST_ERRORS\"]\n     883 |         ):\n>>>  884 |             e.show_exception = True\n     885 | \n     886 |         if isinstance(e, HTTPException) and not self.trap_http_exception(e):\n     887 |             return self.handle_http_exception(ctx, e)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L884"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 942,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"ResponseReturnValue\" cannot be assigned to parameter \"e\" of type \"Exception\" in function \"_find_error_handler\"\n\u00a0\u00a0Type \"ResponseReturnValue\" is not assignable to type \"Exception\"\n\u00a0\u00a0\u00a0\u00a0\"bytes\" is not assignable to \"Exception\"",
+      "source_context": "     939 |         self.log_exception(ctx, exc_info)\n     940 |         server_error: InternalServerError | ft.ResponseReturnValue\n     941 |         server_error = InternalServerError(original_exception=e)\n>>>  942 |         handler = self._find_error_handler(server_error, ctx.request.blueprints)\n     943 | \n     944 |         if handler is not None:\n     945 |             server_error = self.ensure_sync(handler)(server_error)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L942"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 961,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"error\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"error\" is unknown",
+      "source_context": "     958 | \n     959 |         .. versionadded:: 0.8\n     960 |         \"\"\"\n>>>  961 |         self.logger.error(\n     962 |             f\"Exception on {ctx.request.path} [{ctx.request.method}]\", exc_info=exc_info\n     963 |         )\n     964 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L961"
+    },
+    {
+      "file": "src/flask/app.py",
+      "line": 1047,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"exception\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"exception\" is unknown",
+      "source_context": "    1044 |         except Exception:\n    1045 |             if not from_error_handler:\n    1046 |                 raise\n>>> 1047 |             self.logger.exception(\n    1048 |                 \"Request finalizing failed with an error while handling an error\"\n    1049 |             )\n    1050 |         return response",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/app.py#L1047"
+    },
+    {
+      "file": "src/flask/debughelpers.py",
+      "line": 62,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"new_url\" is not a known attribute of \"None\"",
+      "source_context": "      59 |         assert isinstance(exc, RequestRedirect)\n      60 |         buf = [\n      61 |             f\"A request was sent to '{request.url}', but routing issued\"\n>>>   62 |             f\" a redirect to the canonical URL '{exc.new_url}'.\"\n      63 |         ]\n      64 | \n      65 |         if f\"{request.base_url}/\" == exc.new_url.partition(\"?\")[0]:",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/debughelpers.py#L62"
+    },
+    {
+      "file": "src/flask/debughelpers.py",
+      "line": 65,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"new_url\" is not a known attribute of \"None\"",
+      "source_context": "      62 |             f\" a redirect to the canonical URL '{exc.new_url}'.\"\n      63 |         ]\n      64 | \n>>>   65 |         if f\"{request.base_url}/\" == exc.new_url.partition(\"?\")[0]:\n      66 |             buf.append(\n      67 |                 \" The URL was defined with a trailing slash. Flask\"\n      68 |                 \" will redirect to the URL with a trailing slash if it\"",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/debughelpers.py#L65"
+    },
+    {
+      "file": "src/flask/debughelpers.py",
+      "line": 179,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"info\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"info\" is unknown",
+      "source_context": "     176 |         info.append(\"  Maybe you did not place a template in the right folder?\")\n     177 |         info.append(\"  See https://flask.palletsprojects.com/blueprints/#templates\")\n     178 | \n>>>  179 |     app.logger.info(\"\\n\".join(info))",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/debughelpers.py#L179"
+    },
+    {
+      "file": "src/flask/helpers.py",
+      "line": 310,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get_template\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get_template\" is unknown",
+      "source_context": "     307 |     :param template_name: the name of the template\n     308 |     :param attribute: the name of the variable of macro to access\n     309 |     \"\"\"\n>>>  310 |     return getattr(current_app.jinja_env.get_template(template_name).module, attribute)\n     311 | \n     312 | \n     313 | def flash(message: str, category: str = \"message\") -> None:",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/helpers.py#L310"
+    },
+    {
+      "file": "src/flask/logging.py",
+      "line": 71,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> str\" cannot be assigned to parameter \"name\" of type \"str | None\" in function \"getLogger\"\n\u00a0\u00a0Type \"() -> str\" is not assignable to type \"str | None\"\n\u00a0\u00a0\u00a0\u00a0\"MethodType\" is not assignable to \"str\"\n\u00a0\u00a0\u00a0\u00a0\"MethodType\" is not assignable to \"None\"",
+      "source_context": "      68 |     :class:`~logging.StreamHandler` for\n      69 |     :func:`~flask.logging.wsgi_errors_stream` with a basic format.\n      70 |     \"\"\"\n>>>   71 |     logger = logging.getLogger(app.name)\n      72 | \n      73 |     if app.debug and not logger.level:\n      74 |         logger.setLevel(logging.DEBUG)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/logging.py#L71"
+    },
+    {
+      "file": "src/flask/sansio/app.py",
+      "line": 564,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"auto_reload\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"auto_reload\" is unknown",
+      "source_context": "     561 |         self.config[\"DEBUG\"] = value\n     562 | \n     563 |         if self.config[\"TEMPLATES_AUTO_RELOAD\"] is None:\n>>>  564 |             self.jinja_env.auto_reload = value\n     565 | \n     566 |     @setupmethod\n     567 |     def register_blueprint(self, blueprint: Blueprint, **options: t.Any) -> None:",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/app.py#L564"
+    },
+    {
+      "file": "src/flask/sansio/app.py",
+      "line": 708,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"filters\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"filters\" is unknown",
+      "source_context": "     705 |         :param name: The name to register the filter as. If not given, uses the\n     706 |             function's name.\n     707 |         \"\"\"\n>>>  708 |         self.jinja_env.filters[name or f.__name__] = f\n     709 | \n     710 |     @t.overload\n     711 |     def template_test(self, name: T_template_test) -> T_template_test: ...",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/app.py#L708"
+    },
+    {
+      "file": "src/flask/sansio/app.py",
+      "line": 767,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"tests\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"tests\" is unknown",
+      "source_context": "     764 | \n     765 |         .. versionadded:: 0.10\n     766 |         \"\"\"\n>>>  767 |         self.jinja_env.tests[name or f.__name__] = f\n     768 | \n     769 |     @t.overload\n     770 |     def template_global(self, name: T_template_global) -> T_template_global: ...",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/app.py#L767"
+    },
+    {
+      "file": "src/flask/sansio/app.py",
+      "line": 821,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"globals\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"globals\" is unknown",
+      "source_context": "     818 | \n     819 |         .. versionadded:: 0.10\n     820 |         \"\"\"\n>>>  821 |         self.jinja_env.globals[name or f.__name__] = f\n     822 | \n     823 |     @setupmethod\n     824 |     def teardown_appcontext(self, f: T_teardown) -> T_teardown:",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/app.py#L821"
+    },
+    {
+      "file": "src/flask/sansio/scaffold.py",
+      "line": 696,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"code\" for class \"type[Exception]\"\n\u00a0\u00a0Attribute \"code\" is unknown",
+      "source_context": "     693 |             )\n     694 | \n     695 |         if issubclass(exc_class, HTTPException):\n>>>  696 |             return exc_class, exc_class.code\n     697 |         else:\n     698 |             return exc_class, None\n     699 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sansio/scaffold.py#L696"
+    },
+    {
+      "file": "src/flask/sessions.py",
+      "line": 174,
+      "error_code": "reportAbstractUsage",
+      "message": "Cannot instantiate abstract class \"NullSession\"\n\u00a0\u00a0\"Iterable.__iter__\" is not implemented\n\u00a0\u00a0\"Collection.__len__\" is not implemented",
+      "source_context": "     171 | \n     172 |         This creates an instance of :attr:`null_session_class` by default.\n     173 |         \"\"\"\n>>>  174 |         return self.null_session_class()\n     175 | \n     176 |     def is_null_session(self, obj: object) -> bool:\n     177 |         \"\"\"Checks if a given object is a null session.  Null sessions are",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sessions.py#L174"
+    },
+    {
+      "file": "src/flask/sessions.py",
+      "line": 343,
+      "error_code": "reportAbstractUsage",
+      "message": "Cannot instantiate abstract class \"SecureCookieSession\"\n\u00a0\u00a0\"Iterable.__iter__\" is not implemented\n\u00a0\u00a0\"Collection.__len__\" is not implemented\n\u00a0\u00a0and 2 more...",
+      "source_context": "     340 |             return None\n     341 |         val = request.cookies.get(self.get_cookie_name(app))\n     342 |         if not val:\n>>>  343 |             return self.session_class()\n     344 |         max_age = int(app.permanent_session_lifetime.total_seconds())\n     345 |         try:\n     346 |             data = s.loads(val, max_age=max_age)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sessions.py#L343"
+    },
+    {
+      "file": "src/flask/sessions.py",
+      "line": 347,
+      "error_code": "reportAbstractUsage",
+      "message": "Cannot instantiate abstract class \"SecureCookieSession\"\n\u00a0\u00a0\"Iterable.__iter__\" is not implemented\n\u00a0\u00a0\"Collection.__len__\" is not implemented\n\u00a0\u00a0and 2 more...",
+      "source_context": "     344 |         max_age = int(app.permanent_session_lifetime.total_seconds())\n     345 |         try:\n     346 |             data = s.loads(val, max_age=max_age)\n>>>  347 |             return self.session_class(data)\n     348 |         except BadSignature:\n     349 |             return self.session_class()\n     350 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/sessions.py#L347"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 100,
+      "error_code": "reportReturnType",
+      "message": "Return type of generator function must be compatible with \"Generator[tuple[App, () -> (BaseLoader | None)], Any, Any]\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"BaseLoader\"",
+      "source_context": "      97 |     def _iter_loaders(self, template: str) -> t.Iterator[tuple[Scaffold, BaseLoader]]:\n      98 |         loader = self.app.jinja_loader\n      99 |         if loader is not None:\n>>>  100 |             yield self.app, loader\n     101 | \n     102 |         for blueprint in self.app.iter_blueprints():\n     103 |             loader = blueprint.jinja_loader",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L100"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 105,
+      "error_code": "reportReturnType",
+      "message": "Return type of generator function must be compatible with \"Generator[tuple[Blueprint, () -> (BaseLoader | None)], Any, Any]\"\n\u00a0\u00a0\"MethodType\" is not assignable to \"BaseLoader\"",
+      "source_context": "     102 |         for blueprint in self.app.iter_blueprints():\n     103 |             loader = blueprint.jinja_loader\n     104 |             if loader is not None:\n>>>  105 |                 yield blueprint, loader\n     106 | \n     107 |     def list_templates(self) -> list[str]:\n     108 |         result = set()",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L105"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 111,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"list_templates\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"list_templates\" is unknown",
+      "source_context": "     108 |         result = set()\n     109 |         loader = self.app.jinja_loader\n     110 |         if loader is not None:\n>>>  111 |             result.update(loader.list_templates())\n     112 | \n     113 |         for blueprint in self.app.iter_blueprints():\n     114 |             loader = blueprint.jinja_loader",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L111"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 116,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"list_templates\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"list_templates\" is unknown",
+      "source_context": "     113 |         for blueprint in self.app.iter_blueprints():\n     114 |             loader = blueprint.jinja_loader\n     115 |             if loader is not None:\n>>>  116 |                 for template in loader.list_templates():\n     117 |                     result.add(template)\n     118 | \n     119 |         return list(result)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L116"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 146,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get_or_select_template\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get_or_select_template\" is unknown",
+      "source_context": "     143 |     :param context: The variables to make available in the template.\n     144 |     \"\"\"\n     145 |     ctx = app_ctx._get_current_object()\n>>>  146 |     template = ctx.app.jinja_env.get_or_select_template(template_name_or_list)\n     147 |     return _render(ctx, template, context)\n     148 | \n     149 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L146"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 158,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"from_string\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"from_string\" is unknown",
+      "source_context": "     155 |     :param context: The variables to make available in the template.\n     156 |     \"\"\"\n     157 |     ctx = app_ctx._get_current_object()\n>>>  158 |     template = ctx.app.jinja_env.from_string(source)\n     159 |     return _render(ctx, template, context)\n     160 | \n     161 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L158"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 195,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"get_or_select_template\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"get_or_select_template\" is unknown",
+      "source_context": "     192 |     .. versionadded:: 2.2\n     193 |     \"\"\"\n     194 |     ctx = app_ctx._get_current_object()\n>>>  195 |     template = ctx.app.jinja_env.get_or_select_template(template_name_or_list)\n     196 |     return _stream(ctx, template, context)\n     197 | \n     198 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L195"
+    },
+    {
+      "file": "src/flask/templating.py",
+      "line": 210,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"from_string\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"from_string\" is unknown",
+      "source_context": "     207 |     .. versionadded:: 2.2\n     208 |     \"\"\"\n     209 |     ctx = app_ctx._get_current_object()\n>>>  210 |     template = ctx.app.jinja_env.from_string(source)\n     211 |     return _stream(ctx, template, context)",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/src/flask/templating.py#L210"
+    },
+    {
+      "file": "tests/test_basic.py",
+      "line": 578,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"None\" cannot be assigned to parameter \"header_value\" of type \"str\" in function \"expect\"\n\u00a0\u00a0\"None\" is not assignable to \"str\"",
+      "source_context": "     575 |     expect(\"/clear\")\n     576 |     expect(\"/vary-cookie-header-set\")\n     577 |     expect(\"/vary-header-set\", \"Accept-Encoding, Accept-Language, Cookie\")\n>>>  578 |     expect(\"/no-vary-header\", None)\n     579 | \n     580 | \n     581 | def test_session_refresh_vary(app, client):",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_basic.py#L578"
+    },
+    {
+      "file": "tests/test_cli.py",
+      "line": 49,
+      "error_code": "reportRedeclaration",
+      "message": "Class declaration \"Module\" is obscured by a declaration of the same name",
+      "source_context": "      46 | \n      47 | \n      48 | def test_find_best_app(test_apps):\n>>>   49 |     class Module:\n      50 |         app = Flask(\"appname\")\n      51 | \n      52 |     assert find_best_app(Module) == Module.app",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_cli.py#L49"
+    },
+    {
+      "file": "tests/test_cli.py",
+      "line": 73,
+      "error_code": "reportRedeclaration",
+      "message": "Class declaration \"Module\" is obscured by a declaration of the same name",
+      "source_context": "      70 |     assert isinstance(app, Flask)\n      71 |     assert app.name == \"appname\"\n      72 | \n>>>   73 |     class Module:\n      74 |         @staticmethod\n      75 |         def create_app(**kwargs):\n      76 |             return Flask(\"appname\")",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_cli.py#L73"
+    },
+    {
+      "file": "tests/test_cli.py",
+      "line": 82,
+      "error_code": "reportRedeclaration",
+      "message": "Class declaration \"Module\" is obscured by a declaration of the same name",
+      "source_context": "      79 |     assert isinstance(app, Flask)\n      80 |     assert app.name == \"appname\"\n      81 | \n>>>   82 |     class Module:\n      83 |         @staticmethod\n      84 |         def make_app():\n      85 |             return Flask(\"appname\")",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_cli.py#L82"
+    },
+    {
+      "file": "tests/test_cli.py",
+      "line": 91,
+      "error_code": "reportRedeclaration",
+      "message": "Class declaration \"Module\" is obscured by a declaration of the same name",
+      "source_context": "      88 |     assert isinstance(app, Flask)\n      89 |     assert app.name == \"appname\"\n      90 | \n>>>   91 |     class Module:\n      92 |         myapp = Flask(\"appname1\")\n      93 | \n      94 |         @staticmethod",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_cli.py#L91"
+    },
+    {
+      "file": "tests/test_cli.py",
+      "line": 114,
+      "error_code": "reportRedeclaration",
+      "message": "Class declaration \"Module\" is obscured by a declaration of the same name",
+      "source_context": "     111 | \n     112 |     pytest.raises(NoAppException, find_best_app, Module)\n     113 | \n>>>  114 |     class Module:\n     115 |         myapp1 = Flask(\"appname1\")\n     116 |         myapp2 = Flask(\"appname2\")\n     117 | ",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_cli.py#L114"
+    },
+    {
+      "file": "tests/test_cli.py",
+      "line": 120,
+      "error_code": "reportRedeclaration",
+      "message": "Class declaration \"Module\" is obscured by a declaration of the same name",
+      "source_context": "     117 | \n     118 |     pytest.raises(NoAppException, find_best_app, Module)\n     119 | \n>>>  120 |     class Module:\n     121 |         @staticmethod\n     122 |         def create_app(foo, bar):\n     123 |             return Flask(\"appname2\")",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_cli.py#L120"
+    },
+    {
+      "file": "tests/test_helpers.py",
+      "line": 259,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Literal['Hello ']\" cannot be assigned to parameter of type \"Iterator[Unknown | str]\"\n\u00a0\u00a0\"Literal['Hello ']\" is incompatible with protocol \"Iterator[Unknown | str]\"\n\u00a0\u00a0\u00a0\u00a0\"__next__\" is not present\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Could not bind method \"__iter__\" because \"str\" is not assignable to parameter \"self\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"str\" is not assignable to \"LiteralString\"",
+      "source_context": "     256 |                 yield flask.request.args[\"name\"]\n     257 |                 yield \"!\"\n     258 | \n>>>  259 |             return flask.Response(generate(\"Hello \"))\n     260 | \n     261 |         rv = client.get(\"/?name=World\")\n     262 |         assert rv.data == b\"Hello World!\"",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_helpers.py#L259"
+    },
+    {
+      "file": "tests/test_helpers.py",
+      "line": 304,
+      "error_code": "reportCallIssue",
+      "message": "Expected 1 more positional argument",
+      "source_context": "     301 |             def gen():\n     302 |                 yield flask.session[\"test\"]\n     303 | \n>>>  304 |             return flask.Response(gen())\n     305 | \n     306 |         rv = client.get(\"/\")\n     307 |         assert rv.data == b\"flask\"",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_helpers.py#L304"
+    },
+    {
+      "file": "tests/test_helpers.py",
+      "line": 318,
+      "error_code": "reportCallIssue",
+      "message": "Expected 1 more positional argument",
+      "source_context": "     315 |             def gen():\n     316 |                 yield flask.session[\"test\"]\n     317 | \n>>>  318 |             return flask.Response(gen())\n     319 | \n     320 |         # response is closed without reading stream\n     321 |         client.get().close()",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_helpers.py#L318"
+    },
+    {
+      "file": "tests/test_templating.py",
+      "line": 452,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"auto_reload\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"auto_reload\" is unknown",
+      "source_context": "     449 |     app = flask.Flask(__name__)\n     450 |     app.config[\"TEMPLATES_AUTO_RELOAD\"] = False\n     451 |     assert app.debug is False\n>>>  452 |     assert app.jinja_env.auto_reload is False\n     453 |     # debug is False, config option is True\n     454 |     app = flask.Flask(__name__)\n     455 |     app.config[\"TEMPLATES_AUTO_RELOAD\"] = True",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_templating.py#L452"
+    },
+    {
+      "file": "tests/test_templating.py",
+      "line": 457,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"auto_reload\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"auto_reload\" is unknown",
+      "source_context": "     454 |     app = flask.Flask(__name__)\n     455 |     app.config[\"TEMPLATES_AUTO_RELOAD\"] = True\n     456 |     assert app.debug is False\n>>>  457 |     assert app.jinja_env.auto_reload is True\n     458 |     # debug is True, config option is None\n     459 |     app = flask.Flask(__name__)\n     460 |     app.config[\"DEBUG\"] = True",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_templating.py#L457"
+    },
+    {
+      "file": "tests/test_templating.py",
+      "line": 462,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"auto_reload\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"auto_reload\" is unknown",
+      "source_context": "     459 |     app = flask.Flask(__name__)\n     460 |     app.config[\"DEBUG\"] = True\n     461 |     assert app.config[\"TEMPLATES_AUTO_RELOAD\"] is None\n>>>  462 |     assert app.jinja_env.auto_reload is True\n     463 |     # debug is True, config option is False\n     464 |     app = flask.Flask(__name__)\n     465 |     app.config[\"DEBUG\"] = True",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_templating.py#L462"
+    },
+    {
+      "file": "tests/test_templating.py",
+      "line": 467,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"auto_reload\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"auto_reload\" is unknown",
+      "source_context": "     464 |     app = flask.Flask(__name__)\n     465 |     app.config[\"DEBUG\"] = True\n     466 |     app.config[\"TEMPLATES_AUTO_RELOAD\"] = False\n>>>  467 |     assert app.jinja_env.auto_reload is False\n     468 |     # debug is True, config option is True\n     469 |     app = flask.Flask(__name__)\n     470 |     app.config[\"DEBUG\"] = True",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_templating.py#L467"
+    },
+    {
+      "file": "tests/test_templating.py",
+      "line": 472,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"auto_reload\" for class \"MethodType\"\n\u00a0\u00a0Attribute \"auto_reload\" is unknown",
+      "source_context": "     469 |     app = flask.Flask(__name__)\n     470 |     app.config[\"DEBUG\"] = True\n     471 |     app.config[\"TEMPLATES_AUTO_RELOAD\"] = True\n>>>  472 |     assert app.jinja_env.auto_reload is True\n     473 | \n     474 | \n     475 | def test_templates_auto_reload_debug_run(app, monkeypatch):",
+      "github_link": "https://github.com/pallets/flask/blob/663198d7b453ffdbe86d0e0238b1feafde6ce569/tests/test_templating.py#L472"
+    }
+  ]
+}

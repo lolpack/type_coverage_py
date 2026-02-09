@@ -1,0 +1,1773 @@
+{
+  "package_name": "trio",
+  "github_url": "https://github.com/python-trio/trio",
+  "commit_sha": "95d92051c5acf71d717c77c7c996d4d0db3ab952",
+  "false_positives": [
+    {
+      "file": "docs/source/reference-core/from-thread-example.py",
+      "line": 25,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[(receive_from_trio: Unknown, send_to_trio: Unknown) -> None, MemoryReceiveChannel[Unknown], MemorySendChannel[Unknown]]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> object, *Unknown]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_core/_entry_queue.py",
+      "line": 223,
+      "error_code": "bad-argument-type",
+      "message": "Argument `(**tuple[*PosArgsT]) -> object` is not assignable to parameter `sync_fn` with type `(**tuple[*@_]) -> object` in function `EntryQueue.run_sync_soon`"
+    },
+    {
+      "file": "src/trio/_core/_generated_io_windows.py",
+      "line": 112,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Handle | _HasFileNo | int` is not assignable to parameter `fd` with type `_HasFileNo | int` in function `trio._core._io_kqueue.KqueueIOManager.notify_closing`"
+    },
+    {
+      "file": "src/trio/_core/_generated_io_windows.py",
+      "line": 125,
+      "error_code": "missing-attribute",
+      "message": "Object of class `KqueueIOManager` has no attribute `register_with_iocp`"
+    },
+    {
+      "file": "src/trio/_core/_generated_io_windows.py",
+      "line": 138,
+      "error_code": "missing-attribute",
+      "message": "Object of class `KqueueIOManager` has no attribute `wait_overlapped`"
+    },
+    {
+      "file": "src/trio/_core/_generated_io_windows.py",
+      "line": 155,
+      "error_code": "missing-attribute",
+      "message": "Object of class `KqueueIOManager` has no attribute `write_overlapped`"
+    },
+    {
+      "file": "src/trio/_core/_generated_io_windows.py",
+      "line": 172,
+      "error_code": "missing-attribute",
+      "message": "Object of class `KqueueIOManager` has no attribute `readinto_overlapped`"
+    },
+    {
+      "file": "src/trio/_core/_generated_io_windows.py",
+      "line": 187,
+      "error_code": "missing-attribute",
+      "message": "Object of class `KqueueIOManager` has no attribute `current_iocp`"
+    },
+    {
+      "file": "src/trio/_core/_generated_io_windows.py",
+      "line": 202,
+      "error_code": "missing-attribute",
+      "message": "Object of class `KqueueIOManager` has no attribute `monitor_completion_key`"
+    },
+    {
+      "file": "src/trio/_core/_generated_run.py",
+      "line": 189,
+      "error_code": "bad-argument-type",
+      "message": "Argument `(**tuple[*PosArgT]) -> Awaitable[object]` is not assignable to parameter `async_fn` with type `(**tuple[*@_]) -> Awaitable[object]` in function `trio._core._run.Runner.spawn_system_task`"
+    },
+    {
+      "file": "src/trio/_core/_io_epoll.py",
+      "line": 203,
+      "error_code": "missing-attribute",
+      "message": "No attribute `epoll` in module `select`"
+    },
+    {
+      "file": "src/trio/_core/_io_epoll.py",
+      "line": 212,
+      "error_code": "missing-attribute",
+      "message": "No attribute `EPOLLIN` in module `select`"
+    },
+    {
+      "file": "src/trio/_core/_io_epoll.py",
+      "line": 224,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `tasks_waiting_read` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_core/_io_epoll.py",
+      "line": 256,
+      "error_code": "missing-attribute",
+      "message": "No attribute `EPOLLIN` in module `select`"
+    },
+    {
+      "file": "src/trio/_core/_io_epoll.py",
+      "line": 259,
+      "error_code": "missing-attribute",
+      "message": "No attribute `EPOLLOUT` in module `select`"
+    },
+    {
+      "file": "src/trio/_core/_io_epoll.py",
+      "line": 268,
+      "error_code": "missing-attribute",
+      "message": "No attribute `EPOLLIN` in module `select`"
+    },
+    {
+      "file": "src/trio/_core/_io_epoll.py",
+      "line": 275,
+      "error_code": "missing-attribute",
+      "message": "No attribute `EPOLLONESHOT` in module `select`"
+    },
+    {
+      "file": "src/trio/_core/_io_epoll.py",
+      "line": 278,
+      "error_code": "missing-attribute",
+      "message": "No attribute `EPOLLONESHOT` in module `select`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 326,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Handle | _HasFileNo | int | Unknown` is not assignable to parameter `value` with type `_CDataBase | int` in function `_cffi_backend.FFI.cast`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 362,
+      "error_code": "missing-attribute",
+      "message": "Object of class `OSError` has no attribute `winerror`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 368,
+      "error_code": "bad-argument-type",
+      "message": "Argument `Handle | _HasFileNo | int | Unknown` is not assignable to parameter `obj` with type `_CDataBase | int` in function `trio._core._windows_cffi._handle`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 516,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `tasks_waiting_read` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 519,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `completion_key_monitors` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 551,
+      "error_code": "missing-attribute",
+      "message": "Object of class `OSError` has no attribute `winerror`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 589,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `lpOverlapped` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 635,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `lpOverlapped` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 671,
+      "error_code": "missing-attribute",
+      "message": "Object of class `OSError` has no attribute `winerror`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 691,
+      "error_code": "bad-argument-count",
+      "message": "Expected 0 positional arguments, got 2 in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 720,
+      "error_code": "missing-attribute",
+      "message": "Object of class `OSError` has no attribute `winerror`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 729,
+      "error_code": "bad-argument-count",
+      "message": "Expected 0 positional arguments, got 4 in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 869,
+      "error_code": "missing-attribute",
+      "message": "Object of class `OSError` has no attribute `winerror`"
+    },
+    {
+      "file": "src/trio/_core/_io_windows.py",
+      "line": 939,
+      "error_code": "missing-attribute",
+      "message": "Object of class `OSError` has no attribute `winerror`"
+    },
+    {
+      "file": "src/trio/_core/_ki.py",
+      "line": 93,
+      "error_code": "bad-specialization",
+      "message": "`Self@_IdRef` is not assignable to upper bound `ReferenceType[_T]` of type variable `Self@ReferenceType`"
+    },
+    {
+      "file": "src/trio/_core/_parking_lot.py",
+      "line": 200,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `range.__new__` called with arguments: (type[range], float | int)"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 781,
+      "error_code": "unbound-name",
+      "message": "`old_next_deadline` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 909,
+      "error_code": "bad-specialization",
+      "message": "`(self: Self@CancelScope, new_value: bool) -> None` is not assignable to upper bound `_SupportsCode` of type variable `_T_supports_code`"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2142,
+      "error_code": "bad-argument-type",
+      "message": "Argument `(**tuple[*PosArgT]) -> Awaitable[object]` is not assignable to parameter `async_fn` with type `(**tuple[*@_]) -> Awaitable[object]` in function `Runner.spawn_impl`"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2163,
+      "error_code": "bad-argument-type",
+      "message": "Argument `(**tuple[*PosArgT]) -> Awaitable[object]` is not assignable to parameter `async_fn` with type `(**tuple[*@_]) -> Awaitable[object]` in function `Runner.spawn_impl`"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2214,
+      "error_code": "bad-return",
+      "message": "Returned type `TrioToken | None` is not assignable to declared return type `TrioToken`"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2533,
+      "error_code": "bad-argument-type",
+      "message": "Argument `(**tuple[*PosArgT]) -> Awaitable[RetT]` is not assignable to parameter `async_fn` with type `(**tuple[*@_]) -> Awaitable[object]` in function `unrolled_run`"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2736,
+      "error_code": "bad-argument-type",
+      "message": "Argument `tuple[(**tuple[*PosArgT]) -> Awaitable[object], tuple[*PosArgT]]` is not assignable to parameter `args` with type `tuple[(**tuple[*@_]) -> Awaitable[object], tuple[*@_]]` in function `Runner.spawn_impl`"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2750,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `max` called with arguments: (Literal[0], float)"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2806,
+      "error_code": "unbound-name",
+      "message": "`cushion` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2902,
+      "error_code": "unbound-name",
+      "message": "`msg` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2906,
+      "error_code": "unbound-name",
+      "message": "`msg` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2912,
+      "error_code": "unbound-name",
+      "message": "`msg` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2917,
+      "error_code": "unbound-name",
+      "message": "`msg` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2930,
+      "error_code": "unbound-name",
+      "message": "`msg` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_instrumentation.py",
+      "line": 256,
+      "error_code": "bad-override",
+      "message": "Class member `EvilInstrument.after_run` overrides parent class `Instrument` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_run.py",
+      "line": 2166,
+      "error_code": "bad-argument-type",
+      "message": "Argument `BoundMethod[Nursery, (self: Nursery, async_fn: (...) -> Awaitable[object], *args: object, *, name: object = None) -> Coroutine[Unknown, Unknown, Any]]` is not assignable to parameter `async_fn` with type `(**tuple[object, ...]) -> Awaitable[object]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_run.py",
+      "line": 2170,
+      "error_code": "bad-argument-type",
+      "message": "Argument `BoundMethod[Nursery, (self: Nursery, async_fn: (...) -> Awaitable[object], *args: object, *, name: object = None) -> Coroutine[Unknown, Unknown, Any]]` is not assignable to parameter `async_fn` with type `(**tuple[object, ...]) -> Awaitable[object]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 45,
+      "error_code": "missing-attribute",
+      "message": "Object of class `FFI` has no attribute `getwinerror`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 69,
+      "error_code": "missing-attribute",
+      "message": "Object of class `OSError` has no attribute `winerror`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 82,
+      "error_code": "missing-attribute",
+      "message": "Object of class `OSError` has no attribute `winerror`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 96,
+      "error_code": "missing-attribute",
+      "message": "No attribute `current_iocp` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 104,
+      "error_code": "missing-attribute",
+      "message": "No attribute `monitor_completion_key` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 152,
+      "error_code": "missing-attribute",
+      "message": "No attribute `readinto_overlapped` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 158,
+      "error_code": "missing-attribute",
+      "message": "No attribute `register_with_iocp` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 165,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `_pytest.raises.raises` called with arguments: (tuple[type[BufferError], type[TypeError]])"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 174,
+      "error_code": "missing-module-attribute",
+      "message": "Could not import `pipe` from `asyncio.windows_utils`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 178,
+      "error_code": "missing-attribute",
+      "message": "No attribute `open_osfhandle` in module `msvcrt`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 198,
+      "error_code": "missing-attribute",
+      "message": "No attribute `readinto_overlapped` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 227,
+      "error_code": "missing-attribute",
+      "message": "No attribute `register_with_iocp` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 231,
+      "error_code": "missing-attribute",
+      "message": "No attribute `readinto_overlapped` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_windows.py",
+      "line": 247,
+      "error_code": "missing-attribute",
+      "message": "No attribute `readinto_overlapped` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_core/_tests/type_tests/nursery_start.py",
+      "line": 71,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[Literal['abc'], Literal[12]]` is not assignable to parameter `*args` with type `tuple[str, int, bool]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_core/_tests/type_tests/run.py",
+      "line": 51,
+      "error_code": "assert-type",
+      "message": "assert_type(str, int) failed"
+    },
+    {
+      "file": "src/trio/_core/_windows_cffi.py",
+      "line": 23,
+      "error_code": "invalid-inheritance",
+      "message": "Cannot extend final class `_CDataBase`"
+    },
+    {
+      "file": "src/trio/_dtls.py",
+      "line": 1062,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `DTLSChannel.send` overrides parent class `Channel` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_dtls.py",
+      "line": 1100,
+      "error_code": "unbound-name",
+      "message": "`packet` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_dtls.py",
+      "line": 1328,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[DTLSChannel, *PosArgsT]` is not assignable to varargs type `tuple[DTLSChannel, *PosArgsT]`"
+    },
+    {
+      "file": "src/trio/_file_io.py",
+      "line": 471,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[_OpenFile, str, int, str | None, str | None, str | None, bool, ((str, int) -> int) | None]` is not assignable to parameter `*args` with type `tuple[FileDescriptorOrPath, OpenTextMode, int, str | None, str | None, str | None, bool, ((str, int) -> int) | None]` in function `trio._threads.to_thread_run_sync`"
+    },
+    {
+      "file": "src/trio/_highlevel_serve_listeners.py",
+      "line": 52,
+      "error_code": "bad-index",
+      "message": "Cannot index into `Mapping[int, str]`"
+    },
+    {
+      "file": "src/trio/_repl.py",
+      "line": 116,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `TrioInteractiveConsole.write` overrides parent class `InteractiveConsole` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_repl.py",
+      "line": 134,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[str]` is not assignable to parameter `*args` with type `tuple[str | None, str | None]` in function `trio._threads.to_thread_run_sync`"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 399,
+      "error_code": "missing-module-attribute",
+      "message": "Could not import `SO_DOMAIN` from `socket`"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 440,
+      "error_code": "bad-return",
+      "message": "Returned type `TypeVar[T]` is not assignable to declared return type `T`"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 989,
+      "error_code": "not-a-type",
+      "message": "Expected a type form, got instance of `ParamSpecArgs`"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1014,
+      "error_code": "invalid-param-spec",
+      "message": "Unexpected ParamSpec type: `ParamSpec[P]`"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1019,
+      "error_code": "invalid-param-spec",
+      "message": "Unexpected ParamSpec type: `ParamSpec[P]`"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1034,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1123,
+      "error_code": "bad-override",
+      "message": "Class member `_SocketType.recv` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1142,
+      "error_code": "bad-override",
+      "message": "Class member `_SocketType.recv_into` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1160,
+      "error_code": "bad-override",
+      "message": "Class member `_SocketType.recvfrom` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1179,
+      "error_code": "bad-override",
+      "message": "Class member `_SocketType.recvfrom_into` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1201,
+      "error_code": "bad-override",
+      "message": "Class member `_SocketType.recvmsg` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1224,
+      "error_code": "bad-override",
+      "message": "Class member `_SocketType.recvmsg_into` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1238,
+      "error_code": "bad-override",
+      "message": "Class member `_SocketType.send` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1273,
+      "error_code": "bad-return",
+      "message": "Returned type `TypeVar[T]` is not assignable to declared return type `int`"
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1304,
+      "error_code": "bad-return",
+      "message": "Returned type `TypeVar[T]` is not assignable to declared return type `int`"
+    },
+    {
+      "file": "src/trio/_ssl.py",
+      "line": 233,
+      "error_code": "invalid-type-var",
+      "message": "Attribute `_afn` cannot depend on type variable `Ts`, which is not in the scope of class `_Once`"
+    },
+    {
+      "file": "src/trio/_ssl.py",
+      "line": 638,
+      "error_code": "unbound-name",
+      "message": "`ret` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_ssl.py",
+      "line": 721,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[int]` is not assignable to parameter `*args` with type `tuple[int, bytearray | None]` in function `SSLStream._retry`"
+    },
+    {
+      "file": "src/trio/_subprocess_platform/waitid.py",
+      "line": 14,
+      "error_code": "missing-module-attribute",
+      "message": "Could not import `waitid` from `os`"
+    },
+    {
+      "file": "src/trio/_subprocess_platform/waitid.py",
+      "line": 22,
+      "error_code": "missing-source-for-stubs",
+      "message": "Stubs for `cffi` are bundled with Pyrefly but the source files for the package are not found."
+    },
+    {
+      "file": "src/trio/_tests/check_type_completeness.py",
+      "line": 107,
+      "error_code": "unbound-name",
+      "message": "`obj_name` is uninitialized"
+    },
+    {
+      "file": "src/trio/_tests/module_with_deprecations.py",
+      "line": 14,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `issue` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_tests/test_channel.py",
+      "line": 460,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable"
+    },
+    {
+      "file": "src/trio/_tests/test_channel.py",
+      "line": 575,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable"
+    },
+    {
+      "file": "src/trio/_tests/test_channel.py",
+      "line": 726,
+      "error_code": "unreachable",
+      "message": "This `yield` expression is unreachable"
+    },
+    {
+      "file": "src/trio/_tests/test_deprecate.py",
+      "line": 174,
+      "error_code": "missing-argument",
+      "message": "Missing argument `self`"
+    },
+    {
+      "file": "src/trio/_tests/test_dtls.py",
+      "line": 789,
+      "error_code": "bad-argument-type",
+      "message": "Argument `BoundMethod[DTLSChannel, (self: DTLSChannel, *, initial_retransmit_timeout: float = ...) -> Coroutine[Unknown, Unknown, None]]` is not assignable to parameter `async_fn` with type `(**tuple[*@_]) -> Awaitable[object]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_tests/test_dtls.py",
+      "line": 946,
+      "error_code": "bad-argument-type",
+      "message": "Argument `BoundMethod[DTLSChannel, (self: DTLSChannel, *, initial_retransmit_timeout: float = ...) -> Coroutine[Unknown, Unknown, None]]` is not assignable to parameter `async_fn` with type `(**tuple[*@_]) -> Awaitable[object]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_tests/test_exports.py",
+      "line": 36,
+      "error_code": "invalid-annotation",
+      "message": "Expected a type argument for `Protocol`"
+    },
+    {
+      "file": "src/trio/_tests/test_exports.py",
+      "line": 389,
+      "error_code": "unbound-name",
+      "message": "`cache_json` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_tests/test_exports.py",
+      "line": 393,
+      "error_code": "unbound-name",
+      "message": "`lookup_symbol` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_tests/test_exports.py",
+      "line": 401,
+      "error_code": "unbound-name",
+      "message": "`lookup_symbol` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_tests/test_highlevel_open_tcp_listeners.py",
+      "line": 223,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `FakeSocketFactory.socket` overrides parent class `SocketFactory` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_tests/test_highlevel_open_tcp_stream.py",
+      "line": 221,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `FakeSocket.connect` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_tests/test_highlevel_open_tcp_stream.py",
+      "line": 270,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `Scenario.socket` overrides parent class `SocketFactory` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_tests/test_highlevel_open_tcp_stream.py",
+      "line": 386,
+      "error_code": "not-a-type",
+      "message": "Expected a type form, got instance of `tuple[type[BaseException], ...] | type[BaseException]`"
+    },
+    {
+      "file": "src/trio/_tests/test_path.py",
+      "line": 186,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/test_path.py",
+      "line": 206,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/test_path.py",
+      "line": 209,
+      "error_code": "missing-argument",
+      "message": "Missing argument `data`"
+    },
+    {
+      "file": "src/trio/_tests/test_path.py",
+      "line": 218,
+      "error_code": "missing-argument",
+      "message": "Missing argument `pattern`"
+    },
+    {
+      "file": "src/trio/_tests/test_path.py",
+      "line": 226,
+      "error_code": "missing-argument",
+      "message": "Missing argument `pattern`"
+    },
+    {
+      "file": "src/trio/_tests/test_path.py",
+      "line": 234,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/test_path.py",
+      "line": 241,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/test_path.py",
+      "line": 246,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/test_repl.py",
+      "line": 270,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[str, ...]` is not assignable to parameter `*args` with type `tuple[StrOrBytesPath, *tuple[StrOrBytesPath, ...]]` in function `os.execlp`"
+    },
+    {
+      "file": "src/trio/_tests/test_repl.py",
+      "line": 345,
+      "error_code": "unbound-name",
+      "message": "`sys` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_tests/test_repl.py",
+      "line": 374,
+      "error_code": "unbound-name",
+      "message": "`sys` may be uninitialized"
+    },
+    {
+      "file": "src/trio/_tests/test_signals.py",
+      "line": 73,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[() -> Coroutine[Unknown, Unknown, None]]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> Awaitable[@_], *Unknown]` in function `trio._threads.to_thread_run_sync`"
+    },
+    {
+      "file": "src/trio/_tests/test_signals.py",
+      "line": 101,
+      "error_code": "bad-assignment",
+      "message": "`Literal[Signals.SIGFPE, Signals.SIGILL] | int | None` is not assignable to `None` (caused by inconsistent types when breaking cycles)"
+    },
+    {
+      "file": "src/trio/_tests/test_socket.py",
+      "line": 351,
+      "error_code": "missing-attribute",
+      "message": "Object of class `SocketType` has no attribute `share`"
+    },
+    {
+      "file": "src/trio/_tests/test_socket.py",
+      "line": 665,
+      "error_code": "missing-attribute",
+      "message": "Object of class `SocketType` has no attribute `_resolve_address_nocp`"
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 168,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[partial[None]]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> object, *Unknown]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 255,
+      "error_code": "bad-override",
+      "message": "Class member `PyOpenSSLEchoStream.send_all` overrides parent class `Stream` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 278,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `PyOpenSSLEchoStream.receive_some` overrides parent class `Stream` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_tests/test_subprocess.py",
+      "line": 680,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[list[str]]` is not assignable to parameter `*args` with type `tuple[StrOrBytesPath]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_tests/test_subprocess.py",
+      "line": 694,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[list[str]]` is not assignable to parameter `*args` with type `tuple[StrOrBytesPath]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_tests/test_sync.py",
+      "line": 732,
+      "error_code": "bad-index",
+      "message": "Cannot index into `dict[Task, list[ParkingLot]]`"
+    },
+    {
+      "file": "src/trio/_tests/test_testing_raisesgroup.py",
+      "line": 60,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `trio.testing._raises_group.RaisesGroup.__init__` called with arguments: (type[SyntaxError], RaisesGroup[ValueError], RaisesGroup[RuntimeError])"
+    },
+    {
+      "file": "src/trio/_tests/test_testing_raisesgroup.py",
+      "line": 69,
+      "error_code": "bad-argument-type",
+      "message": "Argument `tuple[ValueError]` is not assignable to parameter `exceptions` with type `Sequence[RuntimeError]` in function `ExceptionGroup.__new__`"
+    },
+    {
+      "file": "src/trio/_tests/test_testing_raisesgroup.py",
+      "line": 142,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `trio.testing._raises_group.RaisesGroup.__init__` called with arguments: (type[ValueError], type[TypeError], flatten_subgroups=Literal[True])"
+    },
+    {
+      "file": "src/trio/_tests/test_testing_raisesgroup.py",
+      "line": 493,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `trio.testing._raises_group.RaisesGroup.__init__` called with arguments: (RaisesGroup[KeyboardInterrupt], RaisesGroup[ValueError])"
+    },
+    {
+      "file": "src/trio/_tests/test_testing_raisesgroup.py",
+      "line": 547,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `trio.testing._raises_group.RaisesGroup.__init__` called with arguments: (type[ValueError], Matcher[TypeError], RaisesGroup[RuntimeError], RaisesGroup[ValueError])"
+    },
+    {
+      "file": "src/trio/_tests/test_testing_raisesgroup.py",
+      "line": 805,
+      "error_code": "no-matching-overload",
+      "message": "No matching overload found for function `trio.testing._raises_group.RaisesGroup.__init__` called with arguments: (RaisesGroup[ValueError], RaisesGroup[ExceptionGroup[ValueError]], RaisesGroup[TypeError], RaisesGroup[BaseException | BaseExceptionGroup[@_]])"
+    },
+    {
+      "file": "src/trio/_tests/test_threads.py",
+      "line": 111,
+      "error_code": "bad-argument-type",
+      "message": "Argument `tuple[Literal['error'], type[KeyError]]` is not assignable to parameter `expected` with type `tuple[str, NoReturn]` in function `check_case`"
+    },
+    {
+      "file": "src/trio/_tests/test_threads.py",
+      "line": 921,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[() -> Task]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> @_, *Unknown]` in function `trio._threads.to_thread_run_sync`"
+    },
+    {
+      "file": "src/trio/_tests/test_threads.py",
+      "line": 931,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[() -> int]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> int, *Unknown]` in function `trio._threads.from_thread_run`"
+    },
+    {
+      "file": "src/trio/_tests/test_threads.py",
+      "line": 990,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[() -> Coroutine[Unknown, Unknown, None]]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> Awaitable[@_], *Unknown]` in function `trio._threads.to_thread_run_sync`"
+    },
+    {
+      "file": "src/trio/_tests/test_threads.py",
+      "line": 1121,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[(seconds: float) -> Coroutine[Unknown, Unknown, None], Literal[0]]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> Awaitable[@_], *Unknown]` in function `trio._threads.to_thread_run_sync`"
+    },
+    {
+      "file": "src/trio/_tests/test_unix_pipes.py",
+      "line": 85,
+      "error_code": "bad-argument-type",
+      "message": "Argument `bytearray` is not assignable to parameter `data` with type `bytes` in function `trio._unix_pipes.FdStream.send_all`"
+    },
+    {
+      "file": "src/trio/_tests/test_unix_pipes.py",
+      "line": 105,
+      "error_code": "bad-argument-type",
+      "message": "Argument `None` is not assignable to parameter `fd` with type `int` in function `trio._unix_pipes.FdStream.__init__`"
+    },
+    {
+      "file": "src/trio/_tests/test_util.py",
+      "line": 273,
+      "error_code": "bad-specialization",
+      "message": "`BaseException` is not assignable to upper bound `Exception` of type variable `_ExceptionT_co`"
+    },
+    {
+      "file": "src/trio/_tests/test_util.py",
+      "line": 284,
+      "error_code": "bad-specialization",
+      "message": "`BaseException` is not assignable to upper bound `Exception` of type variable `_ExceptionT_co`"
+    },
+    {
+      "file": "src/trio/_tests/test_wait_for_object.py",
+      "line": 83,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[(*handles: _CDataBase | int) -> None, Handle]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> object, *Unknown]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_tests/test_wait_for_object.py",
+      "line": 102,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[(*handles: _CDataBase | int) -> None, Handle, Handle]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> object, *Unknown]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_tests/test_wait_for_object.py",
+      "line": 121,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[(*handles: _CDataBase | int) -> None, Handle, Handle]` is not assignable to parameter `*args` with type `tuple[(**tuple[*Unknown]) -> object, *Unknown]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/_tests/test_windows_pipes.py",
+      "line": 25,
+      "error_code": "unknown-name",
+      "message": "Could not find name `PipeSendStream`"
+    },
+    {
+      "file": "src/trio/_tests/test_windows_pipes.py",
+      "line": 28,
+      "error_code": "unknown-name",
+      "message": "Could not find name `PipeSendStream`"
+    },
+    {
+      "file": "src/trio/_tests/test_windows_pipes.py",
+      "line": 40,
+      "error_code": "unknown-name",
+      "message": "Could not find name `pipe`"
+    },
+    {
+      "file": "src/trio/_tests/test_windows_pipes.py",
+      "line": 43,
+      "error_code": "unknown-name",
+      "message": "Could not find name `PipeReceiveStream`"
+    },
+    {
+      "file": "src/trio/_tests/test_windows_pipes.py",
+      "line": 46,
+      "error_code": "unknown-name",
+      "message": "Could not find name `kernel32`"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 66,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 69,
+      "error_code": "assert-type",
+      "message": "assert_type(Any, Path) failed"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 73,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 77,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 80,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 83,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 86,
+      "error_code": "assert-type",
+      "message": "assert_type(Any, Path) failed"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 89,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 93,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 96,
+      "error_code": "assert-type",
+      "message": "assert_type(Any, Path) failed"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 99,
+      "error_code": "assert-type",
+      "message": "assert_type(Any, Path) failed"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 102,
+      "error_code": "missing-argument",
+      "message": "Missing argument `pattern`"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 105,
+      "error_code": "missing-argument",
+      "message": "Missing argument `other_path`"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 108,
+      "error_code": "bad-argument-count",
+      "message": "Expected 1 more positional argument"
+    },
+    {
+      "file": "src/trio/_tests/type_tests/path.py",
+      "line": 112,
+      "error_code": "missing-argument",
+      "message": "Missing argument `data`"
+    },
+    {
+      "file": "src/trio/_tools/gen_exports.py",
+      "line": 322,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `imports` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_tools/gen_exports.py",
+      "line": 328,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `imports` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_tools/gen_exports.py",
+      "line": 334,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `imports` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_tools/gen_exports.py",
+      "line": 340,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `imports` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/_unix_pipes.py",
+      "line": 130,
+      "error_code": "bad-override",
+      "message": "Class member `FdStream.send_all` overrides parent class `Stream` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_util.py",
+      "line": 221,
+      "error_code": "missing-attribute",
+      "message": "Object of class `object` has no attribute `__qualname__`"
+    },
+    {
+      "file": "src/trio/_windows_pipes.py",
+      "line": 25,
+      "error_code": "missing-attribute",
+      "message": "No attribute `register_with_iocp` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_windows_pipes.py",
+      "line": 55,
+      "error_code": "bad-override",
+      "message": "Class member `PipeSendStream.send_all` overrides parent class `SendStream` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/_windows_pipes.py",
+      "line": 65,
+      "error_code": "missing-attribute",
+      "message": "No attribute `write_overlapped` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_windows_pipes.py",
+      "line": 114,
+      "error_code": "missing-attribute",
+      "message": "No attribute `readinto_overlapped` in module `trio._core`"
+    },
+    {
+      "file": "src/trio/_windows_pipes.py",
+      "line": 137,
+      "error_code": "bad-return",
+      "message": "Returned type `bytearray` is not assignable to declared return type `bytes`"
+    },
+    {
+      "file": "src/trio/testing/__init__.py",
+      "line": 46,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `instead` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/testing/__init__.py",
+      "line": 52,
+      "error_code": "unexpected-keyword",
+      "message": "Unexpected keyword argument `instead` in function `object.__init__`"
+    },
+    {
+      "file": "src/trio/testing/_check_streams.py",
+      "line": 304,
+      "error_code": "bad-argument-type",
+      "message": "Unpacked argument `tuple[(data: bytearray | bytes | memoryview[int]) -> Coroutine[Unknown, Unknown, None], Literal[b'x']]` is not assignable to parameter `*args` with type `tuple[() -> Awaitable[object]]` in function `trio._core._run.Nursery.start_soon`"
+    },
+    {
+      "file": "src/trio/testing/_fake_net.py",
+      "line": 279,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `FakeSocket.bind` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/testing/_fake_net.py",
+      "line": 300,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `FakeSocket.connect` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/testing/_fake_net.py",
+      "line": 520,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `FakeSocket.recv_into` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/testing/_fake_net.py",
+      "line": 532,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `FakeSocket.recvfrom_into` overrides parent class `SocketType` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 69,
+      "error_code": "bad-return",
+      "message": "Returned type `_ExceptionInfo[BaseException]` is not assignable to declared return type `_ExceptionInfo[MatchE]`"
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 243,
+      "error_code": "unbound-name",
+      "message": "`stringified_exception` is uninitialized"
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 314,
+      "error_code": "bad-param-name-override",
+      "message": "Class member `Matcher.matches` overrides parent class `AbstractMatcher` in an inconsistent manner"
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 829,
+      "error_code": "unbound-name",
+      "message": "`res` may be uninitialized"
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 889,
+      "error_code": "unbound-name",
+      "message": "`rev_matches` may be uninitialized"
+    }
+  ],
+  "false_negatives": [
+    {
+      "file": "src/trio/_channel.py",
+      "line": 188,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"task\" of type \"Task\" in function \"reschedule\"\n\u00a0\u00a0\"_run.Task\" is not assignable to \"trio._core._run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 211,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"element\" of type \"Task\" in function \"add\"\n\u00a0\u00a0\"trio._core._run.Task\" is not assignable to \"_run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 216,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"element\" of type \"Task\" in function \"remove\"\n\u00a0\u00a0\"trio._core._run.Task\" is not assignable to \"_run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 220,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"(_: RaiseCancelT) -> Abort\" cannot be assigned to parameter \"abort_func\" of type \"(RaiseCancelT) -> Abort\" in function \"wait_task_rescheduled\"\n\u00a0\u00a0Type \"(_: RaiseCancelT) -> Abort\" is not assignable to type \"(RaiseCancelT) -> Abort\"\n\u00a0\u00a0\u00a0\u00a0Function return type \"Abort\" is incompatible with type \"Abort\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"_traps.Abort\" is not assignable to \"trio._core._traps.Abort\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 280,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"task\" of type \"Task\" in function \"reschedule\"\n\u00a0\u00a0\"_run.Task\" is not assignable to \"trio._core._run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 288,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"task\" of type \"Task\" in function \"reschedule\"\n\u00a0\u00a0\"_run.Task\" is not assignable to \"trio._core._run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 331,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"task\" of type \"Task\" in function \"reschedule\"\n\u00a0\u00a0\"_run.Task\" is not assignable to \"trio._core._run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 360,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"key\" of type \"Task\" in function \"__setitem__\"\n\u00a0\u00a0\"trio._core._run.Task\" is not assignable to \"_run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 365,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"key\" of type \"Task\" in function \"__delitem__\"\n\u00a0\u00a0\"trio._core._run.Task\" is not assignable to \"_run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 433,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"key\" of type \"Task\" in function \"__delitem__\"\n\u00a0\u00a0\"trio._core._run.Task\" is not assignable to \"_run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 440,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"task\" of type \"Task\" in function \"reschedule\"\n\u00a0\u00a0\"_run.Task\" is not assignable to \"trio._core._run.Task\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 531,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"MemoryReceiveChannel[T@as_safe_channel]\" cannot be assigned to parameter \"recv_chan\" of type \"MemoryReceiveChannel[T@RecvChanWrapper]\" in function \"__init__\"\n\u00a0\u00a0\"MemoryReceiveChannel[T@as_safe_channel]\" is not assignable to \"MemoryReceiveChannel[T@RecvChanWrapper]\""
+    },
+    {
+      "file": "src/trio/_channel.py",
+      "line": 610,
+      "error_code": "reportReturnType",
+      "message": "Type \"(**P@as_safe_channel) -> _AsyncGeneratorContextManager[RecvChanWrapper[T@as_safe_channel], None]\" is not assignable to return type \"(**P@as_safe_channel) -> AbstractAsyncContextManager[ReceiveChannel[T@as_safe_channel], bool | None]\"\n\u00a0\u00a0Type \"(**P@as_safe_channel) -> _AsyncGeneratorContextManager[RecvChanWrapper[T@as_safe_channel], None]\" is not assignable to type \"(**P@as_safe_channel) -> AbstractAsyncContextManager[ReceiveChannel[T@as_safe_channel], bool | None]\"\n\u00a0\u00a0\u00a0\u00a0Function return type \"_AsyncGeneratorContextManager[RecvChanWrapper[T@as_safe_channel], None]\" is incompatible with type \"AbstractAsyncContextManager[ReceiveChannel[T@as_safe_channel], bool | None]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"_AsyncGeneratorContextManager[RecvChanWrapper[T@as_safe_channel], None]\" is not assignable to \"AbstractAsyncContextManager[ReceiveChannel[T@as_safe_channel], bool | None]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"_T_co@AbstractAsyncContextManager\" is covariant, but \"RecvChanWrapper[T@as_safe_channel]\" is not a subtype of \"ReceiveChannel[T@as_safe_channel]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"RecvChanWrapper[T@as_safe_channel]\" is not assignable to \"ReceiveChannel[T@as_safe_channel]\""
+    },
+    {
+      "file": "src/trio/_core/_local.py",
+      "line": 47,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"runner\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_local.py",
+      "line": 75,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"runner\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_local.py",
+      "line": 95,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"runner\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 161,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused"
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 502,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"set[CancelStatus]\" cannot be assigned to parameter \"iterable\" of type \"Iterable[Self@CancelStatus]\" in function \"extend\"\n\u00a0\u00a0\"set[CancelStatus]\" is not assignable to \"Iterable[Self@CancelStatus]\"\n\u00a0\u00a0\u00a0\u00a0Type parameter \"_T_co@Iterable\" is covariant, but \"CancelStatus\" is not a subtype of \"Self@CancelStatus\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"CancelStatus\" is not assignable to type \"Self@CancelStatus\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 728,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"__context__\" is not a known attribute of \"None\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 772,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"runner\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 1129,
+      "error_code": "reportOptionalMemberAccess",
+      "message": "\"__context__\" is not a known attribute of \"None\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 1259,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"runner\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 1457,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"runner\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2426,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"runner\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2850,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"task\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2934,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"task\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 2991,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"task\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_run.py",
+      "line": 3105,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"GLOBAL_RUN_CONTEXT\" is declared as Final and cannot be reassigned"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_asyncgen.py",
+      "line": 201,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"runner\" is not a known attribute of module \"_run\""
+    },
+    {
+      "file": "src/trio/_core/_tests/test_ki.py",
+      "line": 201,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> CoroutineType[Any, Any, None]\" cannot be assigned to parameter \"agen_fn\" of type \"() -> AsyncIterator[None]\" in function \"_check_agen\"\n\u00a0\u00a0Type \"() -> CoroutineType[Any, Any, None]\" is not assignable to type \"() -> AsyncIterator[None]\"\n\u00a0\u00a0\u00a0\u00a0Function return type \"CoroutineType[Any, Any, None]\" is incompatible with type \"AsyncIterator[None]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, None]\" is incompatible with protocol \"AsyncIterator[None]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__anext__\" is not present\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__aiter__\" is not present"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_ki.py",
+      "line": 204,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"() -> CoroutineType[Any, Any, None]\" cannot be assigned to parameter \"agen_fn\" of type \"() -> AsyncIterator[None]\" in function \"_check_agen\"\n\u00a0\u00a0Type \"() -> CoroutineType[Any, Any, None]\" is not assignable to type \"() -> AsyncIterator[None]\"\n\u00a0\u00a0\u00a0\u00a0Function return type \"CoroutineType[Any, Any, None]\" is incompatible with type \"AsyncIterator[None]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"CoroutineType[Any, Any, None]\" is incompatible with protocol \"AsyncIterator[None]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__anext__\" is not present\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"__aiter__\" is not present"
+    },
+    {
+      "file": "src/trio/_core/_tests/test_parking_lot.py",
+      "line": 261,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"ParkingLot\" cannot be assigned to parameter \"lot\" of type \"ParkingLot\" in function \"add_parking_lot_breaker\"\n\u00a0\u00a0\"_parking_lot.ParkingLot\" is not assignable to \"trio._core._parking_lot.ParkingLot\""
+    },
+    {
+      "file": "src/trio/_core/_tests/test_parking_lot.py",
+      "line": 290,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"ParkingLot\" cannot be assigned to parameter \"lot\" of type \"ParkingLot\" in function \"remove_parking_lot_breaker\"\n\u00a0\u00a0\"_parking_lot.ParkingLot\" is not assignable to \"trio._core._parking_lot.ParkingLot\""
+    },
+    {
+      "file": "src/trio/_core/_tests/test_parking_lot.py",
+      "line": 293,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"ParkingLot\" cannot be assigned to parameter \"lot\" of type \"ParkingLot\" in function \"add_parking_lot_breaker\"\n\u00a0\u00a0\"_parking_lot.ParkingLot\" is not assignable to \"trio._core._parking_lot.ParkingLot\""
+    },
+    {
+      "file": "src/trio/_core/_tests/test_parking_lot.py",
+      "line": 296,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"ParkingLot\" cannot be assigned to parameter \"lot\" of type \"ParkingLot\" in function \"remove_parking_lot_breaker\"\n\u00a0\u00a0\"_parking_lot.ParkingLot\" is not assignable to \"trio._core._parking_lot.ParkingLot\""
+    },
+    {
+      "file": "src/trio/_core/_tests/test_parking_lot.py",
+      "line": 302,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"ParkingLot\" cannot be assigned to parameter \"lot\" of type \"ParkingLot\" in function \"remove_parking_lot_breaker\"\n\u00a0\u00a0\"_parking_lot.ParkingLot\" is not assignable to \"trio._core._parking_lot.ParkingLot\""
+    },
+    {
+      "file": "src/trio/_core/_tests/test_parking_lot.py",
+      "line": 310,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"task\" of type \"Task\" in function \"add_parking_lot_breaker\"\n\u00a0\u00a0\"_run.Task\" is not assignable to \"trio._core._run.Task\""
+    },
+    {
+      "file": "src/trio/_core/_tests/test_parking_lot.py",
+      "line": 345,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"task\" of type \"Task\" in function \"add_parking_lot_breaker\"\n\u00a0\u00a0\"_run.Task\" is not assignable to \"trio._core._run.Task\""
+    },
+    {
+      "file": "src/trio/_core/_tests/test_parking_lot.py",
+      "line": 367,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"task\" of type \"Task\" in function \"add_parking_lot_breaker\"\n\u00a0\u00a0\"_run.Task\" is not assignable to \"trio._core._run.Task\""
+    },
+    {
+      "file": "src/trio/_dtls.py",
+      "line": 739,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"_client_hello\" for class \"DTLSChannel\"\n\u00a0\u00a0Expression of type \"tuple[bytes, bytes]\" cannot be assigned to attribute \"_client_hello\" of class \"DTLSChannel\"\n\u00a0\u00a0\u00a0\u00a0\"tuple[bytes, bytes]\" is not assignable to \"None\""
+    },
+    {
+      "file": "src/trio/_dtls.py",
+      "line": 1221,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"tuple[ReferenceType[Self@DTLSEndpoint], SocketType]\" cannot be assigned to parameter \"args\" of type \"PosArgT@spawn_system_task\" in function \"spawn_system_task\"\n\u00a0\u00a0Type \"*tuple[ReferenceType[Self@DTLSEndpoint], SocketType]\" is not assignable to type \"*tuple[ReferenceType[DTLSEndpoint], SocketType]\"\n\u00a0\u00a0\u00a0\u00a0\"*tuple[ReferenceType[Self@DTLSEndpoint], SocketType]\" is not assignable to \"*tuple[ReferenceType[DTLSEndpoint], SocketType]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Tuple entry 1 is incorrect type\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ReferenceType[Self@DTLSEndpoint]\" is not assignable to \"ReferenceType[DTLSEndpoint]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"_T@ReferenceType\" is invariant, but \"Self@DTLSEndpoint\" is not the same as \"DTLSEndpoint\""
+    },
+    {
+      "file": "src/trio/_highlevel_open_tcp_listeners.py",
+      "line": 150,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"SocketType\" cannot be assigned to parameter \"socket\" of type \"SocketType\" in function \"__init__\"\n\u00a0\u00a0\"_socket.SocketType\" is not assignable to \"trio._socket.SocketType\""
+    },
+    {
+      "file": "src/trio/_highlevel_ssl_helpers.py",
+      "line": 34,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"SocketStream\" cannot be assigned to type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0Type \"SocketStream\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0\u00a0\u00a0\"SocketStream\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_highlevel_ssl_helpers.py",
+      "line": 72,
+      "error_code": "reportReturnType",
+      "message": "Type \"SSLStream[SocketStream]\" is not assignable to return type \"SSLStream[SocketStream]\"\n\u00a0\u00a0\"trio._ssl.SSLStream\" is not assignable to \"trio._ssl.SSLStream\"\n\u00a0\u00a0\u00a0\u00a0Type parameter \"T_Stream@SSLStream\" is invariant, but \"trio._highlevel_socket.SocketStream\" is not the same as \"_highlevel_socket.SocketStream\""
+    },
+    {
+      "file": "src/trio/_highlevel_ssl_helpers.py",
+      "line": 87,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"SocketStream\" cannot be assigned to type variable \"T_Stream@SSLListener\"\n\u00a0\u00a0Type \"SocketStream\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLListener\"\n\u00a0\u00a0\u00a0\u00a0\"SocketStream\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_highlevel_ssl_helpers.py",
+      "line": 105,
+      "error_code": "reportReturnType",
+      "message": "Type \"list[SSLListener[SocketStream]]\" is not assignable to return type \"list[SSLListener[SocketStream]]\"\n\u00a0\u00a0\"builtins.list\" is not assignable to \"builtins.list\"\n\u00a0\u00a0\u00a0\u00a0Type parameter \"_T@list\" is invariant, but \"trio._ssl.SSLListener[trio._highlevel_socket.SocketStream]\" is not the same as \"trio._ssl.SSLListener[_highlevel_socket.SocketStream]\"\n\u00a0\u00a0\u00a0\u00a0Consider switching from \"list\" to \"Sequence\" which is covariant"
+    },
+    {
+      "file": "src/trio/_highlevel_ssl_helpers.py",
+      "line": 109,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"SocketStream\" cannot be assigned to type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0Type \"SocketStream\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0\u00a0\u00a0\"SocketStream\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_highlevel_ssl_helpers.py",
+      "line": 118,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"SocketStream\" cannot be assigned to type variable \"T_Stream@SSLListener\"\n\u00a0\u00a0Type \"SocketStream\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLListener\"\n\u00a0\u00a0\u00a0\u00a0\"SocketStream\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_highlevel_ssl_helpers.py",
+      "line": 179,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"TaskStatus[list[SSLListener[SocketStream]]]\" cannot be assigned to parameter \"task_status\" of type \"TaskStatus[list[ListenerT@serve_listeners]]\" in function \"serve_listeners\"\n\u00a0\u00a0\"trio._core._run.TaskStatus\" is not assignable to \"trio._core._run.TaskStatus\"\n\u00a0\u00a0\u00a0\u00a0Type parameter \"StatusT_contra@TaskStatus\" is contravariant, but \"builtins.list[trio._ssl.SSLListener[_highlevel_socket.SocketStream]]\" is not a supertype of \"builtins.list[trio._ssl.SSLListener[trio._highlevel_socket.SocketStream]]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"builtins.list\" is not assignable to \"builtins.list\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"_T@list\" is invariant, but \"trio._ssl.SSLListener[trio._highlevel_socket.SocketStream]\" is not the same as \"trio._ssl.SSLListener[_highlevel_socket.SocketStream]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Consider switching from \"list\" to \"Sequence\" which is covariant"
+    },
+    {
+      "file": "src/trio/_path.py",
+      "line": 133,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"type[PosixPath] | type[Self@Path]\" cannot be assigned to parameter \"cls\" of type \"type[Self@Path]\" in function \"__new__\"\n\u00a0\u00a0Type \"type[PosixPath] | type[Self@Path]\" is not assignable to type \"type[Self@Path]\""
+    },
+    {
+      "file": "src/trio/_socket.py",
+      "line": 1276,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"object\" cannot be assigned to parameter \"data\" of type \"ReadableBuffer\"\n\u00a0\u00a0\"object\" is incompatible with protocol \"Buffer\"\n\u00a0\u00a0\u00a0\u00a0\"__buffer__\" is not present"
+    },
+    {
+      "file": "src/trio/_sync.py",
+      "line": 268,
+      "error_code": "reportRedeclaration",
+      "message": "Method declaration \"total_tokens\" is obscured by a declaration of the same name"
+    },
+    {
+      "file": "src/trio/_sync.py",
+      "line": 283,
+      "error_code": "reportRedeclaration",
+      "message": "Method declaration \"total_tokens\" is obscured by a declaration of the same name"
+    },
+    {
+      "file": "src/trio/_sync.py",
+      "line": 377,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"key\" of type \"Task\" in function \"__setitem__\"\n\u00a0\u00a0\"trio._core._run.Task\" is not assignable to \"_run.Task\""
+    },
+    {
+      "file": "src/trio/_sync.py",
+      "line": 381,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Task\" cannot be assigned to parameter \"key\" of type \"Task\" in function \"pop\"\n\u00a0\u00a0\"trio._core._run.Task\" is not assignable to \"_run.Task\""
+    },
+    {
+      "file": "src/trio/_sync.py",
+      "line": 558,
+      "error_code": "reportReturnType",
+      "message": "Type \"ParkingLotStatistics\" is not assignable to return type \"ParkingLotStatistics\"\n\u00a0\u00a0\"trio._core._parking_lot.ParkingLotStatistics\" is not assignable to \"_parking_lot.ParkingLotStatistics\""
+    },
+    {
+      "file": "src/trio/_sync.py",
+      "line": 617,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"_owner\" for class \"_LockImpl*\"\n\u00a0\u00a0Type \"Task\" is not assignable to type \"Task | None\"\n\u00a0\u00a0\u00a0\u00a0\"trio._core._run.Task\" is not assignable to \"_run.Task\"\n\u00a0\u00a0\u00a0\u00a0\"Task\" is not assignable to \"None\""
+    },
+    {
+      "file": "src/trio/_sync.py",
+      "line": 881,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"ParkingLot\" cannot be assigned to parameter \"new_lot\" of type \"ParkingLot\" in function \"repark\"\n\u00a0\u00a0\"_parking_lot.ParkingLot\" is not assignable to \"trio._core._parking_lot.ParkingLot\""
+    },
+    {
+      "file": "src/trio/_sync.py",
+      "line": 892,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"ParkingLot\" cannot be assigned to parameter \"new_lot\" of type \"ParkingLot\" in function \"repark_all\"\n\u00a0\u00a0\"_parking_lot.ParkingLot\" is not assignable to \"trio._core._parking_lot.ParkingLot\""
+    },
+    {
+      "file": "src/trio/_tests/test_file_io.py",
+      "line": 101,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "\"abc\" is not a known attribute of module \"importlib\""
+    },
+    {
+      "file": "src/trio/_tests/test_highlevel_socket.py",
+      "line": 232,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"Literal[SocketKind.SOCK_STREAM]\" is not assignable to declared type \"property\"\n\u00a0\u00a0\"Literal[SocketKind.SOCK_STREAM]\" is not assignable to \"property\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 382,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"T_Stream@ssl_wrap_pair\" cannot be assigned to type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0Type \"Stream*\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0\u00a0\u00a0\"Stream*\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 388,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"T_Stream@ssl_wrap_pair\" cannot be assigned to parameter \"transport_stream\" of type \"T_Stream@SSLStream\" in function \"__init__\"\n\u00a0\u00a0Type \"T_Stream@ssl_wrap_pair\" is not assignable to type \"Stream\"\n\u00a0\u00a0\u00a0\u00a0\"Stream*\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 394,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"T_Stream@ssl_wrap_pair\" cannot be assigned to parameter \"transport_stream\" of type \"T_Stream@SSLStream\" in function \"__init__\"\n\u00a0\u00a0Type \"T_Stream@ssl_wrap_pair\" is not assignable to type \"Stream\"\n\u00a0\u00a0\u00a0\u00a0\"Stream*\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 410,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"MemoryStapledStream\" cannot be assigned to type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0Type \"MemoryStapledStream\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0\u00a0\u00a0\"StapledStream[MemorySendStream, MemoryReceiveStream]\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 416,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"StapledStream[MemorySendStream, MemoryReceiveStream]\" cannot be assigned to parameter \"client_transport\" of type \"T_Stream@ssl_wrap_pair\" in function \"ssl_wrap_pair\"\n\u00a0\u00a0Type \"StapledStream[MemorySendStream, MemoryReceiveStream]\" is not assignable to type \"Stream\"\n\u00a0\u00a0\u00a0\u00a0\"StapledStream[MemorySendStream, MemoryReceiveStream]\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 431,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"MyStapledStream\" cannot be assigned to type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0Type \"MyStapledStream\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0\u00a0\u00a0\"StapledStream[SendStream, ReceiveStream]\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 437,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"StapledStream[SendStream, ReceiveStream]\" cannot be assigned to parameter \"client_transport\" of type \"T_Stream@ssl_wrap_pair\" in function \"ssl_wrap_pair\"\n\u00a0\u00a0Type \"StapledStream[SendStream, ReceiveStream]\" is not assignable to type \"Stream\"\n\u00a0\u00a0\u00a0\u00a0\"StapledStream[SendStream, ReceiveStream]\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 753,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "A TypeAlias can be defined only within a module or class scope"
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 778,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"tuple[SSLStream[MyStapledStream]]\" cannot be assigned to parameter \"args\" of type \"PosArgT@start_soon\" in function \"start_soon\"\n\u00a0\u00a0Type \"*tuple[SSLStream[MyStapledStream]]\" is not assignable to type \"*tuple[S]\"\n\u00a0\u00a0\u00a0\u00a0\"*tuple[SSLStream[MyStapledStream]]\" is not assignable to \"*tuple[S]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Tuple entry 1 is incorrect type\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"SSLStream[MyStapledStream]\" is not assignable to \"SSLStream[StapledStream[SendStream, ReceiveStream]]\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 865,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"MemoryStapledStream\" cannot be assigned to type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0Type \"MemoryStapledStream\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0\u00a0\u00a0\"StapledStream[MemorySendStream, MemoryReceiveStream]\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 875,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"MyStapledStream\" cannot be assigned to type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0Type \"MyStapledStream\" is not assignable to upper bound \"Stream\" for type variable \"T_Stream@SSLStream\"\n\u00a0\u00a0\u00a0\u00a0\"StapledStream[SendStream, ReceiveStream]\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 1077,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"SSLStream[MemoryStapledStream]\" cannot be assigned to parameter \"resource\" of type \"AsyncResource\" in function \"aclose_forcefully\"\n\u00a0\u00a0\"SSLStream[MemoryStapledStream]\" is not assignable to \"AsyncResource\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 1098,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"SSLStream[MemoryStapledStream]\" cannot be assigned to parameter \"resource\" of type \"AsyncResource\" in function \"aclose_forcefully\"\n\u00a0\u00a0\"SSLStream[MemoryStapledStream]\" is not assignable to \"AsyncResource\""
+    },
+    {
+      "file": "src/trio/_tests/test_ssl.py",
+      "line": 1337,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"SocketStream\" cannot be assigned to parameter \"transport_stream\" of type \"T_Stream@SSLStream\" in function \"__init__\"\n\u00a0\u00a0Type \"SocketStream\" is not assignable to type \"Stream\"\n\u00a0\u00a0\u00a0\u00a0\"SocketStream\" is not assignable to \"Stream\""
+    },
+    {
+      "file": "src/trio/_tests/test_subprocess.py",
+      "line": 90,
+      "error_code": "reportReturnType",
+      "message": "Return type of async generator function must be compatible with \"AsyncGenerator[Process, Any]\"\n\u00a0\u00a0\"AsyncGenerator[Process, Unknown, Unknown]\" is not assignable to \"AsyncIterator[Process]\"\n\u00a0\u00a0\u00a0\u00a0Type parameter \"_T_co@AsyncIterator\" is covariant, but \"trio._subprocess.Process\" is not a subtype of \"_subprocess.Process\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"trio._subprocess.Process\" is not assignable to \"_subprocess.Process\""
+    },
+    {
+      "file": "src/trio/_tests/test_subprocess.py",
+      "line": 753,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"tuple[Process]\" cannot be assigned to parameter \"args\" of type \"PosArgT@start_soon\" in function \"start_soon\"\n\u00a0\u00a0Type \"*builtins.tuple[trio._subprocess.Process]\" is not assignable to type \"*builtins.tuple[_subprocess.Process]\"\n\u00a0\u00a0\u00a0\u00a0\"builtins.tuple\" is not assignable to \"builtins.tuple\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Tuple entry 1 is incorrect type\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"trio._subprocess.Process\" is not assignable to \"_subprocess.Process\""
+    },
+    {
+      "file": "src/trio/_tests/test_subprocess.py",
+      "line": 766,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "\"Never\" is not awaitable"
+    },
+    {
+      "file": "src/trio/_tests/test_testing.py",
+      "line": 119,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused"
+    },
+    {
+      "file": "src/trio/_tests/test_testing.py",
+      "line": 141,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused"
+    },
+    {
+      "file": "src/trio/_tests/test_testing.py",
+      "line": 240,
+      "error_code": "reportUnusedExpression",
+      "message": "Expression value is unused"
+    },
+    {
+      "file": "src/trio/_tests/test_testing.py",
+      "line": 569,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"tuple[Nursery]\" cannot be assigned to parameter \"args\" of type \"PosArgT@start_soon\" in function \"start_soon\"\n\u00a0\u00a0Type \"*builtins.tuple[_run.Nursery]\" is not assignable to type \"*builtins.tuple[trio._core._run.Nursery]\"\n\u00a0\u00a0\u00a0\u00a0\"builtins.tuple\" is not assignable to \"builtins.tuple\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Tuple entry 1 is incorrect type\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"_run.Nursery\" is not assignable to \"trio._core._run.Nursery\""
+    },
+    {
+      "file": "src/trio/_tests/test_testing.py",
+      "line": 616,
+      "error_code": "reportReturnType",
+      "message": "Type \"tuple[SendStream, ReceiveStream]\" is not assignable to return type \"tuple[SendStream, ReceiveStream]\"\n\u00a0\u00a0\"builtins.tuple\" is not assignable to \"builtins.tuple\"\n\u00a0\u00a0\u00a0\u00a0Tuple entry 1 is incorrect type\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"_abc.SendStream\" is not assignable to \"trio._abc.SendStream\""
+    },
+    {
+      "file": "src/trio/_tests/test_testing.py",
+      "line": 621,
+      "error_code": "reportInvalidTypeArguments",
+      "message": "Type \"SendStream\" cannot be assigned to type variable \"SendStreamT@StapledStream\"\n\u00a0\u00a0Type \"SendStream\" is not assignable to upper bound \"SendStream\" for type variable \"SendStreamT@StapledStream\"\n\u00a0\u00a0\u00a0\u00a0\"trio._abc.SendStream\" is not assignable to \"_abc.SendStream\""
+    },
+    {
+      "file": "src/trio/_tests/test_testing.py",
+      "line": 624,
+      "error_code": "reportReturnType",
+      "message": "Type \"tuple[StapledStream[SendStream, ReceiveStream], StapledStream[SendStream, ReceiveStream]]\" is not assignable to return type \"tuple[StapledStream[SendStream, ReceiveStream], StapledStream[SendStream, ReceiveStream]]\"\n\u00a0\u00a0\"builtins.tuple\" is not assignable to \"builtins.tuple\"\n\u00a0\u00a0\u00a0\u00a0Tuple entry 1 is incorrect type\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"_highlevel_generic.StapledStream\" is not assignable to \"_highlevel_generic.StapledStream\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"SendStreamT@StapledStream\" is invariant, but \"_abc.SendStream\" is not the same as \"trio._abc.SendStream\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"ReceiveStreamT@StapledStream\" is invariant, but \"_abc.ReceiveStream\" is not the same as \"trio._abc.ReceiveStream\""
+    },
+    {
+      "file": "src/trio/_tests/test_util.py",
+      "line": 236,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"recursion\" for class \"type[SomeClass]\"\n\u00a0\u00a0Attribute \"recursion\" is unknown"
+    },
+    {
+      "file": "src/trio/_tests/test_util.py",
+      "line": 252,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"method\" for class \"type[SomeClass]\"\n\u00a0\u00a0Attribute \"method\" is unknown"
+    },
+    {
+      "file": "src/trio/_tests/test_util.py",
+      "line": 259,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"method\" for class \"SomeClass\"\n\u00a0\u00a0Attribute \"method\" is unknown"
+    },
+    {
+      "file": "src/trio/_tests/test_wait_for_object.py",
+      "line": 179,
+      "error_code": "reportInvalidTypeForm",
+      "message": "Variable not allowed in type expression"
+    },
+    {
+      "file": "src/trio/_threads.py",
+      "line": 387,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot assign to attribute \"token\" for class \"_ParentTaskData\"\n\u00a0\u00a0\"trio._core._entry_queue.TrioToken\" is not assignable to \"_entry_queue.TrioToken\""
+    },
+    {
+      "file": "src/trio/_threads.py",
+      "line": 449,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"unwrap\" for class \"Run[object]\"\n\u00a0\u00a0Attribute \"unwrap\" is unknown"
+    },
+    {
+      "file": "src/trio/_tools/sync_requirements.py",
+      "line": 17,
+      "error_code": "reportMissingModuleSource",
+      "message": "Import \"yaml\" could not be resolved from source"
+    },
+    {
+      "file": "src/trio/_tools/sync_requirements.py",
+      "line": 22,
+      "error_code": "reportMissingModuleSource",
+      "message": "Import \"yaml\" could not be resolved from source"
+    },
+    {
+      "file": "src/trio/testing/_check_streams.py",
+      "line": 454,
+      "error_code": "reportAssignmentType",
+      "message": "Type \"None\" is not assignable to declared type \"() -> CoroutineType[Any, Any, tuple[Stream, Stream]]\"\n\u00a0\u00a0Type \"None\" is not assignable to type \"() -> CoroutineType[Any, Any, tuple[Stream, Stream]]\""
+    },
+    {
+      "file": "src/trio/testing/_fake_net.py",
+      "line": 410,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"remote\" for class \"UDPBinding\"\n\u00a0\u00a0Attribute \"remote\" is unknown"
+    },
+    {
+      "file": "src/trio/testing/_fake_net.py",
+      "line": 415,
+      "error_code": "reportAttributeAccessIssue",
+      "message": "Cannot access attribute \"remote\" for class \"UDPBinding\"\n\u00a0\u00a0Attribute \"remote\" is unknown"
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 537,
+      "error_code": "reportArgumentType",
+      "message": "Argument of type \"Unknown | ((BaseExceptionGroup[BaseExcT_1@__init__]) -> bool) | ((ExceptionGroup[ExcT_1@__init__]) -> bool) | None\" cannot be assigned to parameter \"check\" of type \"((BaseExceptionGroup[ExcT_1@__init__ | BaseExcT_1@__init__ | BaseExceptionGroup[BaseExcT_2@__init__]]) -> bool) | None\" in function \"__init__\"\n\u00a0\u00a0Type \"Unknown | ((BaseExceptionGroup[BaseExcT_1@__init__]) -> bool) | ((ExceptionGroup[ExcT_1@__init__]) -> bool) | None\" is not assignable to type \"((BaseExceptionGroup[ExcT_1@__init__ | BaseExcT_1@__init__ | BaseExceptionGroup[BaseExcT_2@__init__]]) -> bool) | None\"\n\u00a0\u00a0\u00a0\u00a0Type \"(BaseExceptionGroup[BaseExcT_1@__init__]) -> bool\" is not assignable to type \"((BaseExceptionGroup[ExcT_1@__init__ | BaseExcT_1@__init__ | BaseExceptionGroup[BaseExcT_2@__init__]]) -> bool) | None\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"FunctionType\" is not assignable to \"None\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type \"(BaseExceptionGroup[BaseExcT_1@__init__]) -> bool\" is not assignable to type \"(BaseExceptionGroup[ExcT_1@__init__ | BaseExcT_1@__init__ | BaseExceptionGroup[BaseExcT_2@__init__]]) -> bool\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Parameter 1: type \"BaseExceptionGroup[ExcT_1@__init__ | BaseExcT_1@__init__ | BaseExceptionGroup[BaseExcT_2@__init__]]\" is incompatible with type \"BaseExceptionGroup[BaseExcT_1@__init__]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"BaseExceptionGroup[ExcT_1@__init__ | BaseExcT_1@__init__ | BaseExceptionGroup[BaseExcT_2@__init__]]\" is not assignable to \"BaseExceptionGroup[BaseExcT_1@__init__]\""
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 655,
+      "error_code": "reportInconsistentOverload",
+      "message": "Overloaded implementation is not consistent with signature of overload 1\n\u00a0\u00a0Parameter 1: type \"RaisesGroup[ExcT_1@matches]\" is incompatible with type \"Self@RaisesGroup[BaseExcT_co@RaisesGroup]\"\n\u00a0\u00a0\u00a0\u00a0Type \"RaisesGroup[ExcT_1@matches]\" is not assignable to type \"Self@RaisesGroup[BaseExcT_co@RaisesGroup]\"\n\u00a0\u00a0Function return type \"TypeGuard[ExceptionGroup[ExcT_1@matches]]\" is incompatible with type \"TypeGuard[BaseExceptionGroup[BaseExcT_co@RaisesGroup]]\"\n\u00a0\u00a0\u00a0\u00a0\"TypeGuard[ExceptionGroup[ExcT_1@matches]]\" is not assignable to \"TypeGuard[BaseExceptionGroup[BaseExcT_co@RaisesGroup]]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"T@TypeGuard\" is covariant, but \"ExceptionGroup[ExcT_1@matches]\" is not a subtype of \"BaseExceptionGroup[BaseExcT_co@RaisesGroup]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ExceptionGroup[ExcT_1@matches]\" is not assignable to \"BaseExceptionGroup[BaseExcT_co@RaisesGroup]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"_BaseExceptionT_co@BaseExceptionGroup\" is covariant, but \"ExcT_1@matches\" is not a subtype of \"BaseExcT_co@RaisesGroup\""
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 686,
+      "error_code": "reportGeneralTypeIssues",
+      "message": "Index 0 is out of range for type tuple[()]"
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 714,
+      "error_code": "reportOperatorIssue",
+      "message": "Operator \"+=\" not supported for types \"None\" and \"str\"\n\u00a0\u00a0Operator \"+\" not supported for types \"None\" and \"str\""
+    },
+    {
+      "file": "src/trio/testing/_raises_group.py",
+      "line": 794,
+      "error_code": "reportInconsistentOverload",
+      "message": "Overloaded implementation is not consistent with signature of overload 1\n\u00a0\u00a0Parameter 1: type \"RaisesGroup[ExcT_1@_check_exceptions]\" is incompatible with type \"Self@RaisesGroup[BaseExcT_co@RaisesGroup]\"\n\u00a0\u00a0\u00a0\u00a0Type \"RaisesGroup[ExcT_1@_check_exceptions]\" is not assignable to type \"Self@RaisesGroup[BaseExcT_co@RaisesGroup]\"\n\u00a0\u00a0Function return type \"TypeGuard[ExceptionGroup[ExcT_1@_check_exceptions]]\" is incompatible with type \"TypeGuard[BaseExceptionGroup[BaseExcT_co@RaisesGroup]]\"\n\u00a0\u00a0\u00a0\u00a0\"TypeGuard[ExceptionGroup[ExcT_1@_check_exceptions]]\" is not assignable to \"TypeGuard[BaseExceptionGroup[BaseExcT_co@RaisesGroup]]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"T@TypeGuard\" is covariant, but \"ExceptionGroup[ExcT_1@_check_exceptions]\" is not a subtype of \"BaseExceptionGroup[BaseExcT_co@RaisesGroup]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"ExceptionGroup[ExcT_1@_check_exceptions]\" is not assignable to \"BaseExceptionGroup[BaseExcT_co@RaisesGroup]\"\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Type parameter \"_BaseExceptionT_co@BaseExceptionGroup\" is covariant, but \"ExcT_1@_check_exceptions\" is not a subtype of \"BaseExcT_co@RaisesGroup\""
+    }
+  ]
+}
