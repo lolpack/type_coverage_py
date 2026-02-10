@@ -29,8 +29,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Use current branch for push/workflow_dispatch, published-report for scheduled runs
-          ref: ${{ github.event_name == 'schedule' && 'published-report' || github.ref }}
+          ref: published-report
 
       - name: Setup SSH Known Hosts
         shell: bash
@@ -111,24 +110,20 @@ jobs:
           retention-days: 90
 
       - name: Stash Changes
-        if: github.event_name == 'schedule'
         shell: bash
         run: |
           git add .
           git stash
 
       - name: Pull Latest Changes
-        if: github.event_name == 'schedule'
         shell: bash
         run: git pull origin published-report --rebase
 
       - name: Apply Stashed Changes
-        if: github.event_name == 'schedule'
         shell: bash
         run: git stash pop || true
 
       - name: Commit and Push Results
-        if: github.event_name == 'schedule'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update LSP benchmark results [skip ci]"
