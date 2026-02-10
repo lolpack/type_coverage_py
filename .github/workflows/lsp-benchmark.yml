@@ -1,9 +1,6 @@
 name: Daily LSP Benchmark
 
 on:
-  push:
-    branches:
-      - update_lsp_benchmark
   schedule:
     # Run daily at 3 AM UTC (after the main data update)
     - cron: '0 3 * * *'
