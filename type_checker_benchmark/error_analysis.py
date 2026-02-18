@@ -398,8 +398,22 @@ def run_checker_with_output(
             timeout=timeout,
         )
     elif checker == "mypy":
+        # Check if the project has a mypy config — if so, don't pass a path
+        # so the config's `files` directive is used instead of scanning everything
+        has_mypy_config = (
+            (package_path / "mypy.ini").exists()
+            or (package_path / ".mypy.ini").exists()
+            or (package_path / "pyproject.toml").exists()
+            and "[tool.mypy]" in (package_path / "pyproject.toml").read_text(encoding="utf-8", errors="ignore")
+            or (package_path / "setup.cfg").exists()
+            and "[mypy]" in (package_path / "setup.cfg").read_text(encoding="utf-8", errors="ignore")
+        )
+        if has_mypy_config:
+            cmd = [sys.executable, "-m", "mypy"]
+        else:
+            cmd = [sys.executable, "-m", "mypy", str(check_path)]
         result = run_process_with_timeout(
-            [sys.executable, "-m", "mypy", str(check_path)],
+            cmd,
             cwd=package_path,
             timeout=timeout,
         )

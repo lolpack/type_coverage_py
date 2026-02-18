@@ -768,6 +768,30 @@ def run_ty(package_path: Path, timeout: int = DEFAULT_TIMEOUT) -> ErrorMetrics:
     }
 
 
+def _has_tool_mypy_in_pyproject(package_path: Path) -> bool:
+    """Check if pyproject.toml contains a [tool.mypy] section."""
+    pyproject = package_path / "pyproject.toml"
+    if not pyproject.exists():
+        return False
+    try:
+        content = pyproject.read_text(encoding="utf-8")
+        return "[tool.mypy]" in content
+    except OSError:
+        return False
+
+
+def _has_mypy_in_setup_cfg(package_path: Path) -> bool:
+    """Check if setup.cfg contains a [mypy] section."""
+    setup_cfg = package_path / "setup.cfg"
+    if not setup_cfg.exists():
+        return False
+    try:
+        content = setup_cfg.read_text(encoding="utf-8")
+        return "[mypy]" in content
+    except OSError:
+        return False
+
+
 def run_mypy(
     package_path: Path,
     timeout: int = SLOW_CHECKER_TIMEOUT,
@@ -786,9 +810,23 @@ def run_mypy(
     if check_path is None:
         check_path = package_path
 
-    # Run mypy - it will auto-discover mypy.ini, .mypy.ini, pyproject.toml, or setup.cfg
+    # Check if the project has a mypy config (mypy.ini, .mypy.ini, or [tool.mypy] in pyproject.toml)
+    # If it does, run mypy without a path argument so the config's `files` directive is used.
+    # Passing a path on the command line overrides the config's file scope.
+    has_mypy_config = (
+        (package_path / "mypy.ini").exists()
+        or (package_path / ".mypy.ini").exists()
+        or _has_tool_mypy_in_pyproject(package_path)
+        or _has_mypy_in_setup_cfg(package_path)
+    )
+
+    if has_mypy_config:
+        cmd = [sys.executable, "-m", "mypy"]
+    else:
+        cmd = [sys.executable, "-m", "mypy", str(check_path)]
+
     result = run_process_with_timeout(
-        [sys.executable, "-m", "mypy", str(check_path)],
+        cmd,
         cwd=package_path,
         timeout=timeout,
     )

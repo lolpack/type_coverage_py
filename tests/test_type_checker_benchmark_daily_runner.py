@@ -876,6 +876,77 @@ class TestRunMypyNoDummyConfig:
             cmd = mock_run.call_args[0][0]
             assert "--config-file" not in cmd
 
+    def test_no_path_arg_when_mypy_ini_exists(self, tmp_path: Path) -> None:
+        """Test that mypy is called without a path arg when mypy.ini exists."""
+        (tmp_path / "mypy.ini").write_text("[mypy]\nfiles = src\n")
+
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": "Success: no issues found",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_mypy(tmp_path, timeout=60)
+
+            cmd = mock_run.call_args[0][0]
+            # Should be just [python, -m, mypy] with no path
+            assert cmd == [sys.executable, "-m", "mypy"]
+
+    def test_no_path_arg_when_pyproject_has_tool_mypy(self, tmp_path: Path) -> None:
+        """Test that mypy is called without a path arg when pyproject.toml has [tool.mypy]."""
+        (tmp_path / "pyproject.toml").write_text('[tool.mypy]\nfiles = ["src"]\n')
+
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": "Success: no issues found",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_mypy(tmp_path, timeout=60)
+
+            cmd = mock_run.call_args[0][0]
+            assert cmd == [sys.executable, "-m", "mypy"]
+
+    def test_path_arg_when_no_config(self, tmp_path: Path) -> None:
+        """Test that mypy is called with a path arg when no config exists."""
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": "Success: no issues found",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_mypy(tmp_path, timeout=60)
+
+            cmd = mock_run.call_args[0][0]
+            assert cmd == [sys.executable, "-m", "mypy", str(tmp_path)]
+
+    def test_path_arg_when_pyproject_without_tool_mypy(self, tmp_path: Path) -> None:
+        """Test that mypy gets a path arg when pyproject.toml exists but has no [tool.mypy]."""
+        (tmp_path / "pyproject.toml").write_text('[tool.poetry]\nname = "foo"\n')
+
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": "Success: no issues found",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_mypy(tmp_path, timeout=60)
+
+            cmd = mock_run.call_args[0][0]
+            assert cmd == [sys.executable, "-m", "mypy", str(tmp_path)]
+
 
 class TestPyreflyInitBeforeCheck:
     """Tests that pyrefly init is run before pyrefly check."""
