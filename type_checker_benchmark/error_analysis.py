@@ -32,8 +32,6 @@ from type_checker_benchmark.daily_runner import (
     fetch_github_package,
     is_type_checker_available,
     run_process_with_timeout,
-    _write_dummy_pyright_config,
-    _write_dummy_mypy_config,
 )
 
 # Type checkers to analyze
@@ -394,20 +392,29 @@ def run_checker_with_output(
     """Run a type checker and return raw output and parsed errors."""
 
     if checker == "pyright":
-        _write_dummy_pyright_config(package_path)
         result = run_process_with_timeout(
             ["pyright", "--outputjson", str(check_path)],
             cwd=package_path,
             timeout=timeout,
         )
     elif checker == "mypy":
-        config_path = _write_dummy_mypy_config(package_path)
         result = run_process_with_timeout(
-            [sys.executable, "-m", "mypy", "--config-file", str(config_path), str(check_path)],
+            [sys.executable, "-m", "mypy", str(check_path)],
             cwd=package_path,
             timeout=timeout,
         )
     elif checker == "pyrefly":
+        # Run pyrefly init to migrate any existing mypy/pyright configs
+        try:
+            subprocess.run(
+                ["pyrefly", "init", str(package_path)],
+                cwd=package_path,
+                stdin=subprocess.DEVNULL,
+                capture_output=True,
+                timeout=30,
+            )
+        except (subprocess.TimeoutExpired, Exception):
+            pass
         result = run_process_with_timeout(
             ["pyrefly", "check", str(check_path)],
             cwd=check_path,

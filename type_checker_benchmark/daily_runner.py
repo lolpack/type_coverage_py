@@ -472,50 +472,6 @@ def is_type_checker_available(checker: str) -> bool:
     return result.returncode == 0
 
 
-def _write_dummy_pyright_config(package_path: Path) -> Path:
-    """Write a minimal pyright config to ignore existing project configs.
-
-    Args:
-        package_path: Path to the package directory.
-
-    Returns:
-        Path to the dummy config file.
-    """
-    config = {
-        "include": ["."],
-        "exclude": [],
-        "typeCheckingMode": "basic",
-    }
-    # Use pyrightconfig.json directly - this overrides any existing config
-    # in the cloned package (which gets deleted after benchmarking anyway)
-    config_path = package_path / "pyrightconfig.json"
-    with open(config_path, "w", encoding="utf-8") as f:
-        json.dump(config, f)
-    return config_path
-
-
-def _write_dummy_mypy_config(package_path: Path) -> Path:
-    """Write a minimal mypy config to override project configs.
-
-    Uses mypy's default settings for consistent benchmarking.
-    This overrides any project-specific mypy config.
-
-    Args:
-        package_path: Path to the package directory.
-
-    Returns:
-        Path to the dummy config file.
-    """
-    # Empty [mypy] section uses all defaults
-    # This overrides project configs but doesn't add non-default strictness
-    config_content = """[mypy]
-"""
-    config_path = package_path / "mypy.benchmark.ini"
-    with open(config_path, "w", encoding="utf-8") as f:
-        f.write(config_content)
-    return config_path
-
-
 def run_pyright(
     package_path: Path,
     timeout: int = SLOW_CHECKER_TIMEOUT,
@@ -534,10 +490,7 @@ def run_pyright(
     if check_path is None:
         check_path = package_path
 
-    # Write a dummy config to ensure consistent behavior and ignore existing configs
-    _write_dummy_pyright_config(package_path)
-
-    # Run pyright - it will automatically find our pyrightconfig.json in the package dir
+    # Run pyright - it will use any existing pyrightconfig.json in the repo, or defaults
     result = run_process_with_timeout(
         ["pyright", "--outputjson", str(check_path)],
         cwd=package_path,
@@ -699,7 +652,7 @@ def run_mypy(
     """Run mypy on a package and count errors.
 
     Args:
-        package_path: Path to the package directory (for config files).
+        package_path: Path to the package directory.
         timeout: Timeout in seconds (default: 5 minutes).
         check_path: Path to actually check (defaults to package_path).
 
@@ -709,12 +662,9 @@ def run_mypy(
     if check_path is None:
         check_path = package_path
 
-    # Write a dummy config to ensure consistent behavior
-    config_path = _write_dummy_mypy_config(package_path)
-
-    # Run mypy with our custom config
+    # Run mypy - it will auto-discover mypy.ini, .mypy.ini, pyproject.toml, or setup.cfg
     result = run_process_with_timeout(
-        [sys.executable, "-m", "mypy", "--config-file", str(config_path), str(check_path)],
+        [sys.executable, "-m", "mypy", str(check_path)],
         cwd=package_path,
         timeout=timeout,
     )
@@ -875,6 +825,19 @@ def run_type_checkers_for_package(
         elif checker == "pyright":
             metrics = run_pyright(package_path, timeout, check_path=check_path)
         elif checker == "pyrefly":
+            # Run pyrefly init to migrate any existing mypy/pyright configs
+            # Use subprocess directly with DEVNULL stdin to avoid interactive prompts
+            print("      Running pyrefly init...")
+            try:
+                subprocess.run(
+                    ["pyrefly", "init", str(package_path)],
+                    cwd=package_path,
+                    stdin=subprocess.DEVNULL,
+                    capture_output=True,
+                    timeout=30,
+                )
+            except (subprocess.TimeoutExpired, Exception) as e:
+                print(f"      pyrefly init failed: {e}")
             metrics = run_pyrefly(check_path, timeout)
         elif checker == "ty":
             metrics = run_ty(check_path, timeout)

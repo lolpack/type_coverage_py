@@ -9,6 +9,8 @@ from unittest.mock import MagicMock, patch
 
 import sys
 
+import subprocess
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from type_checker_benchmark.daily_runner import (
@@ -26,6 +28,9 @@ from type_checker_benchmark.daily_runner import (
     load_prioritized_packages,
     parse_args,
     run_process_with_timeout,
+    run_pyright,
+    run_mypy,
+    run_type_checkers_for_package,
 )
 
 
@@ -592,3 +597,215 @@ class TestDefaultTypeCheckers:
     def test_no_duplicates(self) -> None:
         """Test that there are no duplicate checkers."""
         assert len(DEFAULT_TYPE_CHECKERS) == len(set(DEFAULT_TYPE_CHECKERS))
+
+
+class TestRunPyrightNosDummyConfig:
+    """Tests that pyright runs without writing a dummy config."""
+
+    def test_no_config_file_written(self, tmp_path: Path) -> None:
+        """Test that run_pyright does not create a pyrightconfig.json."""
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": '{"summary": {"errorCount": 5, "warningCount": 1, "informationCount": 0, "filesAnalyzed": 10}}',
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_pyright(tmp_path, timeout=60)
+
+            # No pyrightconfig.json should be created
+            assert not (tmp_path / "pyrightconfig.json").exists()
+
+    def test_uses_existing_config(self, tmp_path: Path) -> None:
+        """Test that run_pyright preserves existing pyrightconfig.json."""
+        existing_config = {"include": ["src"], "typeCheckingMode": "strict"}
+        config_path = tmp_path / "pyrightconfig.json"
+        config_path.write_text(json.dumps(existing_config))
+
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": '{"summary": {"errorCount": 5, "warningCount": 1, "informationCount": 0, "filesAnalyzed": 10}}',
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_pyright(tmp_path, timeout=60)
+
+            # Existing config should be untouched
+            assert json.loads(config_path.read_text()) == existing_config
+
+    def test_command_has_no_config_flag(self, tmp_path: Path) -> None:
+        """Test that pyright is called without explicit config flags."""
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": '{"summary": {"errorCount": 0, "warningCount": 0, "informationCount": 0, "filesAnalyzed": 5}}',
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_pyright(tmp_path, timeout=60)
+
+            cmd = mock_run.call_args[0][0]
+            assert "--config-file" not in cmd
+            assert "pyrightconfig" not in " ".join(cmd)
+
+
+class TestRunMypyNoDummyConfig:
+    """Tests that mypy runs without writing a dummy config."""
+
+    def test_no_config_file_written(self, tmp_path: Path) -> None:
+        """Test that run_mypy does not create a mypy.benchmark.ini."""
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": "Success: no issues found",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_mypy(tmp_path, timeout=60)
+
+            assert not (tmp_path / "mypy.benchmark.ini").exists()
+
+    def test_uses_existing_config(self, tmp_path: Path) -> None:
+        """Test that run_mypy preserves existing mypy.ini."""
+        mypy_config = "[mypy]\npython_version = 3.10\nstrict = True\n"
+        config_path = tmp_path / "mypy.ini"
+        config_path.write_text(mypy_config)
+
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": "Success: no issues found",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_mypy(tmp_path, timeout=60)
+
+            # Existing config should be untouched
+            assert config_path.read_text() == mypy_config
+
+    def test_command_has_no_config_file_flag(self, tmp_path: Path) -> None:
+        """Test that mypy is called without --config-file flag."""
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": "Success: no issues found",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            run_mypy(tmp_path, timeout=60)
+
+            cmd = mock_run.call_args[0][0]
+            assert "--config-file" not in cmd
+
+
+class TestPyreflyInitBeforeCheck:
+    """Tests that pyrefly init is run before pyrefly check."""
+
+    def test_pyrefly_init_called_before_check(self, tmp_path: Path) -> None:
+        """Test that pyrefly init runs before pyrefly check."""
+        call_order: list[str] = []
+
+        def mock_subprocess_run(*args: Any, **kwargs: Any) -> MagicMock:
+            cmd = args[0] if args else kwargs.get("args", [])
+            if "pyrefly" in cmd and "init" in cmd:
+                call_order.append("init")
+            return MagicMock(returncode=0)
+
+        def mock_run_process(cmd: list[str], **kwargs: Any) -> dict[str, Any]:
+            if "pyrefly" in cmd and "check" in cmd:
+                call_order.append("check")
+            return {
+                "stdout": "INFO 5 errors",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 0.5,
+            }
+
+        with (
+            patch("subprocess.run", side_effect=mock_subprocess_run) as mock_sub,
+            patch("type_checker_benchmark.daily_runner.run_process_with_timeout", side_effect=mock_run_process),
+            patch("type_checker_benchmark.daily_runner.is_type_checker_available", return_value=True),
+        ):
+            run_type_checkers_for_package(tmp_path, "test_pkg", ["pyrefly"], timeout=60)
+
+            assert call_order == ["init", "check"]
+
+    def test_pyrefly_init_uses_devnull_stdin(self, tmp_path: Path) -> None:
+        """Test that pyrefly init uses DEVNULL stdin to avoid interactive prompts."""
+        with (
+            patch("subprocess.run") as mock_sub,
+            patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run,
+            patch("type_checker_benchmark.daily_runner.is_type_checker_available", return_value=True),
+        ):
+            mock_sub.return_value = MagicMock(returncode=0)
+            mock_run.return_value = {
+                "stdout": "INFO 0 errors",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 0.5,
+            }
+
+            run_type_checkers_for_package(tmp_path, "test_pkg", ["pyrefly"], timeout=60)
+
+            # Verify subprocess.run was called for pyrefly init with DEVNULL stdin
+            mock_sub.assert_called_once()
+            call_kwargs = mock_sub.call_args[1]
+            assert call_kwargs.get("stdin") == subprocess.DEVNULL
+
+    def test_pyrefly_init_failure_does_not_block_check(self, tmp_path: Path) -> None:
+        """Test that pyrefly check still runs even if pyrefly init fails."""
+        with (
+            patch("subprocess.run", side_effect=subprocess.TimeoutExpired(cmd="pyrefly", timeout=30)),
+            patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run,
+            patch("type_checker_benchmark.daily_runner.is_type_checker_available", return_value=True),
+        ):
+            mock_run.return_value = {
+                "stdout": "INFO 10 errors",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 1.0,
+            }
+
+            results = run_type_checkers_for_package(tmp_path, "test_pkg", ["pyrefly"], timeout=60)
+
+            # pyrefly check should still have been called and returned results
+            assert "pyrefly" in results
+            assert results["pyrefly"]["ok"] is True
+
+    def test_pyrefly_init_receives_package_path(self, tmp_path: Path) -> None:
+        """Test that pyrefly init is called with the package path."""
+        with (
+            patch("subprocess.run") as mock_sub,
+            patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run,
+            patch("type_checker_benchmark.daily_runner.is_type_checker_available", return_value=True),
+        ):
+            mock_sub.return_value = MagicMock(returncode=0)
+            mock_run.return_value = {
+                "stdout": "INFO 0 errors",
+                "stderr": "",
+                "returncode": 0,
+                "timed_out": False,
+                "execution_time_s": 0.5,
+            }
+
+            run_type_checkers_for_package(tmp_path, "test_pkg", ["pyrefly"], timeout=60)
+
+            init_cmd = mock_sub.call_args[0][0]
+            assert init_cmd == ["pyrefly", "init", str(tmp_path)]
+
