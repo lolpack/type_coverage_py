@@ -20,6 +20,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -35,6 +36,10 @@ DEFAULT_TYPE_CHECKERS: list[str] = ["pyright", "pyrefly", "ty", "mypy", "zuban"]
 # Default timeouts (in seconds)
 DEFAULT_TIMEOUT = 300  # 5 minutes for most checkers
 SLOW_CHECKER_TIMEOUT = 300  # 5 minutes for pyright and mypy
+
+# Default memory limit for subprocesses (in MB)
+# Set to 0 to disable memory monitoring
+DEFAULT_MEMORY_LIMIT_MB = 4096
 
 
 class ErrorMetrics(TypedDict, total=False):
@@ -99,38 +104,93 @@ class PackageInfo(TypedDict, total=False):
     configured_checkers: dict[str, bool]  # Which type checkers are configured
 
 
-class ProcessResult(TypedDict):
+class ProcessResult(TypedDict, total=False):
     """Result from running a subprocess with timeout."""
 
     stdout: str
     stderr: str
     returncode: int
     timed_out: bool
+    oom_killed: bool
     execution_time_s: float
+    peak_memory_mb: float
+
+
+def _monitor_memory(
+    pid: int,
+    peak_kb: list[int],
+    stop_event: threading.Event,
+    memory_limit_kb: int = 0,
+    killed: list[bool] | None = None,
+) -> None:
+    """Monitor a process's memory usage via /proc and kill if it exceeds the limit.
+
+    Only works on Linux where /proc/{pid}/status is available.
+
+    Args:
+        pid: Process ID to monitor.
+        peak_kb: Mutable list holding the peak memory (VmHWM) in KB.
+        stop_event: Event to signal the monitor to stop.
+        memory_limit_kb: Kill the process if VmRSS exceeds this (0 = no limit).
+        killed: Mutable list to signal back that the process was OOM-killed.
+    """
+    status_path = f"/proc/{pid}/status"
+    while not stop_event.is_set():
+        try:
+            vm_hwm = 0
+            vm_rss = 0
+            with open(status_path) as f:
+                for line in f:
+                    if line.startswith("VmHWM:"):
+                        vm_hwm = int(line.split()[1])
+                    elif line.startswith("VmRSS:"):
+                        vm_rss = int(line.split()[1])
+            if vm_hwm > peak_kb[0]:
+                peak_kb[0] = vm_hwm
+            if memory_limit_kb > 0 and vm_rss > memory_limit_kb:
+                if killed is not None:
+                    killed[0] = True
+                try:
+                    os.killpg(os.getpgid(pid), signal.SIGKILL)
+                except (ProcessLookupError, OSError):
+                    pass
+                break
+        except (FileNotFoundError, ProcessLookupError, OSError):
+            break
+        stop_event.wait(0.01)
 
 
 def run_process_with_timeout(
     cmd: list[str],
     cwd: Path,
     timeout: int,
+    memory_limit_mb: int = DEFAULT_MEMORY_LIMIT_MB,
 ) -> ProcessResult:
-    """Run a process synchronously with proper timeout and cleanup.
+    """Run a process synchronously with proper timeout, memory monitoring, and cleanup.
 
     This function ensures the process and all its children are properly
-    terminated if a timeout occurs.
+    terminated if a timeout or OOM condition occurs. On Linux, it monitors
+    /proc/{pid}/status for memory usage and kills the process group if RSS
+    exceeds the limit, preventing the OS OOM killer from taking down the
+    entire CI runner.
+
+    Uses background threads for reading stdout/stderr instead of
+    process.communicate() to avoid hangs when grandchild processes inherit
+    pipe file descriptors after SIGKILL.
 
     Args:
         cmd: Command and arguments to run.
         cwd: Working directory for the process.
         timeout: Timeout in seconds.
+        memory_limit_mb: Kill subprocess if RSS exceeds this (MB). 0 = no limit.
 
     Returns:
-        ProcessResult with stdout, stderr, returncode, and timing info.
+        ProcessResult with stdout, stderr, returncode, timing, and memory info.
     """
     start_time = time.time()
 
     # Use start_new_session on Unix to create a new process group
-    # This allows us to kill the entire process tree on timeout
+    # This allows us to kill the entire process tree on timeout/OOM
     kwargs: dict[str, Any] = {
         "cwd": cwd,
         "stdout": subprocess.PIPE,
@@ -143,19 +203,59 @@ def run_process_with_timeout(
 
     process = subprocess.Popen(cmd, **kwargs)
 
-    try:
-        stdout, stderr = process.communicate(timeout=timeout)
-        execution_time = time.time() - start_time
-        return {
-            "stdout": stdout or "",
-            "stderr": stderr or "",
-            "returncode": process.returncode,
-            "timed_out": False,
-            "execution_time_s": round(execution_time, 2),
-        }
-    except subprocess.TimeoutExpired:
-        execution_time = time.time() - start_time
-        # Kill the process group (all children) on Unix
+    # Start memory monitor thread (Linux only, /proc doesn't exist on macOS/Windows)
+    peak_kb: list[int] = [0]
+    killed: list[bool] = [False]
+    stop_event = threading.Event()
+    monitor_thread: threading.Thread | None = None
+    if sys.platform == "linux":
+        memory_limit_kb = memory_limit_mb * 1024 if memory_limit_mb > 0 else 0
+        monitor_thread = threading.Thread(
+            target=_monitor_memory,
+            args=(process.pid, peak_kb, stop_event, memory_limit_kb, killed),
+            daemon=True,
+        )
+        monitor_thread.start()
+
+    # Read stdout/stderr in background threads instead of using communicate()
+    # This avoids hangs when grandchild processes keep pipes open after SIGKILL
+    stdout_chunks: list[str] = []
+    stderr_chunks: list[str] = []
+
+    def _read_stdout() -> None:
+        try:
+            stdout_chunks.append(process.stdout.read())
+        except (ValueError, OSError):
+            pass
+
+    def _read_stderr() -> None:
+        try:
+            stderr_chunks.append(process.stderr.read())
+        except (ValueError, OSError):
+            pass
+
+    reader_out = threading.Thread(target=_read_stdout, daemon=True)
+    reader_err = threading.Thread(target=_read_stderr, daemon=True)
+    reader_out.start()
+    reader_err.start()
+
+    # Poll until process exits, gets OOM-killed, or times out
+    deadline = start_time + timeout
+    while True:
+        if process.poll() is not None:
+            break
+        if killed[0]:
+            break
+        if time.time() >= deadline:
+            break
+        time.sleep(0.1)
+
+    timed_out = False
+    oom_killed = killed[0]
+
+    # If process is still running and wasn't OOM-killed, it's a timeout
+    if process.poll() is None and not oom_killed:
+        timed_out = True
         if sys.platform != "win32":
             try:
                 os.killpg(os.getpgid(process.pid), signal.SIGKILL)
@@ -164,19 +264,43 @@ def run_process_with_timeout(
         else:
             process.kill()
 
-        # Wait for process to fully terminate
-        try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            pass
+    # Close pipes to unblock reader threads (critical after SIGKILL —
+    # grandchild processes may keep pipe FDs open indefinitely)
+    try:
+        process.stdout.close()
+    except OSError:
+        pass
+    try:
+        process.stderr.close()
+    except OSError:
+        pass
 
-        return {
-            "stdout": "",
-            "stderr": "",
-            "returncode": -1,
-            "timed_out": True,
-            "execution_time_s": round(execution_time, 2),
-        }
+    try:
+        process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        pass
+
+    # Clean up threads
+    stop_event.set()
+    if monitor_thread:
+        monitor_thread.join(timeout=2)
+    reader_out.join(timeout=5)
+    reader_err.join(timeout=5)
+
+    execution_time = time.time() - start_time
+    peak_memory_mb = round(peak_kb[0] / 1024, 1)
+    stdout = stdout_chunks[0] if stdout_chunks else ""
+    stderr = stderr_chunks[0] if stderr_chunks else ""
+
+    return {
+        "stdout": "" if (oom_killed or timed_out) else stdout,
+        "stderr": "" if (oom_killed or timed_out) else stderr,
+        "returncode": process.returncode if process.returncode is not None else -1,
+        "timed_out": timed_out,
+        "oom_killed": oom_killed,
+        "execution_time_s": round(execution_time, 2),
+        "peak_memory_mb": peak_memory_mb,
+    }
 
 
 def get_type_checker_versions() -> dict[str, str]:
@@ -497,7 +621,7 @@ def run_pyright(
         timeout=timeout,
     )
 
-    if result["timed_out"]:
+    if result["timed_out"] or result.get("oom_killed"):
         return {
             "ok": False,
             "error_count": 0,
@@ -505,7 +629,7 @@ def run_pyright(
             "info_count": 0,
             "files_checked": 0,
             "execution_time_s": result["execution_time_s"],
-            "error_message": "Timeout",
+            "error_message": "OOM killed" if result.get("oom_killed") else "Timeout",
         }
 
     try:
@@ -560,7 +684,7 @@ def run_pyrefly(package_path: Path, timeout: int = DEFAULT_TIMEOUT) -> ErrorMetr
         timeout=timeout,
     )
 
-    if result["timed_out"]:
+    if result["timed_out"] or result.get("oom_killed"):
         return {
             "ok": False,
             "error_count": 0,
@@ -568,7 +692,7 @@ def run_pyrefly(package_path: Path, timeout: int = DEFAULT_TIMEOUT) -> ErrorMetr
             "info_count": 0,
             "files_checked": 0,
             "execution_time_s": result["execution_time_s"],
-            "error_message": "Timeout",
+            "error_message": "OOM killed" if result.get("oom_killed") else "Timeout",
         }
 
     # Pyrefly outputs errors in format:
@@ -609,7 +733,7 @@ def run_ty(package_path: Path, timeout: int = DEFAULT_TIMEOUT) -> ErrorMetrics:
         timeout=timeout,
     )
 
-    if result["timed_out"]:
+    if result["timed_out"] or result.get("oom_killed"):
         return {
             "ok": False,
             "error_count": 0,
@@ -617,7 +741,7 @@ def run_ty(package_path: Path, timeout: int = DEFAULT_TIMEOUT) -> ErrorMetrics:
             "info_count": 0,
             "files_checked": 0,
             "execution_time_s": result["execution_time_s"],
-            "error_message": "Timeout",
+            "error_message": "OOM killed" if result.get("oom_killed") else "Timeout",
         }
 
     # ty outputs errors in format:
@@ -669,7 +793,7 @@ def run_mypy(
         timeout=timeout,
     )
 
-    if result["timed_out"]:
+    if result["timed_out"] or result.get("oom_killed"):
         return {
             "ok": False,
             "error_count": 0,
@@ -677,7 +801,7 @@ def run_mypy(
             "info_count": 0,
             "files_checked": 0,
             "execution_time_s": result["execution_time_s"],
-            "error_message": "Timeout",
+            "error_message": "OOM killed" if result.get("oom_killed") else "Timeout",
         }
 
     output = result["stdout"] + result["stderr"]
@@ -727,7 +851,7 @@ def run_zuban(package_path: Path, timeout: int = DEFAULT_TIMEOUT) -> ErrorMetric
         timeout=timeout,
     )
 
-    if result["timed_out"]:
+    if result["timed_out"] or result.get("oom_killed"):
         return {
             "ok": False,
             "error_count": 0,
@@ -735,7 +859,7 @@ def run_zuban(package_path: Path, timeout: int = DEFAULT_TIMEOUT) -> ErrorMetric
             "info_count": 0,
             "files_checked": 0,
             "execution_time_s": result["execution_time_s"],
-            "error_message": "Timeout",
+            "error_message": "OOM killed" if result.get("oom_killed") else "Timeout",
         }
 
     output = result["stdout"] + result["stderr"]

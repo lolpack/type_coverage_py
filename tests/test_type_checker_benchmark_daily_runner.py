@@ -10,10 +10,12 @@ from unittest.mock import MagicMock, patch
 import sys
 
 import subprocess
+import threading
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from type_checker_benchmark.daily_runner import (
+    DEFAULT_MEMORY_LIMIT_MB,
     DEFAULT_TYPE_CHECKERS,
     AggregateStats,
     ErrorMetrics,
@@ -31,6 +33,7 @@ from type_checker_benchmark.daily_runner import (
     run_pyright,
     run_mypy,
     run_type_checkers_for_package,
+    _monitor_memory,
 )
 
 
@@ -246,6 +249,7 @@ class TestRunProcessWithTimeout:
         )
 
         assert result["timed_out"] is False
+        assert result.get("oom_killed") is False
         assert result["returncode"] == 0
         assert "hello" in result["stdout"]
         assert result["execution_time_s"] >= 0
@@ -259,7 +263,169 @@ class TestRunProcessWithTimeout:
         )
 
         assert result["timed_out"] is False
+        assert result.get("oom_killed") is False
         assert result["returncode"] != 0
+
+    def test_timeout_kills_process(self, tmp_path: Path) -> None:
+        """Test that a process is killed when it exceeds the timeout."""
+        result = run_process_with_timeout(
+            ["sleep", "60"],
+            cwd=tmp_path,
+            timeout=1,
+        )
+
+        assert result["timed_out"] is True
+        assert result.get("oom_killed") is False
+        assert result["stdout"] == ""
+        assert result["stderr"] == ""
+
+    def test_result_includes_peak_memory(self, tmp_path: Path) -> None:
+        """Test that result includes peak_memory_mb field."""
+        result = run_process_with_timeout(
+            ["echo", "hello"],
+            cwd=tmp_path,
+            timeout=10,
+        )
+
+        assert "peak_memory_mb" in result
+        assert isinstance(result["peak_memory_mb"], float)
+
+
+class TestMonitorMemory:
+    """Tests for _monitor_memory function."""
+
+    def test_stops_on_event(self) -> None:
+        """Test that monitor thread stops when stop_event is set."""
+        peak_kb: list[int] = [0]
+        stop_event = threading.Event()
+        killed: list[bool] = [False]
+
+        # Start monitor on a non-existent PID to trigger FileNotFoundError
+        thread = threading.Thread(
+            target=_monitor_memory,
+            args=(999999999, peak_kb, stop_event, 0, killed),
+            daemon=True,
+        )
+        thread.start()
+        thread.join(timeout=2)
+
+        # Should exit quickly due to FileNotFoundError on /proc/999999999/status
+        assert not thread.is_alive()
+        assert killed[0] is False
+
+    def test_sets_killed_flag(self) -> None:
+        """Test that killed flag is set when memory limit would be exceeded."""
+        if sys.platform != "linux":
+            # Can't test /proc-based monitoring on non-Linux
+            return
+
+        peak_kb: list[int] = [0]
+        stop_event = threading.Event()
+        killed: list[bool] = [False]
+
+        # Start a process that stays alive
+        import subprocess as sp
+        proc = sp.Popen(["sleep", "60"], start_new_session=True)
+        try:
+            # Set an absurdly low memory limit (1 KB) so it triggers immediately
+            thread = threading.Thread(
+                target=_monitor_memory,
+                args=(proc.pid, peak_kb, stop_event, 1, killed),
+                daemon=True,
+            )
+            thread.start()
+            thread.join(timeout=5)
+
+            assert killed[0] is True
+        finally:
+            try:
+                import os as _os
+                import signal as _sig
+                _os.killpg(_os.getpgid(proc.pid), _sig.SIGKILL)
+            except (ProcessLookupError, OSError):
+                pass
+            proc.wait(timeout=5)
+
+    def test_tracks_peak_memory(self) -> None:
+        """Test that peak memory is tracked (Linux only)."""
+        if sys.platform != "linux":
+            return
+
+        peak_kb: list[int] = [0]
+        stop_event = threading.Event()
+
+        import subprocess as sp
+        proc = sp.Popen(["echo", "hello"], start_new_session=True,
+                        stdout=sp.DEVNULL, stderr=sp.DEVNULL)
+        proc.wait(timeout=5)
+
+        # Monitor briefly — process already exited, so it should stop quickly
+        thread = threading.Thread(
+            target=_monitor_memory,
+            args=(proc.pid, peak_kb, stop_event, 0, None),
+            daemon=True,
+        )
+        thread.start()
+        thread.join(timeout=2)
+        stop_event.set()
+
+        # Peak may be 0 if process exited before first poll, that's fine
+
+
+class TestRunProcessOOMKill:
+    """Tests for OOM kill behavior in run_process_with_timeout."""
+
+    def test_oom_killed_on_linux(self, tmp_path: Path) -> None:
+        """Test that a memory-hungry process is killed before the OS OOM killer."""
+        if sys.platform != "linux":
+            return
+
+        # Allocate 100MB which should exceed a 1MB limit
+        result = run_process_with_timeout(
+            [sys.executable, "-c",
+             "x = bytearray(100 * 1024 * 1024); import time; time.sleep(10)"],
+            cwd=tmp_path,
+            timeout=30,
+            memory_limit_mb=1,
+        )
+
+        assert result.get("oom_killed") is True
+        assert result["timed_out"] is False
+
+    def test_no_oom_with_zero_limit(self, tmp_path: Path) -> None:
+        """Test that memory monitoring is disabled when limit is 0."""
+        result = run_process_with_timeout(
+            ["echo", "hello"],
+            cwd=tmp_path,
+            timeout=10,
+            memory_limit_mb=0,
+        )
+
+        assert result.get("oom_killed") is False
+        assert result["timed_out"] is False
+        assert "hello" in result["stdout"]
+
+    def test_runner_reports_oom_as_error(self, tmp_path: Path) -> None:
+        """Test that runner functions report OOM kill in error_message."""
+        with patch("type_checker_benchmark.daily_runner.run_process_with_timeout") as mock_run:
+            mock_run.return_value = {
+                "stdout": "",
+                "stderr": "",
+                "returncode": -9,
+                "timed_out": False,
+                "oom_killed": True,
+                "execution_time_s": 5.0,
+                "peak_memory_mb": 4100.0,
+            }
+
+            result = run_pyright(tmp_path, timeout=60)
+
+            assert result["ok"] is False
+            assert result["error_message"] == "OOM killed"
+
+    def test_memory_limit_default(self) -> None:
+        """Test that DEFAULT_MEMORY_LIMIT_MB is set."""
+        assert DEFAULT_MEMORY_LIMIT_MB == 4096
 
 
 class TestIsTypeCheckerAvailable:

@@ -438,6 +438,9 @@ def run_checker_with_output(
     if result["timed_out"]:
         return f"TIMEOUT after {timeout}s", []
 
+    if result.get("oom_killed"):
+        return f"OOM killed (exceeded memory limit)", []
+
     output = result["stdout"] + result["stderr"]
     errors = parse_errors(output, checker)
 
