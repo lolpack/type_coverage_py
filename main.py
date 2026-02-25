@@ -13,14 +13,13 @@ from analyzer.report_generator import (
     archive_old_reports,
     generate_report,
     generate_report_html,
-    update_main_html_with_links,
 )
 from analyzer.typeshed_checker import (
     check_typeshed,
     find_stub_files,
     merge_files_with_stubs,
 )
-from analyzer.historical_view_generator import generate_historical_graphs
+from analyzer.historical_view_generator import generate_dates_manifest
 from coverage_sources.get_pyright_stats import main as get_pyright_stats
 from coverage_sources.typeshed_coverage import download_typeshed_csv
 
@@ -169,12 +168,12 @@ def analyze_package(
         else:
             package_report["TypeshedData"] = {}
 
-        package_report["CoverageData"][
-            "parameter_coverage_with_stubs"
-        ] = parameter_coverage_with_stubs
-        package_report["CoverageData"][
-            "return_type_coverage_with_stubs"
-        ] = return_type_coverage_with_stubs
+        package_report["CoverageData"]["parameter_coverage_with_stubs"] = (
+            parameter_coverage_with_stubs
+        )
+        package_report["CoverageData"]["return_type_coverage_with_stubs"] = (
+            return_type_coverage_with_stubs
+        )
 
         skipped_files_total = max(skipped_files_with_stubs, skipped_tests)
         package_report["CoverageData"]["skipped_files"] = skipped_files_total
@@ -266,7 +265,7 @@ def main(
     package_list: Optional[str] = None,
     pyright_stats: Optional[bool] = False,
     output_list_only: Optional[bool] = False,
-    prioritized: bool = False
+    prioritized: bool = False,
 ) -> None:
     package_report: dict[str, Any] = {}
 
@@ -315,12 +314,17 @@ def main(
 
     # Call pyright stats and merge data
     if pyright_stats:
-        pyright_package_stats: dict[str, Any] = get_pyright_stats([
-            {
-                "package_name": package_data["project"],
-                "has_py_typed": package_report[package_data["project"]]["HasPyTypedFile"]
-            } for package_data in top_packages
-        ])
+        pyright_package_stats: dict[str, Any] = get_pyright_stats(
+            [
+                {
+                    "package_name": package_data["project"],
+                    "has_py_typed": package_report[package_data["project"]][
+                        "HasPyTypedFile"
+                    ],
+                }
+                for package_data in top_packages
+            ]
+        )
 
         for package, stats in pyright_package_stats.items():
             if package in package_report:
@@ -328,31 +332,17 @@ def main(
 
     html_report_file = HTML_REPORT_FILE
     json_report_file = JSON_REPORT_FILE
-    historical_data_dir = HISTORICAL_DATA_DIR
-    historical_html_dir = os.path.join(HISTORICAL_DATA_DIR, "html")
     historical_json_dir = os.path.join(HISTORICAL_DATA_DIR, "json")
-    coverag_trends_html = os.path.join(HISTORICAL_DATA_DIR, "coverage-trends.html")
 
     if output_list_only:
         os.makedirs("prioritized", exist_ok=True)
         html_report_file: str = os.path.join("prioritized", "index.html")
         json_report_file: str = os.path.join("prioritized", "package_report.json")
-
-        historical_data_dir = os.path.join("prioritized", historical_data_dir)
-        historical_html_dir: str = os.path.join("prioritized", historical_html_dir)
         historical_json_dir: str = os.path.join("prioritized", historical_json_dir)
-        coverag_trends_html: str = os.path.join("prioritized", coverag_trends_html)
-
-
 
     # Archive old report in data section
     if create_daily:
-        archive_old_reports(
-            html_report_file,
-            historical_html_dir,
-            historical_json_dir,
-            json_report_file
-        )
+        archive_old_reports(historical_json_dir, json_report_file)
 
     # Conditionally write the JSON report
     if write_json:
@@ -362,12 +352,12 @@ def main(
 
     # Conditionally generate the HTML report
     if write_html:
-        generate_report_html(package_report, html_report_file)
+        generate_report_html(package_report, html_report_file, prioritized=prioritized)
         print("HTML report generated.")
 
     if create_daily:
-        update_main_html_with_links(html_report_file, historical_html_dir)
-        generate_historical_graphs(historical_json_dir, coverag_trends_html, prioritized=prioritized)
+        # Generate dates.json manifest for dynamic HTML pages (no static HTML generation needed)
+        generate_dates_manifest(historical_json_dir)
 
 
 if __name__ == "__main__":
@@ -416,7 +406,7 @@ if __name__ == "__main__":
             top_n=(args.top_n or 8000),
             package_name=args.package_name,
             write_json=True,
-            write_html=True,
+            write_html=False,  # Dynamic HTML loads from JSON, no static generation needed
             create_daily=True,
         )
     elif args.package_name:
@@ -443,12 +433,12 @@ if __name__ == "__main__":
         main(
             package_list=args.package_list,
             write_json=True,
-            write_html=True,
+            write_html=False,  # Dynamic HTML loads from JSON, no static generation needed
             parallel=args.parallel,
             pyright_stats=True,
             output_list_only=True,
             create_daily=True,
-            prioritized=True
+            prioritized=True,
         )
     elif args.package_list:
         main(

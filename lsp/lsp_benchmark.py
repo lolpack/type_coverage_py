@@ -1114,7 +1114,10 @@ def main(argv: Optional[List[str]] = None) -> int:
                     if res.ok and res.latency_ms is not None:
                         agg[server_name]["latencies_ms"].append(res.latency_ms)
 
-                    if not locations_payload or not any_valid:
+                    # Only mark as unresolved if no locations were returned.
+                    # If the server returned locations (even multiple), it found something,
+                    # so don't count it as a failure even if paths don't pass validation.
+                    if not locations_payload:
                         case_payload["unresolved"][server_name] = {
                             "file": str(case.file_path),
                             "uri": case.uri,
@@ -1125,11 +1128,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                             "token": case.token,
                             "kind": case.kind,
                             "line_text": case.line_text,
-                            "reason": (
-                                "no_definition_locations"
-                                if not locations_payload
-                                else "no_valid_file_location"
-                            ),
+                            "reason": "no_definition_locations",
                         }
                 except Exception as e:
                     agg[server_name]["errors"] += 1

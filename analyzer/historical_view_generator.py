@@ -4,6 +4,31 @@ from datetime import datetime
 from typing import Dict, List, Any
 from jinja2 import Template
 
+
+def get_available_dates(data_dir: str) -> List[str]:
+    """Get a list of all available dates from JSON files in the data directory."""
+    dates: List[str] = []
+    for filename in sorted(os.listdir(data_dir)):
+        if filename.endswith(".json") and filename.startswith("package_report-"):
+            date_str = filename.replace("package_report-", "").replace(".json", "")
+            try:
+                # Validate date format
+                datetime.strptime(date_str, "%Y-%m-%d")
+                dates.append(date_str)
+            except ValueError:
+                continue
+    return sorted(dates, reverse=True)  # Most recent first
+
+
+def generate_dates_manifest(data_dir: str) -> None:
+    """Generate a dates.json manifest file listing all available dates."""
+    dates = get_available_dates(data_dir)
+    manifest_path = os.path.join(data_dir, "dates.json")
+    with open(manifest_path, "w") as f:
+        json.dump(dates, f, indent=2)
+    print(f"Generated dates manifest with {len(dates)} dates at {manifest_path}")
+
+
 def collect_historical_data(data_dir: str) -> Dict[str, List[Dict[str, Any]]]:
     historical_data: Dict[str, List[Dict[str, Any]]] = {}
     for filename in sorted(os.listdir(data_dir)):
@@ -281,5 +306,10 @@ def generate_html(historical_data: Dict[str, List[Dict[str, Any]]], html_output:
 
 
 def generate_historical_graphs(historical_data_dir: str, html_output: str, prioritized: bool = False) -> None:
+    """Generate historical graphs HTML and dates manifest."""
+    # Generate the dates manifest for the dynamic HTML pages
+    generate_dates_manifest(historical_data_dir)
+    
+    # Still generate the static HTML for backward compatibility (can be removed later)
     historical_data = collect_historical_data(historical_data_dir)
     generate_html(historical_data, html_output, prioritized=prioritized)

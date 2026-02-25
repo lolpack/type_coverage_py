@@ -24,6 +24,7 @@ from lsp.benchmark.daily_runner import (
     parse_args,
     resolve_github_url,
     _parse_benchmark_results,
+    _save_results,
 )
 
 
@@ -543,3 +544,124 @@ class TestTypeCheckerCommands:
         for name, cmd in TYPE_CHECKER_COMMANDS.items():
             assert isinstance(cmd, str), f"Command for {name} is not a string"
             assert len(cmd) > 0, f"Command for {name} is empty"
+
+
+class TestParseArgsOsName:
+    """Tests for parse_args --os-name argument."""
+
+    def test_default_os_name_is_none(self) -> None:
+        """Test that os_name defaults to None."""
+        args = parse_args([])
+        assert args.os_name is None
+
+    def test_os_name_ubuntu(self) -> None:
+        """Test parsing --os-name ubuntu."""
+        args = parse_args(["--os-name", "ubuntu"])
+        assert args.os_name == "ubuntu"
+
+    def test_os_name_macos(self) -> None:
+        """Test parsing --os-name macos."""
+        args = parse_args(["--os-name", "macos"])
+        assert args.os_name == "macos"
+
+    def test_os_name_windows(self) -> None:
+        """Test parsing --os-name windows."""
+        args = parse_args(["--os-name", "windows"])
+        assert args.os_name == "windows"
+
+
+class TestSaveResultsOsName:
+    """Tests for _save_results with os_name parameter."""
+
+    def _make_sample_data(self) -> tuple[list[PackageResult], dict, list[str], dict[str, str]]:
+        """Create sample data for testing _save_results."""
+        results: list[PackageResult] = [
+            {
+                "package_name": "requests",
+                "github_url": "https://github.com/psf/requests",
+                "ranking": 1,
+                "error": None,
+                "metrics": {
+                    "pyright": {
+                        "ok": True,
+                        "runs": 5,
+                        "ok_count": 5,
+                        "found_count": 4,
+                        "valid_count": 4,
+                        "latency_ms": {"mean": 100.0},
+                    }
+                },
+            },
+        ]
+        aggregate: dict[str, Any] = {
+            "pyright": {
+                "packages_tested": 1,
+                "total_runs": 5,
+                "total_ok": 5,
+                "total_found": 4,
+                "total_valid": 4,
+                "avg_latency_ms": 100.0,
+                "min_latency_ms": 100.0,
+                "max_latency_ms": 100.0,
+                "success_rate": 80.0,
+            }
+        }
+        type_checkers = ["pyright"]
+        versions = {"pyright": "1.1.400"}
+        return results, aggregate, type_checkers, versions
+
+    def test_save_with_os_name_creates_os_specific_files(self, tmp_path: Path) -> None:
+        """Test that os_name creates OS-specific filenames."""
+        results, aggregate, checkers, versions = self._make_sample_data()
+
+        output_file = _save_results(
+            results, aggregate, checkers, versions,
+            package_count=1, runs_per_package=5,
+            output_dir=tmp_path, os_name="macos",
+        )
+
+        assert "_macos.json" in output_file.name
+        assert (tmp_path / f"latest-macos.json").exists()
+
+        # Verify the output contains the os field
+        with open(output_file) as f:
+            data = json.load(f)
+        assert data["os"] == "macos"
+
+    def test_save_without_os_name_creates_standard_files(self, tmp_path: Path) -> None:
+        """Test that no os_name creates standard filenames (backwards compat)."""
+        results, aggregate, checkers, versions = self._make_sample_data()
+
+        output_file = _save_results(
+            results, aggregate, checkers, versions,
+            package_count=1, runs_per_package=5,
+            output_dir=tmp_path,
+        )
+
+        assert "_ubuntu" not in output_file.name
+        assert "_macos" not in output_file.name
+        assert "_windows" not in output_file.name
+        assert (tmp_path / "latest.json").exists()
+
+        # Verify the output does NOT contain the os field
+        with open(output_file) as f:
+            data = json.load(f)
+        assert "os" not in data
+
+    def test_save_latest_file_matches_dated_file(self, tmp_path: Path) -> None:
+        """Test that latest-{os}.json matches the dated file content."""
+        results, aggregate, checkers, versions = self._make_sample_data()
+
+        output_file = _save_results(
+            results, aggregate, checkers, versions,
+            package_count=1, runs_per_package=5,
+            output_dir=tmp_path, os_name="ubuntu",
+        )
+
+        with open(output_file) as f:
+            dated_data = json.load(f)
+        with open(tmp_path / "latest-ubuntu.json") as f:
+            latest_data = json.load(f)
+
+        assert dated_data == latest_data
+

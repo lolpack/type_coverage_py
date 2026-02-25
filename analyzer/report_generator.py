@@ -4,20 +4,11 @@ from typing import Any
 
 
 def archive_old_reports(
-        html_report_file: str,
-        historical_html_dir: str,
         historical_json_dir: str,
         json_report_file: str) -> None:
-    """Move the old reports to the historical_data directory with a timestamp."""
+    """Move the old JSON report to the historical_data directory with a timestamp."""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
-    os.makedirs(historical_html_dir, exist_ok=True)
     os.makedirs(historical_json_dir, exist_ok=True)
-
-    # Archive old HTML report
-    if os.path.exists(html_report_file):
-        new_html_name = os.path.join(historical_html_dir, f"index-{timestamp}.html")
-        os.rename(html_report_file, new_html_name)
-        print(f"Archived {html_report_file} to {new_html_name}")
 
     # Archive old JSON report
     if os.path.exists(json_report_file):
@@ -163,8 +154,14 @@ def create_boolean_row(value: bool) -> str:
     return f'<td style="background-color: {color};">{text}</td>'
 
 
-def generate_report_html(package_report: dict[str, Any], output_file: str) -> None:
+def generate_report_html(package_report: dict[str, Any], output_file: str, prioritized: bool = False) -> None:
     """Generates an HTML report of the package coverage data."""
+    # Set the correct URL for historical trends based on whether this is the prioritized report
+    if prioritized:
+        historical_trends_url = "https://python-type-checking.com/prioritized/historical_data/coverage-trends.html"
+    else:
+        historical_trends_url = "https://python-type-checking.com/historical_data/coverage-trends.html"
+    
     html_content = """
     <!DOCTYPE html>
         <html lang="en">
@@ -270,7 +267,7 @@ def generate_report_html(package_report: dict[str, Any], output_file: str) -> No
             </ul>
             <ul>
             <li>
-                📈 <a href="https://python-type-checking.com/historical_data/coverage-trends.html" target="_blank">
+                📈 <a href="{historical_trends_url}" target="_blank">
                 View historical coverage trends
                 </a>
             </li>
@@ -375,6 +372,9 @@ def generate_report_html(package_report: dict[str, Any], output_file: str) -> No
     </body>
     </html>
     """
+    # Replace the historical trends URL placeholder with the actual URL
+    html_content = html_content.replace("{historical_trends_url}", historical_trends_url)
+    
     # Output the HTML to a file
     with open(output_file, "w") as file:
         file.write(html_content)

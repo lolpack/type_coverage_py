@@ -7,7 +7,9 @@ from unittest.mock import patch, mock_open
 from analyzer.historical_view_generator import (
     collect_historical_data,
     generate_html,
-    generate_historical_graphs
+    generate_historical_graphs,
+    get_available_dates,
+    generate_dates_manifest
 )
 
 
@@ -303,8 +305,12 @@ class TestGenerateHistoricalGraphs:
         assert "package1" in content
         assert "Type Coverage Historical Trends" in content
 
-        # Verify print statements were called
-        assert mock_print.call_count == 2  # One from collect_historical_data, one from generate_html
+        # Verify print statements were called (dates manifest, collect data, generate html)
+        assert mock_print.call_count >= 2  # At least one from collect_historical_data, one from generate_html
+        
+        # Verify dates manifest was created
+        dates_manifest = data_dir / "dates.json"
+        assert dates_manifest.exists()
 
     def test_generate_historical_graphs_with_empty_directory(self, tmp_path):
         """Test generate_historical_graphs with empty data directory."""
@@ -499,3 +505,70 @@ class TestEdgeCases:
         # Verify nested object is also present
         assert "CoverageData" in new_record
         assert new_record["CoverageData"]["parameter_coverage"] == 85.5
+
+
+class TestGetAvailableDates:
+    """Test class for get_available_dates function."""
+
+    def test_get_available_dates_returns_sorted_dates(self, tmp_path):
+        """Test that dates are returned in reverse chronological order."""
+        # Create test files
+        (tmp_path / "package_report-2023-01-01.json").write_text("{}")
+        (tmp_path / "package_report-2023-01-15.json").write_text("{}")
+        (tmp_path / "package_report-2023-01-10.json").write_text("{}")
+
+        result = get_available_dates(str(tmp_path))
+
+        assert result == ["2023-01-15", "2023-01-10", "2023-01-01"]
+
+    def test_get_available_dates_ignores_invalid_files(self, tmp_path):
+        """Test that files with invalid names are ignored."""
+        # Create valid and invalid files
+        (tmp_path / "package_report-2023-01-01.json").write_text("{}")
+        (tmp_path / "package_report-invalid-date.json").write_text("{}")
+        (tmp_path / "other_file.json").write_text("{}")
+        (tmp_path / "package_report-2023-01-02.json").write_text("{}")
+
+        result = get_available_dates(str(tmp_path))
+
+        assert len(result) == 2
+        assert "2023-01-02" in result
+        assert "2023-01-01" in result
+
+    def test_get_available_dates_empty_directory(self, tmp_path):
+        """Test handling of empty directory."""
+        result = get_available_dates(str(tmp_path))
+        assert result == []
+
+
+class TestGenerateDatesManifest:
+    """Test class for generate_dates_manifest function."""
+
+    def test_generate_dates_manifest_creates_file(self, tmp_path):
+        """Test that dates manifest file is created correctly."""
+        # Create test files
+        (tmp_path / "package_report-2023-01-01.json").write_text("{}")
+        (tmp_path / "package_report-2023-01-02.json").write_text("{}")
+        (tmp_path / "package_report-2023-01-03.json").write_text("{}")
+
+        generate_dates_manifest(str(tmp_path))
+
+        manifest_path = tmp_path / "dates.json"
+        assert manifest_path.exists()
+
+        with open(manifest_path) as f:
+            dates = json.load(f)
+
+        assert dates == ["2023-01-03", "2023-01-02", "2023-01-01"]
+
+    def test_generate_dates_manifest_handles_empty_dir(self, tmp_path):
+        """Test that manifest is created even for empty directory."""
+        generate_dates_manifest(str(tmp_path))
+
+        manifest_path = tmp_path / "dates.json"
+        assert manifest_path.exists()
+
+        with open(manifest_path) as f:
+            dates = json.load(f)
+
+        assert dates == []
