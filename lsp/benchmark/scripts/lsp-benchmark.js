@@ -84,6 +84,7 @@ async function init() {
         await loadBenchmarkData(urlDate, currentOs);
         updateTimestamp();
         createLatencyChart();
+        createOkChart();
         createSuccessChart();
         createPackageComparisonChart();
         populateResultsTable();
@@ -243,9 +244,24 @@ async function switchToDate(date, os = 'ubuntu') {
         clearError();
         updateTimestamp();
 
+<<<<<<< HEAD
+        // Update URL with the actual loaded date from the data
+        const loadedDate = benchmarkData?.date || date;
+        updateUrlWithDate(loadedDate);
+
+        // Update date input to reflect loaded date
+=======
+<<<<<<< HEAD
+        // Update URL with the actual loaded date from the data
+        const loadedDate = benchmarkData?.date || date;
+        updateUrlWithDate(loadedDate);
+
+        // Update date input to reflect loaded date
+=======
         const loadedDate = benchmarkData?.date || date;
         updateUrlWithDate(loadedDate, os);
 
+>>>>>>> main>>>>>>> main
         const dateInput = document.getElementById('dateSelect');
         if (dateInput && loadedDate) {
             dateInput.value = loadedDate;
@@ -257,6 +273,7 @@ async function switchToDate(date, os = 'ubuntu') {
 
         // Recreate charts and table
         createLatencyChart();
+        createOkChart();
         createSuccessChart();
         createPackageComparisonChart();
         populateResultsTable();
@@ -285,6 +302,7 @@ function getDemoData() {
                 total_runs: 25,
                 total_valid: 20,
                 avg_latency_ms: 145.5,
+                ok_rate: 92.0,
                 success_rate: 80.0
             },
             pyrefly: {
@@ -292,6 +310,7 @@ function getDemoData() {
                 total_runs: 25,
                 total_valid: 18,
                 avg_latency_ms: 98.2,
+                ok_rate: 88.0,
                 success_rate: 72.0
             },
             ty: {
@@ -299,6 +318,7 @@ function getDemoData() {
                 total_runs: 25,
                 total_valid: 22,
                 avg_latency_ms: 52.8,
+                ok_rate: 96.0,
                 success_rate: 88.0
             },
             zuban: {
@@ -306,6 +326,7 @@ function getDemoData() {
                 total_runs: 25,
                 total_valid: 21,
                 avg_latency_ms: 75.3,
+                ok_rate: 94.0,
                 success_rate: 84.0
             }
         },
@@ -558,14 +579,14 @@ function createLatencyChart() {
 function createSuccessChart() {
     const ctx = document.getElementById('successChart')?.getContext('2d');
     if (!ctx) return;
-    
+
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    
+
     const labels = checkers.map(c => CHECKER_NAMES[c] || c);
     const data = checkers.map(c => agg[c]?.success_rate || 0);
     const colors = checkers.map(c => CHECKER_COLORS[c] || '#888');
-    
+
     charts.success = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -594,7 +615,63 @@ function createSuccessChart() {
                     beginAtZero: true,
                     max: 100,
                     grid: { color: '#30363d' },
-                    ticks: { 
+                    ticks: {
+                        color: '#8b949e',
+                        callback: (value) => `${value}%`
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#c9d1d9' }
+                }
+            }
+        }
+    });
+}
+
+/**
+ * Create OK rate chart
+ */
+function createOkChart() {
+    const ctx = document.getElementById('okChart')?.getContext('2d');
+    if (!ctx) return;
+
+    const agg = benchmarkData.aggregate || {};
+    const checkers = benchmarkData.type_checkers || [];
+
+    const labels = checkers.map(c => CHECKER_NAMES[c] || c);
+    const data = checkers.map(c => agg[c]?.ok_rate || 0);
+    const colors = checkers.map(c => CHECKER_COLORS[c] || '#888');
+
+    charts.ok = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'OK Rate (%)',
+                data: data,
+                backgroundColor: colors,
+                borderRadius: 6,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => `${ctx.raw.toFixed(1)}%`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    grid: { color: '#30363d' },
+                    ticks: {
                         color: '#8b949e',
                         callback: (value) => `${value}%`
                     }
@@ -719,12 +796,12 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
     
     // Build rows
     const rows = [];
-    
+
     for (const result of results) {
         for (const checker of checkers) {
             const metrics = result.metrics?.[checker];
             const hasError = result.error || !metrics?.ok;
-            
+
             rows.push({
                 package: result.package_name,
                 github_url: result.github_url,
@@ -732,19 +809,20 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                 avgLatency: metrics?.latency_ms?.mean,
                 p50Latency: metrics?.latency_ms?.p50,
                 p95Latency: metrics?.latency_ms?.p95,
+                okPct: metrics?.ok_pct,
                 validPct: metrics?.valid_pct,
                 hasError: hasError,
                 error: result.error || metrics?.error
             });
         }
     }
-    
+
     // Render
     if (rows.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="loading-row">No results found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="loading-row">No results found</td></tr>`;
         return;
     }
-    
+
     tbody.innerHTML = rows.map((row, idx) => {
         const isFirstInGroup = idx === 0 || rows[idx - 1].package !== row.package;
         const packageCell = isFirstInGroup
@@ -752,7 +830,7 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                  <a href="${row.github_url}" target="_blank">${row.package}</a>
                </td>`
             : '';
-        
+
         return `
             <tr>
                 ${packageCell}
@@ -760,6 +838,7 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                 <td class="latency">${formatLatency(row.avgLatency)}</td>
                 <td class="latency">${formatLatency(row.p50Latency)}</td>
                 <td class="latency">${formatLatency(row.p95Latency)}</td>
+                <td>${formatPercent(row.okPct)}</td>
                 <td>${formatPercent(row.validPct)}</td>
             </tr>
         `;
