@@ -93,11 +93,11 @@ function getDemoData() {
         type_checker_versions: { pyright: '1.1.408', pyrefly: '0.54.0', ty: '0.0.19', mypy: '1.19.1', zuban: '0.6.1' },
         package_count: 5,
         aggregate: {
-            pyright:  { packages_tested: 5, avg_execution_time_s: 12.5, p95_execution_time_s: 25.0, max_execution_time_s: 30.0, total_execution_time_s: 62.5, avg_peak_memory_mb: 350, p95_peak_memory_mb: 500, max_peak_memory_mb: 550 },
-            pyrefly:  { packages_tested: 5, avg_execution_time_s: 3.2, p95_execution_time_s: 6.0, max_execution_time_s: 8.0, total_execution_time_s: 16.0, avg_peak_memory_mb: 280, p95_peak_memory_mb: 400, max_peak_memory_mb: 420 },
-            ty:       { packages_tested: 5, avg_execution_time_s: 2.1, p95_execution_time_s: 4.0, max_execution_time_s: 5.0, total_execution_time_s: 10.5, avg_peak_memory_mb: 200, p95_peak_memory_mb: 300, max_peak_memory_mb: 320 },
-            mypy:     { packages_tested: 5, avg_execution_time_s: 15.0, p95_execution_time_s: 30.0, max_execution_time_s: 35.0, total_execution_time_s: 75.0, avg_peak_memory_mb: 400, p95_peak_memory_mb: 600, max_peak_memory_mb: 650 },
-            zuban:    { packages_tested: 5, avg_execution_time_s: 8.0, p95_execution_time_s: 15.0, max_execution_time_s: 18.0, total_execution_time_s: 40.0, avg_peak_memory_mb: 320, p95_peak_memory_mb: 450, max_peak_memory_mb: 480 }
+            pyright:  { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 12.5, p90_execution_time_s: 22.0, p95_execution_time_s: 25.0, max_execution_time_s: 30.0, total_execution_time_s: 62.5, avg_peak_memory_mb: 350, p90_peak_memory_mb: 480, p95_peak_memory_mb: 500, max_peak_memory_mb: 550 },
+            pyrefly:  { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 3.2, p90_execution_time_s: 5.5, p95_execution_time_s: 6.0, max_execution_time_s: 8.0, total_execution_time_s: 16.0, avg_peak_memory_mb: 280, p90_peak_memory_mb: 380, p95_peak_memory_mb: 400, max_peak_memory_mb: 420 },
+            ty:       { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 2.1, p90_execution_time_s: 3.5, p95_execution_time_s: 4.0, max_execution_time_s: 5.0, total_execution_time_s: 10.5, avg_peak_memory_mb: 200, p90_peak_memory_mb: 280, p95_peak_memory_mb: 300, max_peak_memory_mb: 320 },
+            mypy:     { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 15.0, p90_execution_time_s: 28.0, p95_execution_time_s: 30.0, max_execution_time_s: 35.0, total_execution_time_s: 75.0, avg_peak_memory_mb: 400, p90_peak_memory_mb: 560, p95_peak_memory_mb: 600, max_peak_memory_mb: 650 },
+            zuban:    { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 8.0, p90_execution_time_s: 14.0, p95_execution_time_s: 15.0, max_execution_time_s: 18.0, total_execution_time_s: 40.0, avg_peak_memory_mb: 320, p90_peak_memory_mb: 430, p95_peak_memory_mb: 450, max_peak_memory_mb: 480 }
         },
         results: [
             { package_name: 'requests', github_url: 'https://github.com/psf/requests', error: null, metrics: { pyright: { ok: true, execution_time_s: 8.5, peak_memory_mb: 280 }, pyrefly: { ok: true, execution_time_s: 2.1, peak_memory_mb: 200 }, ty: { ok: true, execution_time_s: 1.5, peak_memory_mb: 150 }, mypy: { ok: true, execution_time_s: 10.0, peak_memory_mb: 300 }, zuban: { ok: true, execution_time_s: 5.0, peak_memory_mb: 250 } } },
@@ -121,19 +121,26 @@ async function init() {
 
         const urlDate = getDateFromUrl();
         await loadBenchmarkData(urlDate, currentOs);
-        updateTimestamp();
-        createAvgTimeChart();
-        createAvgMemoryChart();
-        createTotalTimeChart();
-        createPackageTimeChart();
-        createPackageMemoryChart();
-        populateResultsTable();
+        renderAll();
         setupFilters();
         setupDateSelector();
     } catch (error) {
         console.error('Failed to init:', error);
         showError('Failed to load benchmark data. Please try again later.');
     }
+}
+
+function renderAll() {
+    updateTimestamp();
+    populateSummary();
+    populateFailureTable();
+    createAvgTimeChart();
+    createAvgMemoryChart();
+    createP90TimeChart();
+    createP95TimeChart();
+    createSlowestPackagesChart();
+    createHighestMemoryChart();
+    populateResultsTable();
 }
 
 // ---------------------------------------------------------------------------
@@ -172,7 +179,6 @@ async function switchToDate(date, os) {
     try {
         await loadBenchmarkData(date, os);
         clearError();
-        updateTimestamp();
         updateUrlWithDate(benchmarkData?.date || date, os);
 
         const dateInput = document.getElementById('dateSelect');
@@ -181,12 +187,7 @@ async function switchToDate(date, os) {
         Object.values(charts).forEach(c => c?.destroy());
         charts = {};
 
-        createAvgTimeChart();
-        createAvgMemoryChart();
-        createTotalTimeChart();
-        createPackageTimeChart();
-        createPackageMemoryChart();
-        populateResultsTable();
+        renderAll();
     } catch (error) {
         console.error('Failed to load:', error);
         showError(`No data available for ${date || 'latest'} on ${os}.`, {
@@ -232,7 +233,6 @@ function updateTimestamp() {
     } else {
         el.textContent = 'Demo data';
     }
-    // Update version badges
     const versions = benchmarkData?.type_checker_versions || {};
     for (const [checker, version] of Object.entries(versions)) {
         const vEl = document.getElementById(`version-${checker}`);
@@ -243,18 +243,68 @@ function updateTimestamp() {
 }
 
 // ---------------------------------------------------------------------------
-// Chart helpers
+// Summary + failure table
 // ---------------------------------------------------------------------------
 
-const CHART_DEFAULTS = {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: { legend: { display: false } },
-    scales: {
-        y: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
-        x: { grid: { display: false }, ticks: { color: '#c9d1d9' } }
+function populateSummary() {
+    const results = benchmarkData.results || [];
+    const checkers = benchmarkData.type_checkers || [];
+
+    const testedPackages = results.filter(r => !r.error).length;
+    document.getElementById('summaryPackages').textContent = testedPackages;
+    document.getElementById('summaryCheckers').textContent = checkers.length;
+}
+
+function populateFailureTable() {
+    const results = benchmarkData.results || [];
+    const checkers = benchmarkData.type_checkers || [];
+    const failureDiv = document.getElementById('failureSummary');
+    const tbody = document.getElementById('failureBody');
+    if (!failureDiv || !tbody) return;
+
+    const failures = [];
+
+    // Package-level errors (e.g. clone failed)
+    for (const result of results) {
+        if (result.error) {
+            failures.push({
+                package: result.package_name,
+                checker: 'All',
+                reason: result.error
+            });
+            continue;
+        }
+        // Per-checker failures
+        for (const checker of checkers) {
+            const m = result.metrics?.[checker];
+            if (m && !m.ok) {
+                failures.push({
+                    package: result.package_name,
+                    checker: CHECKER_NAMES[checker] || checker,
+                    reason: m.error_message || 'Failed'
+                });
+            }
+        }
     }
-};
+
+    if (failures.length === 0) {
+        failureDiv.style.display = 'none';
+        return;
+    }
+
+    failureDiv.style.display = 'block';
+    tbody.innerHTML = failures.map(f => `
+        <tr>
+            <td class="package-name">${f.package}</td>
+            <td>${f.checker === 'All' ? '<span class="status-badge error">All</span>' : `<span class="checker-badge ${f.checker.toLowerCase()}">${f.checker}</span>`}</td>
+            <td><span class="status-badge error">${f.reason}</span></td>
+        </tr>
+    `).join('');
+}
+
+// ---------------------------------------------------------------------------
+// Chart helpers
+// ---------------------------------------------------------------------------
 
 function barChart(canvasId, labels, data, colors, unit, chartKey) {
     const ctx = document.getElementById(canvasId)?.getContext('2d');
@@ -266,14 +316,15 @@ function barChart(canvasId, labels, data, colors, unit, chartKey) {
             datasets: [{ data, backgroundColor: colors, borderRadius: 6, borderWidth: 0 }]
         },
         options: {
-            ...CHART_DEFAULTS,
+            responsive: true,
+            maintainAspectRatio: true,
             plugins: {
                 legend: { display: false },
                 tooltip: { callbacks: { label: (ctx) => `${ctx.raw.toFixed(1)} ${unit}` } }
             },
             scales: {
-                y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: (v) => `${v} ${unit}` } },
-                x: CHART_DEFAULTS.scales.x
+                y: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v) => `${v} ${unit}` } },
+                x: { grid: { display: false }, ticks: { color: '#c9d1d9' } }
             }
         }
     });
@@ -295,13 +346,14 @@ function groupedBarChart(canvasId, packageNames, checkers, getValueFn, unit, cha
         options: {
             responsive: true,
             maintainAspectRatio: true,
+            indexAxis: 'y',
             plugins: {
                 legend: { position: 'top', labels: { color: '#c9d1d9', usePointStyle: true, padding: 20 } },
                 tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(1)} ${unit}` } }
             },
             scales: {
-                y: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v) => `${v} ${unit}` }, title: { display: true, text: unit, color: '#8b949e' } },
-                x: { grid: { display: false }, ticks: { color: '#c9d1d9' } }
+                x: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v) => `${v} ${unit}` }, title: { display: true, text: unit, color: '#8b949e' } },
+                y: { grid: { display: false }, ticks: { color: '#c9d1d9' } }
             }
         }
     });
@@ -331,32 +383,73 @@ function createAvgMemoryChart() {
         'MB', 'avgMemory');
 }
 
-function createTotalTimeChart() {
+function createP90TimeChart() {
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    barChart('totalTimeChart',
+    barChart('p90TimeChart',
         checkers.map(c => CHECKER_NAMES[c] || c),
-        checkers.map(c => agg[c]?.total_execution_time_s || 0),
+        checkers.map(c => agg[c]?.p90_execution_time_s || 0),
         checkers.map(c => CHECKER_COLORS[c] || '#888'),
-        's', 'totalTime');
+        's', 'p90Time');
 }
 
-function createPackageTimeChart() {
-    const results = (benchmarkData.results || []).filter(r => !r.error);
+function createP95TimeChart() {
+    const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    const names = results.map(r => r.package_name);
-    groupedBarChart('packageTimeChart', names, checkers,
-        (i, checker) => results[i].metrics?.[checker]?.execution_time_s || 0,
-        's', 'packageTime');
+    barChart('p95TimeChart',
+        checkers.map(c => CHECKER_NAMES[c] || c),
+        checkers.map(c => agg[c]?.p95_execution_time_s || 0),
+        checkers.map(c => CHECKER_COLORS[c] || '#888'),
+        's', 'p95Time');
 }
 
-function createPackageMemoryChart() {
+function createSlowestPackagesChart() {
     const results = (benchmarkData.results || []).filter(r => !r.error);
     const checkers = benchmarkData.type_checkers || [];
-    const names = results.map(r => r.package_name);
-    groupedBarChart('packageMemoryChart', names, checkers,
-        (i, checker) => results[i].metrics?.[checker]?.peak_memory_mb || 0,
-        'MB', 'packageMemory');
+
+    // Compute average time per package across all checkers, sort descending, take top 10
+    const withAvg = results.map(r => {
+        let sum = 0, count = 0;
+        for (const c of checkers) {
+            const t = r.metrics?.[c]?.execution_time_s;
+            if (t != null && r.metrics?.[c]?.ok) { sum += t; count++; }
+        }
+        return { result: r, avg: count > 0 ? sum / count : 0 };
+    });
+    withAvg.sort((a, b) => b.avg - a.avg);
+    const top10 = withAvg.slice(0, 10);
+
+    const names = top10.map(x => x.result.package_name);
+    groupedBarChart('slowestPackagesChart', names, checkers,
+        (i, checker) => {
+            const m = top10[i].result.metrics?.[checker];
+            return (m?.ok ? m.execution_time_s : 0) || 0;
+        },
+        's', 'slowestPackages');
+}
+
+function createHighestMemoryChart() {
+    const results = (benchmarkData.results || []).filter(r => !r.error);
+    const checkers = benchmarkData.type_checkers || [];
+
+    const withAvg = results.map(r => {
+        let sum = 0, count = 0;
+        for (const c of checkers) {
+            const m = r.metrics?.[c]?.peak_memory_mb;
+            if (m != null && m > 0 && r.metrics?.[c]?.ok) { sum += m; count++; }
+        }
+        return { result: r, avg: count > 0 ? sum / count : 0 };
+    });
+    withAvg.sort((a, b) => b.avg - a.avg);
+    const top10 = withAvg.slice(0, 10);
+
+    const names = top10.map(x => x.result.package_name);
+    groupedBarChart('highestMemoryChart', names, checkers,
+        (i, checker) => {
+            const m = top10[i].result.metrics?.[checker];
+            return (m?.ok ? m.peak_memory_mb : 0) || 0;
+        },
+        'MB', 'highestMemory');
 }
 
 // ---------------------------------------------------------------------------

@@ -158,6 +158,47 @@ code {
 .nav-links a:hover { color: var(--color-text); }
 
 /* Sections */
+
+/* Summary */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.summary-card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-align: center;
+}
+
+.summary-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-bright);
+    font-family: var(--font-mono);
+}
+
+.summary-label {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+}
+
+.failure-summary {
+    margin-top: 24px;
+}
+
+.failure-summary h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-error);
+    margin-bottom: 12px;
+}
+
 .section {
     padding: 48px 0;
     border-bottom: 1px solid var(--color-border);

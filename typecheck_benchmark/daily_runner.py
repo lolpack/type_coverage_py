@@ -65,12 +65,15 @@ class AggregateStats(TypedDict, total=False):
     """Aggregate statistics for one type checker across all packages."""
 
     packages_tested: int
+    packages_failed: int
     avg_execution_time_s: float
     p50_execution_time_s: float
+    p90_execution_time_s: float
     p95_execution_time_s: float
     max_execution_time_s: float
     total_execution_time_s: float
     avg_peak_memory_mb: float
+    p90_peak_memory_mb: float
     p95_peak_memory_mb: float
     max_peak_memory_mb: float
 
@@ -585,12 +588,16 @@ def compute_aggregate_stats(
         times: list[float] = []
         memories: list[float] = []
         packages_tested = 0
+        packages_failed = 0
 
         for result in results:
             if result.get("error"):
                 continue
             metrics = result.get("metrics", {}).get(checker)
-            if not metrics or not metrics.get("ok"):
+            if not metrics:
+                continue
+            if not metrics.get("ok"):
+                packages_failed += 1
                 continue
             packages_tested += 1
             times.append(metrics["execution_time_s"])
@@ -600,12 +607,15 @@ def compute_aggregate_stats(
 
         stats[checker] = {
             "packages_tested": packages_tested,
+            "packages_failed": packages_failed,
             "avg_execution_time_s": round(sum(times) / len(times), 2) if times else 0.0,
             "p50_execution_time_s": round(compute_percentile(times, 50), 2),
+            "p90_execution_time_s": round(compute_percentile(times, 90), 2),
             "p95_execution_time_s": round(compute_percentile(times, 95), 2),
             "max_execution_time_s": round(max(times), 2) if times else 0.0,
             "total_execution_time_s": round(sum(times), 2),
             "avg_peak_memory_mb": round(sum(memories) / len(memories), 1) if memories else 0.0,
+            "p90_peak_memory_mb": round(compute_percentile(memories, 90), 1),
             "p95_peak_memory_mb": round(compute_percentile(memories, 95), 1),
             "max_peak_memory_mb": round(max(memories), 1) if memories else 0.0,
         }

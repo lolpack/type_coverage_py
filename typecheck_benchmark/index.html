@@ -44,6 +44,36 @@
     </nav>
 
     <main class="container">
+        <!-- Failure Summary -->
+        <section id="summary" class="section">
+            <h2>Run Summary</h2>
+            <div class="summary-grid" id="summaryGrid">
+                <div class="summary-card">
+                    <div class="summary-value" id="summaryPackages">-</div>
+                    <div class="summary-label">Packages Tested</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="summaryCheckers">-</div>
+                    <div class="summary-label">Type Checkers</div>
+                </div>
+            </div>
+            <div id="failureSummary" class="failure-summary" style="display:none;">
+                <h3>Failures</h3>
+                <div class="table-container">
+                    <table class="results-table" id="failureTable">
+                        <thead>
+                            <tr>
+                                <th>Package</th>
+                                <th>Type Checker</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody id="failureBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
         <!-- Comparison Charts -->
         <section id="comparison" class="section">
             <h2>Type Checker Comparison</h2>
@@ -51,31 +81,39 @@
             <div class="chart-grid">
                 <div class="chart-card">
                     <h3>Average Execution Time (s)</h3>
-                    <p class="chart-description">Lower is better &mdash; time to type check the entire package</p>
+                    <p class="chart-description">Lower is better &mdash; mean time to type check each package</p>
                     <canvas id="avgTimeChart"></canvas>
                 </div>
                 <div class="chart-card">
                     <h3>Average Peak Memory (MB)</h3>
-                    <p class="chart-description">Lower is better &mdash; peak resident set size during type checking</p>
+                    <p class="chart-description">Lower is better &mdash; mean peak RSS during type checking</p>
                     <canvas id="avgMemoryChart"></canvas>
                 </div>
+            </div>
+
+            <div class="chart-grid">
                 <div class="chart-card">
-                    <h3>Total Execution Time (s)</h3>
-                    <p class="chart-description">Sum of execution time across all packages</p>
-                    <canvas id="totalTimeChart"></canvas>
+                    <h3>P90 Execution Time (s)</h3>
+                    <p class="chart-description">90th percentile type checking time across packages</p>
+                    <canvas id="p90TimeChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>P95 Execution Time (s)</h3>
+                    <p class="chart-description">95th percentile type checking time across packages</p>
+                    <canvas id="p95TimeChart"></canvas>
                 </div>
             </div>
 
             <div class="chart-card full-width">
-                <h3>Execution Time by Package (s)</h3>
-                <p class="chart-description">Per-package type checking time (lower is better)</p>
-                <canvas id="packageTimeChart"></canvas>
+                <h3>Top 10 Slowest Packages (s)</h3>
+                <p class="chart-description">Packages with the highest average execution time across checkers</p>
+                <canvas id="slowestPackagesChart"></canvas>
             </div>
 
             <div class="chart-card full-width">
-                <h3>Peak Memory by Package (MB)</h3>
-                <p class="chart-description">Per-package peak memory usage (lower is better)</p>
-                <canvas id="packageMemoryChart"></canvas>
+                <h3>Top 10 Highest Memory Packages (MB)</h3>
+                <p class="chart-description">Packages with the highest average peak memory across checkers</p>
+                <canvas id="highestMemoryChart"></canvas>
             </div>
         </section>
 
