@@ -478,23 +478,25 @@ def install_deps(package_path: Path, env_config: dict[str, Any]) -> bool:
 # pyproject.toml [tool.*] sections, etc.) that can change strictness, enable/disable
 # checks, or alter behavior in ways that skew benchmark comparisons.
 #
-# To ensure consistent benchmarking across packages, we write minimal/empty config
-# files and pass them via each checker's CLI flag to override package-level config:
+# To ensure consistent benchmarking across packages, we write minimal config files
+# that embed the check_paths (from install_envs.json) directly into each checker's
+# native config format, then pass the config via CLI flag to override package-level
+# config.  This means paths are NOT passed as CLI arguments — they live in the config:
 #
-#   pyright  -- pyrightconfig.json written in-place (pyright has no --config-file flag)
-#   mypy     -- empty [mypy] section via --config-file
-#   ty       -- empty ty.toml via --config-file
-#   pyrefly  -- empty pyrefly.toml via --config
-#   zuban    -- empty [mypy] section via --config-file PLUS --no-mypy-compatible,
-#               because zuban auto-enables mypy-compatible mode when it finds a mypy
-#               config, which changes its behavior significantly (can cause hangs)
+#   pyright  -- pyrightconfig.json with "include": [paths] (written in-place)
+#   mypy     -- [mypy] section with files = path1, path2 via --config-file
+#   ty       -- [src] include = [paths] in ty.benchmark.toml via --config-file
+#   pyrefly  -- project_includes = [paths] in pyrefly.benchmark.toml via --config
+#   zuban    -- [mypy] section with files = path1, path2 via --config-file
 # ---------------------------------------------------------------------------
 
 
-def _write_dummy_pyright_config(package_path: Path) -> None:
+def _write_dummy_pyright_config(
+    package_path: Path, check_paths: list[str] | None = None,
+) -> None:
     """Write minimal pyrightconfig.json for consistent benchmarking."""
     config = {
-        "include": ["."],
+        "include": check_paths or ["."],
         "exclude": [],
         "typeCheckingMode": "basic",
         "useLibraryCodeForTypes": True,
@@ -503,27 +505,52 @@ def _write_dummy_pyright_config(package_path: Path) -> None:
         json.dump(config, f)
 
 
-def _write_dummy_mypy_config(package_path: Path) -> Path:
+def _write_dummy_mypy_config(
+    package_path: Path, check_paths: list[str] | None = None,
+) -> Path:
     """Write minimal mypy config for consistent benchmarking."""
     config_path = package_path / "mypy.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
         f.write("[mypy]\n")
+        if check_paths:
+            f.write(f"files = {', '.join(check_paths)}\n")
     return config_path
 
 
-def _write_dummy_ty_config(package_path: Path) -> Path:
+def _write_dummy_ty_config(
+    package_path: Path, check_paths: list[str] | None = None,
+) -> Path:
     """Write minimal ty.toml for consistent benchmarking."""
     config_path = package_path / "ty.benchmark.toml"
     with open(config_path, "w", encoding="utf-8") as f:
-        f.write("")
+        if check_paths:
+            f.write("[src]\n")
+            paths_toml = ", ".join(f'"{p}"' for p in check_paths)
+            f.write(f"include = [{paths_toml}]\n")
     return config_path
 
 
-def _write_dummy_pyrefly_config(package_path: Path) -> Path:
+def _write_dummy_pyrefly_config(
+    package_path: Path, check_paths: list[str] | None = None,
+) -> Path:
     """Write minimal pyrefly.toml for consistent benchmarking."""
     config_path = package_path / "pyrefly.benchmark.toml"
     with open(config_path, "w", encoding="utf-8") as f:
-        f.write("")
+        if check_paths:
+            paths_toml = ", ".join(f'"{p}"' for p in check_paths)
+            f.write(f"project_includes = [{paths_toml}]\n")
+    return config_path
+
+
+def _write_dummy_zuban_config(
+    package_path: Path, check_paths: list[str] | None = None,
+) -> Path:
+    """Write minimal mypy-style config for zuban benchmarking."""
+    config_path = package_path / "mypy.benchmark.ini"
+    with open(config_path, "w", encoding="utf-8") as f:
+        f.write("[mypy]\n")
+        if check_paths:
+            f.write(f"files = {', '.join(check_paths)}\n")
     return config_path
 
 
@@ -534,43 +561,40 @@ def run_checker(
     timeout: int,
 ) -> TimingMetrics:
     """Run a single type checker and return timing metrics only."""
-    targets = [str(p) for p in check_paths] if check_paths else [str(package_path)]
+    # Convert absolute check_paths to relative strings from package root
+    rel_paths: list[str] | None = None
+    if check_paths:
+        rel_paths = [
+            str(p.relative_to(package_path)) if p.is_absolute() else str(p)
+            for p in check_paths
+        ]
 
     if checker == "pyright":
-        _write_dummy_pyright_config(package_path)
-        cmd = ["pyright", "--outputjson"] + targets
+        _write_dummy_pyright_config(package_path, rel_paths)
+        cmd = ["pyright", "--outputjson"]
         cwd = package_path
     elif checker == "pyrefly":
-        config_path = _write_dummy_pyrefly_config(package_path)
-        cmd = ["pyrefly", "check", "--config", str(config_path)] + targets
+        config_path = _write_dummy_pyrefly_config(package_path, rel_paths)
+        cmd = ["pyrefly", "check", "--config", str(config_path)]
         cwd = package_path
     elif checker == "ty":
-        config_path = _write_dummy_ty_config(package_path)
-        cmd = ["ty", "check", "--config-file", str(config_path)] + targets
+        config_path = _write_dummy_ty_config(package_path, rel_paths)
+        cmd = ["ty", "check", "--config-file", str(config_path)]
         cwd = package_path
     elif checker == "mypy":
-        config_path = _write_dummy_mypy_config(package_path)
-        cmd = [sys.executable, "-m", "mypy", "--config-file", str(config_path)] + targets
+        config_path = _write_dummy_mypy_config(package_path, rel_paths)
+        cmd = [sys.executable, "-m", "mypy", "--config-file", str(config_path)]
+        # mypy needs explicit paths if no files= in config; when check_paths
+        # are embedded in the config via files=, we still pass "." so mypy
+        # has a target (it requires at least one positional arg or files=).
+        if not rel_paths:
+            cmd.append(str(package_path))
         cwd = package_path
     elif checker == "zuban":
-        # zuban auto-discovers mypy config and enables mypy-compatible mode.
-        # Use --config-file with an empty [mypy] section to override package
-        # config, and --no-mypy-compatible to prevent the config file from
-        # triggering mypy-compatible mode (which changes checker behavior).
-        config_path = _write_dummy_mypy_config(package_path)
-        # zuban needs relative paths from package root
-        if check_paths:
-            rel_targets = [
-                str(p.relative_to(package_path)) if p.is_absolute() else str(p)
-                for p in check_paths
-            ]
-        else:
-            rel_targets = ["."]
-        cmd = [
-            "zuban", "check",
-            "--config-file", str(config_path),
-            "--no-mypy-compatible",
-        ] + rel_targets
+        config_path = _write_dummy_zuban_config(package_path, rel_paths)
+        cmd = ["zuban", "check", "--config-file", str(config_path)]
+        if not rel_paths:
+            cmd.append(".")
         cwd = package_path
     else:
         return {

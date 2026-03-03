@@ -181,6 +181,50 @@
                     </p>
                 </div>
                 <div class="method-card">
+                    <h3>Dependencies</h3>
+                    <p>
+                        Each package's dependencies are configured in
+                        <code>install_envs.json</code>. Packages can specify:
+                    </p>
+                    <ul>
+                        <li><strong>install:</strong> Whether to <code>pip install -e .</code> the package itself</li>
+                        <li><strong>deps:</strong> Additional pip packages to install</li>
+                        <li><strong>install_env:</strong> Environment variables for installation</li>
+                    </ul>
+                    <p class="method-note">
+                        Only packages with <code>install: true</code> or a non-empty
+                        <code>deps</code> list are benchmarked.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>Configuration Overrides</h3>
+                    <p>
+                        Packages often ship their own type checker configs that can skew
+                        benchmark comparisons. We write minimal config files that embed
+                        <code>check_paths</code> directly into each checker's native config
+                        format, then pass the config via CLI flags to override package-level
+                        config. Paths are not passed as CLI arguments &mdash; they live in
+                        the config:
+                    </p>
+                    <ul>
+                        <li><strong>Pyright:</strong> <code>pyrightconfig.json</code> with <code>"include": [paths]</code> written in-place</li>
+                        <li><strong>Mypy:</strong> <code>[mypy]</code> with <code>files = paths</code> via <code>--config-file</code></li>
+                        <li><strong>ty:</strong> <code>[src] include = [paths]</code> in <code>ty.benchmark.toml</code> via <code>--config-file</code></li>
+                        <li><strong>Pyrefly:</strong> <code>project_includes = [paths]</code> in <code>pyrefly.benchmark.toml</code> via <code>--config</code></li>
+                        <li><strong>Zuban:</strong> <code>[mypy]</code> with <code>files = paths</code> via <code>--config-file</code></li>
+                    </ul>
+                </div>
+                <div class="method-card">
+                    <h3>Check Paths</h3>
+                    <p>
+                        By default, each type checker runs against the entire package root.
+                        Packages can specify <code>check_paths</code> in
+                        <code>install_envs.json</code> to limit checking to specific
+                        subdirectories (e.g. <code>src/</code>), ensuring only the
+                        relevant source code is benchmarked.
+                    </p>
+                </div>
+                <div class="method-card">
                     <h3>Metrics Explained</h3>
                     <ul>
                         <li><strong>Time (s):</strong> Wall-clock execution time in seconds</li>
