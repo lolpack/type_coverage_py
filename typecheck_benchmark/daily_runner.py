@@ -473,6 +473,22 @@ def install_deps(package_path: Path, env_config: dict[str, Any]) -> bool:
 # ---------------------------------------------------------------------------
 # Type checker runners (timing-only -- we don't parse error output)
 # ---------------------------------------------------------------------------
+# Dummy config methodology:
+# Many packages ship their own type checker configs (mypy.ini, pyrightconfig.json,
+# pyproject.toml [tool.*] sections, etc.) that can change strictness, enable/disable
+# checks, or alter behavior in ways that skew benchmark comparisons.
+#
+# To ensure consistent benchmarking across packages, we write minimal/empty config
+# files and pass them via each checker's CLI flag to override package-level config:
+#
+#   pyright  -- pyrightconfig.json written in-place (pyright has no --config-file flag)
+#   mypy     -- empty [mypy] section via --config-file
+#   ty       -- empty ty.toml via --config-file
+#   pyrefly  -- empty pyrefly.toml via --config
+#   zuban    -- empty [mypy] section via --config-file PLUS --no-mypy-compatible,
+#               because zuban auto-enables mypy-compatible mode when it finds a mypy
+#               config, which changes its behavior significantly (can cause hangs)
+# ---------------------------------------------------------------------------
 
 
 def _write_dummy_pyright_config(package_path: Path) -> None:
@@ -537,7 +553,10 @@ def run_checker(
         cmd = [sys.executable, "-m", "mypy", "--config-file", str(config_path)] + targets
         cwd = package_path
     elif checker == "zuban":
-        # zuban picks up mypy config automatically, so use the dummy mypy config
+        # zuban auto-discovers mypy config and enables mypy-compatible mode.
+        # Use --config-file with an empty [mypy] section to override package
+        # config, and --no-mypy-compatible to prevent the config file from
+        # triggering mypy-compatible mode (which changes checker behavior).
         config_path = _write_dummy_mypy_config(package_path)
         # zuban needs relative paths from package root
         if check_paths:
@@ -547,7 +566,11 @@ def run_checker(
             ]
         else:
             rel_targets = ["."]
-        cmd = ["zuban", "check", "--config-file", str(config_path)] + rel_targets
+        cmd = [
+            "zuban", "check",
+            "--config-file", str(config_path),
+            "--no-mypy-compatible",
+        ] + rel_targets
         cwd = package_path
     else:
         return {
