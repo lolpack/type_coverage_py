@@ -1,6 +1,9 @@
 name: Daily Type Checker Timing Benchmark
 
 on:
+  push:
+    branches:
+      - add-dummy-checker-configs
   schedule:
     # Daily at 5 AM UTC (ubuntu + windows)
     - cron: '0 5 * * *'
@@ -31,7 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: published-report
+          ref: ${{ github.event_name == 'push' && github.ref_name || 'published-report' }}
 
       - name: Setup SSH Known Hosts
         shell: bash
@@ -117,7 +120,7 @@ jobs:
 
       - name: Pull Latest Changes
         shell: bash
-        run: git pull origin published-report --rebase
+        run: git pull origin ${{ github.event_name == 'push' && github.ref_name || 'published-report' }} --rebase
 
       - name: Apply Stashed Changes
         shell: bash
@@ -127,5 +130,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update typecheck timing benchmark results [skip ci]"
-          branch: published-report
+          branch: ${{ github.event_name == 'push' && github.ref_name || 'published-report' }}
           file_pattern: 'typecheck_benchmark/results/*.json'

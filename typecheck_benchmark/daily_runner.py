@@ -495,6 +495,22 @@ def _write_dummy_mypy_config(package_path: Path) -> Path:
     return config_path
 
 
+def _write_dummy_ty_config(package_path: Path) -> Path:
+    """Write minimal ty.toml for consistent benchmarking."""
+    config_path = package_path / "ty.benchmark.toml"
+    with open(config_path, "w", encoding="utf-8") as f:
+        f.write("")
+    return config_path
+
+
+def _write_dummy_pyrefly_config(package_path: Path) -> Path:
+    """Write minimal pyrefly.toml for consistent benchmarking."""
+    config_path = package_path / "pyrefly.benchmark.toml"
+    with open(config_path, "w", encoding="utf-8") as f:
+        f.write("")
+    return config_path
+
+
 def run_checker(
     checker: str,
     package_path: Path,
@@ -509,16 +525,20 @@ def run_checker(
         cmd = ["pyright", "--outputjson"] + targets
         cwd = package_path
     elif checker == "pyrefly":
-        cmd = ["pyrefly", "check"] + targets
+        config_path = _write_dummy_pyrefly_config(package_path)
+        cmd = ["pyrefly", "check", "--config", str(config_path)] + targets
         cwd = package_path
     elif checker == "ty":
-        cmd = ["ty", "check"] + targets
+        config_path = _write_dummy_ty_config(package_path)
+        cmd = ["ty", "check", "--config-file", str(config_path)] + targets
         cwd = package_path
     elif checker == "mypy":
         config_path = _write_dummy_mypy_config(package_path)
         cmd = [sys.executable, "-m", "mypy", "--config-file", str(config_path)] + targets
         cwd = package_path
     elif checker == "zuban":
+        # zuban picks up mypy config automatically, so use the dummy mypy config
+        config_path = _write_dummy_mypy_config(package_path)
         # zuban needs relative paths from package root
         if check_paths:
             rel_targets = [
@@ -527,7 +547,7 @@ def run_checker(
             ]
         else:
             rel_targets = ["."]
-        cmd = ["zuban", "check"] + rel_targets
+        cmd = ["zuban", "check", "--config-file", str(config_path)] + rel_targets
         cwd = package_path
     else:
         return {
