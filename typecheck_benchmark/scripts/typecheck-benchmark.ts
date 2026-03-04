@@ -2,86 +2,144 @@
  * Type Checker Timing Benchmark Dashboard
  * Loads and displays timing/memory benchmark data from JSON files.
  */
+
+// Chart.js is loaded via <script> tag
+declare const Chart: any;
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+interface CheckerTimingMetrics {
+    ok?: boolean;
+    execution_time_s?: number;
+    peak_memory_mb?: number;
+    error_message?: string;
+}
+
+interface TimingAggregateEntry {
+    packages_tested: number;
+    packages_failed?: number;
+    avg_execution_time_s: number;
+    p90_execution_time_s: number;
+    p95_execution_time_s: number;
+    max_execution_time_s: number;
+    total_execution_time_s: number;
+    avg_peak_memory_mb: number;
+    p90_peak_memory_mb: number;
+    p95_peak_memory_mb: number;
+    max_peak_memory_mb: number;
+}
+
+interface TimingBenchmarkResult {
+    package_name: string;
+    github_url: string;
+    error: string | null;
+    metrics: Record<string, CheckerTimingMetrics>;
+}
+
+interface TimingBenchmarkData {
+    timestamp: string;
+    date: string;
+    type_checkers: string[];
+    type_checker_versions?: Record<string, string>;
+    package_count: number;
+    aggregate: Record<string, TimingAggregateEntry>;
+    results: TimingBenchmarkResult[];
+}
+
+interface ErrorAction {
+    text: string;
+    onClick: () => void;
+}
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-const CHECKER_COLORS = {
+
+const CHECKER_COLORS: Record<string, string> = {
     pyright: '#3178c6',
     pyrefly: '#e74c3c',
     ty: '#9b59b6',
     mypy: '#2ecc71',
     zuban: '#f39c12'
 };
-const CHECKER_NAMES = {
+
+const CHECKER_NAMES: Record<string, string> = {
     pyright: 'Pyright',
     pyrefly: 'Pyrefly',
     ty: 'ty',
     mypy: 'Mypy',
     zuban: 'Zuban'
 };
-let benchmarkData = null;
-let charts = {};
+
+let benchmarkData: TimingBenchmarkData | null = null;
+let charts: Record<string, any> = {};
 let currentOs = 'ubuntu';
+
 // ---------------------------------------------------------------------------
 // URL helpers
 // ---------------------------------------------------------------------------
-function getOsFromUrl() {
+
+function getOsFromUrl(): string {
     const params = new URLSearchParams(window.location.search);
     const os = params.get('os');
     return (os && ['ubuntu', 'macos', 'windows'].includes(os)) ? os : 'ubuntu';
 }
-function getDateFromUrl() {
+
+function getDateFromUrl(): string | null {
     const params = new URLSearchParams(window.location.search);
     const date = params.get('date');
     return (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) ? date : null;
 }
-function updateUrlWithDate(date, os) {
+
+function updateUrlWithDate(date: string | null, os: string | null): void {
     const url = new URL(window.location.href);
-    if (date)
-        url.searchParams.set('date', date);
-    else
-        url.searchParams.delete('date');
-    if (os)
-        url.searchParams.set('os', os);
+    if (date) url.searchParams.set('date', date);
+    else url.searchParams.delete('date');
+    if (os) url.searchParams.set('os', os);
     window.history.replaceState({}, '', url.toString());
 }
+
 // ---------------------------------------------------------------------------
 // Data loading
 // ---------------------------------------------------------------------------
-async function loadBenchmarkData(date, os) {
-    let paths;
+
+async function loadBenchmarkData(date: string | null, os: string): Promise<TimingBenchmarkData> {
+    let paths: string[];
     if (date) {
         paths = [
             `./results/benchmark_${date}_${os}.json`,
             `./results/benchmark_${date}.json`
         ];
-    }
-    else {
+    } else {
         paths = [
             `./results/latest-${os}.json`,
             './results/latest.json'
         ];
     }
+
     for (const path of paths) {
         try {
             const response = await fetch(path);
             if (response.ok) {
                 benchmarkData = await response.json();
                 console.log('Loaded data from:', path);
-                return benchmarkData;
+                return benchmarkData!;
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.warn(`Failed to load ${path}:`, e);
         }
     }
-    if (date)
-        throw new Error(`No data for ${date} on ${os}`);
+
+    if (date) throw new Error(`No data for ${date} on ${os}`);
+
     console.log('Using demo data');
     benchmarkData = getDemoData();
     return benchmarkData;
 }
-function getDemoData() {
+
+function getDemoData(): TimingBenchmarkData {
     return {
         timestamp: new Date().toISOString(),
         date: new Date().toISOString().split('T')[0],
@@ -89,11 +147,11 @@ function getDemoData() {
         type_checker_versions: { pyright: '1.1.408', pyrefly: '0.54.0', ty: '0.0.19', mypy: '1.19.1', zuban: '0.6.1' },
         package_count: 5,
         aggregate: {
-            pyright: { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 12.5, p90_execution_time_s: 22.0, p95_execution_time_s: 25.0, max_execution_time_s: 30.0, total_execution_time_s: 62.5, avg_peak_memory_mb: 350, p90_peak_memory_mb: 480, p95_peak_memory_mb: 500, max_peak_memory_mb: 550 },
-            pyrefly: { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 3.2, p90_execution_time_s: 5.5, p95_execution_time_s: 6.0, max_execution_time_s: 8.0, total_execution_time_s: 16.0, avg_peak_memory_mb: 280, p90_peak_memory_mb: 380, p95_peak_memory_mb: 400, max_peak_memory_mb: 420 },
-            ty: { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 2.1, p90_execution_time_s: 3.5, p95_execution_time_s: 4.0, max_execution_time_s: 5.0, total_execution_time_s: 10.5, avg_peak_memory_mb: 200, p90_peak_memory_mb: 280, p95_peak_memory_mb: 300, max_peak_memory_mb: 320 },
-            mypy: { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 15.0, p90_execution_time_s: 28.0, p95_execution_time_s: 30.0, max_execution_time_s: 35.0, total_execution_time_s: 75.0, avg_peak_memory_mb: 400, p90_peak_memory_mb: 560, p95_peak_memory_mb: 600, max_peak_memory_mb: 650 },
-            zuban: { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 8.0, p90_execution_time_s: 14.0, p95_execution_time_s: 15.0, max_execution_time_s: 18.0, total_execution_time_s: 40.0, avg_peak_memory_mb: 320, p90_peak_memory_mb: 430, p95_peak_memory_mb: 450, max_peak_memory_mb: 480 }
+            pyright:  { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 12.5, p90_execution_time_s: 22.0, p95_execution_time_s: 25.0, max_execution_time_s: 30.0, total_execution_time_s: 62.5, avg_peak_memory_mb: 350, p90_peak_memory_mb: 480, p95_peak_memory_mb: 500, max_peak_memory_mb: 550 },
+            pyrefly:  { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 3.2, p90_execution_time_s: 5.5, p95_execution_time_s: 6.0, max_execution_time_s: 8.0, total_execution_time_s: 16.0, avg_peak_memory_mb: 280, p90_peak_memory_mb: 380, p95_peak_memory_mb: 400, max_peak_memory_mb: 420 },
+            ty:       { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 2.1, p90_execution_time_s: 3.5, p95_execution_time_s: 4.0, max_execution_time_s: 5.0, total_execution_time_s: 10.5, avg_peak_memory_mb: 200, p90_peak_memory_mb: 280, p95_peak_memory_mb: 300, max_peak_memory_mb: 320 },
+            mypy:     { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 15.0, p90_execution_time_s: 28.0, p95_execution_time_s: 30.0, max_execution_time_s: 35.0, total_execution_time_s: 75.0, avg_peak_memory_mb: 400, p90_peak_memory_mb: 560, p95_peak_memory_mb: 600, max_peak_memory_mb: 650 },
+            zuban:    { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 8.0, p90_execution_time_s: 14.0, p95_execution_time_s: 15.0, max_execution_time_s: 18.0, total_execution_time_s: 40.0, avg_peak_memory_mb: 320, p90_peak_memory_mb: 430, p95_peak_memory_mb: 450, max_peak_memory_mb: 480 }
         },
         results: [
             { package_name: 'requests', github_url: 'https://github.com/psf/requests', error: null, metrics: { pyright: { ok: true, execution_time_s: 8.5, peak_memory_mb: 280 }, pyrefly: { ok: true, execution_time_s: 2.1, peak_memory_mb: 200 }, ty: { ok: true, execution_time_s: 1.5, peak_memory_mb: 150 }, mypy: { ok: true, execution_time_s: 10.0, peak_memory_mb: 300 }, zuban: { ok: true, execution_time_s: 5.0, peak_memory_mb: 250 } } },
@@ -104,27 +162,29 @@ function getDemoData() {
         ]
     };
 }
+
 // ---------------------------------------------------------------------------
 // Initialization
 // ---------------------------------------------------------------------------
-async function init() {
+
+async function init(): Promise<void> {
     try {
         currentOs = getOsFromUrl();
-        const osSelect = document.getElementById('osSelect');
-        if (osSelect)
-            osSelect.value = currentOs;
+        const osSelect = document.getElementById('osSelect') as HTMLSelectElement | null;
+        if (osSelect) osSelect.value = currentOs;
+
         const urlDate = getDateFromUrl();
         await loadBenchmarkData(urlDate, currentOs);
         renderAll();
         setupFilters();
         setupDateSelector();
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Failed to init:', error);
         showError('Failed to load benchmark data. Please try again later.');
     }
 }
-function renderAll() {
+
+function renderAll(): void {
     updateTimestamp();
     populateSummary();
     populateFailureTable();
@@ -136,30 +196,30 @@ function renderAll() {
     createHighestMemoryChart();
     populateResultsTable();
 }
+
 // ---------------------------------------------------------------------------
 // Date/OS selector
 // ---------------------------------------------------------------------------
-function setupDateSelector() {
-    const dateInput = document.getElementById('dateSelect');
+
+function setupDateSelector(): void {
+    const dateInput = document.getElementById('dateSelect') as HTMLInputElement | null;
     const loadBtn = document.getElementById('loadDateBtn');
     const latestBtn = document.getElementById('latestBtn');
-    const osSelect = document.getElementById('osSelect');
-    if (!dateInput || !loadBtn || !latestBtn)
-        return;
-    if (benchmarkData?.date)
-        dateInput.value = benchmarkData.date;
+    const osSelect = document.getElementById('osSelect') as HTMLSelectElement | null;
+
+    if (!dateInput || !loadBtn || !latestBtn) return;
+
+    if (benchmarkData?.date) dateInput.value = benchmarkData.date;
+
     loadBtn.addEventListener('click', async () => {
-        if (dateInput.value)
-            await switchToDate(dateInput.value, currentOs);
+        if (dateInput.value) await switchToDate(dateInput.value, currentOs);
     });
     latestBtn.addEventListener('click', async () => {
         await switchToDate(null, currentOs);
-        if (benchmarkData?.date)
-            dateInput.value = benchmarkData.date;
+        if (benchmarkData?.date) dateInput.value = benchmarkData.date;
     });
-    dateInput.addEventListener('keypress', async (e) => {
-        if (e.key === 'Enter' && dateInput.value)
-            await switchToDate(dateInput.value, currentOs);
+    dateInput.addEventListener('keypress', async (e: KeyboardEvent) => {
+        if (e.key === 'Enter' && dateInput.value) await switchToDate(dateInput.value, currentOs);
     });
     if (osSelect) {
         osSelect.addEventListener('change', async () => {
@@ -168,19 +228,21 @@ function setupDateSelector() {
         });
     }
 }
-async function switchToDate(date, os) {
+
+async function switchToDate(date: string | null, os: string): Promise<void> {
     try {
         await loadBenchmarkData(date, os);
         clearError();
         updateUrlWithDate(benchmarkData?.date || date || null, os);
-        const dateInput = document.getElementById('dateSelect');
-        if (dateInput && benchmarkData?.date)
-            dateInput.value = benchmarkData.date;
-        Object.values(charts).forEach((c) => c?.destroy());
+
+        const dateInput = document.getElementById('dateSelect') as HTMLInputElement | null;
+        if (dateInput && benchmarkData?.date) dateInput.value = benchmarkData.date;
+
+        Object.values(charts).forEach((c: any) => c?.destroy());
         charts = {};
+
         renderAll();
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Failed to load:', error);
         showError(`No data available for ${date || 'latest'} on ${os}.`, {
             text: 'Load latest Ubuntu results',
@@ -188,17 +250,19 @@ async function switchToDate(date, os) {
         });
     }
 }
+
 // ---------------------------------------------------------------------------
 // Error / timestamp display
 // ---------------------------------------------------------------------------
-function clearError() {
+
+function clearError(): void {
     document.querySelectorAll('.error-message').forEach(el => el.remove());
 }
-function showError(message, action) {
+
+function showError(message: string, action?: ErrorAction): void {
     clearError();
     const main = document.querySelector('main');
-    if (!main)
-        return;
+    if (!main) return;
     const div = document.createElement('div');
     div.className = 'error-message';
     div.style.cssText = 'background:rgba(248,81,73,0.1);border:1px solid #f85149;color:#f85149;padding:16px 24px;border-radius:8px;margin:24px 0;text-align:center;';
@@ -210,20 +274,19 @@ function showError(message, action) {
         link.textContent = action.text;
         link.href = '#';
         link.style.cssText = 'color:#58a6ff;margin-left:8px;text-decoration:underline;cursor:pointer;';
-        link.addEventListener('click', (e) => { e.preventDefault(); action.onClick(); });
+        link.addEventListener('click', (e: Event) => { e.preventDefault(); action.onClick(); });
         div.appendChild(link);
     }
     main.insertBefore(div, main.firstChild);
 }
-function updateTimestamp() {
+
+function updateTimestamp(): void {
     const el = document.getElementById('lastUpdated');
-    if (!el)
-        return;
+    if (!el) return;
     if (benchmarkData?.timestamp) {
         const d = new Date(benchmarkData.timestamp);
         el.textContent = `Last updated: ${d.toLocaleDateString()} at ${d.toLocaleTimeString()}`;
-    }
-    else {
+    } else {
         el.textContent = 'Demo data';
     }
     const versions = benchmarkData?.type_checker_versions || {};
@@ -234,32 +297,39 @@ function updateTimestamp() {
         }
     }
 }
+
 // ---------------------------------------------------------------------------
 // Summary + failure table
 // ---------------------------------------------------------------------------
-function populateSummary() {
-    if (!benchmarkData)
-        return;
+
+function populateSummary(): void {
+    if (!benchmarkData) return;
     const results = benchmarkData.results || [];
     const checkers = benchmarkData.type_checkers || [];
+
     const testedPackages = results.filter(r => !r.error).length;
     const summaryPackages = document.getElementById('summaryPackages');
-    if (summaryPackages)
-        summaryPackages.textContent = String(testedPackages);
+    if (summaryPackages) summaryPackages.textContent = String(testedPackages);
     const summaryCheckers = document.getElementById('summaryCheckers');
-    if (summaryCheckers)
-        summaryCheckers.textContent = String(checkers.length);
+    if (summaryCheckers) summaryCheckers.textContent = String(checkers.length);
 }
-function populateFailureTable() {
-    if (!benchmarkData)
-        return;
+
+interface FailureRow {
+    package: string;
+    checker: string;
+    reason: string;
+}
+
+function populateFailureTable(): void {
+    if (!benchmarkData) return;
     const results = benchmarkData.results || [];
     const checkers = benchmarkData.type_checkers || [];
     const failureDiv = document.getElementById('failureSummary');
     const tbody = document.getElementById('failureBody');
-    if (!failureDiv || !tbody)
-        return;
-    const failures = [];
+    if (!failureDiv || !tbody) return;
+
+    const failures: FailureRow[] = [];
+
     // Package-level errors (e.g. clone failed)
     for (const result of results) {
         if (result.error) {
@@ -282,11 +352,13 @@ function populateFailureTable() {
             }
         }
     }
+
     if (failures.length === 0) {
-        failureDiv.style.display = 'none';
+        (failureDiv as HTMLElement).style.display = 'none';
         return;
     }
-    failureDiv.style.display = 'block';
+
+    (failureDiv as HTMLElement).style.display = 'block';
     tbody.innerHTML = failures.map(f => `
         <tr>
             <td class="package-name">${f.package}</td>
@@ -295,14 +367,15 @@ function populateFailureTable() {
         </tr>
     `).join('');
 }
+
 // ---------------------------------------------------------------------------
 // Chart helpers
 // ---------------------------------------------------------------------------
-function barChart(canvasId, labels, data, colors, unit, chartKey) {
-    const canvas = document.getElementById(canvasId);
+
+function barChart(canvasId: string, labels: string[], data: number[], colors: string[], unit: string, chartKey: string): void {
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
     const ctx = canvas?.getContext('2d');
-    if (!ctx)
-        return;
+    if (!ctx) return;
     charts[chartKey] = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -314,23 +387,23 @@ function barChart(canvasId, labels, data, colors, unit, chartKey) {
             maintainAspectRatio: true,
             plugins: {
                 legend: { display: false },
-                tooltip: { callbacks: { label: (tooltipCtx) => `${tooltipCtx.raw.toFixed(1)} ${unit}` } }
+                tooltip: { callbacks: { label: (tooltipCtx: any) => `${tooltipCtx.raw.toFixed(1)} ${unit}` } }
             },
             scales: {
-                y: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v) => `${v} ${unit}` } },
+                y: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v: any) => `${v} ${unit}` } },
                 x: { grid: { display: false }, ticks: { color: '#c9d1d9' } }
             }
         }
     });
 }
-function groupedBarChart(canvasId, packageNames, checkers, getValueFn, unit, chartKey) {
-    const canvas = document.getElementById(canvasId);
+
+function groupedBarChart(canvasId: string, packageNames: string[], checkers: string[], getValueFn: (i: number, checker: string) => number, unit: string, chartKey: string): void {
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
     const ctx = canvas?.getContext('2d');
-    if (!ctx)
-        return;
+    if (!ctx) return;
     const datasets = checkers.map(checker => ({
         label: CHECKER_NAMES[checker] || checker,
-        data: packageNames.map((_, i) => getValueFn(i, checker)),
+        data: packageNames.map((_: string, i: number) => getValueFn(i, checker)),
         backgroundColor: CHECKER_COLORS[checker] || '#888',
         borderRadius: 4,
         borderWidth: 0
@@ -344,109 +417,150 @@ function groupedBarChart(canvasId, packageNames, checkers, getValueFn, unit, cha
             indexAxis: 'y',
             plugins: {
                 legend: { position: 'top', labels: { color: '#c9d1d9', usePointStyle: true, padding: 20 } },
-                tooltip: { callbacks: { label: (tooltipCtx) => `${tooltipCtx.dataset.label}: ${tooltipCtx.raw.toFixed(1)} ${unit}` } }
+                tooltip: { callbacks: { label: (tooltipCtx: any) => `${tooltipCtx.dataset.label}: ${tooltipCtx.raw.toFixed(1)} ${unit}` } }
             },
             scales: {
-                x: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v) => `${v} ${unit}` }, title: { display: true, text: unit, color: '#8b949e' } },
+                x: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v: any) => `${v} ${unit}` }, title: { display: true, text: unit, color: '#8b949e' } },
                 y: { grid: { display: false }, ticks: { color: '#c9d1d9' } }
             }
         }
     });
 }
+
 // ---------------------------------------------------------------------------
 // Chart creators
 // ---------------------------------------------------------------------------
-function createAvgTimeChart() {
-    if (!benchmarkData)
-        return;
+
+function createAvgTimeChart(): void {
+    if (!benchmarkData) return;
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    barChart('avgTimeChart', checkers.map(c => CHECKER_NAMES[c] || c), checkers.map(c => agg[c]?.avg_execution_time_s || 0), checkers.map(c => CHECKER_COLORS[c] || '#888'), 's', 'avgTime');
+    barChart('avgTimeChart',
+        checkers.map(c => CHECKER_NAMES[c] || c),
+        checkers.map(c => agg[c]?.avg_execution_time_s || 0),
+        checkers.map(c => CHECKER_COLORS[c] || '#888'),
+        's', 'avgTime');
 }
-function createAvgMemoryChart() {
-    if (!benchmarkData)
-        return;
+
+function createAvgMemoryChart(): void {
+    if (!benchmarkData) return;
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    barChart('avgMemoryChart', checkers.map(c => CHECKER_NAMES[c] || c), checkers.map(c => agg[c]?.avg_peak_memory_mb || 0), checkers.map(c => CHECKER_COLORS[c] || '#888'), 'MB', 'avgMemory');
+    barChart('avgMemoryChart',
+        checkers.map(c => CHECKER_NAMES[c] || c),
+        checkers.map(c => agg[c]?.avg_peak_memory_mb || 0),
+        checkers.map(c => CHECKER_COLORS[c] || '#888'),
+        'MB', 'avgMemory');
 }
-function createP90TimeChart() {
-    if (!benchmarkData)
-        return;
+
+function createP90TimeChart(): void {
+    if (!benchmarkData) return;
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    barChart('p90TimeChart', checkers.map(c => CHECKER_NAMES[c] || c), checkers.map(c => agg[c]?.p90_execution_time_s || 0), checkers.map(c => CHECKER_COLORS[c] || '#888'), 's', 'p90Time');
+    barChart('p90TimeChart',
+        checkers.map(c => CHECKER_NAMES[c] || c),
+        checkers.map(c => agg[c]?.p90_execution_time_s || 0),
+        checkers.map(c => CHECKER_COLORS[c] || '#888'),
+        's', 'p90Time');
 }
-function createP95TimeChart() {
-    if (!benchmarkData)
-        return;
+
+function createP95TimeChart(): void {
+    if (!benchmarkData) return;
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
-    barChart('p95TimeChart', checkers.map(c => CHECKER_NAMES[c] || c), checkers.map(c => agg[c]?.p95_execution_time_s || 0), checkers.map(c => CHECKER_COLORS[c] || '#888'), 's', 'p95Time');
+    barChart('p95TimeChart',
+        checkers.map(c => CHECKER_NAMES[c] || c),
+        checkers.map(c => agg[c]?.p95_execution_time_s || 0),
+        checkers.map(c => CHECKER_COLORS[c] || '#888'),
+        's', 'p95Time');
 }
-function createSlowestPackagesChart() {
-    if (!benchmarkData)
-        return;
+
+interface PackageWithAvg {
+    result: TimingBenchmarkResult;
+    avg: number;
+}
+
+function createSlowestPackagesChart(): void {
+    if (!benchmarkData) return;
     const results = (benchmarkData.results || []).filter(r => !r.error);
     const checkers = benchmarkData.type_checkers || [];
+
     // Compute average time per package across all checkers, sort descending, take top 10
-    const withAvg = results.map(r => {
+    const withAvg: PackageWithAvg[] = results.map(r => {
         let sum = 0, count = 0;
         for (const c of checkers) {
             const t = r.metrics?.[c]?.execution_time_s;
-            if (t != null && r.metrics?.[c]?.ok) {
-                sum += t;
-                count++;
-            }
+            if (t != null && r.metrics?.[c]?.ok) { sum += t; count++; }
         }
         return { result: r, avg: count > 0 ? sum / count : 0 };
     });
     withAvg.sort((a, b) => b.avg - a.avg);
     const top10 = withAvg.slice(0, 10);
+
     const names = top10.map(x => x.result.package_name);
-    groupedBarChart('slowestPackagesChart', names, checkers, (i, checker) => {
-        const m = top10[i].result.metrics?.[checker];
-        return (m?.ok ? m.execution_time_s : 0) || 0;
-    }, 's', 'slowestPackages');
+    groupedBarChart('slowestPackagesChart', names, checkers,
+        (i: number, checker: string) => {
+            const m = top10[i].result.metrics?.[checker];
+            return (m?.ok ? m.execution_time_s : 0) || 0;
+        },
+        's', 'slowestPackages');
 }
-function createHighestMemoryChart() {
-    if (!benchmarkData)
-        return;
+
+function createHighestMemoryChart(): void {
+    if (!benchmarkData) return;
     const results = (benchmarkData.results || []).filter(r => !r.error);
     const checkers = benchmarkData.type_checkers || [];
-    const withAvg = results.map(r => {
+
+    const withAvg: PackageWithAvg[] = results.map(r => {
         let sum = 0, count = 0;
         for (const c of checkers) {
             const m = r.metrics?.[c]?.peak_memory_mb;
-            if (m != null && m > 0 && r.metrics?.[c]?.ok) {
-                sum += m;
-                count++;
-            }
+            if (m != null && m > 0 && r.metrics?.[c]?.ok) { sum += m; count++; }
         }
         return { result: r, avg: count > 0 ? sum / count : 0 };
     });
     withAvg.sort((a, b) => b.avg - a.avg);
     const top10 = withAvg.slice(0, 10);
+
     const names = top10.map(x => x.result.package_name);
-    groupedBarChart('highestMemoryChart', names, checkers, (i, checker) => {
-        const m = top10[i].result.metrics?.[checker];
-        return (m?.ok ? m.peak_memory_mb : 0) || 0;
-    }, 'MB', 'highestMemory');
+    groupedBarChart('highestMemoryChart', names, checkers,
+        (i: number, checker: string) => {
+            const m = top10[i].result.metrics?.[checker];
+            return (m?.ok ? m.peak_memory_mb : 0) || 0;
+        },
+        'MB', 'highestMemory');
 }
-function populateResultsTable(filterText, sortBy) {
+
+// ---------------------------------------------------------------------------
+// Results table
+// ---------------------------------------------------------------------------
+
+interface TimingTableRow {
+    package: string;
+    github_url: string;
+    checker: string;
+    time?: number;
+    memory?: number;
+    ok?: boolean;
+    error: string | null | undefined;
+}
+
+function populateResultsTable(filterText?: string, sortBy?: string): void {
     filterText = filterText || '';
     sortBy = sortBy || 'name';
-    if (!benchmarkData)
-        return;
+
+    if (!benchmarkData) return;
     const tbody = document.getElementById('resultsBody');
-    if (!tbody)
-        return;
+    if (!tbody) return;
+
     let results = benchmarkData.results || [];
     const checkers = benchmarkData.type_checkers || [];
+
     if (filterText) {
         const f = filterText.toLowerCase();
         results = results.filter(r => r.package_name.toLowerCase().includes(f));
     }
+
     results = [...results].sort((a, b) => {
         switch (sortBy) {
             case 'time': return getMinTime(a, checkers) - getMinTime(b, checkers);
@@ -454,7 +568,8 @@ function populateResultsTable(filterText, sortBy) {
             default: return a.package_name.localeCompare(b.package_name);
         }
     });
-    const rows = [];
+
+    const rows: TimingTableRow[] = [];
     for (const result of results) {
         for (const checker of checkers) {
             const m = result.metrics?.[checker];
@@ -469,10 +584,12 @@ function populateResultsTable(filterText, sortBy) {
             });
         }
     }
+
     if (!rows.length) {
         tbody.innerHTML = '<tr><td colspan="5" class="loading-row">No results found</td></tr>';
         return;
     }
+
     tbody.innerHTML = rows.map((row, idx) => {
         const isFirst = idx === 0 || rows[idx - 1].package !== row.package;
         const pkgCell = isFirst
@@ -490,30 +607,32 @@ function populateResultsTable(filterText, sortBy) {
         </tr>`;
     }).join('');
 }
-function getMinTime(result, checkers) {
+
+function getMinTime(result: TimingBenchmarkResult, checkers: string[]): number {
     let min = Infinity;
     for (const c of checkers) {
         const t = result.metrics?.[c]?.execution_time_s;
-        if (t != null && t < min)
-            min = t;
+        if (t != null && t < min) min = t;
     }
     return min === Infinity ? 9999 : min;
 }
-function getMinMemory(result, checkers) {
+
+function getMinMemory(result: TimingBenchmarkResult, checkers: string[]): number {
     let min = Infinity;
     for (const c of checkers) {
         const m = result.metrics?.[c]?.peak_memory_mb;
-        if (m != null && m > 0 && m < min)
-            min = m;
+        if (m != null && m > 0 && m < min) min = m;
     }
     return min === Infinity ? 9999 : min;
 }
+
 // ---------------------------------------------------------------------------
 // Filters
 // ---------------------------------------------------------------------------
-function setupFilters() {
-    const searchInput = document.getElementById('packageSearch');
-    const sortSelect = document.getElementById('sortBy');
+
+function setupFilters(): void {
+    const searchInput = document.getElementById('packageSearch') as HTMLInputElement | null;
+    const sortSelect = document.getElementById('sortBy') as HTMLSelectElement | null;
     if (searchInput) {
         searchInput.addEventListener('input', () => {
             populateResultsTable(searchInput.value, sortSelect?.value);
@@ -525,8 +644,11 @@ function setupFilters() {
         });
     }
 }
+
 // ---------------------------------------------------------------------------
 // Boot
 // ---------------------------------------------------------------------------
+
 document.addEventListener('DOMContentLoaded', init);
+
 export {};
