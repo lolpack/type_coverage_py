@@ -508,12 +508,21 @@ def _write_dummy_pyright_config(
 def _write_dummy_mypy_config(
     package_path: Path, check_paths: list[str] | None = None,
 ) -> Path:
-    """Write minimal mypy config for consistent benchmarking."""
+    """Write minimal mypy config for consistent benchmarking.
+
+    Excludes test directories to avoid fatal errors from duplicate
+    conftest.py modules and syntax errors in test fixture files, which
+    cause mypy to bail out with 'errors prevented further checking'
+    without actually type-checking any code.
+    """
     config_path = package_path / "mypy.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
         f.write("[mypy]\n")
         if check_paths:
             f.write(f"files = {', '.join(check_paths)}\n")
+        # Exclude test dirs to avoid duplicate module / syntax errors
+        # that cause mypy to bail out without checking anything
+        f.write("exclude = (?x)(\n    /tests/\n    | /test_\n    | /testing/\n  )\n")
     return config_path
 
 
@@ -583,7 +592,7 @@ def run_checker(
         cwd = package_path
     elif checker == "mypy":
         config_path = _write_dummy_mypy_config(package_path, rel_paths)
-        cmd = [sys.executable, "-m", "mypy", "--config-file", str(config_path)]
+        cmd = [sys.executable, "-m", "mypy", "--no-incremental", "--config-file", str(config_path)]
         # mypy needs explicit paths if no files= in config; when check_paths
         # are embedded in the config via files=, we still pass "." so mypy
         # has a target (it requires at least one positional arg or files=).
@@ -616,6 +625,35 @@ def run_checker(
             "execution_time_s": result["execution_time_s"],
             "peak_memory_mb": result.get("peak_memory_mb", 0.0),
             "error_message": msg,
+        }
+
+    # Detect fatal errors: mypy exits with code 2 for fatal errors (code 1 = type errors found).
+    # Also check for "errors prevented further checking" which means mypy bailed out early.
+    stderr = result.get("stderr", "")
+    stdout = result.get("stdout", "")
+    combined_output = stderr + stdout
+
+    if "errors prevented further checking" in combined_output:
+        return {
+            "ok": False,
+            "execution_time_s": result["execution_time_s"],
+            "peak_memory_mb": result.get("peak_memory_mb", 0.0),
+            "error_message": "Fatal: errors prevented further checking",
+        }
+
+    # mypy return code 2 = fatal error (not type errors)
+    if checker == "mypy" and result.get("returncode", 0) == 2:
+        # Extract first error line from output for context
+        first_error = ""
+        for line in combined_output.splitlines():
+            if "error:" in line.lower():
+                first_error = line.strip()[:200]
+                break
+        return {
+            "ok": False,
+            "execution_time_s": result["execution_time_s"],
+            "peak_memory_mb": result.get("peak_memory_mb", 0.0),
+            "error_message": first_error or "Fatal error (exit code 2)",
         }
 
     return {
