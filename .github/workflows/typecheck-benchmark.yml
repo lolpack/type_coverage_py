@@ -123,11 +123,6 @@ jobs:
         shell: bash
         run: git stash pop || true
 
-      - name: Setup Node.js for TypeScript build
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Build and validate frontend
         run: |
           npm ci
@@ -143,3 +138,4 @@ jobs:
           commit_message: "Update typecheck timing benchmark results [skip ci]"
           branch: published-report
           file_pattern: 'typecheck_benchmark/results/*.json typecheck_benchmark/scripts/typecheck-benchmark.js'
+          add_options: '--force'

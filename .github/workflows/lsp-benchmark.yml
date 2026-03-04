@@ -129,11 +129,6 @@ jobs:
         shell: bash
         run: git stash pop || true
 
-      - name: Setup Node.js for TypeScript build
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Build and validate frontend
         run: |
           npm ci
@@ -149,3 +144,4 @@ jobs:
           commit_message: "Update LSP benchmark results [skip ci]"
           branch: published-report
           file_pattern: 'lsp/benchmark/results/*.json lsp/benchmark/scripts/lsp-benchmark.js'
+          add_options: '--force'
