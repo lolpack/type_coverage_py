@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type Checker Timing Benchmark | Python Type Coverage</title>
+    <link rel="stylesheet" href="styles/typecheck-benchmark.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>Type Checker Timing Benchmarks</h1>
+            <p class="subtitle">Daily performance analysis of Python type checkers</p>
+            <p class="description">
+                Measuring wall-clock execution time and peak memory usage
+                when type checking popular open-source Python packages
+            </p>
+            <div class="date-selector">
+                <label for="osSelect">Platform:</label>
+                <select id="osSelect" class="filter-select">
+                    <option value="ubuntu">Ubuntu</option>
+                    <option value="macos">macOS</option>
+                    <option value="windows">Windows</option>
+                </select>
+                <label for="dateSelect">Date:</label>
+                <input type="date" id="dateSelect" class="date-input">
+                <button id="loadDateBtn" class="date-btn">Load</button>
+                <button id="latestBtn" class="date-btn">Latest</button>
+            </div>
+            <div class="last-updated" id="lastUpdated">Loading...</div>
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <div class="container">
+            <a href="/index.html" class="back-link">&larr; Back to Type Coverage</a>
+            <div class="nav-links">
+                <a href="#comparison">Comparison</a>
+                <a href="#packages">By Package</a>
+                <a href="#methodology">Methodology</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Failure Summary -->
+        <section id="summary" class="section">
+            <h2>Run Summary</h2>
+            <div class="summary-grid" id="summaryGrid">
+                <div class="summary-card">
+                    <div class="summary-value" id="summaryPackages">-</div>
+                    <div class="summary-label">Packages Tested</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="summaryCheckers">-</div>
+                    <div class="summary-label">Type Checkers</div>
+                </div>
+            </div>
+            <div id="failureSummary" class="failure-summary" style="display:none;">
+                <h3>Failures</h3>
+                <div class="table-container">
+                    <table class="results-table" id="failureTable">
+                        <thead>
+                            <tr>
+                                <th>Package</th>
+                                <th>Type Checker</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody id="failureBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Charts -->
+        <section id="comparison" class="section">
+            <h2>Type Checker Comparison</h2>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Average Execution Time (s)</h3>
+                    <p class="chart-description">Lower is better &mdash; mean time to type check each package</p>
+                    <canvas id="avgTimeChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Average Peak Memory (MB)</h3>
+                    <p class="chart-description">Lower is better &mdash; mean peak RSS during type checking</p>
+                    <canvas id="avgMemoryChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>P90 Execution Time (s)</h3>
+                    <p class="chart-description">90th percentile type checking time across packages</p>
+                    <canvas id="p90TimeChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>P95 Execution Time (s)</h3>
+                    <p class="chart-description">95th percentile type checking time across packages</p>
+                    <canvas id="p95TimeChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3>Top 10 Slowest Packages (s)</h3>
+                <p class="chart-description">Packages with the highest average execution time across checkers</p>
+                <canvas id="slowestPackagesChart"></canvas>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3>Top 10 Highest Memory Packages (MB)</h3>
+                <p class="chart-description">Packages with the highest average peak memory across checkers</p>
+                <canvas id="highestMemoryChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Detailed Results Table -->
+        <section id="packages" class="section">
+            <h2>Detailed Results</h2>
+
+            <div class="filter-bar">
+                <input type="text" id="packageSearch" placeholder="Search packages..." class="search-input">
+                <select id="sortBy" class="filter-select">
+                    <option value="name">Sort by Name</option>
+                    <option value="time">Sort by Fastest</option>
+                    <option value="memory">Sort by Least Memory</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table class="results-table" id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Package</th>
+                            <th>Type Checker</th>
+                            <th>Time (s)</th>
+                            <th>Memory (MB)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        <tr>
+                            <td colspan="5" class="loading-row">Loading results...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Methodology -->
+        <section id="methodology" class="section">
+            <h2>Methodology</h2>
+            <div class="methodology-content">
+                <div class="method-card">
+                    <h3>What We Measure</h3>
+                    <p>
+                        We benchmark the full type checking process for each type checker
+                        running against real-world Python packages. This measures wall-clock
+                        execution time and peak RSS (resident set size) memory.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>Test Process</h3>
+                    <ol>
+                        <li>Shallow-clone each package from GitHub</li>
+                        <li>Install package dependencies per <code>install_envs.json</code></li>
+                        <li>Run each type checker with a 5-minute timeout</li>
+                        <li>Record wall-clock time and peak memory usage</li>
+                    </ol>
+                    <p class="method-note">
+                        <strong>Timeout:</strong> Each type checker has a 5-minute timeout.
+                        Timeouts and OOM kills are recorded as failures.
+                    </p>
+                    <p class="method-note">
+                        <strong>Memory:</strong> On Linux, peak memory is tracked via
+                        <code>/proc/{pid}/status</code> (VmHWM). On macOS,
+                        <code>getrusage</code> is used.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>Dependencies &amp; Check Paths</h3>
+                    <p>
+                        Each package's environment is configured in
+                        <code>install_envs.json</code>:
+                    </p>
+                    <ul>
+                        <li><strong>install:</strong> Whether to <code>pip install -e .</code> the package itself</li>
+                        <li><strong>deps:</strong> Additional pip packages to install</li>
+                        <li><strong>install_env:</strong> Environment variables for installation</li>
+                        <li><strong>check_paths:</strong> Subdirectories to type check
+                            (e.g. <code>["src"]</code>). When omitted, the entire
+                            package root is checked.</li>
+                    </ul>
+                    <p class="method-note">
+                        Only packages with <code>install: true</code> or a non-empty
+                        <code>deps</code> list are benchmarked.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>Configuration Overrides</h3>
+                    <p>
+                        Packages often ship their own type checker configs that can skew
+                        benchmark comparisons. We do our best to run each checker in its
+                        default setting with as neutral a configuration as possible. To
+                        do this, we generate a minimal config file for each checker that
+                        embeds the <code>check_paths</code> in its native format and pass
+                        it via CLI flags to override any package-level config:
+                    </p>
+                    <ul>
+                        <li><strong>Pyright:</strong> <code>pyrightconfig.json</code> with <code>"include": [paths]</code> written in-place</li>
+                        <li><strong>Mypy:</strong> <code>[mypy]</code> with <code>files = paths</code> via <code>--config-file</code></li>
+                        <li><strong>ty:</strong> <code>[src] include = [paths]</code> in <code>ty.benchmark.toml</code> via <code>--config-file</code></li>
+                        <li><strong>Pyrefly:</strong> <code>project_includes = [paths]</code> in <code>pyrefly.benchmark.toml</code> via <code>--config</code></li>
+                        <li><strong>Zuban:</strong> <code>[mypy]</code> with <code>files = paths</code> via <code>--config-file</code></li>
+                    </ul>
+                    <p class="method-note">
+                        This means every checker sees exactly the same target paths and
+                        a neutral configuration, regardless of what the package ships.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>Metrics Explained</h3>
+                    <ul>
+                        <li><strong>Time (s):</strong> Wall-clock execution time in seconds</li>
+                        <li><strong>Memory (MB):</strong> Peak resident set size in megabytes</li>
+                        <li><strong>P50/P95:</strong> 50th/95th percentile across packages</li>
+                        <li><strong>Status:</strong> Whether the checker completed successfully</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legend -->
+        <section class="section">
+            <h2>Type Checkers</h2>
+            <div class="legend-grid">
+                <div class="legend-item pyright">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Pyright</strong>
+                        <span class="legend-version" id="version-pyright"></span>
+                        <span>Type checker for Python by Microsoft</span>
+                    </div>
+                </div>
+                <div class="legend-item pyrefly">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Pyrefly</strong>
+                        <span class="legend-version" id="version-pyrefly"></span>
+                        <span>Type checker for Python by Meta</span>
+                    </div>
+                </div>
+                <div class="legend-item ty">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>ty</strong>
+                        <span class="legend-version" id="version-ty"></span>
+                        <span>Type checker for Python by Astral</span>
+                    </div>
+                </div>
+                <div class="legend-item mypy">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Mypy</strong>
+                        <span class="legend-version" id="version-mypy"></span>
+                        <span>Static type checker for Python</span>
+                    </div>
+                </div>
+                <div class="legend-item zuban">
+                    <span class="legend-color"></span>
+                    <div class="legend-info">
+                        <strong>Zuban</strong>
+                        <span class="legend-version" id="version-zuban"></span>
+                        <span>Type checker for Python by the creator of Jedi LSP</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Part of the <a href="https://github.com/lolpack/type_coverage_py">Python Type Coverage</a> project</p>
+            <p>Benchmarks run daily via GitHub Actions</p>
+        </div>
+    </footer>
+
+    <script src="scripts/typecheck-benchmark.js"></script>
+</body>
+</html>

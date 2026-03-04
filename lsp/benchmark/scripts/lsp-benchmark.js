@@ -244,9 +244,24 @@ async function switchToDate(date, os = 'ubuntu') {
         clearError();
         updateTimestamp();
 
+<<<<<<< HEAD
+        // Update URL with the actual loaded date from the data
+        const loadedDate = benchmarkData?.date || date;
+        updateUrlWithDate(loadedDate);
+
+        // Update date input to reflect loaded date
+=======
+<<<<<<< HEAD
+        // Update URL with the actual loaded date from the data
+        const loadedDate = benchmarkData?.date || date;
+        updateUrlWithDate(loadedDate);
+
+        // Update date input to reflect loaded date
+=======
         const loadedDate = benchmarkData?.date || date;
         updateUrlWithDate(loadedDate, os);
 
+>>>>>>> main>>>>>>> main
         const dateInput = document.getElementById('dateSelect');
         if (dateInput && loadedDate) {
             dateInput.value = loadedDate;
