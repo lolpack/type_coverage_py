@@ -123,9 +123,23 @@ jobs:
         shell: bash
         run: git stash pop || true
 
+      - name: Setup Node.js for TypeScript build
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build and validate frontend
+        run: |
+          npm ci
+          npm run build
+          if grep -rn '<<<<<<<\|>>>>>>>\|=======' --include='*.ts' --include='*.js' --exclude='*.min.js' --exclude-dir=node_modules .; then
+            echo "::error::Merge conflict markers found"
+            exit 1
+          fi
+
       - name: Commit and Push Results
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update typecheck timing benchmark results [skip ci]"
           branch: published-report
-          file_pattern: 'typecheck_benchmark/results/*.json'
+          file_pattern: 'typecheck_benchmark/results/*.json typecheck_benchmark/scripts/typecheck-benchmark.js'

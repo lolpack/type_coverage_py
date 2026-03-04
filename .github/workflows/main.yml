@@ -67,6 +67,20 @@ jobs:
       - name: Apply Stashed Changes
         run: git stash pop
 
+      - name: Setup Node.js for TypeScript build
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build and validate frontend
+        run: |
+          npm ci
+          npm run build
+          if grep -rn '<<<<<<<\|>>>>>>>\|=======' --include='*.ts' --include='*.js' --exclude='*.min.js' --exclude-dir=node_modules .; then
+            echo "::error::Merge conflict markers found"
+            exit 1
+          fi
+
       # Automatically commit and push changes
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v4
