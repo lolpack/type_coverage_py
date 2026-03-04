@@ -14,7 +14,6 @@ import argparse
 import json
 import os
 import re
-import resource
 import signal
 import shutil
 import subprocess
@@ -264,6 +263,7 @@ def run_process_with_timeout(
         peak_memory_mb = round(peak_kb[0] / 1024, 1)
     elif sys.platform == "darwin":
         # On macOS, use getrusage for child processes
+        import resource
         usage = resource.getrusage(resource.RUSAGE_CHILDREN)
         peak_memory_mb = round(usage.ru_maxrss / (1024 * 1024), 1)  # bytes -> MB
     else:
