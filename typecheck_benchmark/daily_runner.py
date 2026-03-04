@@ -168,6 +168,13 @@ def run_process_with_timeout(
     """
     start_time = time.time()
 
+    # Snapshot macOS child memory high-water mark before spawning so we can
+    # compute the delta attributable to this child process alone.
+    darwin_maxrss_before: int = 0
+    if sys.platform == "darwin":
+        import resource
+        darwin_maxrss_before = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+
     kwargs: dict[str, Any] = {
         "cwd": cwd,
         "stdout": subprocess.PIPE,
@@ -262,10 +269,13 @@ def run_process_with_timeout(
     if sys.platform == "linux":
         peak_memory_mb = round(peak_kb[0] / 1024, 1)
     elif sys.platform == "darwin":
-        # On macOS, use getrusage for child processes
+        # On macOS, ru_maxrss from RUSAGE_CHILDREN is a running high-water
+        # mark across ALL children ever spawned.  Subtract the snapshot we
+        # took before spawning this child to isolate its contribution.
         import resource
-        usage = resource.getrusage(resource.RUSAGE_CHILDREN)
-        peak_memory_mb = round(usage.ru_maxrss / (1024 * 1024), 1)  # bytes -> MB
+        darwin_maxrss_after = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+        delta = max(0, darwin_maxrss_after - darwin_maxrss_before)
+        peak_memory_mb = round(delta / (1024 * 1024), 1)  # bytes -> MB
     else:
         peak_memory_mb = 0.0
 
@@ -600,9 +610,12 @@ def run_checker(
             cmd.append(str(package_path))
         cwd = package_path
     elif checker == "zuban":
-        config_path = _write_dummy_zuban_config(package_path, rel_paths)
-        cmd = ["zuban", "check", "--config-file", str(config_path)]
-        if not rel_paths:
+        # zuban ignores files= from --config-file, so we must always pass
+        # check paths as explicit positional arguments.
+        cmd = ["zuban", "check"]
+        if rel_paths:
+            cmd.extend(rel_paths)
+        else:
             cmd.append(".")
         cwd = package_path
     else:
