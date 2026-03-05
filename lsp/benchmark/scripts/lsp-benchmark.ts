@@ -2,33 +2,93 @@
  * LSP Benchmark Results Viewer
  * Loads and displays benchmark data from JSON files
  */
+
+// Chart.js is loaded via <script> tag
+declare const Chart: any;
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+interface LatencyMs {
+    mean?: number;
+    p50?: number;
+    p95?: number;
+}
+
+interface CheckerMetrics {
+    ok?: boolean;
+    ok_pct?: number;
+    valid_pct?: number;
+    latency_ms?: LatencyMs;
+    error?: string;
+}
+
+interface AggregateEntry {
+    packages_tested: number;
+    total_runs: number;
+    total_valid: number;
+    avg_latency_ms: number;
+    ok_rate: number;
+    success_rate: number;
+}
+
+interface BenchmarkResult {
+    package_name: string;
+    github_url: string;
+    ranking?: number;
+    error: string | null;
+    metrics: Record<string, CheckerMetrics>;
+}
+
+interface BenchmarkData {
+    timestamp: string;
+    date: string;
+    type_checkers: string[];
+    type_checker_versions?: Record<string, string>;
+    package_count: number;
+    runs_per_package?: number;
+    aggregate: Record<string, AggregateEntry>;
+    results: BenchmarkResult[];
+}
+
+interface ErrorAction {
+    text: string;
+    onClick: () => void;
+}
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-const CHECKER_COLORS = {
+
+const CHECKER_COLORS: Record<string, string> = {
     pyright: '#3178c6',
     pyrefly: '#e74c3c',
     ty: '#9b59b6',
     mypy: '#2ecc71',
     zuban: '#f39c12'
 };
-const CHECKER_NAMES = {
+
+const CHECKER_NAMES: Record<string, string> = {
     pyright: 'Pyright',
     pyrefly: 'Pyrefly',
     ty: 'ty',
     mypy: 'Mypy',
     zuban: 'Zuban'
 };
-let benchmarkData = null;
-let charts = {};
+
+let benchmarkData: BenchmarkData | null = null;
+let charts: Record<string, any> = {};
 let currentOs = 'ubuntu';
+
 // ---------------------------------------------------------------------------
 // URL helpers
 // ---------------------------------------------------------------------------
+
 /**
  * Get OS from URL query string
  */
-function getOsFromUrl() {
+function getOsFromUrl(): string {
     const params = new URLSearchParams(window.location.search);
     const os = params.get('os');
     if (os && ['ubuntu', 'macos', 'windows'].includes(os)) {
@@ -36,10 +96,11 @@ function getOsFromUrl() {
     }
     return 'ubuntu';
 }
+
 /**
  * Get date from URL query string
  */
-function getDateFromUrl() {
+function getDateFromUrl(): string | null {
     const params = new URLSearchParams(window.location.search);
     const date = params.get('date');
     // Validate date format (YYYY-MM-DD)
@@ -48,15 +109,15 @@ function getDateFromUrl() {
     }
     return null;
 }
+
 /**
  * Update URL query string with date and OS
  */
-function updateUrlWithDate(date, os = null) {
+function updateUrlWithDate(date: string | null, os: string | null = null): void {
     const url = new URL(window.location.href);
     if (date) {
         url.searchParams.set('date', date);
-    }
-    else {
+    } else {
         url.searchParams.delete('date');
     }
     if (os) {
@@ -64,20 +125,23 @@ function updateUrlWithDate(date, os = null) {
     }
     window.history.replaceState({}, '', url.toString());
 }
+
 // ---------------------------------------------------------------------------
 // Initialization
 // ---------------------------------------------------------------------------
+
 /**
  * Initialize the dashboard
  */
-async function init() {
+async function init(): Promise<void> {
     try {
         // Check for OS and date in URL query string
         currentOs = getOsFromUrl();
-        const osSelect = document.getElementById('osSelect');
+        const osSelect = document.getElementById('osSelect') as HTMLSelectElement | null;
         if (osSelect) {
             osSelect.value = currentOs;
         }
+
         const urlDate = getDateFromUrl();
         await loadBenchmarkData(urlDate, currentOs);
         updateTimestamp();
@@ -88,8 +152,7 @@ async function init() {
         populateResultsTable();
         setupFilters();
         setupDateSelector();
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Failed to initialize dashboard:', error);
         const urlDate = getDateFromUrl();
         if (urlDate) {
@@ -97,29 +160,32 @@ async function init() {
                 text: 'Load latest Ubuntu results →',
                 onClick: () => { switchToDate(null, 'ubuntu'); }
             });
-        }
-        else {
+        } else {
             showError('Failed to load benchmark data. Please try again later.');
         }
     }
 }
+
 // ---------------------------------------------------------------------------
 // Date/OS selector
 // ---------------------------------------------------------------------------
+
 /**
  * Setup date selector event listeners
  */
-function setupDateSelector() {
-    const dateInput = document.getElementById('dateSelect');
+function setupDateSelector(): void {
+    const dateInput = document.getElementById('dateSelect') as HTMLInputElement | null;
     const loadBtn = document.getElementById('loadDateBtn');
     const latestBtn = document.getElementById('latestBtn');
-    const osSelect = document.getElementById('osSelect');
-    if (!dateInput || !loadBtn || !latestBtn)
-        return;
+    const osSelect = document.getElementById('osSelect') as HTMLSelectElement | null;
+
+    if (!dateInput || !loadBtn || !latestBtn) return;
+
     // Set default value to current data's date
     if (benchmarkData?.date) {
         dateInput.value = benchmarkData.date;
     }
+
     // Load specific date
     loadBtn.addEventListener('click', async () => {
         const date = dateInput.value;
@@ -127,6 +193,7 @@ function setupDateSelector() {
             await switchToDate(date, currentOs);
         }
     });
+
     // Load latest
     latestBtn.addEventListener('click', async () => {
         await switchToDate(null, currentOs);
@@ -134,8 +201,9 @@ function setupDateSelector() {
             dateInput.value = benchmarkData.date;
         }
     });
+
     // Also allow Enter key to load
-    dateInput.addEventListener('keypress', async (e) => {
+    dateInput.addEventListener('keypress', async (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
             const date = dateInput.value;
             if (date) {
@@ -143,6 +211,7 @@ function setupDateSelector() {
             }
         }
     });
+
     // OS selector change handler
     if (osSelect) {
         osSelect.addEventListener('change', async () => {
@@ -152,14 +221,17 @@ function setupDateSelector() {
         });
     }
 }
+
 // ---------------------------------------------------------------------------
 // Data loading
 // ---------------------------------------------------------------------------
+
 /**
  * Load benchmark results from JSON file
  */
-async function loadBenchmarkData(date = null, os = 'ubuntu') {
-    let paths;
+async function loadBenchmarkData(date: string | null = null, os: string = 'ubuntu'): Promise<BenchmarkData> {
+    let paths: string[];
+
     if (date) {
         paths = [
             `./results/benchmark_${date}_${os}.json`,
@@ -168,8 +240,7 @@ async function loadBenchmarkData(date = null, os = 'ubuntu') {
             `./results/benchmark_${date}.json`,
             `../lsp/benchmark/results/benchmark_${date}.json`
         ];
-    }
-    else {
+    } else {
         paths = [
             `./results/latest-${os}.json`,
             `../lsp/benchmark/results/latest-${os}.json`,
@@ -179,32 +250,36 @@ async function loadBenchmarkData(date = null, os = 'ubuntu') {
             './data/benchmark-latest.json'
         ];
     }
+
     for (const path of paths) {
         try {
             const response = await fetch(path);
             if (response.ok) {
                 benchmarkData = await response.json();
                 console.log('Loaded benchmark data from:', path);
-                return benchmarkData;
+                return benchmarkData!;
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.warn(`Failed to load from ${path}:`, e);
         }
     }
+
     if (date) {
         throw new Error(`No benchmark data found for ${date} on ${os}`);
     }
+
     // Use demo data if no file found
     console.log('Using demo data');
     benchmarkData = getDemoData();
     return benchmarkData;
 }
+
 /**
  * Load available benchmark dates from the results directory
  */
-async function loadAvailableDates() {
-    const dates = [];
+async function loadAvailableDates(): Promise<string[]> {
+    const dates: string[] = [];
+
     // Try to load the manifest or scan for files
     // For now, we'll try common recent dates
     const today = new Date();
@@ -212,44 +287,49 @@ async function loadAvailableDates() {
         const date = new Date(today);
         date.setDate(date.getDate() - i);
         const dateStr = date.toISOString().split('T')[0];
+
         try {
             const response = await fetch(`./results/benchmark_${dateStr}.json`, { method: 'HEAD' });
             if (response.ok) {
                 dates.push(dateStr);
             }
-        }
-        catch (_e) {
+        } catch (_e) {
             // File doesn't exist, continue
         }
     }
+
     return dates;
 }
+
 /**
  * Switch to a different date's benchmark data
  */
-async function switchToDate(date, os = 'ubuntu') {
+async function switchToDate(date: string | null, os: string = 'ubuntu'): Promise<void> {
     try {
         await loadBenchmarkData(date, os);
         clearError();
         updateTimestamp();
+
         const loadedDate = benchmarkData?.date || date;
         updateUrlWithDate(loadedDate ?? null, os);
+
         // Update date input to reflect loaded date
-        const dateInput = document.getElementById('dateSelect');
+        const dateInput = document.getElementById('dateSelect') as HTMLInputElement | null;
         if (dateInput && loadedDate) {
             dateInput.value = loadedDate;
         }
+
         // Destroy existing charts
-        Object.values(charts).forEach((chart) => chart?.destroy());
+        Object.values(charts).forEach((chart: any) => chart?.destroy());
         charts = {};
+
         // Recreate charts and table
         createLatencyChart();
         createOkChart();
         createSuccessChart();
         createPackageComparisonChart();
         populateResultsTable();
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Failed to load data for date:', date, 'os:', os, error);
         showError(`No benchmark data available for ${date || 'latest'} on ${os}.`, {
             text: 'Load latest Ubuntu results →',
@@ -257,13 +337,15 @@ async function switchToDate(date, os = 'ubuntu') {
         });
     }
 }
+
 // ---------------------------------------------------------------------------
 // Demo data
 // ---------------------------------------------------------------------------
+
 /**
  * Demo data for development/testing
  */
-function getDemoData() {
+function getDemoData(): BenchmarkData {
     return {
         timestamp: new Date().toISOString(),
         date: new Date().toISOString().split('T')[0],
@@ -368,24 +450,26 @@ function getDemoData() {
         ]
     };
 }
+
 // ---------------------------------------------------------------------------
 // Error display
 // ---------------------------------------------------------------------------
+
 /**
  * Clear any error messages
  */
-function clearError() {
+function clearError(): void {
     const errorMessages = document.querySelectorAll('.error-message');
     errorMessages.forEach(el => el.remove());
 }
+
 /**
  * Show error message to user with optional action link
  */
-function showError(message, action = null) {
+function showError(message: string, action: ErrorAction | null = null): void {
     clearError(); // Clear any existing errors first
     const main = document.querySelector('main');
-    if (!main)
-        return;
+    if (!main) return;
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.style.cssText = `
@@ -397,9 +481,11 @@ function showError(message, action = null) {
         margin: 24px 0;
         text-align: center;
     `;
+
     const messageSpan = document.createElement('span');
     messageSpan.textContent = message;
     errorDiv.appendChild(messageSpan);
+
     if (action) {
         const link = document.createElement('a');
         link.textContent = action.text;
@@ -410,38 +496,41 @@ function showError(message, action = null) {
             text-decoration: underline;
             cursor: pointer;
         `;
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', (e: Event) => {
             e.preventDefault();
             action.onClick();
         });
         errorDiv.appendChild(link);
     }
+
     main.insertBefore(errorDiv, main.firstChild);
 }
+
 // ---------------------------------------------------------------------------
 // Timestamp / versions
 // ---------------------------------------------------------------------------
+
 /**
  * Update the last updated timestamp
  */
-function updateTimestamp() {
+function updateTimestamp(): void {
     const el = document.getElementById('lastUpdated');
-    if (!el)
-        return;
+    if (!el) return;
     if (benchmarkData?.timestamp) {
         const date = new Date(benchmarkData.timestamp);
         el.textContent = `Last updated: ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
-    }
-    else {
+    } else {
         el.textContent = 'Demo data - no benchmark results available';
     }
+
     // Update type checker versions in legend
     updateTypeCheckerVersions();
 }
+
 /**
  * Update type checker version displays in the legend
  */
-function updateTypeCheckerVersions() {
+function updateTypeCheckerVersions(): void {
     const versions = benchmarkData?.type_checker_versions || {};
     for (const [checker, version] of Object.entries(versions)) {
         const el = document.getElementById(`version-${checker}`);
@@ -450,24 +539,25 @@ function updateTypeCheckerVersions() {
         }
     }
 }
+
 /**
  * Update overview statistics cards
  */
-function updateOverviewStats() {
-    if (!benchmarkData)
-        return;
+function updateOverviewStats(): void {
+    if (!benchmarkData) return;
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
+
     // Package count
     const packageCountEl = document.getElementById('packageCount');
-    if (packageCountEl)
-        packageCountEl.textContent = String(benchmarkData.package_count || 0);
+    if (packageCountEl) packageCountEl.textContent = String(benchmarkData.package_count || 0);
+
     // Checker count
     const checkerCountEl = document.getElementById('checkerCount');
-    if (checkerCountEl)
-        checkerCountEl.textContent = String(checkers.length);
+    if (checkerCountEl) checkerCountEl.textContent = String(checkers.length);
+
     // Find fastest (lowest avg latency)
-    let fastest = null;
+    let fastest: string | null = null;
     let lowestLatency = Infinity;
     for (const checker of checkers) {
         const latency = agg[checker]?.avg_latency_ms;
@@ -477,10 +567,10 @@ function updateOverviewStats() {
         }
     }
     const fastestEl = document.getElementById('fastestChecker');
-    if (fastestEl)
-        fastestEl.textContent = fastest ? (CHECKER_NAMES[fastest] || fastest) : '-';
+    if (fastestEl) fastestEl.textContent = fastest ? (CHECKER_NAMES[fastest] || fastest) : '-';
+
     // Find most accurate (highest success rate)
-    let mostAccurate = null;
+    let mostAccurate: string | null = null;
     let highestRate = 0;
     for (const checker of checkers) {
         const rate = agg[checker]?.success_rate;
@@ -490,38 +580,40 @@ function updateOverviewStats() {
         }
     }
     const mostAccurateEl = document.getElementById('mostAccurate');
-    if (mostAccurateEl)
-        mostAccurateEl.textContent = mostAccurate ? (CHECKER_NAMES[mostAccurate] || mostAccurate) : '-';
+    if (mostAccurateEl) mostAccurateEl.textContent = mostAccurate ? (CHECKER_NAMES[mostAccurate] || mostAccurate) : '-';
 }
+
 // ---------------------------------------------------------------------------
 // Charts
 // ---------------------------------------------------------------------------
+
 /**
  * Create latency comparison chart
  */
-function createLatencyChart() {
-    if (!benchmarkData)
-        return;
-    const canvas = document.getElementById('latencyChart');
+function createLatencyChart(): void {
+    if (!benchmarkData) return;
+    const canvas = document.getElementById('latencyChart') as HTMLCanvasElement | null;
     const ctx = canvas?.getContext('2d');
-    if (!ctx)
-        return;
+    if (!ctx) return;
+
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
+
     const labels = checkers.map(c => CHECKER_NAMES[c] || c);
     const data = checkers.map(c => agg[c]?.avg_latency_ms || 0);
     const colors = checkers.map(c => CHECKER_COLORS[c] || '#888');
+
     charts.latency = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                    label: 'Average Latency (ms)',
-                    data: data,
-                    backgroundColor: colors,
-                    borderRadius: 6,
-                    borderWidth: 0
-                }]
+                label: 'Average Latency (ms)',
+                data: data,
+                backgroundColor: colors,
+                borderRadius: 6,
+                borderWidth: 0
+            }]
         },
         options: {
             responsive: true,
@@ -530,7 +622,7 @@ function createLatencyChart() {
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
-                        label: (tooltipCtx) => `${tooltipCtx.raw.toFixed(1)} ms`
+                        label: (tooltipCtx: any) => `${tooltipCtx.raw.toFixed(1)} ms`
                     }
                 }
             },
@@ -540,7 +632,7 @@ function createLatencyChart() {
                     grid: { color: '#30363d' },
                     ticks: {
                         color: '#8b949e',
-                        callback: (value) => `${value} ms`
+                        callback: (value: any) => `${value} ms`
                     }
                 },
                 x: {
@@ -551,32 +643,34 @@ function createLatencyChart() {
         }
     });
 }
+
 /**
  * Create success rate chart
  */
-function createSuccessChart() {
-    if (!benchmarkData)
-        return;
-    const canvas = document.getElementById('successChart');
+function createSuccessChart(): void {
+    if (!benchmarkData) return;
+    const canvas = document.getElementById('successChart') as HTMLCanvasElement | null;
     const ctx = canvas?.getContext('2d');
-    if (!ctx)
-        return;
+    if (!ctx) return;
+
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
+
     const labels = checkers.map(c => CHECKER_NAMES[c] || c);
     const data = checkers.map(c => agg[c]?.success_rate || 0);
     const colors = checkers.map(c => CHECKER_COLORS[c] || '#888');
+
     charts.success = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                    label: 'Success Rate (%)',
-                    data: data,
-                    backgroundColor: colors,
-                    borderRadius: 6,
-                    borderWidth: 0
-                }]
+                label: 'Success Rate (%)',
+                data: data,
+                backgroundColor: colors,
+                borderRadius: 6,
+                borderWidth: 0
+            }]
         },
         options: {
             responsive: true,
@@ -585,7 +679,7 @@ function createSuccessChart() {
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
-                        label: (tooltipCtx) => `${tooltipCtx.raw.toFixed(1)}%`
+                        label: (tooltipCtx: any) => `${tooltipCtx.raw.toFixed(1)}%`
                     }
                 }
             },
@@ -596,7 +690,7 @@ function createSuccessChart() {
                     grid: { color: '#30363d' },
                     ticks: {
                         color: '#8b949e',
-                        callback: (value) => `${value}%`
+                        callback: (value: any) => `${value}%`
                     }
                 },
                 x: {
@@ -607,32 +701,34 @@ function createSuccessChart() {
         }
     });
 }
+
 /**
  * Create OK rate chart
  */
-function createOkChart() {
-    if (!benchmarkData)
-        return;
-    const canvas = document.getElementById('okChart');
+function createOkChart(): void {
+    if (!benchmarkData) return;
+    const canvas = document.getElementById('okChart') as HTMLCanvasElement | null;
     const ctx = canvas?.getContext('2d');
-    if (!ctx)
-        return;
+    if (!ctx) return;
+
     const agg = benchmarkData.aggregate || {};
     const checkers = benchmarkData.type_checkers || [];
+
     const labels = checkers.map(c => CHECKER_NAMES[c] || c);
     const data = checkers.map(c => agg[c]?.ok_rate || 0);
     const colors = checkers.map(c => CHECKER_COLORS[c] || '#888');
+
     charts.ok = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                    label: 'OK Rate (%)',
-                    data: data,
-                    backgroundColor: colors,
-                    borderRadius: 6,
-                    borderWidth: 0
-                }]
+                label: 'OK Rate (%)',
+                data: data,
+                backgroundColor: colors,
+                borderRadius: 6,
+                borderWidth: 0
+            }]
         },
         options: {
             responsive: true,
@@ -641,7 +737,7 @@ function createOkChart() {
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
-                        label: (tooltipCtx) => `${tooltipCtx.raw.toFixed(1)}%`
+                        label: (tooltipCtx: any) => `${tooltipCtx.raw.toFixed(1)}%`
                     }
                 }
             },
@@ -652,7 +748,7 @@ function createOkChart() {
                     grid: { color: '#30363d' },
                     ticks: {
                         color: '#8b949e',
-                        callback: (value) => `${value}%`
+                        callback: (value: any) => `${value}%`
                     }
                 },
                 x: {
@@ -663,19 +759,21 @@ function createOkChart() {
         }
     });
 }
+
 /**
  * Create package comparison chart
  */
-function createPackageComparisonChart() {
-    if (!benchmarkData)
-        return;
-    const canvas = document.getElementById('packageComparisonChart');
+function createPackageComparisonChart(): void {
+    if (!benchmarkData) return;
+    const canvas = document.getElementById('packageComparisonChart') as HTMLCanvasElement | null;
     const ctx = canvas?.getContext('2d');
-    if (!ctx)
-        return;
+    if (!ctx) return;
+
     const results = (benchmarkData.results || []).filter(r => !r.error).slice(0, 10);
     const checkers = benchmarkData.type_checkers || [];
+
     const labels = results.map(r => r.package_name);
+
     const datasets = checkers.map(checker => ({
         label: CHECKER_NAMES[checker] || checker,
         data: results.map(r => {
@@ -686,6 +784,7 @@ function createPackageComparisonChart() {
         borderRadius: 4,
         borderWidth: 0
     }));
+
     charts.packageComparison = new Chart(ctx, {
         type: 'bar',
         data: { labels, datasets },
@@ -709,7 +808,7 @@ function createPackageComparisonChart() {
                 },
                 tooltip: {
                     callbacks: {
-                        label: (tooltipCtx) => `${tooltipCtx.dataset.label}: ${tooltipCtx.raw.toFixed(1)} ms`
+                        label: (tooltipCtx: any) => `${tooltipCtx.dataset.label}: ${tooltipCtx.raw.toFixed(1)} ms`
                     }
                 }
             },
@@ -719,7 +818,7 @@ function createPackageComparisonChart() {
                     grid: { color: '#30363d' },
                     ticks: {
                         color: '#8b949e',
-                        callback: (value) => `${value} ms`
+                        callback: (value: any) => `${value} ms`
                     },
                     title: {
                         display: true,
@@ -735,22 +834,43 @@ function createPackageComparisonChart() {
         }
     });
 }
+
+// ---------------------------------------------------------------------------
+// Results table
+// ---------------------------------------------------------------------------
+
+interface TableRow {
+    package: string;
+    github_url: string;
+    checker: string;
+    avgLatency?: number;
+    p50Latency?: number;
+    p95Latency?: number;
+    okPct?: number;
+    validPct?: number;
+    hasError: boolean;
+    error: string | null | undefined;
+}
+
 /**
  * Populate the results table
  */
-function populateResultsTable(filterText = '', sortBy = 'ranking') {
-    if (!benchmarkData)
-        return;
+function populateResultsTable(filterText: string = '', sortBy: string = 'ranking'): void {
+    if (!benchmarkData) return;
     const tbody = document.getElementById('resultsBody');
-    if (!tbody)
-        return;
+    if (!tbody) return;
+
     let results = benchmarkData.results || [];
     const checkers = benchmarkData.type_checkers || [];
+
     // Filter
     if (filterText) {
         const filter = filterText.toLowerCase();
-        results = results.filter(r => r.package_name.toLowerCase().includes(filter));
+        results = results.filter(r =>
+            r.package_name.toLowerCase().includes(filter)
+        );
     }
+
     // Sort
     results = [...results].sort((a, b) => {
         switch (sortBy) {
@@ -770,12 +890,15 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                 return (a.ranking || 999) - (b.ranking || 999);
         }
     });
+
     // Build rows
-    const rows = [];
+    const rows: TableRow[] = [];
+
     for (const result of results) {
         for (const checker of checkers) {
             const metrics = result.metrics?.[checker];
             const hasError = !!(result.error || !metrics?.ok);
+
             rows.push({
                 package: result.package_name,
                 github_url: result.github_url,
@@ -790,11 +913,13 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
             });
         }
     }
+
     // Render
     if (rows.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" class="loading-row">No results found</td></tr>`;
         return;
     }
+
     tbody.innerHTML = rows.map((row, idx) => {
         const isFirstInGroup = idx === 0 || rows[idx - 1].package !== row.package;
         const packageCell = isFirstInGroup
@@ -802,6 +927,7 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
                  <a href="${row.github_url}" target="_blank">${row.package}</a>
                </td>`
             : '';
+
         return `
             <tr>
                 ${packageCell}
@@ -815,64 +941,69 @@ function populateResultsTable(filterText = '', sortBy = 'ranking') {
         `;
     }).join('');
 }
+
 // ---------------------------------------------------------------------------
 // Formatting helpers
 // ---------------------------------------------------------------------------
+
 /**
  * Format latency value
  */
-function formatLatency(value) {
-    if (value == null)
-        return '-';
+function formatLatency(value: number | undefined): string {
+    if (value == null) return '-';
     return `${value.toFixed(1)} ms`;
 }
+
 /**
  * Format percentage value
  */
-function formatPercent(value) {
-    if (value == null)
-        return '-';
+function formatPercent(value: number | undefined): string {
+    if (value == null) return '-';
     return `${value.toFixed(1)}%`;
 }
+
 /**
  * Get minimum latency across checkers for a result
  */
-function getMinLatency(result, checkers) {
+function getMinLatency(result: BenchmarkResult, checkers: string[]): number {
     let min = Infinity;
     for (const checker of checkers) {
         const lat = result.metrics?.[checker]?.latency_ms?.mean;
-        if (lat && lat < min)
-            min = lat;
+        if (lat && lat < min) min = lat;
     }
     return min === Infinity ? 0 : min;
 }
+
 /**
  * Get maximum success rate across checkers for a result
  */
-function getMaxSuccess(result, checkers) {
+function getMaxSuccess(result: BenchmarkResult, checkers: string[]): number {
     let max = 0;
     for (const checker of checkers) {
         const rate = result.metrics?.[checker]?.valid_pct;
-        if (rate && rate > max)
-            max = rate;
+        if (rate && rate > max) max = rate;
     }
     return max;
 }
+
 // ---------------------------------------------------------------------------
 // Filters
 // ---------------------------------------------------------------------------
+
 /**
  * Setup filter controls
  */
-function setupFilters() {
-    const searchInput = document.getElementById('packageSearch');
-    const sortSelect = document.getElementById('sortBy');
+function setupFilters(): void {
+    const searchInput = document.getElementById('packageSearch') as HTMLInputElement | null;
+    const sortSelect = document.getElementById('sortBy') as HTMLSelectElement | null;
+
     if (searchInput) {
         searchInput.addEventListener('input', () => {
             const sortByVal = sortSelect?.value || 'ranking';
             populateResultsTable(searchInput.value, sortByVal);
         });
     }
+
     if (sortSelect) {
         sortSelect.addEventListener('change', () => {
             const filterTextVal = searchInput?.value || '';
@@ -880,6 +1011,8 @@ function setupFilters() {
         });
     }
 }
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', init);
+
 export {};

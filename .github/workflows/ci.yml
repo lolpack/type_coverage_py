@@ -40,4 +40,20 @@ jobs:
 
       # Run Pyrefly type checking
       - name: Typecheck with Pyrefly
-        run: pyrefly check    
+        run: pyrefly check
+
+  check-ts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run check
+      - name: Check for merge conflict markers
+        run: |
+          if grep -rn '<<<<<<<\|>>>>>>>\|=======' --include='*.ts' --include='*.js' --exclude='*.min.js' --exclude-dir=node_modules .; then
+            echo "::error::Merge conflict markers found"
+            exit 1
+          fi
