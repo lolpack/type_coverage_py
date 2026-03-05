@@ -168,6 +168,13 @@ def run_process_with_timeout(
     """
     start_time = time.time()
 
+    # Snapshot macOS child memory high-water mark before spawning so we can
+    # compute the delta attributable to this child process alone.
+    darwin_maxrss_before: int = 0
+    if sys.platform == "darwin":
+        import resource
+        darwin_maxrss_before = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+
     kwargs: dict[str, Any] = {
         "cwd": cwd,
         "stdout": subprocess.PIPE,
@@ -262,10 +269,13 @@ def run_process_with_timeout(
     if sys.platform == "linux":
         peak_memory_mb = round(peak_kb[0] / 1024, 1)
     elif sys.platform == "darwin":
-        # On macOS, use getrusage for child processes
+        # On macOS, ru_maxrss from RUSAGE_CHILDREN is a running high-water
+        # mark across ALL children ever spawned.  Subtract the snapshot we
+        # took before spawning this child to isolate its contribution.
         import resource
-        usage = resource.getrusage(resource.RUSAGE_CHILDREN)
-        peak_memory_mb = round(usage.ru_maxrss / (1024 * 1024), 1)  # bytes -> MB
+        darwin_maxrss_after = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+        delta = max(0, darwin_maxrss_after - darwin_maxrss_before)
+        peak_memory_mb = round(delta / (1024 * 1024), 1)  # bytes -> MB
     else:
         peak_memory_mb = 0.0
 
@@ -508,12 +518,21 @@ def _write_dummy_pyright_config(
 def _write_dummy_mypy_config(
     package_path: Path, check_paths: list[str] | None = None,
 ) -> Path:
-    """Write minimal mypy config for consistent benchmarking."""
+    """Write minimal mypy config for consistent benchmarking.
+
+    Excludes test directories to avoid fatal errors from duplicate
+    conftest.py modules and syntax errors in test fixture files, which
+    cause mypy to bail out with 'errors prevented further checking'
+    without actually type-checking any code.
+    """
     config_path = package_path / "mypy.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
         f.write("[mypy]\n")
         if check_paths:
             f.write(f"files = {', '.join(check_paths)}\n")
+        # Exclude test dirs to avoid duplicate module / syntax errors
+        # that cause mypy to bail out without checking anything
+        f.write("exclude = (?x)(\n    /tests/\n    | /test_\n    | /testing/\n  )\n")
     return config_path
 
 
@@ -583,7 +602,7 @@ def run_checker(
         cwd = package_path
     elif checker == "mypy":
         config_path = _write_dummy_mypy_config(package_path, rel_paths)
-        cmd = [sys.executable, "-m", "mypy", "--config-file", str(config_path)]
+        cmd = [sys.executable, "-m", "mypy", "--no-incremental", "--config-file", str(config_path)]
         # mypy needs explicit paths if no files= in config; when check_paths
         # are embedded in the config via files=, we still pass "." so mypy
         # has a target (it requires at least one positional arg or files=).
@@ -591,9 +610,12 @@ def run_checker(
             cmd.append(str(package_path))
         cwd = package_path
     elif checker == "zuban":
-        config_path = _write_dummy_zuban_config(package_path, rel_paths)
-        cmd = ["zuban", "check", "--config-file", str(config_path)]
-        if not rel_paths:
+        # zuban ignores files= from --config-file, so we must always pass
+        # check paths as explicit positional arguments.
+        cmd = ["zuban", "check"]
+        if rel_paths:
+            cmd.extend(rel_paths)
+        else:
             cmd.append(".")
         cwd = package_path
     else:
@@ -616,6 +638,35 @@ def run_checker(
             "execution_time_s": result["execution_time_s"],
             "peak_memory_mb": result.get("peak_memory_mb", 0.0),
             "error_message": msg,
+        }
+
+    # Detect fatal errors: mypy exits with code 2 for fatal errors (code 1 = type errors found).
+    # Also check for "errors prevented further checking" which means mypy bailed out early.
+    stderr = result.get("stderr", "")
+    stdout = result.get("stdout", "")
+    combined_output = stderr + stdout
+
+    if "errors prevented further checking" in combined_output:
+        return {
+            "ok": False,
+            "execution_time_s": result["execution_time_s"],
+            "peak_memory_mb": result.get("peak_memory_mb", 0.0),
+            "error_message": "Fatal: errors prevented further checking",
+        }
+
+    # mypy return code 2 = fatal error (not type errors)
+    if checker == "mypy" and result.get("returncode", 0) == 2:
+        # Extract first error line from output for context
+        first_error = ""
+        for line in combined_output.splitlines():
+            if "error:" in line.lower():
+                first_error = line.strip()[:200]
+                break
+        return {
+            "ok": False,
+            "execution_time_s": result["execution_time_s"],
+            "peak_memory_mb": result.get("peak_memory_mb", 0.0),
+            "error_message": first_error or "Fatal error (exit code 2)",
         }
 
     return {

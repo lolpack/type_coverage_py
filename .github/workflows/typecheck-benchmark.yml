@@ -19,6 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ${{ fromJSON(
+          github.event_name == 'push' && '["ubuntu-latest","macos-latest","windows-latest"]' ||
           github.event_name == 'workflow_dispatch' && '["ubuntu-latest","macos-latest","windows-latest"]' ||
           github.event.schedule == '0 5 * * 3' && '["macos-latest"]' ||
           '["ubuntu-latest","windows-latest"]'
@@ -31,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: published-report
+          ref: ${{ github.event_name == 'push' && github.ref || 'published-report' }}
 
       - name: Setup SSH Known Hosts
         shell: bash
@@ -110,16 +111,19 @@ jobs:
           retention-days: 90
 
       - name: Stash Changes
+        if: github.event_name != 'push'
         shell: bash
         run: |
           git add .
           git stash
 
       - name: Pull Latest Changes
+        if: github.event_name != 'push'
         shell: bash
         run: git pull origin published-report --rebase
 
       - name: Apply Stashed Changes
+        if: github.event_name != 'push'
         shell: bash
         run: git stash pop || true
 
@@ -136,6 +140,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update typecheck timing benchmark results [skip ci]"
-          branch: published-report
-          file_pattern: 'typecheck_benchmark/results/*.json typecheck_benchmark/scripts/typecheck-benchmark.js'
-          add_options: '--force'
+          branch: ${{ github.event_name == 'push' && github.ref_name || 'published-report' }}
+          file_pattern: 'typecheck_benchmark/results/*.json'

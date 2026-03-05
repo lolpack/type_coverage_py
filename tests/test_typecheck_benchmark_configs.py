@@ -56,6 +56,7 @@ class TestWriteDummyMypyConfig:
         content = path.read_text()
         assert "[mypy]\n" in content
         assert "files" not in content
+        assert "exclude" in content
 
     def test_check_paths_in_files(self, tmp_path: Path) -> None:
         path = _write_dummy_mypy_config(tmp_path, ["src", "lib"])
@@ -70,6 +71,13 @@ class TestWriteDummyMypyConfig:
     def test_returns_benchmark_ini_path(self, tmp_path: Path) -> None:
         path = _write_dummy_mypy_config(tmp_path)
         assert path.name == "mypy.benchmark.ini"
+
+    def test_exclude_tests_dirs(self, tmp_path: Path) -> None:
+        path = _write_dummy_mypy_config(tmp_path)
+        content = path.read_text()
+        assert "/tests/" in content
+        assert "/test_" in content
+        assert "/testing/" in content
 
 
 # ---------------------------------------------------------------------------
@@ -224,7 +232,7 @@ class TestRunCheckerCommands:
     def test_mypy_no_check_paths_passes_package_path(self, tmp_path: Path) -> None:
         cmd = self._run_and_capture_cmd("mypy", tmp_path)
         config_path = str(tmp_path / "mypy.benchmark.ini")
-        assert cmd == [sys.executable, "-m", "mypy", "--config-file", config_path, str(tmp_path)]
+        assert cmd == [sys.executable, "-m", "mypy", "--no-incremental", "--config-file", config_path, str(tmp_path)]
 
     def test_mypy_with_check_paths_no_extra_args(self, tmp_path: Path) -> None:
         src = tmp_path / "src"
@@ -232,24 +240,21 @@ class TestRunCheckerCommands:
         cmd = self._run_and_capture_cmd("mypy", tmp_path, [src])
         config_path = str(tmp_path / "mypy.benchmark.ini")
         # Should NOT append path args — files= is in the config
-        assert cmd == [sys.executable, "-m", "mypy", "--config-file", config_path]
+        assert cmd == [sys.executable, "-m", "mypy", "--no-incremental", "--config-file", config_path]
         content = (tmp_path / "mypy.benchmark.ini").read_text()
         assert "files = src\n" in content
 
     def test_zuban_no_check_paths_passes_dot(self, tmp_path: Path) -> None:
         cmd = self._run_and_capture_cmd("zuban", tmp_path)
-        config_path = str(tmp_path / "mypy.benchmark.ini")
-        assert cmd == ["zuban", "check", "--config-file", config_path, "."]
+        # zuban ignores --config-file, so paths are always positional
+        assert cmd == ["zuban", "check", "."]
 
-    def test_zuban_with_check_paths_no_extra_args(self, tmp_path: Path) -> None:
+    def test_zuban_with_check_paths_passes_positional(self, tmp_path: Path) -> None:
         src = tmp_path / "src"
         src.mkdir()
         cmd = self._run_and_capture_cmd("zuban", tmp_path, [src])
-        config_path = str(tmp_path / "mypy.benchmark.ini")
-        # Should NOT append path args — files= is in the config
-        assert cmd == ["zuban", "check", "--config-file", config_path]
-        content = (tmp_path / "mypy.benchmark.ini").read_text()
-        assert "files = src\n" in content
+        # zuban ignores --config-file, so check paths are positional args
+        assert cmd == ["zuban", "check", "src"]
 
     def test_unknown_checker_returns_error(self, tmp_path: Path) -> None:
         with patch("typecheck_benchmark.daily_runner.run_process_with_timeout") as mock:
