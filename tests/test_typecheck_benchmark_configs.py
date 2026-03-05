@@ -246,18 +246,15 @@ class TestRunCheckerCommands:
 
     def test_zuban_no_check_paths_passes_dot(self, tmp_path: Path) -> None:
         cmd = self._run_and_capture_cmd("zuban", tmp_path)
-        config_path = str(tmp_path / "mypy.benchmark.ini")
-        assert cmd == ["zuban", "check", "--config-file", config_path, "."]
+        # zuban ignores --config-file, so paths are always positional
+        assert cmd == ["zuban", "check", "."]
 
-    def test_zuban_with_check_paths_no_extra_args(self, tmp_path: Path) -> None:
+    def test_zuban_with_check_paths_passes_positional(self, tmp_path: Path) -> None:
         src = tmp_path / "src"
         src.mkdir()
         cmd = self._run_and_capture_cmd("zuban", tmp_path, [src])
-        config_path = str(tmp_path / "mypy.benchmark.ini")
-        # Should NOT append path args — files= is in the config
-        assert cmd == ["zuban", "check", "--config-file", config_path]
-        content = (tmp_path / "mypy.benchmark.ini").read_text()
-        assert "files = src\n" in content
+        # zuban ignores --config-file, so check paths are positional args
+        assert cmd == ["zuban", "check", "src"]
 
     def test_unknown_checker_returns_error(self, tmp_path: Path) -> None:
         with patch("typecheck_benchmark.daily_runner.run_process_with_timeout") as mock:
