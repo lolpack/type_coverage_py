@@ -62,6 +62,7 @@ jobs:
       - name: Deploy to published-report
         shell: bash
         run: |
+          export GIT_SSH_COMMAND=$(git config --local core.sshCommand)
           git clone --branch published-report --single-branch --depth 1 \
             "git@github.com:${{ github.repository }}.git" /tmp/deploy
 
