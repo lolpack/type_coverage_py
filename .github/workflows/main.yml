@@ -10,82 +10,115 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: published-report # Checkout the published-report branch
-      
+          ref: main
+
       - name: Setup SSH Known Hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          
-      - name: Verify SSH Key
-        run: |
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          eval `ssh-agent -s`
-          ssh-add ~/.ssh/id_ed25519
-          ssh -T git@github.com || true
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          
-      # Set up Python
+
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      # Install dependencies
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Clone the typeshed repository
       - name: Clone Typeshed Repository
         run: git clone https://github.com/python/typeshed.git
 
-      # Run the main script
+      - name: Fetch accumulated data from published-report
+        run: |
+          git fetch origin published-report
+          git checkout origin/published-report -- \
+            package_report.json \
+            historical_data/json/ \
+            prioritized/package_report.json \
+            prioritized/historical_data/json/ \
+            2>/dev/null || true
+
       - name: Run Main Script
         run: python main.py 2000 --create-daily
 
-      # Stash any unstaged changes before pulling
-      - name: Stash Changes
-        run: |
-          git add .
-          git stash
-
-      # Pull latest changes in case the repository diverged
-      - name: Pull Latest Changes
-        run: git pull origin published-report --rebase
-
-      # Apply the stashed changes
-      - name: Apply Stashed Changes
-        run: git stash pop
-
-      - name: Setup Node.js for TypeScript build
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Build and validate frontend
+      - name: Build frontend
+        shell: bash
         run: |
           npm ci
           npm run build
-          if grep -rn '<<<<<<<\|>>>>>>>\|=======' --include='*.ts' --include='*.js' --exclude='*.min.js' --exclude-dir=node_modules .; then
-            echo "::error::Merge conflict markers found"
-            exit 1
-          fi
 
-      # Automatically commit and push changes
-      - name: Commit and Push Changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "add latest data"
-          branch: published-report
-          file_pattern: 'package_report.json historical_data/json/*.json scripts/main.js prioritized/scripts/main.js historical_data/scripts/coverage-trends.js prioritized/historical_data/scripts/coverage-trends.js'
-          add_options: '--force'
+      - name: Deploy to published-report
+        shell: bash
+        run: |
+          git clone --branch published-report --single-branch --depth 1 \
+            "git@github.com:${{ github.repository }}.git" /tmp/deploy
+
+          # Copy data files
+          cp package_report.json /tmp/deploy/
+          mkdir -p /tmp/deploy/historical_data/json
+          cp historical_data/json/*.json /tmp/deploy/historical_data/json/
+          mkdir -p /tmp/deploy/prioritized
+          cp prioritized/package_report.json /tmp/deploy/prioritized/ 2>/dev/null || true
+          mkdir -p /tmp/deploy/prioritized/historical_data/json
+          cp prioritized/historical_data/json/*.json /tmp/deploy/prioritized/historical_data/json/ 2>/dev/null || true
+
+          # Copy HTML pages
+          cp index.html /tmp/deploy/
+          cp prioritized/index.html /tmp/deploy/prioritized/
+          cp historical_data/coverage-trends.html /tmp/deploy/historical_data/
+          cp prioritized/historical_data/coverage-trends.html /tmp/deploy/prioritized/historical_data/
+          mkdir -p /tmp/deploy/lsp/benchmark
+          cp lsp/benchmark/index.html /tmp/deploy/lsp/benchmark/
+          mkdir -p /tmp/deploy/typecheck_benchmark
+          cp typecheck_benchmark/index.html /tmp/deploy/typecheck_benchmark/
+
+          # Copy JS files
+          mkdir -p /tmp/deploy/scripts
+          cp scripts/main.js /tmp/deploy/scripts/
+          mkdir -p /tmp/deploy/prioritized/scripts
+          cp prioritized/scripts/main.js /tmp/deploy/prioritized/scripts/
+          mkdir -p /tmp/deploy/historical_data/scripts
+          cp historical_data/scripts/coverage-trends.js /tmp/deploy/historical_data/scripts/
+          mkdir -p /tmp/deploy/prioritized/historical_data/scripts
+          cp prioritized/historical_data/scripts/coverage-trends.js /tmp/deploy/prioritized/historical_data/scripts/
+          mkdir -p /tmp/deploy/lsp/benchmark/scripts
+          cp lsp/benchmark/scripts/lsp-benchmark.js /tmp/deploy/lsp/benchmark/scripts/
+          mkdir -p /tmp/deploy/typecheck_benchmark/scripts
+          cp typecheck_benchmark/scripts/typecheck-benchmark.js /tmp/deploy/typecheck_benchmark/scripts/
+
+          # Copy CSS files
+          cp historical_data/graph.css /tmp/deploy/historical_data/
+          cp prioritized/historical_data/graph.css /tmp/deploy/prioritized/historical_data/
+          mkdir -p /tmp/deploy/lsp/benchmark/styles
+          cp lsp/benchmark/styles/lsp-benchmark.css /tmp/deploy/lsp/benchmark/styles/
+          mkdir -p /tmp/deploy/typecheck_benchmark/styles
+          cp typecheck_benchmark/styles/typecheck-benchmark.css /tmp/deploy/typecheck_benchmark/styles/
+
+          # Commit and push
+          cd /tmp/deploy
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add \
+            package_report.json historical_data/json/ \
+            prioritized/package_report.json prioritized/historical_data/json/ \
+            index.html prioritized/index.html \
+            historical_data/coverage-trends.html prioritized/historical_data/coverage-trends.html \
+            scripts/ prioritized/scripts/ \
+            historical_data/scripts/ prioritized/historical_data/scripts/ \
+            historical_data/graph.css prioritized/historical_data/graph.css \
+            lsp/benchmark/index.html lsp/benchmark/scripts/lsp-benchmark.js lsp/benchmark/styles/lsp-benchmark.css \
+            typecheck_benchmark/index.html typecheck_benchmark/scripts/typecheck-benchmark.js typecheck_benchmark/styles/typecheck-benchmark.css
+          git diff --staged --quiet || git commit -m "add latest data"
+          git push origin published-report
