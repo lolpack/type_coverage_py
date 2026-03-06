@@ -10,92 +10,89 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ref: published-report # Checkout the published-report branch
-      
+          ref: main
+
       - name: Setup SSH Known Hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          
-      - name: Verify SSH Key
-        run: |
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          eval `ssh-agent -s`
-          ssh-add ~/.ssh/id_ed25519
-          ssh -T git@github.com || true
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          
-      # Set up Python
+
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      # Install dependencies
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
-      # Set up Node.js (needed for Pyright)
+
       - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      # Install Pyright globally using npm
-      - name: Install Pyright
-        run: npm install -g pyright
-
-      # Clone the typeshed repository
-      - name: Clone Typeshed Repository
-        run: git clone https://github.com/python/typeshed.git
-
-      # Run the main script
-      - name: Run Main Script
-        shell: bash
-        run: python main.py --archive-prioritized --package-list included_packages.txt 
-
-      # Stash any unstaged changes before pulling
-      - name: Stash Changes
-        run: |
-          git add .
-          git stash
-
-      # Pull latest changes in case the repository diverged
-      - name: Pull Latest Changes
-        run: git pull origin published-report --rebase
-
-      # Apply the stashed changes
-      - name: Apply Stashed Changes
-        run: git stash pop
-
-      - name: Setup Node.js for TypeScript build
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Build and validate frontend
+      - name: Install Pyright
+        run: npm install -g pyright
+
+      - name: Clone Typeshed Repository
+        run: git clone https://github.com/python/typeshed.git
+
+      - name: Fetch accumulated data from published-report
+        run: |
+          git fetch origin published-report
+          git checkout origin/published-report -- \
+            prioritized/package_report.json \
+            prioritized/historical_data/json/ \
+            2>/dev/null || true
+
+      - name: Run Main Script
+        shell: bash
+        run: python main.py --archive-prioritized --package-list included_packages.txt
+
+      - name: Build frontend
+        shell: bash
         run: |
           npm ci
           npm run build
-          if grep -rn '<<<<<<<\|>>>>>>>\|=======' --include='*.ts' --include='*.js' --exclude='*.min.js' --exclude-dir=node_modules .; then
-            echo "::error::Merge conflict markers found"
-            exit 1
-          fi
 
-      # Automatically commit and push changes
-      - name: Commit and Push Changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "add latest data"
-          branch: published-report
-          add_options: '--force'
+      - name: Deploy to published-report
+        shell: bash
+        run: |
+          git clone --branch published-report --single-branch --depth 1 \
+            "git@github.com:${{ github.repository }}.git" /tmp/deploy
+
+          # Copy prioritized data files
+          mkdir -p /tmp/deploy/prioritized/historical_data/json
+          cp prioritized/package_report.json /tmp/deploy/prioritized/
+          cp prioritized/historical_data/json/*.json /tmp/deploy/prioritized/historical_data/json/
+
+          # Copy HTML pages
+          cp prioritized/index.html /tmp/deploy/prioritized/
+          cp prioritized/historical_data/coverage-trends.html /tmp/deploy/prioritized/historical_data/
+
+          # Copy JS files
+          mkdir -p /tmp/deploy/prioritized/scripts
+          cp prioritized/scripts/main.js /tmp/deploy/prioritized/scripts/
+          mkdir -p /tmp/deploy/prioritized/historical_data/scripts
+          cp prioritized/historical_data/scripts/coverage-trends.js /tmp/deploy/prioritized/historical_data/scripts/
+
+          # Copy CSS files
+          cp prioritized/historical_data/graph.css /tmp/deploy/prioritized/historical_data/
+
+          # Commit and push
+          cd /tmp/deploy
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add \
+            prioritized/package_report.json prioritized/historical_data/json/ \
+            prioritized/index.html prioritized/historical_data/coverage-trends.html \
+            prioritized/scripts/ prioritized/historical_data/scripts/ \
+            prioritized/historical_data/graph.css
+          git diff --staged --quiet || git commit -m "add latest prioritized data"
+          git push origin published-report
