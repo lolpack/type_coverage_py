@@ -70,6 +70,27 @@ This methodology ensures an accurate and detailed analysis of type coverage for 
 - **Pyright Analysis:** The script can optionally run Pyright to gather additional type information statistics for each package.
 - **Stats Structure:** Pyright stats include counts of known, ambiguous, and unknown types for each package.
 
+## Branching Strategy
+
+- **`main`** — Development branch. All code changes (Python, TypeScript, HTML, CSS, workflow YAML) are made here.
+- **`published-report`** — Deploy-only branch. Contains only the generated site files (HTML, CSS, compiled JS, data JSON) served by GitHub Pages. Never commit code changes directly to this branch.
+
+All four CI workflows check out `main` for code, fetch accumulated data from `published-report`, run their task, build the frontend, and deploy results back to `published-report` via a shallow-clone push. This one-way flow ensures workflow YAML always comes from `main` and prevents build artifacts (e.g. `node_modules`, `.pyright_output`) from being committed to the deploy branch.
+
+## GitHub Actions Workflows
+
+### Daily Package Data Update (`main.yml`)
+Runs daily at 8 AM EST. Analyzes the top 2000 PyPI packages for type coverage using Pyright and typeshed stubs. Generates `package_report.json` and a daily historical snapshot in `historical_data/json/`. Deploys data files plus all site assets (HTML, JS, CSS) to `published-report`.
+
+### Daily Prioritized List Runner (`prioritized.yaml`)
+Runs daily at 10 AM EST. Analyzes a curated list of packages (defined in `included_packages.txt`) with Pyright stats. Generates `prioritized/package_report.json` and daily snapshots in `prioritized/historical_data/json/`. Deploys prioritized data and site files to `published-report`.
+
+### Daily LSP Benchmark (`lsp-benchmark.yml`)
+Runs daily at 3 AM UTC on Ubuntu and Windows, weekly on Tuesdays for macOS. Benchmarks LSP performance (time-to-first-diagnostic, completions, hover) across Pyright, Pyrefly, ty, and Zuban on the prioritized package list. Each OS produces a separate results JSON. Deploys to `published-report` with retry logic for concurrent matrix job pushes.
+
+### Daily Type Checker Timing Benchmark (`typecheck-benchmark.yml`)
+Runs daily at 5 AM UTC on Ubuntu and Windows, weekly on Wednesdays for macOS. Measures full type-checking time across Pyright, Pyrefly, ty, mypy, and Zuban on packages with install configurations. Each OS produces a separate results JSON. Deploys to `published-report` with retry logic for concurrent matrix job pushes.
+
 ## Development
 
 Clone the typeshed repo into the root of the project
