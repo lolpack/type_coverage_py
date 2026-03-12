@@ -233,6 +233,11 @@ KNOWN_GITHUB_URLS: dict[str, str] = {
     "comfyui": "https://github.com/comfyanonymous/ComfyUI",
     "ansible": "https://github.com/ansible/ansible",
     "pyopengl": "https://github.com/mcfletch/pyopengl",
+    "kivy": "https://github.com/kivy/kivy",
+    "wagtail": "https://github.com/wagtail/wagtail",
+    "pyarrow": "https://github.com/apache/arrow",
+    "ujson": "https://github.com/ultrajson/ultrajson",
+    "sphinx": "https://github.com/sphinx-doc/sphinx",
 }
 
 # Type checker LSP commands
@@ -447,119 +452,28 @@ def resolve_github_url(package_name: str) -> str | None:
     return KNOWN_GITHUB_URLS.get(normalized_name)
 
 
-def install_package_deps(
-    package_path: Path,
-    package_name: str,
-    timeout: int = 120,
-) -> bool:
-    """Install a package's dependencies into the current environment.
-
-    Tries requirements.txt first, then setup.py/pyproject.toml via pip install -e.
-
-    Args:
-        package_path: Path to the cloned package directory.
-        package_name: Name of the package (for logging).
-        timeout: Timeout in seconds for the install operation.
+def _load_install_envs() -> dict[str, dict[str, Any]]:
+    """Load install_envs.json and return a dict keyed by package name.
 
     Returns:
-        True if deps were installed successfully, False otherwise.
+        Dictionary mapping package names to their install config from
+        typecheck_benchmark/install_envs.json.
     """
-    req_files = ["requirements.txt", "requirements/base.txt", "requirements/main.txt"]
+    install_envs_file = ROOT_DIR / "typecheck_benchmark" / "install_envs.json"
+    if not install_envs_file.exists():
+        return {}
 
-    for req_file in req_files:
-        req_path = package_path / req_file
-        if req_path.exists():
-            print(f"  Installing deps from {req_file}...")
-            try:
-                result = subprocess.run(
-                    [sys.executable, "-m", "pip", "install", "-r", str(req_path),
-                     "--quiet", "--no-build-isolation"],
-                    capture_output=True,
-                    text=True,
-                    timeout=timeout,
-                    cwd=str(package_path),
-                )
-                if result.returncode == 0:
-                    print(f"  Deps installed successfully from {req_file}")
-                    return True
-                else:
-                    print(f"  Warning: pip install -r {req_file} failed: {result.stderr[:200]}")
-            except subprocess.TimeoutExpired:
-                print(f"  Warning: Timeout installing deps from {req_file}")
-            except Exception as e:
-                print(f"  Warning: Error installing deps from {req_file}: {e}")
+    with open(install_envs_file, encoding="utf-8") as f:
+        data: dict[str, Any] = json.load(f)
 
-    # Try pip install the package itself (editable) to pull in its declared deps
-    has_setup = (package_path / "setup.py").exists() or (package_path / "setup.cfg").exists()
-    has_pyproject = (package_path / "pyproject.toml").exists()
-
-    if has_setup or has_pyproject:
-        print(f"  Installing {package_name} deps via pip install (deps only)...")
-        try:
-            result = subprocess.run(
-                [sys.executable, "-m", "pip", "install", "--no-build-isolation",
-                 "--quiet", ".", "--no-deps"],
-                capture_output=True,
-                text=True,
-                timeout=timeout,
-                cwd=str(package_path),
-            )
-            # Even if no-deps install fails, try installing just the declared dependencies
-            # by reading pyproject.toml
-            if has_pyproject:
-                deps = _extract_pyproject_deps(package_path / "pyproject.toml")
-                if deps:
-                    print(f"  Installing {len(deps)} declared dependencies...")
-                    try:
-                        result = subprocess.run(
-                            [sys.executable, "-m", "pip", "install", "--quiet"] + deps,
-                            capture_output=True,
-                            text=True,
-                            timeout=timeout,
-                            cwd=str(package_path),
-                        )
-                        if result.returncode == 0:
-                            print(f"  Deps installed successfully from pyproject.toml")
-                            return True
-                        else:
-                            print(f"  Warning: some deps failed to install: {result.stderr[:200]}")
-                            return True  # partial success is still useful
-                    except (subprocess.TimeoutExpired, Exception) as e:
-                        print(f"  Warning: Error installing pyproject deps: {e}")
-        except subprocess.TimeoutExpired:
-            print(f"  Warning: Timeout installing {package_name}")
-        except Exception as e:
-            print(f"  Warning: Error installing {package_name}: {e}")
-
-    print(f"  No installable deps found for {package_name}")
-    return False
-
-
-def _extract_pyproject_deps(pyproject_path: Path) -> list[str]:
-    """Extract dependency names from pyproject.toml.
-
-    Args:
-        pyproject_path: Path to pyproject.toml file.
-
-    Returns:
-        List of dependency specifier strings.
-    """
-    try:
-        import tomllib
-    except ImportError:
-        try:
-            import tomli as tomllib  # type: ignore[no-redef]
-        except ImportError:
-            return []
-
-    try:
-        with open(pyproject_path, "rb") as f:
-            data = tomllib.load(f)
-        deps: list[str] = data.get("project", {}).get("dependencies", [])
-        # Filter out self-references and extras
-        return [d for d in deps if not d.startswith(".")]
-    except Exception:
-        return []
+    result: dict[str, dict[str, Any]] = {}
+    for pkg in data.get("packages", []):
+        github_url = pkg.get("github_url", "")
+        if not github_url:
+            continue
+        name = pkg.get("name") or github_url.rstrip("/").split("/")[-1]
+        result[name.lower()] = pkg
+    return result
 
 
 def fetch_github_package(
@@ -1122,7 +1036,15 @@ def _benchmark_single_package(
         }
 
     if install_deps:
-        install_package_deps(package_path, package_name)
+        install_envs = _load_install_envs()
+        env_config = install_envs.get(package_name.lower(), {})
+        has_install = env_config.get("install", False)
+        has_deps = bool(env_config.get("deps"))
+        if has_install or has_deps:
+            from typecheck_benchmark.daily_runner import install_deps as tc_install_deps
+            tc_install_deps(package_path, env_config)
+        else:
+            print(f"  No install config in install_envs.json for {package_name}")
 
     print(f"  Running benchmarks ({runs_per_package} runs each)...")
 
