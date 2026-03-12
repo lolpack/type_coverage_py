@@ -225,6 +225,14 @@ KNOWN_GITHUB_URLS: dict[str, str] = {
     "redis": "https://github.com/redis/redis-py",
     "celery": "https://github.com/celery/celery",
     "homeassistant": "https://github.com/home-assistant/core",
+    "networkx": "https://github.com/networkx/networkx",
+    "salt": "https://github.com/saltstack/salt",
+    "yt-dlp": "https://github.com/yt-dlp/yt-dlp",
+    "luigi": "https://github.com/spotify/luigi",
+    "dask": "https://github.com/dask/dask",
+    "sympy": "https://github.com/sympy/sympy",
+    "comfyui": "https://github.com/comfyanonymous/ComfyUI",
+    "ansible": "https://github.com/ansible/ansible",
 }
 
 # Type checker LSP commands
@@ -348,6 +356,79 @@ def get_fallback_packages() -> list[PackageInfo]:
             "name": "aiohttp",
             "github_url": "https://github.com/aio-libs/aiohttp",
             "ranking": 10,
+            "download_count": 0,
+        },
+        # Low type-coverage packages
+        {
+            "name": "boto3",
+            "github_url": "https://github.com/boto/boto3",
+            "ranking": 11,
+            "download_count": 0,
+        },
+        {
+            "name": "botocore",
+            "github_url": "https://github.com/boto/botocore",
+            "ranking": 12,
+            "download_count": 0,
+        },
+        {
+            "name": "networkx",
+            "github_url": "https://github.com/networkx/networkx",
+            "ranking": 13,
+            "download_count": 0,
+        },
+        {
+            "name": "salt",
+            "github_url": "https://github.com/saltstack/salt",
+            "ranking": 14,
+            "download_count": 0,
+        },
+        {
+            "name": "yt-dlp",
+            "github_url": "https://github.com/yt-dlp/yt-dlp",
+            "ranking": 15,
+            "download_count": 0,
+        },
+        {
+            "name": "luigi",
+            "github_url": "https://github.com/spotify/luigi",
+            "ranking": 16,
+            "download_count": 0,
+        },
+        {
+            "name": "scikit-learn",
+            "github_url": "https://github.com/scikit-learn/scikit-learn",
+            "ranking": 17,
+            "download_count": 0,
+        },
+        {
+            "name": "dask",
+            "github_url": "https://github.com/dask/dask",
+            "ranking": 18,
+            "download_count": 0,
+        },
+        {
+            "name": "celery",
+            "github_url": "https://github.com/celery/celery",
+            "ranking": 19,
+            "download_count": 0,
+        },
+        {
+            "name": "sympy",
+            "github_url": "https://github.com/sympy/sympy",
+            "ranking": 20,
+            "download_count": 0,
+        },
+        {
+            "name": "comfyui",
+            "github_url": "https://github.com/comfyanonymous/ComfyUI",
+            "ranking": 21,
+            "download_count": 0,
+        },
+        {
+            "name": "ansible",
+            "github_url": "https://github.com/ansible/ansible",
+            "ranking": 22,
             "download_count": 0,
         },
     ]
