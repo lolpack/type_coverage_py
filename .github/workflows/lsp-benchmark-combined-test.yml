@@ -1,4 +1,4 @@
-name: Test LSP Benchmark (Import Filter)
+name: Test LSP Benchmark (Import Filter + Low Coverage)
 
 on:
   push:
@@ -48,7 +48,7 @@ jobs:
           which ty && echo "  ty: installed" || echo "  ty: not found"
           which zubanls && echo "  zuban: installed" || echo "  zuban: not found"
 
-      - name: Run LSP Benchmark
+      - name: Run LSP Benchmark (standard + low coverage packages)
         shell: bash
         run: |
           case "${{ matrix.os }}" in
@@ -60,6 +60,14 @@ jobs:
 
           python -m lsp.benchmark.daily_runner \
             --runs 100 \
+            --package-names \
+              requests numpy pandas click pytest scipy \
+              pyarrow transformers sphinx torch ujson \
+              scipy-stubs pyopengl homeassistant wagtail \
+              plotly-stubs kivy ixnetwork-restpy \
+              boto3 botocore django networkx salt \
+              yt-dlp luigi scikit-learn dask celery sympy \
+              comfyui ansible \
             --checkers pyright pyrefly ty zuban \
             --output lsp/benchmark/results \
             --os-name "$OS_NAME"
@@ -67,6 +75,6 @@ jobs:
       - name: Upload Results Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lsp-benchmark-import-filter-${{ matrix.os }}
+          name: lsp-benchmark-combined-${{ matrix.os }}
           path: lsp/benchmark/results/
           retention-days: 30
