@@ -16,7 +16,6 @@ import subprocess
 import shutil
 import sys
 import tempfile
-import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, TypedDict
@@ -233,6 +232,7 @@ KNOWN_GITHUB_URLS: dict[str, str] = {
     "sympy": "https://github.com/sympy/sympy",
     "comfyui": "https://github.com/comfyanonymous/ComfyUI",
     "ansible": "https://github.com/ansible/ansible",
+    "pyopengl": "https://github.com/mcfletch/pyopengl",
 }
 
 # Type checker LSP commands
@@ -272,7 +272,7 @@ def load_prioritized_packages(
 
     packages: list[PackageInfo] = []
     for name, data in package_data.items():
-        github_url = resolve_github_url(name, data)
+        github_url = resolve_github_url(name)
         if github_url:
             packages.append(
                 {
@@ -434,62 +434,17 @@ def get_fallback_packages() -> list[PackageInfo]:
     ]
 
 
-def resolve_github_url(package_name: str, package_data: dict[str, Any]) -> str | None:
-    """Resolve GitHub URL from package info.
+def resolve_github_url(package_name: str) -> str | None:
+    """Resolve GitHub URL from known mappings.
 
     Args:
         package_name: Name of the package.
-        package_data: Package metadata dictionary.
 
     Returns:
         GitHub URL if found, None otherwise.
     """
-    # Check known mappings first
     normalized_name = package_name.lower()
-    if normalized_name in KNOWN_GITHUB_URLS:
-        return KNOWN_GITHUB_URLS[normalized_name]
-
-    # Try PyPI API to get project URLs
-    return _fetch_github_url_from_pypi(package_name)
-
-
-def _fetch_github_url_from_pypi(package_name: str) -> str | None:
-    """Fetch GitHub URL from PyPI API.
-
-    Args:
-        package_name: Name of the package on PyPI.
-
-    Returns:
-        GitHub URL if found, None otherwise.
-    """
-    try:
-        url = f"https://pypi.org/pypi/{package_name}/json"
-        with urllib.request.urlopen(url, timeout=10) as response:
-            data: dict[str, Any] = json.loads(response.read().decode())
-            urls = data.get("info", {}).get("project_urls") or {}
-
-            # Check common keys for GitHub
-            github_keys = [
-                "Source",
-                "Repository",
-                "Source Code",
-                "Homepage",
-                "Code",
-                "GitHub",
-            ]
-            for key in github_keys:
-                if key in urls and "github.com" in urls[key]:
-                    return urls[key].rstrip("/")
-
-            # Check home_page field
-            home_page = data.get("info", {}).get("home_page", "")
-            if home_page and "github.com" in home_page:
-                return home_page.rstrip("/")
-
-    except Exception as e:
-        print(f"  Warning: Could not fetch PyPI data for {package_name}: {e}")
-
-    return None
+    return KNOWN_GITHUB_URLS.get(normalized_name)
 
 
 def fetch_github_package(
