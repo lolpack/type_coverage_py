@@ -194,6 +194,53 @@ class TestLooksLikeValidLocation:
         assert result is False
 
 
+class TestImportLineFiltering:
+    """Tests that go-to-definition results pointing to import lines in the
+    same file are rejected (not counted as valid)."""
+
+    def _write_file(self, tmp_path: Path, name: str, content: str) -> str:
+        f = tmp_path / name
+        f.write_text(content)
+        return f.resolve().as_uri()
+
+    def test_same_file_from_import_rejected(self, tmp_path: Path) -> None:
+        """Navigating to a 'from X import Y' line in the same file is invalid."""
+        uri = self._write_file(tmp_path, "mod.py", "from os import path\n\ndef foo(): pass\n")
+        loc = _make_location_obj(uri, start_line=0)
+        assert _looks_like_valid_location(loc, tmp_path, source_uri=uri) is False
+
+    def test_same_file_import_rejected(self, tmp_path: Path) -> None:
+        """Navigating to an 'import X' line in the same file is invalid."""
+        uri = self._write_file(tmp_path, "mod.py", "import sys\n\ndef foo(): pass\n")
+        loc = _make_location_obj(uri, start_line=0)
+        assert _looks_like_valid_location(loc, tmp_path, source_uri=uri) is False
+
+    def test_same_file_indented_import_rejected(self, tmp_path: Path) -> None:
+        """Indented import lines (e.g. inside functions) are also rejected."""
+        uri = self._write_file(tmp_path, "mod.py", "def f():\n    import os\n")
+        loc = _make_location_obj(uri, start_line=1)
+        assert _looks_like_valid_location(loc, tmp_path, source_uri=uri) is False
+
+    def test_same_file_def_line_accepted(self, tmp_path: Path) -> None:
+        """Navigating to a def line in the same file is valid."""
+        uri = self._write_file(tmp_path, "mod.py", "import os\n\ndef foo(): pass\n")
+        loc = _make_location_obj(uri, start_line=2)
+        assert _looks_like_valid_location(loc, tmp_path, source_uri=uri) is True
+
+    def test_different_file_import_accepted(self, tmp_path: Path) -> None:
+        """Navigating to an import line in a different file is valid."""
+        source_uri = self._write_file(tmp_path, "caller.py", "from mod import foo\nfoo()\n")
+        target_uri = self._write_file(tmp_path, "mod.py", "from os import path\n")
+        loc = _make_location_obj(target_uri, start_line=0)
+        assert _looks_like_valid_location(loc, tmp_path, source_uri=source_uri) is True
+
+    def test_no_source_uri_backward_compat(self, tmp_path: Path) -> None:
+        """Without source_uri, import lines are still accepted (backward compat)."""
+        uri = self._write_file(tmp_path, "mod.py", "from os import path\n")
+        loc = _make_location_obj(uri, start_line=0)
+        assert _looks_like_valid_location(loc, tmp_path) is True
+
+
 class TestMultipleLocationsNotCountedAsFailure:
     """Tests to verify that multiple locations are not counted as failures.
 
