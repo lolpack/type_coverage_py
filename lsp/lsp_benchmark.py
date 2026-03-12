@@ -770,7 +770,9 @@ def _parse_definition_result(result: Any) -> List[Location]:
     return locs
 
 
-def _looks_like_valid_location(loc: Location, repo_root: Path) -> bool:
+def _looks_like_valid_location(
+    loc: Location, repo_root: Path, *, source_uri: str = ""
+) -> bool:
     # Basic sanity: must be a resolvable file:// URI and have a non-negative range.
     #
     # Note: we intentionally do *not* require the file to live under --root.
@@ -786,6 +788,26 @@ def _looks_like_valid_location(loc: Location, repo_root: Path) -> bool:
         return False
     if loc.range.end.line < 0 or loc.range.end.character < 0:
         return False
+
+    # Reject results that simply point back to an import line in the same file.
+    # Go-to-definition should take you to the actual definition, not the import
+    # statement that brought the symbol into scope.
+    if source_uri and loc.uri == source_uri:
+        try:
+            # Use urllib for cross-platform URI-to-path (don't rely on _uri_to_path
+            # which has Windows-specific logic).
+            from urllib.parse import unquote, urlparse
+
+            file_path = Path(unquote(urlparse(loc.uri).path))
+            with open(file_path, "r", errors="replace") as fh:
+                for i, line in enumerate(fh):
+                    if i == loc.range.start.line:
+                        stripped = line.lstrip()
+                        if stripped.startswith("import ") or stripped.startswith("from "):
+                            return False
+                        break
+        except OSError:
+            pass
 
     return True
 
@@ -1088,7 +1110,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                             "uri": loc.uri,
                             "start": dataclasses.asdict(loc.range.start),
                             "end": dataclasses.asdict(loc.range.end),
-                            "valid": _looks_like_valid_location(loc, root),
+                            "valid": _looks_like_valid_location(
+                                loc, root, source_uri=case.uri
+                            ),
                         }
                         for loc in res.locations
                     ]
