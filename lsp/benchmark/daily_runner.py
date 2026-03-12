@@ -885,7 +885,28 @@ def run_daily_benchmark(
     # Load packages - either by name or by limit
     if package_names:
         all_packages = load_prioritized_packages(limit=None)
+        found_names = {p["name"] for p in all_packages}
         packages = [p for p in all_packages if p["name"] in package_names]
+        # For packages not in the prioritized report, look them up in
+        # KNOWN_GITHUB_URLS and the fallback list so --package-names works
+        # even for packages that aren't in package_report.json.
+        missing = [n for n in package_names if n not in found_names]
+        if missing:
+            fallback_by_name = {p["name"]: p for p in get_fallback_packages()}
+            for name in missing:
+                if name in fallback_by_name:
+                    packages.append(fallback_by_name[name])
+                elif name in KNOWN_GITHUB_URLS:
+                    packages.append(
+                        {
+                            "name": name,
+                            "github_url": KNOWN_GITHUB_URLS[name],
+                            "download_count": 0,
+                            "ranking": 999,
+                        }
+                    )
+                else:
+                    print(f"Warning: package '{name}' not found in prioritized list, fallback, or KNOWN_GITHUB_URLS — skipping")
         if not packages:
             print(f"Warning: None of the specified packages found: {package_names}")
             print(f"Available packages: {[p['name'] for p in all_packages[:20]]}...")
