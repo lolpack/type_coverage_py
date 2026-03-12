@@ -140,21 +140,19 @@ class TestResolveGithubUrl:
 
     def test_known_package(self) -> None:
         """Test resolving URL for a known package."""
-        result = resolve_github_url("requests", {})
+        result = resolve_github_url("requests")
 
         assert result == "https://github.com/psf/requests"
 
     def test_known_package_case_insensitive(self) -> None:
         """Test that package name lookup is case-insensitive."""
-        result = resolve_github_url("REQUESTS", {})
+        result = resolve_github_url("REQUESTS")
 
         assert result == "https://github.com/psf/requests"
 
-    def test_unknown_package_returns_none_without_network(self) -> None:
-        """Test that unknown packages return None when PyPI fails."""
-        with patch("lsp.benchmark.daily_runner._fetch_github_url_from_pypi") as mock:
-            mock.return_value = None
-            result = resolve_github_url("unknown_package_xyz", {})
+    def test_unknown_package_returns_none(self) -> None:
+        """Test that unknown packages return None."""
+        result = resolve_github_url("unknown_package_xyz")
 
         assert result is None
 
