@@ -447,6 +447,121 @@ def resolve_github_url(package_name: str) -> str | None:
     return KNOWN_GITHUB_URLS.get(normalized_name)
 
 
+def install_package_deps(
+    package_path: Path,
+    package_name: str,
+    timeout: int = 120,
+) -> bool:
+    """Install a package's dependencies into the current environment.
+
+    Tries requirements.txt first, then setup.py/pyproject.toml via pip install -e.
+
+    Args:
+        package_path: Path to the cloned package directory.
+        package_name: Name of the package (for logging).
+        timeout: Timeout in seconds for the install operation.
+
+    Returns:
+        True if deps were installed successfully, False otherwise.
+    """
+    req_files = ["requirements.txt", "requirements/base.txt", "requirements/main.txt"]
+
+    for req_file in req_files:
+        req_path = package_path / req_file
+        if req_path.exists():
+            print(f"  Installing deps from {req_file}...")
+            try:
+                result = subprocess.run(
+                    [sys.executable, "-m", "pip", "install", "-r", str(req_path),
+                     "--quiet", "--no-build-isolation"],
+                    capture_output=True,
+                    text=True,
+                    timeout=timeout,
+                    cwd=str(package_path),
+                )
+                if result.returncode == 0:
+                    print(f"  Deps installed successfully from {req_file}")
+                    return True
+                else:
+                    print(f"  Warning: pip install -r {req_file} failed: {result.stderr[:200]}")
+            except subprocess.TimeoutExpired:
+                print(f"  Warning: Timeout installing deps from {req_file}")
+            except Exception as e:
+                print(f"  Warning: Error installing deps from {req_file}: {e}")
+
+    # Try pip install the package itself (editable) to pull in its declared deps
+    has_setup = (package_path / "setup.py").exists() or (package_path / "setup.cfg").exists()
+    has_pyproject = (package_path / "pyproject.toml").exists()
+
+    if has_setup or has_pyproject:
+        print(f"  Installing {package_name} deps via pip install (deps only)...")
+        try:
+            result = subprocess.run(
+                [sys.executable, "-m", "pip", "install", "--no-build-isolation",
+                 "--quiet", ".", "--no-deps"],
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+                cwd=str(package_path),
+            )
+            # Even if no-deps install fails, try installing just the declared dependencies
+            # by reading pyproject.toml
+            if has_pyproject:
+                deps = _extract_pyproject_deps(package_path / "pyproject.toml")
+                if deps:
+                    print(f"  Installing {len(deps)} declared dependencies...")
+                    try:
+                        result = subprocess.run(
+                            [sys.executable, "-m", "pip", "install", "--quiet"] + deps,
+                            capture_output=True,
+                            text=True,
+                            timeout=timeout,
+                            cwd=str(package_path),
+                        )
+                        if result.returncode == 0:
+                            print(f"  Deps installed successfully from pyproject.toml")
+                            return True
+                        else:
+                            print(f"  Warning: some deps failed to install: {result.stderr[:200]}")
+                            return True  # partial success is still useful
+                    except (subprocess.TimeoutExpired, Exception) as e:
+                        print(f"  Warning: Error installing pyproject deps: {e}")
+        except subprocess.TimeoutExpired:
+            print(f"  Warning: Timeout installing {package_name}")
+        except Exception as e:
+            print(f"  Warning: Error installing {package_name}: {e}")
+
+    print(f"  No installable deps found for {package_name}")
+    return False
+
+
+def _extract_pyproject_deps(pyproject_path: Path) -> list[str]:
+    """Extract dependency names from pyproject.toml.
+
+    Args:
+        pyproject_path: Path to pyproject.toml file.
+
+    Returns:
+        List of dependency specifier strings.
+    """
+    try:
+        import tomllib
+    except ImportError:
+        try:
+            import tomli as tomllib  # type: ignore[no-redef]
+        except ImportError:
+            return []
+
+    try:
+        with open(pyproject_path, "rb") as f:
+            data = tomllib.load(f)
+        deps: list[str] = data.get("project", {}).get("dependencies", [])
+        # Filter out self-references and extras
+        return [d for d in deps if not d.startswith(".")]
+    except Exception:
+        return []
+
+
 def fetch_github_package(
     github_url: str,
     package_name: str,
@@ -814,6 +929,7 @@ def run_daily_benchmark(
     output_dir: Path | None = None,
     seed: int | None = None,
     os_name: str | None = None,
+    install_deps: bool = False,
 ) -> Path:
     """Run the daily benchmark suite.
 
@@ -825,6 +941,7 @@ def run_daily_benchmark(
         output_dir: Directory to write results to.
         seed: Random seed for reproducibility.
         os_name: OS name to include in output filename (e.g., ubuntu, macos, windows).
+        install_deps: Whether to pip-install each package's dependencies before benchmarking.
 
     Returns:
         Path to the output JSON file.
@@ -878,7 +995,7 @@ def run_daily_benchmark(
         print(f"  {name}: {version}")
     print()
 
-    all_results = _run_all_benchmarks(packages, type_checkers, runs_per_package, seed)
+    all_results = _run_all_benchmarks(packages, type_checkers, runs_per_package, seed, install_deps)
 
     # Compute aggregate statistics
     aggregate_stats = compute_aggregate_stats(all_results, type_checkers)
@@ -925,6 +1042,7 @@ def _run_all_benchmarks(
     type_checkers: list[str],
     runs_per_package: int,
     seed: int | None,
+    install_deps: bool = False,
 ) -> list[PackageResult]:
     """Run benchmarks for all packages.
 
@@ -933,6 +1051,7 @@ def _run_all_benchmarks(
         type_checkers: List of type checkers to use.
         runs_per_package: Number of runs per package.
         seed: Random seed for reproducibility.
+        install_deps: Whether to install each package's dependencies.
 
     Returns:
         List of package results.
@@ -949,7 +1068,8 @@ def _run_all_benchmarks(
             print(f"\n[{i}/{len(packages)}] Processing {package_name}")
 
             result = _benchmark_single_package(
-                package, github_url, temp_path, type_checkers, runs_per_package, seed
+                package, github_url, temp_path, type_checkers, runs_per_package, seed,
+                install_deps,
             )
             all_results.append(result)
 
@@ -963,6 +1083,7 @@ def _benchmark_single_package(
     type_checkers: list[str],
     runs_per_package: int,
     seed: int | None,
+    install_deps: bool = False,
 ) -> PackageResult:
     """Benchmark a single package.
 
@@ -973,6 +1094,7 @@ def _benchmark_single_package(
         type_checkers: List of type checkers to use.
         runs_per_package: Number of runs per package.
         seed: Random seed for reproducibility.
+        install_deps: Whether to install the package's dependencies.
 
     Returns:
         Package result dictionary.
@@ -998,6 +1120,9 @@ def _benchmark_single_package(
             "error": "Failed to clone repository",
             "metrics": {},
         }
+
+    if install_deps:
+        install_package_deps(package_path, package_name)
 
     print(f"  Running benchmarks ({runs_per_package} runs each)...")
 
@@ -1154,6 +1279,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=None,
         help="OS name to include in output filename (e.g., ubuntu, macos, windows)",
     )
+    parser.add_argument(
+        "--install-deps",
+        action="store_true",
+        default=False,
+        help="Install each package's dependencies before benchmarking",
+    )
 
     return parser.parse_args(argv)
 
@@ -1177,6 +1308,7 @@ def main(argv: list[str] | None = None) -> int:
         output_dir=args.output,
         seed=args.seed,
         os_name=args.os_name,
+        install_deps=args.install_deps,
     )
 
     return 0
