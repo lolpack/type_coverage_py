@@ -100,20 +100,22 @@ jobs:
             *) OS_NAME="${{ matrix.os }}" ;;
           esac
 
-          # If package_count is 0, use all prioritized packages (don't pass --packages flag)
+          # Packages come from install_envs.json (shared with typecheck benchmark)
           if [ "$PACKAGE_COUNT" = "0" ]; then
             python -m lsp.benchmark.daily_runner \
               --runs "$RUNS" \
               --checkers pyright pyrefly ty zuban \
               --output lsp/benchmark/results \
-              --os-name "$OS_NAME"
+              --os-name "$OS_NAME" \
+              --install-deps
           else
             python -m lsp.benchmark.daily_runner \
               --packages "$PACKAGE_COUNT" \
               --runs "$RUNS" \
               --checkers pyright pyrefly ty zuban \
               --output lsp/benchmark/results \
-              --os-name "$OS_NAME"
+              --os-name "$OS_NAME" \
+              --install-deps
           fi
 
       - name: Upload Results Artifact

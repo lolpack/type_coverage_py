@@ -46,10 +46,6 @@ jobs:
         shell: bash
         run: |
           python -m lsp.benchmark.daily_runner \
-            --package-names \
-              requests numpy scipy click pytest torch transformers \
-              pyopengl ansible kivy wagtail pandas pyarrow ujson \
-              homeassistant sphinx \
             --runs 100 \
             --checkers pyright pyrefly ty \
             --output lsp/benchmark/results \
