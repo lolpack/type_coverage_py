@@ -219,6 +219,12 @@ def load_packages_from_install_envs(
         github_url = pkg.get("github_url", "")
         if not github_url:
             continue
+        # Only include packages that have install config — same filter as
+        # typecheck_benchmark.daily_runner.load_install_envs()
+        has_install = pkg.get("install", False)
+        has_deps = bool(pkg.get("deps"))
+        if not has_install and not has_deps:
+            continue
         name = pkg.get("name") or github_url.rstrip("/").split("/")[-1]
 
         if name_filter and name.lower() not in name_filter:

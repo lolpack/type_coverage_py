@@ -39,8 +39,8 @@ class TestLoadPackagesFromInstallEnvs:
     def test_loads_all_packages(self, tmp_path: Path) -> None:
         """Test loading all packages from install_envs.json."""
         root = self._write_install_envs(tmp_path, [
-            {"github_url": "https://github.com/psf/requests", "name": "requests"},
-            {"github_url": "https://github.com/pallets/flask", "name": "flask"},
+            {"github_url": "https://github.com/psf/requests", "name": "requests", "deps": ["urllib3"]},
+            {"github_url": "https://github.com/pallets/flask", "name": "flask", "install": True},
         ])
 
         with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
@@ -53,9 +53,9 @@ class TestLoadPackagesFromInstallEnvs:
     def test_filter_by_package_names(self, tmp_path: Path) -> None:
         """Test filtering by specific package names."""
         root = self._write_install_envs(tmp_path, [
-            {"github_url": "https://github.com/psf/requests", "name": "requests"},
-            {"github_url": "https://github.com/pallets/flask", "name": "flask"},
-            {"github_url": "https://github.com/django/django", "name": "django"},
+            {"github_url": "https://github.com/psf/requests", "name": "requests", "install": True},
+            {"github_url": "https://github.com/pallets/flask", "name": "flask", "install": True},
+            {"github_url": "https://github.com/django/django", "name": "django", "deps": ["asgiref"]},
         ])
 
         with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
@@ -69,9 +69,9 @@ class TestLoadPackagesFromInstallEnvs:
     def test_limit(self, tmp_path: Path) -> None:
         """Test limiting number of packages."""
         root = self._write_install_envs(tmp_path, [
-            {"github_url": "https://github.com/psf/requests", "name": "requests"},
-            {"github_url": "https://github.com/pallets/flask", "name": "flask"},
-            {"github_url": "https://github.com/django/django", "name": "django"},
+            {"github_url": "https://github.com/psf/requests", "name": "requests", "install": True},
+            {"github_url": "https://github.com/pallets/flask", "name": "flask", "install": True},
+            {"github_url": "https://github.com/django/django", "name": "django", "install": True},
         ])
 
         with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
@@ -82,7 +82,7 @@ class TestLoadPackagesFromInstallEnvs:
     def test_derives_name_from_url(self, tmp_path: Path) -> None:
         """Test that name is derived from github_url when not specified."""
         root = self._write_install_envs(tmp_path, [
-            {"github_url": "https://github.com/psf/requests"},
+            {"github_url": "https://github.com/psf/requests", "install": True},
         ])
 
         with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
@@ -100,7 +100,7 @@ class TestLoadPackagesFromInstallEnvs:
     def test_warns_on_unknown_package_name(self, tmp_path: Path, capsys: Any) -> None:
         """Test warning when a requested package is not in install_envs.json."""
         root = self._write_install_envs(tmp_path, [
-            {"github_url": "https://github.com/psf/requests", "name": "requests"},
+            {"github_url": "https://github.com/psf/requests", "name": "requests", "install": True},
         ])
 
         with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
@@ -113,7 +113,7 @@ class TestLoadPackagesFromInstallEnvs:
     def test_github_urls_are_valid(self, tmp_path: Path) -> None:
         """Test that all packages have valid GitHub URLs."""
         root = self._write_install_envs(tmp_path, [
-            {"github_url": "https://github.com/psf/requests", "name": "requests"},
+            {"github_url": "https://github.com/psf/requests", "name": "requests", "deps": ["urllib3"]},
         ])
 
         with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
@@ -123,6 +123,21 @@ class TestLoadPackagesFromInstallEnvs:
             url = pkg["github_url"]
             assert url is not None
             assert url.startswith("https://github.com/")
+
+
+    def test_excludes_packages_without_install_config(self, tmp_path: Path) -> None:
+        """Test that packages without install:true or deps are excluded."""
+        root = self._write_install_envs(tmp_path, [
+            {"github_url": "https://github.com/psf/requests", "name": "requests", "install": True},
+            {"github_url": "https://github.com/pallets/flask", "name": "flask"},  # no install/deps
+            {"github_url": "https://github.com/django/django", "name": "django", "install": False},  # explicitly false, no deps
+        ])
+
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
+            result = load_packages_from_install_envs()
+
+        assert len(result) == 1
+        assert result[0]["name"] == "requests"
 
 
 class TestInstallEnvsIsSharedSource:
