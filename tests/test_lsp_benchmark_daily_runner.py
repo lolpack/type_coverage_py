@@ -120,7 +120,9 @@ class TestLoadPackagesFromInstallEnvs:
             result = load_packages_from_install_envs()
 
         for pkg in result:
-            assert pkg["github_url"].startswith("https://github.com/")
+            url = pkg["github_url"]
+            assert url is not None
+            assert url.startswith("https://github.com/")
 
 
 class TestInstallEnvsIsSharedSource:
