@@ -28,7 +28,7 @@ jobs:
           '["ubuntu-latest","windows-latest"]'
           ) }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 180
+    timeout-minutes: 360
 
     steps:
       - name: Checkout Repository
