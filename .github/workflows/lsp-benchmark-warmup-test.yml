@@ -1,0 +1,92 @@
+name: LSP Benchmark - Warmup Test (All Checkers)
+
+on:
+  workflow_dispatch:
+    inputs:
+      runs_per_package:
+        description: 'Number of benchmark runs per package'
+        required: false
+        default: '100'
+
+jobs:
+  benchmark:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python Dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Node.js (for Pyright)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Type Checkers
+        shell: bash
+        run: |
+          npm install -g pyright
+          pip install --upgrade pyrefly || echo "Pyrefly not available via pip"
+          pip install --upgrade ty || echo "ty not available via pip"
+          pip install --upgrade zuban || echo "Zuban not available via pip"
+
+          echo "Installed type checkers:"
+          which pyright-langserver && echo "  pyright: $(pyright --version)" || echo "  pyright: not found"
+          which pyrefly && echo "  pyrefly: installed" || echo "  pyrefly: not found"
+          which ty && echo "  ty: installed" || echo "  ty: not found"
+          which zubanls && echo "  zuban: installed" || echo "  zuban: not found"
+
+      - name: Run Benchmark - Top p95 (transformers)
+        shell: bash
+        run: |
+          RUNS="${{ github.event.inputs.runs_per_package || '100' }}"
+          python -m lsp.benchmark.daily_runner \
+            --package-names transformers \
+            --runs "$RUNS" \
+            --checkers pyright pyrefly ty zuban \
+            --output lsp/benchmark/results/warmup-test \
+            --os-name "ubuntu-top-p95"
+
+      - name: Run Benchmark - Mid p95 (click)
+        shell: bash
+        run: |
+          RUNS="${{ github.event.inputs.runs_per_package || '100' }}"
+          python -m lsp.benchmark.daily_runner \
+            --package-names click \
+            --runs "$RUNS" \
+            --checkers pyright pyrefly ty zuban \
+            --output lsp/benchmark/results/warmup-test \
+            --os-name "ubuntu-mid-p95"
+
+      - name: Run Benchmark - Bottom p95 (pyopengl)
+        shell: bash
+        run: |
+          RUNS="${{ github.event.inputs.runs_per_package || '100' }}"
+          python -m lsp.benchmark.daily_runner \
+            --package-names pyopengl \
+            --runs "$RUNS" \
+            --checkers pyright pyrefly ty zuban \
+            --output lsp/benchmark/results/warmup-test \
+            --os-name "ubuntu-bottom-p95"
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lsp-benchmark-warmup-test-results
+          path: lsp/benchmark/results/warmup-test/
+          retention-days: 90
