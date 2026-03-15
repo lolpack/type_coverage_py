@@ -530,6 +530,7 @@ def run_benchmark_for_package(
     type_checkers: list[str],
     runs: int = 5,
     seed: int | None = None,
+    warmup_s: float = 0.0,
 ) -> dict[str, CheckerMetrics]:
     """Run the LSP benchmark for a package across all type checkers.
 
@@ -542,6 +543,8 @@ def run_benchmark_for_package(
         type_checkers: List of type checker names to run.
         runs: Number of benchmark runs per checker.
         seed: Random seed for reproducibility.
+        warmup_s: Seconds to wait after opening a document before sending
+                  the definition request.
 
     Returns:
         Dictionary mapping checker names to their metrics.
@@ -569,7 +572,7 @@ def run_benchmark_for_package(
     # This ensures they all get the exact same test cases for fairness
     print(f"    Running {', '.join(c[0] for c in available_checkers)} together...")
     benchmark_results = _run_checkers_together(
-        available_checkers, package_path, runs, seed
+        available_checkers, package_path, runs, seed, warmup_s=warmup_s
     )
     results.update(benchmark_results)
 
@@ -581,6 +584,7 @@ def _run_checkers_together(
     package_path: Path,
     runs: int,
     seed: int | None,
+    warmup_s: float = 0.0,
 ) -> dict[str, CheckerMetrics]:
     """Run multiple type checkers together in a single benchmark.
 
@@ -591,6 +595,8 @@ def _run_checkers_together(
         package_path: Path to the package directory.
         runs: Number of benchmark runs.
         seed: Random seed for reproducibility.
+        warmup_s: Seconds to wait after opening a document before sending
+                  the definition request.
 
     Returns:
         Dictionary mapping checker names to their metrics.
@@ -623,6 +629,9 @@ def _run_checkers_together(
 
         if seed is not None:
             args.extend(["--seed", str(seed)])
+
+        if warmup_s > 0:
+            args.extend(["--warmup", str(warmup_s)])
 
         # Create a temp file for JSON output
         with tempfile.NamedTemporaryFile(
@@ -814,6 +823,7 @@ def run_daily_benchmark(
     output_dir: Path | None = None,
     seed: int | None = None,
     os_name: str | None = None,
+    warmup_s: float = 0.0,
 ) -> Path:
     """Run the daily benchmark suite.
 
@@ -878,7 +888,7 @@ def run_daily_benchmark(
         print(f"  {name}: {version}")
     print()
 
-    all_results = _run_all_benchmarks(packages, type_checkers, runs_per_package, seed)
+    all_results = _run_all_benchmarks(packages, type_checkers, runs_per_package, seed, warmup_s=warmup_s)
 
     # Compute aggregate statistics
     aggregate_stats = compute_aggregate_stats(all_results, type_checkers)
@@ -925,6 +935,7 @@ def _run_all_benchmarks(
     type_checkers: list[str],
     runs_per_package: int,
     seed: int | None,
+    warmup_s: float = 0.0,
 ) -> list[PackageResult]:
     """Run benchmarks for all packages.
 
@@ -933,6 +944,8 @@ def _run_all_benchmarks(
         type_checkers: List of type checkers to use.
         runs_per_package: Number of runs per package.
         seed: Random seed for reproducibility.
+        warmup_s: Seconds to wait after opening a document before sending
+                  the definition request.
 
     Returns:
         List of package results.
@@ -949,7 +962,8 @@ def _run_all_benchmarks(
             print(f"\n[{i}/{len(packages)}] Processing {package_name}")
 
             result = _benchmark_single_package(
-                package, github_url, temp_path, type_checkers, runs_per_package, seed
+                package, github_url, temp_path, type_checkers, runs_per_package, seed,
+                warmup_s=warmup_s,
             )
             all_results.append(result)
 
@@ -963,6 +977,7 @@ def _benchmark_single_package(
     type_checkers: list[str],
     runs_per_package: int,
     seed: int | None,
+    warmup_s: float = 0.0,
 ) -> PackageResult:
     """Benchmark a single package.
 
@@ -973,6 +988,8 @@ def _benchmark_single_package(
         type_checkers: List of type checkers to use.
         runs_per_package: Number of runs per package.
         seed: Random seed for reproducibility.
+        warmup_s: Seconds to wait after opening a document before sending
+                  the definition request.
 
     Returns:
         Package result dictionary.
@@ -1008,6 +1025,7 @@ def _benchmark_single_package(
             type_checkers,
             runs=runs_per_package,
             seed=seed,
+            warmup_s=warmup_s,
         )
 
         return {
@@ -1154,6 +1172,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=None,
         help="OS name to include in output filename (e.g., ubuntu, macos, windows)",
     )
+    parser.add_argument(
+        "--warmup",
+        type=float,
+        default=0.0,
+        help="Seconds to wait after opening a document before sending the definition "
+        "request. Gives the server time to index/analyze (default: 0).",
+    )
 
     return parser.parse_args(argv)
 
@@ -1177,6 +1202,7 @@ def main(argv: list[str] | None = None) -> int:
         output_dir=args.output,
         seed=args.seed,
         os_name=args.os_name,
+        warmup_s=args.warmup,
     )
 
     return 0
