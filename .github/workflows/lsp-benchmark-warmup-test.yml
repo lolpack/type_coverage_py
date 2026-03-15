@@ -1,6 +1,9 @@
 name: LSP Benchmark - Warmup Test (All Checkers)
 
 on:
+  push:
+    branches:
+      - feat/warmup-all-checkers
   workflow_dispatch:
     inputs:
       runs_per_package:
