@@ -852,9 +852,13 @@ def run_server_batch(
             print(f"      {name}: warming up for {warmup_s:.0f}s...")
             time.sleep(warmup_s)
 
-        for case in cases:
+        for i, case in enumerate(cases):
             text = case.file_path.read_text(encoding="utf-8", errors="replace")
             lsp.open_document(case.uri, text)
+            # Brief pause to let the server process the opened document,
+            # mimicking real IDE usage where users don't instantly request
+            # definitions after opening a file.
+            time.sleep(0.1)
             result = lsp.definition(case.uri, case.position, timeout_s=timeout_s)
             results.append(result)
 
