@@ -13,148 +13,144 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from lsp.benchmark.daily_runner import (
-    KNOWN_GITHUB_URLS,
     TYPE_CHECKER_COMMANDS,
     PackageResult,
     compute_aggregate_stats,
     fetch_github_package,
     find_type_checker_command,
-    get_fallback_packages,
-    load_prioritized_packages,
+    load_packages_from_install_envs,
     parse_args,
-    resolve_github_url,
     _parse_benchmark_results,
     _save_results,
 )
 
 
-class TestLoadPrioritizedPackages:
-    """Tests for load_prioritized_packages function."""
+class TestLoadPackagesFromInstallEnvs:
+    """Tests for load_packages_from_install_envs function."""
 
-    def test_load_from_file(self, tmp_path: Path) -> None:
-        """Test loading packages from a JSON file."""
-        packages_file = tmp_path / "packages.json"
-        packages_file.write_text(
-            json.dumps(
-                {
-                    "requests": {
-                        "DownloadCount": 1000000,
-                        "DownloadRanking": 1,
-                    },
-                    "flask": {
-                        "DownloadCount": 500000,
-                        "DownloadRanking": 2,
-                    },
-                }
-            )
-        )
+    def _write_install_envs(self, tmp_path: Path, packages: list[dict[str, Any]]) -> Path:
+        """Write a test install_envs.json file and return the path."""
+        install_envs_file = tmp_path / "typecheck_benchmark" / "install_envs.json"
+        install_envs_file.parent.mkdir(parents=True, exist_ok=True)
+        install_envs_file.write_text(json.dumps({"packages": packages}))
+        return tmp_path
 
-        result = load_prioritized_packages(packages_file=packages_file)
+    def test_load_packages_with_install_true(self, tmp_path: Path) -> None:
+        """Test loading packages that have install: true."""
+        root = self._write_install_envs(tmp_path, [
+            {
+                "name": "requests",
+                "github_url": "https://github.com/psf/requests",
+                "install": True,
+            },
+            {
+                "name": "flask",
+                "github_url": "https://github.com/pallets/flask",
+                "install": True,
+            },
+        ])
+
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
+            result = load_packages_from_install_envs()
 
         assert len(result) == 2
         assert result[0]["name"] == "requests"
-        assert result[0]["ranking"] == 1
         assert result[1]["name"] == "flask"
-        assert result[1]["ranking"] == 2
+
+    def test_load_packages_with_deps(self, tmp_path: Path) -> None:
+        """Test loading packages that have non-empty deps."""
+        root = self._write_install_envs(tmp_path, [
+            {
+                "name": "mypackage",
+                "github_url": "https://github.com/test/mypackage",
+                "deps": ["dep1", "dep2"],
+            },
+        ])
+
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
+            result = load_packages_from_install_envs()
+
+        assert len(result) == 1
+        assert result[0]["name"] == "mypackage"
+
+    def test_filters_out_packages_without_install_or_deps(self, tmp_path: Path) -> None:
+        """Test that packages without install or deps are filtered out."""
+        root = self._write_install_envs(tmp_path, [
+            {
+                "name": "included",
+                "github_url": "https://github.com/test/included",
+                "install": True,
+            },
+            {
+                "name": "excluded",
+                "github_url": "https://github.com/test/excluded",
+            },
+        ])
+
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
+            result = load_packages_from_install_envs()
+
+        assert len(result) == 1
+        assert result[0]["name"] == "included"
 
     def test_load_with_limit(self, tmp_path: Path) -> None:
         """Test loading packages with a limit."""
-        packages_file = tmp_path / "packages.json"
-        packages_file.write_text(
-            json.dumps(
-                {
-                    "requests": {"DownloadRanking": 1},
-                    "flask": {"DownloadRanking": 2},
-                    "django": {"DownloadRanking": 3},
-                }
-            )
-        )
+        root = self._write_install_envs(tmp_path, [
+            {"name": "a", "github_url": "https://github.com/t/a", "install": True},
+            {"name": "b", "github_url": "https://github.com/t/b", "install": True},
+            {"name": "c", "github_url": "https://github.com/t/c", "install": True},
+        ])
 
-        result = load_prioritized_packages(limit=2, packages_file=packages_file)
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
+            result = load_packages_from_install_envs(limit=2)
 
         assert len(result) == 2
-        assert result[0]["name"] == "requests"
-        assert result[1]["name"] == "flask"
 
-    def test_fallback_when_file_not_found(self, tmp_path: Path) -> None:
-        """Test fallback to default packages when file not found."""
-        non_existent = tmp_path / "does_not_exist.json"
+    def test_load_with_package_names_filter(self, tmp_path: Path) -> None:
+        """Test loading specific packages by name."""
+        root = self._write_install_envs(tmp_path, [
+            {"name": "requests", "github_url": "https://github.com/psf/requests", "install": True},
+            {"name": "flask", "github_url": "https://github.com/pallets/flask", "install": True},
+            {"name": "django", "github_url": "https://github.com/django/django", "install": True},
+        ])
 
-        result = load_prioritized_packages(packages_file=non_existent)
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
+            result = load_packages_from_install_envs(package_names=["requests", "django"])
 
-        # Should return fallback packages
-        assert len(result) > 0
-        assert all("name" in pkg for pkg in result)
-        assert all("github_url" in pkg for pkg in result)
+        assert len(result) == 2
+        names = {p["name"] for p in result}
+        assert names == {"requests", "django"}
 
-    def test_packages_sorted_by_ranking(self, tmp_path: Path) -> None:
-        """Test that packages are sorted by ranking."""
-        packages_file = tmp_path / "packages.json"
-        packages_file.write_text(
-            json.dumps(
-                {
-                    "django": {"DownloadRanking": 3},
-                    "requests": {"DownloadRanking": 1},
-                    "flask": {"DownloadRanking": 2},
-                }
-            )
-        )
+    def test_missing_file_returns_empty(self, tmp_path: Path) -> None:
+        """Test that missing install_envs.json returns empty list."""
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", tmp_path):
+            result = load_packages_from_install_envs()
 
-        result = load_prioritized_packages(packages_file=packages_file)
+        assert result == []
 
-        rankings = [pkg.get("ranking", 999) for pkg in result]
-        assert rankings == sorted(rankings)
+    def test_skips_packages_without_github_url(self, tmp_path: Path) -> None:
+        """Test that packages without github_url are skipped."""
+        root = self._write_install_envs(tmp_path, [
+            {"name": "no-url", "install": True},
+            {"name": "has-url", "github_url": "https://github.com/t/has-url", "install": True},
+        ])
 
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
+            result = load_packages_from_install_envs()
 
-class TestGetFallbackPackages:
-    """Tests for get_fallback_packages function."""
+        assert len(result) == 1
+        assert result[0]["name"] == "has-url"
 
-    def test_returns_list_of_packages(self) -> None:
-        """Test that fallback returns a non-empty list."""
-        result = get_fallback_packages()
+    def test_package_names_case_insensitive(self, tmp_path: Path) -> None:
+        """Test that package name filtering is case-insensitive."""
+        root = self._write_install_envs(tmp_path, [
+            {"name": "Requests", "github_url": "https://github.com/psf/requests", "install": True},
+        ])
 
-        assert isinstance(result, list)
-        assert len(result) > 0
+        with patch("lsp.benchmark.daily_runner.ROOT_DIR", root):
+            result = load_packages_from_install_envs(package_names=["requests"])
 
-    def test_packages_have_required_fields(self) -> None:
-        """Test that each package has required fields."""
-        result = get_fallback_packages()
-
-        for pkg in result:
-            assert "name" in pkg
-            assert "github_url" in pkg
-            assert "ranking" in pkg
-
-    def test_github_urls_are_valid(self) -> None:
-        """Test that GitHub URLs are properly formatted."""
-        result = get_fallback_packages()
-
-        for pkg in result:
-            url = pkg.get("github_url")
-            assert url is not None
-            assert url.startswith("https://github.com/")
-
-
-class TestResolveGithubUrl:
-    """Tests for resolve_github_url function."""
-
-    def test_known_package(self) -> None:
-        """Test resolving URL for a known package."""
-        result = resolve_github_url("requests")
-
-        assert result == "https://github.com/psf/requests"
-
-    def test_known_package_case_insensitive(self) -> None:
-        """Test that package name lookup is case-insensitive."""
-        result = resolve_github_url("REQUESTS")
-
-        assert result == "https://github.com/psf/requests"
-
-    def test_unknown_package_returns_none(self) -> None:
-        """Test that unknown packages return None."""
-        result = resolve_github_url("unknown_package_xyz")
-
-        assert result is None
+        assert len(result) == 1
 
 
 class TestFetchGithubPackage:
@@ -507,26 +503,6 @@ class TestParseArgs:
         assert args.seed == 123
 
 
-class TestKnownGithubUrls:
-    """Tests for KNOWN_GITHUB_URLS constant."""
-
-    def test_common_packages_included(self) -> None:
-        """Test that common packages are in the known URLs."""
-        common_packages = ["requests", "flask", "django", "numpy", "pandas"]
-
-        for pkg in common_packages:
-            assert pkg in KNOWN_GITHUB_URLS
-            assert KNOWN_GITHUB_URLS[pkg].startswith("https://github.com/")
-
-    def test_urls_are_valid_format(self) -> None:
-        """Test that all URLs are properly formatted."""
-        for name, url in KNOWN_GITHUB_URLS.items():
-            assert url.startswith("https://github.com/"), f"Invalid URL for {name}"
-            # URL should have owner/repo format
-            parts = url.replace("https://github.com/", "").split("/")
-            assert len(parts) >= 2, f"Missing owner/repo in URL for {name}"
-
-
 class TestTypeCheckerCommands:
     """Tests for TYPE_CHECKER_COMMANDS constant."""
 
@@ -662,4 +638,3 @@ class TestSaveResultsOsName:
             latest_data = json.load(f)
 
         assert dated_data == latest_data
-

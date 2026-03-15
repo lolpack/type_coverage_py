@@ -28,7 +28,7 @@ jobs:
           '["ubuntu-latest","windows-latest"]'
           ) }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 180
+    timeout-minutes: 360
 
     steps:
       - name: Checkout Repository
@@ -100,7 +100,7 @@ jobs:
             *) OS_NAME="${{ matrix.os }}" ;;
           esac
 
-          # If package_count is 0, use all prioritized packages (don't pass --packages flag)
+          # If package_count is 0, use all packages from install_envs.json
           if [ "$PACKAGE_COUNT" = "0" ]; then
             python -m lsp.benchmark.daily_runner \
               --runs "$RUNS" \

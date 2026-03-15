@@ -2,7 +2,7 @@
 """Daily runner for LSP benchmarks across type checkers.
 
 This script:
-1. Loads packages from the prioritized package report
+1. Loads packages from typecheck_benchmark/install_envs.json (same source as typecheck benchmark)
 2. Clones each package from GitHub
 3. Runs the LSP benchmark against each type checker
 4. Saves results to JSON for the web dashboard
@@ -177,64 +177,6 @@ def get_benchmark_runner() -> BenchmarkRunner:
     return runner
 
 
-# GitHub URL mapping for known packages
-KNOWN_GITHUB_URLS: dict[str, str] = {
-    "requests": "https://github.com/psf/requests",
-    "numpy": "https://github.com/numpy/numpy",
-    "pandas": "https://github.com/pandas-dev/pandas",
-    "click": "https://github.com/pallets/click",
-    "flask": "https://github.com/pallets/flask",
-    "django": "https://github.com/django/django",
-    "fastapi": "https://github.com/fastapi/fastapi",
-    "pydantic": "https://github.com/pydantic/pydantic",
-    "httpx": "https://github.com/encode/httpx",
-    "aiohttp": "https://github.com/aio-libs/aiohttp",
-    "boto3": "https://github.com/boto/boto3",
-    "botocore": "https://github.com/boto/botocore",
-    "urllib3": "https://github.com/urllib3/urllib3",
-    "certifi": "https://github.com/certifi/python-certifi",
-    "idna": "https://github.com/kjd/idna",
-    "charset-normalizer": "https://github.com/Ousret/charset_normalizer",
-    "typing-extensions": "https://github.com/python/typing_extensions",
-    "packaging": "https://github.com/pypa/packaging",
-    "setuptools": "https://github.com/pypa/setuptools",
-    "wheel": "https://github.com/pypa/wheel",
-    "pip": "https://github.com/pypa/pip",
-    "six": "https://github.com/benjaminp/six",
-    "python-dateutil": "https://github.com/dateutil/dateutil",
-    "pyyaml": "https://github.com/yaml/pyyaml",
-    "attrs": "https://github.com/python-attrs/attrs",
-    "cryptography": "https://github.com/pyca/cryptography",
-    "cffi": "https://github.com/python-cffi/cffi",
-    "jinja2": "https://github.com/pallets/jinja",
-    "markupsafe": "https://github.com/pallets/markupsafe",
-    "sqlalchemy": "https://github.com/sqlalchemy/sqlalchemy",
-    "pillow": "https://github.com/python-pillow/Pillow",
-    "pytest": "https://github.com/pytest-dev/pytest",
-    "scipy": "https://github.com/scipy/scipy",
-    "matplotlib": "https://github.com/matplotlib/matplotlib",
-    "scikit-learn": "https://github.com/scikit-learn/scikit-learn",
-    "tensorflow": "https://github.com/tensorflow/tensorflow",
-    "torch": "https://github.com/pytorch/pytorch",
-    "transformers": "https://github.com/huggingface/transformers",
-    "rich": "https://github.com/Textualize/rich",
-    "typer": "https://github.com/tiangolo/typer",
-    "uvicorn": "https://github.com/encode/uvicorn",
-    "starlette": "https://github.com/encode/starlette",
-    "redis": "https://github.com/redis/redis-py",
-    "celery": "https://github.com/celery/celery",
-    "homeassistant": "https://github.com/home-assistant/core",
-    "networkx": "https://github.com/networkx/networkx",
-    "salt": "https://github.com/saltstack/salt",
-    "yt-dlp": "https://github.com/yt-dlp/yt-dlp",
-    "luigi": "https://github.com/spotify/luigi",
-    "dask": "https://github.com/dask/dask",
-    "sympy": "https://github.com/sympy/sympy",
-    "comfyui": "https://github.com/comfyanonymous/ComfyUI",
-    "ansible": "https://github.com/ansible/ansible",
-    "pyopengl": "https://github.com/mcfletch/pyopengl",
-}
-
 # Type checker LSP commands
 TYPE_CHECKER_COMMANDS: dict[str, str] = {
     "pyright": "pyright-langserver --stdio",
@@ -246,205 +188,71 @@ TYPE_CHECKER_COMMANDS: dict[str, str] = {
 DEFAULT_TYPE_CHECKERS: list[str] = ["pyright", "pyrefly", "ty", "zuban"]
 
 
-def load_prioritized_packages(
+def load_packages_from_install_envs(
     limit: int | None = None,
-    packages_file: Path | None = None,
+    package_names: list[str] | None = None,
 ) -> list[PackageInfo]:
-    """Load packages from the prioritized package report.
+    """Load packages from typecheck_benchmark/install_envs.json.
+
+    Uses the same source of truth as the typecheck benchmark, filtering
+    to only packages with install: true or non-empty deps (matching the
+    typecheck benchmark's load_install_envs filter).
 
     Args:
         limit: Maximum number of packages to return.
-        packages_file: Path to the package report JSON file.
+        package_names: Specific package names to include (case-insensitive).
 
     Returns:
         List of package information dictionaries.
     """
-    if packages_file is None:
-        packages_file = ROOT_DIR / "prioritized" / "package_report.json"
+    install_envs_file = ROOT_DIR / "typecheck_benchmark" / "install_envs.json"
+    if not install_envs_file.exists():
+        print(f"Error: {install_envs_file} not found")
+        return []
 
-    if not packages_file.exists():
-        print(f"Warning: {packages_file} not found, using fallback packages")
-        fallback = get_fallback_packages()
-        return fallback[:limit] if limit else fallback
-
-    with open(packages_file, encoding="utf-8") as f:
-        package_data: dict[str, Any] = json.load(f)
+    with open(install_envs_file, encoding="utf-8") as f:
+        data: dict[str, Any] = json.load(f)
 
     packages: list[PackageInfo] = []
-    for name, data in package_data.items():
-        github_url = resolve_github_url(name)
-        if github_url:
-            packages.append(
-                {
-                    "name": name,
-                    "github_url": github_url,
-                    "download_count": data.get("DownloadCount", 0),
-                    "ranking": data.get("DownloadRanking", 999),
-                }
-            )
+    name_filter = {n.lower() for n in package_names} if package_names else None
 
-    packages.sort(key=lambda x: x.get("ranking", 999))
+    for i, pkg in enumerate(data.get("packages", [])):
+        github_url = pkg.get("github_url", "")
+        if not github_url:
+            continue
+
+        # Same filter as typecheck_benchmark.daily_runner.load_install_envs()
+        has_install = pkg.get("install", False)
+        has_deps = bool(pkg.get("deps"))
+        if not has_install and not has_deps:
+            continue
+
+        name = pkg.get("name") or github_url.rstrip("/").split("/")[-1]
+
+        if name_filter and name.lower() not in name_filter:
+            continue
+
+        packages.append(
+            {
+                "name": name,
+                "github_url": github_url,
+                "download_count": 0,
+                "ranking": i + 1,
+            }
+        )
+
+    if name_filter:
+        found = {p["name"].lower() for p in packages}
+        for n in package_names or []:
+            if n.lower() not in found:
+                print(
+                    f"Warning: package '{n}' not found in install_envs.json — skipping"
+                )
 
     if limit:
         packages = packages[:limit]
 
     return packages
-
-
-def get_fallback_packages() -> list[PackageInfo]:
-    """Get fallback list of popular packages with GitHub URLs.
-
-    Returns:
-        List of package information for well-known packages.
-    """
-    return [
-        {
-            "name": "requests",
-            "github_url": "https://github.com/psf/requests",
-            "ranking": 1,
-            "download_count": 0,
-        },
-        {
-            "name": "flask",
-            "github_url": "https://github.com/pallets/flask",
-            "ranking": 2,
-            "download_count": 0,
-        },
-        {
-            "name": "django",
-            "github_url": "https://github.com/django/django",
-            "ranking": 3,
-            "download_count": 0,
-        },
-        {
-            "name": "fastapi",
-            "github_url": "https://github.com/fastapi/fastapi",
-            "ranking": 4,
-            "download_count": 0,
-        },
-        {
-            "name": "pydantic",
-            "github_url": "https://github.com/pydantic/pydantic",
-            "ranking": 5,
-            "download_count": 0,
-        },
-        {
-            "name": "numpy",
-            "github_url": "https://github.com/numpy/numpy",
-            "ranking": 6,
-            "download_count": 0,
-        },
-        {
-            "name": "pandas",
-            "github_url": "https://github.com/pandas-dev/pandas",
-            "ranking": 7,
-            "download_count": 0,
-        },
-        {
-            "name": "click",
-            "github_url": "https://github.com/pallets/click",
-            "ranking": 8,
-            "download_count": 0,
-        },
-        {
-            "name": "httpx",
-            "github_url": "https://github.com/encode/httpx",
-            "ranking": 9,
-            "download_count": 0,
-        },
-        {
-            "name": "aiohttp",
-            "github_url": "https://github.com/aio-libs/aiohttp",
-            "ranking": 10,
-            "download_count": 0,
-        },
-        # Low type-coverage packages
-        {
-            "name": "boto3",
-            "github_url": "https://github.com/boto/boto3",
-            "ranking": 11,
-            "download_count": 0,
-        },
-        {
-            "name": "botocore",
-            "github_url": "https://github.com/boto/botocore",
-            "ranking": 12,
-            "download_count": 0,
-        },
-        {
-            "name": "networkx",
-            "github_url": "https://github.com/networkx/networkx",
-            "ranking": 13,
-            "download_count": 0,
-        },
-        {
-            "name": "salt",
-            "github_url": "https://github.com/saltstack/salt",
-            "ranking": 14,
-            "download_count": 0,
-        },
-        {
-            "name": "yt-dlp",
-            "github_url": "https://github.com/yt-dlp/yt-dlp",
-            "ranking": 15,
-            "download_count": 0,
-        },
-        {
-            "name": "luigi",
-            "github_url": "https://github.com/spotify/luigi",
-            "ranking": 16,
-            "download_count": 0,
-        },
-        {
-            "name": "scikit-learn",
-            "github_url": "https://github.com/scikit-learn/scikit-learn",
-            "ranking": 17,
-            "download_count": 0,
-        },
-        {
-            "name": "dask",
-            "github_url": "https://github.com/dask/dask",
-            "ranking": 18,
-            "download_count": 0,
-        },
-        {
-            "name": "celery",
-            "github_url": "https://github.com/celery/celery",
-            "ranking": 19,
-            "download_count": 0,
-        },
-        {
-            "name": "sympy",
-            "github_url": "https://github.com/sympy/sympy",
-            "ranking": 20,
-            "download_count": 0,
-        },
-        {
-            "name": "comfyui",
-            "github_url": "https://github.com/comfyanonymous/ComfyUI",
-            "ranking": 21,
-            "download_count": 0,
-        },
-        {
-            "name": "ansible",
-            "github_url": "https://github.com/ansible/ansible",
-            "ranking": 22,
-            "download_count": 0,
-        },
-    ]
-
-
-def resolve_github_url(package_name: str) -> str | None:
-    """Resolve GitHub URL from known mappings.
-
-    Args:
-        package_name: Name of the package.
-
-    Returns:
-        GitHub URL if found, None otherwise.
-    """
-    normalized_name = package_name.lower()
-    return KNOWN_GITHUB_URLS.get(normalized_name)
 
 
 def fetch_github_package(
@@ -837,37 +645,14 @@ def run_daily_benchmark(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Load packages - either by name or by limit
-    if package_names:
-        all_packages = load_prioritized_packages(limit=None)
-        found_names = {p["name"] for p in all_packages}
-        packages = [p for p in all_packages if p["name"] in package_names]
-        # For packages not in the prioritized report, look them up in
-        # KNOWN_GITHUB_URLS and the fallback list so --package-names works
-        # even for packages that aren't in package_report.json.
-        missing = [n for n in package_names if n not in found_names]
-        if missing:
-            fallback_by_name = {p["name"]: p for p in get_fallback_packages()}
-            for name in missing:
-                if name in fallback_by_name:
-                    packages.append(fallback_by_name[name])
-                elif name in KNOWN_GITHUB_URLS:
-                    packages.append(
-                        {
-                            "name": name,
-                            "github_url": KNOWN_GITHUB_URLS[name],
-                            "download_count": 0,
-                            "ranking": 999,
-                        }
-                    )
-                else:
-                    print(f"Warning: package '{name}' not found in prioritized list, fallback, or KNOWN_GITHUB_URLS — skipping")
-        if not packages:
-            print(f"Warning: None of the specified packages found: {package_names}")
-            print(f"Available packages: {[p['name'] for p in all_packages[:20]]}...")
-            return output_dir / "empty.json"
-    else:
-        packages = load_prioritized_packages(limit=package_limit)
+    # Load packages from install_envs.json (same source as typecheck benchmark)
+    packages = load_packages_from_install_envs(
+        limit=package_limit,
+        package_names=package_names,
+    )
+    if not packages:
+        print("Warning: No packages found to benchmark")
+        return output_dir / "empty.json"
 
     _print_benchmark_header(packages, type_checkers, runs_per_package)
 
