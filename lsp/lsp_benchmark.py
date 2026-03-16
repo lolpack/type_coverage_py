@@ -588,6 +588,12 @@ class LspClient:
             },
         )
 
+    def close_document(self, uri: str) -> None:
+        self.notify(
+            "textDocument/didClose",
+            {"textDocument": {"uri": uri}},
+        )
+
     def definition(
         self, uri: str, pos: Position, *, timeout_s: float = 60.0
     ) -> DefinitionResult:
@@ -861,6 +867,7 @@ def run_server_batch(
             time.sleep(0.1)
             result = lsp.definition(case.uri, case.position, timeout_s=timeout_s)
             results.append(result)
+            lsp.close_document(case.uri)
 
     return results
 
