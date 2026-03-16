@@ -33,6 +33,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import concurrent.futures
 import dataclasses
 import json
 import os
@@ -1081,8 +1082,29 @@ def main(argv: Optional[List[str]] = None) -> int:
     # Pre-pick all cases so every server sees the same set
     cases = [pick_random_case(root, rng=rng) for _ in range(runs)]
 
-    # Run each server once across all cases (one server process per repo)
-    for server_name, cmd in servers:
+    # Pre-populate case_payloads so all servers can write into them
+    for run_idx, case in enumerate(cases):
+        report["cases"].append({
+            "run": run_idx,
+            "picked": {
+                "file": str(case.file_path),
+                "uri": case.uri,
+                "line": case.position.line,
+                "character": case.position.character,
+                "line_1b": case.position.line + 1,
+                "character_1b": case.position.character + 1,
+                "token": case.token,
+                "kind": case.kind,
+                "line_text": case.line_text,
+            },
+            "results": {},
+            "unresolved": {},
+        })
+        print(
+            f"Run {run_idx + 1}/{runs}: {case.file_path}:{case.position.line + 1}:{case.position.character + 1} token={case.token} kind={case.kind}"
+        )
+
+    def _run_one_server(server_name: str, cmd: str) -> Tuple[str, List[DefinitionResult]]:
         per_server_settings = settings_payload
         if (
             args.pyright_disable_indexing
@@ -1103,7 +1125,6 @@ def main(argv: Optional[List[str]] = None) -> int:
                 warmup_s=float(args.warmup_s),
             )
         except Exception as e:
-            # Server failed to start — mark all cases as errors
             batch_results = [
                 DefinitionResult(
                     ok=False, found=False, n_locations=0,
@@ -1111,13 +1132,53 @@ def main(argv: Optional[List[str]] = None) -> int:
                 )
                 for _ in cases
             ]
+        return server_name, batch_results
 
-        for run_idx, (case, res) in enumerate(zip(cases, batch_results)):
-            # Ensure case_payload exists for this run
-            if len(report["cases"]) <= run_idx:
-                report["cases"].append({
-                    "run": run_idx,
-                    "picked": {
+    # Run all servers in parallel — each gets its own process
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(servers)) as executor:
+        futures = {
+            executor.submit(_run_one_server, name, cmd): name
+            for name, cmd in servers
+        }
+        for future in concurrent.futures.as_completed(futures):
+            server_name, batch_results = future.result()
+
+            for run_idx, (case, res) in enumerate(zip(cases, batch_results)):
+                case_payload = report["cases"][run_idx]
+
+                locations_payload = [
+                    {
+                        "uri": loc.uri,
+                        "start": dataclasses.asdict(loc.range.start),
+                        "end": dataclasses.asdict(loc.range.end),
+                        "valid": _looks_like_valid_location(
+                            loc, root, source_uri=case.uri
+                        ),
+                    }
+                    for loc in res.locations
+                ]
+                any_valid = any(l.get("valid") for l in locations_payload)
+
+                case_payload["results"][server_name] = {
+                    "ok": res.ok,
+                    "found": res.found,
+                    "n_locations": res.n_locations,
+                    "latency_ms": res.latency_ms,
+                    "error": res.error,
+                    "locations": locations_payload,
+                }
+
+                if res.ok:
+                    agg[server_name]["ok"] += 1
+                if res.found:
+                    agg[server_name]["found"] += 1
+                if any_valid:
+                    agg[server_name]["valid"] += 1
+                if res.ok and res.latency_ms is not None:
+                    agg[server_name]["latencies_ms"].append(res.latency_ms)
+
+                if not locations_payload:
+                    case_payload["unresolved"][server_name] = {
                         "file": str(case.file_path),
                         "uri": case.uri,
                         "line": case.position.line,
@@ -1127,62 +1188,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                         "token": case.token,
                         "kind": case.kind,
                         "line_text": case.line_text,
-                    },
-                    "results": {},
-                    "unresolved": {},
-                })
-            case_payload = report["cases"][run_idx]
-
-            # Log progress (only for the first server to avoid duplicate lines)
-            if server_name == servers[0][0]:
-                print(
-                    f"Run {run_idx + 1}/{runs}: {case.file_path}:{case.position.line + 1}:{case.position.character + 1} token={case.token} kind={case.kind}"
-                )
-
-            locations_payload = [
-                {
-                    "uri": loc.uri,
-                    "start": dataclasses.asdict(loc.range.start),
-                    "end": dataclasses.asdict(loc.range.end),
-                    "valid": _looks_like_valid_location(
-                        loc, root, source_uri=case.uri
-                    ),
-                }
-                for loc in res.locations
-            ]
-            any_valid = any(l.get("valid") for l in locations_payload)
-
-            case_payload["results"][server_name] = {
-                "ok": res.ok,
-                "found": res.found,
-                "n_locations": res.n_locations,
-                "latency_ms": res.latency_ms,
-                "error": res.error,
-                "locations": locations_payload,
-            }
-
-            if res.ok:
-                agg[server_name]["ok"] += 1
-            if res.found:
-                agg[server_name]["found"] += 1
-            if any_valid:
-                agg[server_name]["valid"] += 1
-            if res.ok and res.latency_ms is not None:
-                agg[server_name]["latencies_ms"].append(res.latency_ms)
-
-            if not locations_payload:
-                case_payload["unresolved"][server_name] = {
-                    "file": str(case.file_path),
-                    "uri": case.uri,
-                    "line": case.position.line,
-                    "character": case.position.character,
-                    "line_1b": case.position.line + 1,
-                    "character_1b": case.position.character + 1,
-                    "token": case.token,
-                    "kind": case.kind,
-                    "line_text": case.line_text,
-                    "reason": "no_definition_locations",
-                }
+                        "reason": "no_definition_locations",
+                    }
 
     # Compute summary stats
     def _pct(n: int) -> float:
