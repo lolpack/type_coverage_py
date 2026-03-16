@@ -940,10 +940,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument(
         "--timeout",
         type=float,
-        default=10.0,
+        default=2.0,
         dest="timeout_s",
         help=(
-            "Timeout in seconds for each Go to Definition request (default: 10s). "
+            "Timeout in seconds for each Go to Definition request (default: 2s). "
             "Requests that timeout are counted as errors and do NOT contribute to latency statistics."
         ),
     )
