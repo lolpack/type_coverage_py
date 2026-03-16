@@ -424,7 +424,7 @@ def _run_checkers_together(
             "--runs",
             str(runs),
             "--timeout",
-            "10",  # 10 second timeout - timeouts don't count toward latency stats
+            "2",  # 2 second timeout - timeouts don't count toward latency stats
         ]
 
         # Add command for each checker
