@@ -567,7 +567,7 @@ class LspClient:
             "clientInfo": {"name": "lsp-bench", "version": "0.1"},
             "trace": "verbose" if self.trace else "off",
         }
-        self.request("initialize", params, timeout_s=120)
+        self.request("initialize", params, timeout_s=30)
         self.notify("initialized", {})
 
     def change_configuration(self, settings: Any) -> None:
@@ -859,6 +859,9 @@ def run_server_batch(
             print(f"      {name}: warming up for {warmup_s:.0f}s...")
             time.sleep(warmup_s)
 
+        consecutive_timeouts = 0
+        max_consecutive_timeouts = 5
+
         for case in cases:
             text = case.file_path.read_text(encoding="utf-8", errors="replace")
             lsp.open_document(case.uri, text)
@@ -869,6 +872,22 @@ def run_server_batch(
             result = lsp.definition(case.uri, case.position, timeout_s=timeout_s)
             results.append(result)
             lsp.close_document(case.uri)
+
+            if result.ok:
+                consecutive_timeouts = 0
+            else:
+                consecutive_timeouts += 1
+                if consecutive_timeouts >= max_consecutive_timeouts:
+                    print(f"      {name}: {max_consecutive_timeouts} consecutive timeouts, skipping remaining requests")
+                    # Fill remaining results with timeout errors
+                    remaining = len(cases) - len(results)
+                    for _ in range(remaining):
+                        results.append(DefinitionResult(
+                            ok=False, found=False, n_locations=0,
+                            latency_ms=None, error="skipped after consecutive timeouts",
+                            raw_result=None, locations=[],
+                        ))
+                    break
 
     return results
 
