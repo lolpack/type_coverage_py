@@ -136,9 +136,19 @@ jobs:
           git clone --branch published-report --single-branch --depth 1 \
             "git@github.com:${{ github.repository }}.git" /tmp/deploy
 
-          # Copy result files
+          # Determine OS name for this matrix job
+          case "${{ matrix.os }}" in
+            ubuntu-*) OS_NAME="ubuntu" ;;
+            macos-*) OS_NAME="macos" ;;
+            windows-*) OS_NAME="windows" ;;
+            *) OS_NAME="${{ matrix.os }}" ;;
+          esac
+
+          # Copy only this OS's result files to avoid overwriting other OS's
+          # latest files in a race condition between concurrent matrix jobs
           mkdir -p /tmp/deploy/lsp/benchmark/results
-          cp lsp/benchmark/results/*.json /tmp/deploy/lsp/benchmark/results/
+          cp lsp/benchmark/results/benchmark_*_${OS_NAME}.json /tmp/deploy/lsp/benchmark/results/ 2>/dev/null || true
+          cp lsp/benchmark/results/latest-${OS_NAME}.json /tmp/deploy/lsp/benchmark/results/ 2>/dev/null || true
 
           # Copy site files
           cp lsp/benchmark/index.html /tmp/deploy/lsp/benchmark/
