@@ -125,18 +125,25 @@
                     <h3>🔄 Test Process</h3>
                     <ol>
                         <li>Clone the top Python packages from GitHub</li>
-                        <li>Start all type checker LSP servers in parallel</li>
-                        <li>Pick random Python files and identifier positions</li>
-                        <li>Send identical "Go to Definition" requests to all servers simultaneously</li>
+                        <li>Pre-pick all random Python files and identifier positions for the run</li>
+                        <li>For each type checker, start a single LSP server per repository</li>
+                        <li>Send all "Go to Definition" requests to the same server instance</li>
                         <li>Measure latency and verify if returned locations are valid</li>
                     </ol>
                     <p class="method-note">
-                        <strong>⏱️ Timeout:</strong> Requests have a 10-second timeout. 
+                        <strong>⏱️ Timeout:</strong> Requests have a 10-second timeout.
                         Timeouts are counted as failures and excluded from latency statistics.
                     </p>
                     <p class="method-note">
-                        <strong>🔄 Parallel Execution:</strong> All type checkers receive identical test cases 
-                        and run simultaneously. No warmup runs are performed.
+                        <strong>🔁 Server Lifecycle:</strong> One LSP server is started per type checker per
+                        repository. All test cases for that repo are sent to the same server, reflecting
+                        real-world IDE usage where a single server handles multiple requests. All type
+                        checkers receive identical test cases for fair comparison.
+                    </p>
+                    <p class="method-note">
+                        <strong>🔥 Warmup:</strong> An optional warmup period can be configured (via
+                        <code>--warmup</code>) to give the server time to index before requests are sent.
+                        Testing shows pyrefly does not benefit from warmup, so it is disabled by default.
                     </p>
                 </div>
                 <div class="method-card">

@@ -33,7 +33,6 @@ from __future__ import annotations
 
 import argparse
 import ast
-import concurrent.futures
 import dataclasses
 import json
 import os
@@ -812,40 +811,58 @@ def _looks_like_valid_location(
     return True
 
 
-def run_one_server(
+def run_server_batch(
     name: str,
     cmd: str,
-    case: BenchmarkCase,
+    cases: List[BenchmarkCase],
     root: Path,
     *,
     trace: bool = False,
     settings: Any = None,
     timeout_s: float = 10.0,
-) -> DefinitionResult:
-    """Run a single LSP server and measure Go to Definition latency.
-    
+    warmup_s: float = 0.0,
+) -> List[DefinitionResult]:
+    """Run a single LSP server and measure Go to Definition for multiple cases.
+
+    Starts the server once, optionally waits for it to warm up (index/analyze),
+    then sends all definition requests to the same server instance.
+
     Args:
         name: Server name for logging.
         cmd: Command to start the LSP server.
-        case: The benchmark case (file, position, token).
+        cases: List of benchmark cases to run.
         root: Repository root path.
         trace: Enable verbose LSP tracing.
         settings: Optional LSP settings to apply.
-        timeout_s: Timeout in seconds for the definition request (default: 10s).
-                   Timeouts are counted as errors and do NOT contribute to latency stats.
-    
+        timeout_s: Timeout in seconds for each definition request.
+        warmup_s: Seconds to wait after initialization before sending requests.
+                  Gives the server time to index/analyze the codebase.
+
     Returns:
-        DefinitionResult with latency and location info.
+        List of DefinitionResults, one per case.
     """
     argv = _split_command(cmd)
+    results: List[DefinitionResult] = []
     with LspClient(name=name, argv=argv, root=root, trace=trace) as lsp:
         lsp.initialize()
         if settings is not None:
             lsp.change_configuration(settings)
 
-        text = case.file_path.read_text(encoding="utf-8", errors="replace")
-        lsp.open_document(case.uri, text)
-        return lsp.definition(case.uri, case.position, timeout_s=timeout_s)
+        if warmup_s > 0:
+            print(f"      {name}: warming up for {warmup_s:.0f}s...")
+            time.sleep(warmup_s)
+
+        for case in cases:
+            text = case.file_path.read_text(encoding="utf-8", errors="replace")
+            lsp.open_document(case.uri, text)
+            # Brief pause to let the server process the opened document,
+            # mimicking real IDE usage where users don't instantly request
+            # definitions after opening a file.
+            time.sleep(0.1)
+            result = lsp.definition(case.uri, case.position, timeout_s=timeout_s)
+            results.append(result)
+
+    return results
 
 
 def _split_command(cmd: str) -> List[str]:
@@ -937,6 +954,16 @@ def main(argv: Optional[List[str]] = None) -> int:
         help=(
             "If set, sends Pyright configuration to disable indexing and related scanning "
             + "(indexing=false, autoSearchPaths=false, useLibraryCodeForTypes=false)."
+        ),
+    )
+    ap.add_argument(
+        "--warmup",
+        type=float,
+        default=0.0,
+        dest="warmup_s",
+        help=(
+            "Seconds to wait after opening a document before sending the definition "
+            "request. Gives the server time to index/analyze the codebase (default: 0)."
         ),
     )
     ap.add_argument(
@@ -1044,11 +1071,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         for name, _ in servers
     }
 
-    def run_server_task(
-        server_name: str, cmd: str, case: BenchmarkCase
-    ) -> Tuple[str, DefinitionResult]:
-        """Run a single server benchmark task (for parallel execution)."""
-        # Only apply the pyright-disable-indexing config to pyright by default.
+    # Pre-pick all cases so every server sees the same set
+    cases = [pick_random_case(root, rng=rng) for _ in range(runs)]
+
+    # Run each server once across all cases (one server process per repo)
+    for server_name, cmd in servers:
         per_server_settings = settings_payload
         if (
             args.pyright_disable_indexing
@@ -1057,114 +1084,33 @@ def main(argv: Optional[List[str]] = None) -> int:
         ):
             per_server_settings = None
 
-        res = run_one_server(
-            server_name,
-            cmd,
-            case,
-            root,
-            trace=args.trace,
-            settings=per_server_settings,
-            timeout_s=float(args.timeout_s),
-        )
-        return (server_name, res)
+        try:
+            batch_results = run_server_batch(
+                server_name,
+                cmd,
+                cases,
+                root,
+                trace=args.trace,
+                settings=per_server_settings,
+                timeout_s=float(args.timeout_s),
+                warmup_s=float(args.warmup_s),
+            )
+        except Exception as e:
+            # Server failed to start — mark all cases as errors
+            batch_results = [
+                DefinitionResult(
+                    ok=False, found=False, n_locations=0,
+                    latency_ms=None, error=str(e), raw_result=None, locations=[],
+                )
+                for _ in cases
+            ]
 
-    for run_idx in range(runs):
-        case = pick_random_case(root, rng=rng)
-
-        case_payload: Dict[str, Any] = {
-            "run": run_idx,
-            "picked": {
-                "file": str(case.file_path),
-                "uri": case.uri,
-                "line": case.position.line,
-                "character": case.position.character,
-                "line_1b": case.position.line + 1,
-                "character_1b": case.position.character + 1,
-                "token": case.token,
-                "kind": case.kind,
-                "line_text": case.line_text,
-            },
-            "results": {},
-            "unresolved": {},
-        }
-
-        # Per-run log for validation / spot-checking.
-        print(
-            f"Run {run_idx + 1}/{runs}: {case.file_path}:{case.position.line + 1}:{case.position.character + 1} token={case.token} kind={case.kind}"
-        )
-
-        # Run all servers in PARALLEL for fair comparison
-        # This eliminates first-mover advantage from disk caching
-        with concurrent.futures.ThreadPoolExecutor(max_workers=len(servers)) as executor:
-            futures = {
-                executor.submit(run_server_task, name, cmd, case): name
-                for name, cmd in servers
-            }
-            
-            for future in concurrent.futures.as_completed(futures):
-                server_name = futures[future]
-                try:
-                    _, res = future.result()
-                    locations_payload = [
-                        {
-                            "uri": loc.uri,
-                            "start": dataclasses.asdict(loc.range.start),
-                            "end": dataclasses.asdict(loc.range.end),
-                            "valid": _looks_like_valid_location(
-                                loc, root, source_uri=case.uri
-                            ),
-                        }
-                        for loc in res.locations
-                    ]
-                    any_valid = any(l.get("valid") for l in locations_payload)
-
-                    case_payload["results"][server_name] = {
-                        # Backward-compatible: ok means request succeeded.
-                        "ok": res.ok,
-                        "found": res.found,
-                        "n_locations": res.n_locations,
-                        "latency_ms": res.latency_ms,
-                        "error": res.error,
-                        "locations": locations_payload,
-                    }
-
-                    if res.ok:
-                        agg[server_name]["ok"] += 1
-                    if res.found:
-                        agg[server_name]["found"] += 1
-                    if any_valid:
-                        agg[server_name]["valid"] += 1
-                    # Only count latency for successful requests (not timeouts)
-                    if res.ok and res.latency_ms is not None:
-                        agg[server_name]["latencies_ms"].append(res.latency_ms)
-
-                    # Only mark as unresolved if no locations were returned.
-                    # If the server returned locations (even multiple), it found something,
-                    # so don't count it as a failure even if paths don't pass validation.
-                    if not locations_payload:
-                        case_payload["unresolved"][server_name] = {
-                            "file": str(case.file_path),
-                            "uri": case.uri,
-                            "line": case.position.line,
-                            "character": case.position.character,
-                            "line_1b": case.position.line + 1,
-                            "character_1b": case.position.character + 1,
-                            "token": case.token,
-                            "kind": case.kind,
-                            "line_text": case.line_text,
-                            "reason": "no_definition_locations",
-                        }
-                except Exception as e:
-                    agg[server_name]["errors"] += 1
-                    case_payload["results"][server_name] = {
-                        "ok": False,
-                        "found": False,
-                        "n_locations": 0,
-                        "latency_ms": None,
-                        "error": str(e),
-                        "locations": [],
-                    }
-                    case_payload["unresolved"][server_name] = {
+        for run_idx, (case, res) in enumerate(zip(cases, batch_results)):
+            # Ensure case_payload exists for this run
+            if len(report["cases"]) <= run_idx:
+                report["cases"].append({
+                    "run": run_idx,
+                    "picked": {
                         "file": str(case.file_path),
                         "uri": case.uri,
                         "line": case.position.line,
@@ -1174,11 +1120,62 @@ def main(argv: Optional[List[str]] = None) -> int:
                         "token": case.token,
                         "kind": case.kind,
                         "line_text": case.line_text,
-                        "reason": "server_exception",
-                        "error": str(e),
-                    }
+                    },
+                    "results": {},
+                    "unresolved": {},
+                })
+            case_payload = report["cases"][run_idx]
 
-        report["cases"].append(case_payload)
+            # Log progress (only for the first server to avoid duplicate lines)
+            if server_name == servers[0][0]:
+                print(
+                    f"Run {run_idx + 1}/{runs}: {case.file_path}:{case.position.line + 1}:{case.position.character + 1} token={case.token} kind={case.kind}"
+                )
+
+            locations_payload = [
+                {
+                    "uri": loc.uri,
+                    "start": dataclasses.asdict(loc.range.start),
+                    "end": dataclasses.asdict(loc.range.end),
+                    "valid": _looks_like_valid_location(
+                        loc, root, source_uri=case.uri
+                    ),
+                }
+                for loc in res.locations
+            ]
+            any_valid = any(l.get("valid") for l in locations_payload)
+
+            case_payload["results"][server_name] = {
+                "ok": res.ok,
+                "found": res.found,
+                "n_locations": res.n_locations,
+                "latency_ms": res.latency_ms,
+                "error": res.error,
+                "locations": locations_payload,
+            }
+
+            if res.ok:
+                agg[server_name]["ok"] += 1
+            if res.found:
+                agg[server_name]["found"] += 1
+            if any_valid:
+                agg[server_name]["valid"] += 1
+            if res.ok and res.latency_ms is not None:
+                agg[server_name]["latencies_ms"].append(res.latency_ms)
+
+            if not locations_payload:
+                case_payload["unresolved"][server_name] = {
+                    "file": str(case.file_path),
+                    "uri": case.uri,
+                    "line": case.position.line,
+                    "character": case.position.character,
+                    "line_1b": case.position.line + 1,
+                    "character_1b": case.position.character + 1,
+                    "token": case.token,
+                    "kind": case.kind,
+                    "line_text": case.line_text,
+                    "reason": "no_definition_locations",
+                }
 
     # Compute summary stats
     def _pct(n: int) -> float:
