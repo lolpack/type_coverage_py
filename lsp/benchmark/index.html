@@ -177,9 +177,9 @@
                         checkers receive identical test cases for fair comparison.
                     </p>
                     <p class="method-note">
-                        <strong>🔥 Warmup:</strong> An optional warmup period can be configured (via
-                        <code>--warmup</code>) to give the server time to index before requests are sent.
-                        Testing shows pyrefly does not benefit from warmup, so it is disabled by default.
+                        <strong>🔥 Warmup:</strong> A 30-second warmup period is applied after server
+                        initialization to give the language server time to index before requests
+                        are sent. This can be configured via <code>--warmup</code>.
                     </p>
                 </div>
                 <div class="method-card">
