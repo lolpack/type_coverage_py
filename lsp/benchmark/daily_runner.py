@@ -960,9 +960,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--warmup",
         type=float,
-        default=0.0,
-        help="Seconds to wait after opening a document before sending the definition "
-        "request. Gives the server time to index/analyze (default: 0).",
+        default=30.0,
+        help="Seconds to wait after initialization before sending definition "
+        "requests. Gives the server time to index/analyze (default: 30).",
     )
 
     return parser.parse_args(argv)
