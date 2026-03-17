@@ -155,20 +155,33 @@ def _monitor_memory_linux(
         stop_event.wait(0.01)
 
 
-def _get_peak_memory_macos(pid: int) -> float:
-    """Get peak memory for a process on macOS using ps."""
-    try:
-        result = subprocess.run(
-            ["ps", "-o", "rss=", "-p", str(pid)],
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            return int(result.stdout.strip()) / 1024  # KB -> MB
-    except (subprocess.TimeoutExpired, ValueError, OSError):
-        pass
-    return 0.0
+def _parse_macos_time_stderr(stderr: str) -> tuple[float, str]:
+    """Extract peak RSS from /usr/bin/time -l output mixed into stderr.
+
+    Returns (peak_memory_mb, stderr_without_time_output).
+    """
+    peak_bytes = 0
+    filtered_lines: list[str] = []
+    in_time_output = False
+    for line in stderr.splitlines(keepends=True):
+        stripped = line.strip()
+        # /usr/bin/time -l output starts with "  0.12 real  0.01 user  0.00 sys"
+        if re.match(r"\d+\.\d+\s+real\s+", stripped):
+            in_time_output = True
+            continue
+        if in_time_output:
+            m = re.match(r"(\d+)\s+maximum resident set size", stripped)
+            if m:
+                peak_bytes = int(m.group(1))
+                continue
+            # Other /usr/bin/time stat lines (instructions, faults, etc.)
+            if re.match(r"\d+\s+\w", stripped):
+                continue
+            # No longer in time output
+            in_time_output = False
+        filtered_lines.append(line)
+    peak_mb = round(peak_bytes / (1024 * 1024), 1) if peak_bytes else 0.0
+    return peak_mb, "".join(filtered_lines)
 
 
 def run_process_with_timeout(
@@ -183,12 +196,11 @@ def run_process_with_timeout(
     """
     start_time = time.time()
 
-    # Snapshot macOS child memory high-water mark before spawning so we can
-    # compute the delta attributable to this child process alone.
-    darwin_maxrss_before: int = 0
-    if sys.platform == "darwin":
-        import resource
-        darwin_maxrss_before = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+    # On macOS, wrap with /usr/bin/time -l to get peak RSS from stderr
+    actual_cmd = cmd
+    use_macos_time = sys.platform == "darwin"
+    if use_macos_time:
+        actual_cmd = ["/usr/bin/time", "-l"] + cmd
 
     kwargs: dict[str, Any] = {
         "cwd": cwd,
@@ -199,9 +211,9 @@ def run_process_with_timeout(
     if sys.platform != "win32":
         kwargs["start_new_session"] = True
 
-    process = subprocess.Popen(cmd, **kwargs)
+    process = subprocess.Popen(actual_cmd, **kwargs)
 
-    # Memory monitoring thread (Linux only for /proc-based monitoring)
+    # Memory monitoring thread (Linux only — macOS uses /usr/bin/time -l)
     peak_kb: list[int] = [0]
     killed: list[bool] = [False]
     stop_event = threading.Event()
@@ -281,18 +293,15 @@ def run_process_with_timeout(
     reader_err.join(timeout=5)
 
     # Compute peak memory
+    raw_stderr = stderr_chunks[0] if stderr_chunks else ""
     if sys.platform == "linux":
         peak_memory_mb = round(peak_kb[0] / 1024, 1)
-    elif sys.platform == "darwin":
-        # On macOS, ru_maxrss from RUSAGE_CHILDREN is a running high-water
-        # mark across ALL children ever spawned.  Subtract the snapshot we
-        # took before spawning this child to isolate its contribution.
-        import resource
-        darwin_maxrss_after = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
-        delta = max(0, darwin_maxrss_after - darwin_maxrss_before)
-        peak_memory_mb = round(delta / (1024 * 1024), 1)  # bytes -> MB
+        clean_stderr = raw_stderr
+    elif use_macos_time:
+        peak_memory_mb, clean_stderr = _parse_macos_time_stderr(raw_stderr)
     else:
         peak_memory_mb = 0.0
+        clean_stderr = raw_stderr
 
     if oom_killed or timed_out:
         return {
@@ -307,7 +316,7 @@ def run_process_with_timeout(
 
     return {
         "stdout": stdout_chunks[0] if stdout_chunks else "",
-        "stderr": stderr_chunks[0] if stderr_chunks else "",
+        "stderr": clean_stderr,
         "returncode": process.returncode,
         "timed_out": False,
         "execution_time_s": round(execution_time, 2),
