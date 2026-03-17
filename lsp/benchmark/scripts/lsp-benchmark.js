@@ -5,6 +5,46 @@
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
+const TIMEOUT_CHANGE_DATE = '2026-03-16';
+const NEW_TIMEOUT_MS = 2000;
+const OLD_TIMEOUT_MS = 10000;
+function getTimeoutForData() {
+    if (!benchmarkData?.date)
+        return NEW_TIMEOUT_MS;
+    return benchmarkData.date < TIMEOUT_CHANGE_DATE ? OLD_TIMEOUT_MS : NEW_TIMEOUT_MS;
+}
+/**
+ * Chart.js plugin that draws a horizontal "timeout" reference line.
+ * Individual charts opt-in via options.plugins.timeoutLine.
+ */
+const timeoutLinePlugin = {
+    id: 'timeoutLine',
+    afterDraw(chart, _args, options) {
+        if (!options || !options.value)
+            return;
+        const yScale = chart.scales.y;
+        if (!yScale)
+            return;
+        const yPixel = yScale.getPixelForValue(options.value);
+        if (yPixel < yScale.top || yPixel > yScale.bottom)
+            return;
+        const ctx = chart.ctx;
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([6, 4]);
+        ctx.strokeStyle = options.color || '#f85149';
+        ctx.lineWidth = options.width || 2;
+        ctx.moveTo(chart.chartArea.left, yPixel);
+        ctx.lineTo(chart.chartArea.right, yPixel);
+        ctx.stroke();
+        ctx.fillStyle = options.color || '#f85149';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(options.label || `${options.value} ms timeout`, chart.chartArea.right - 4, yPixel - 6);
+        ctx.restore();
+    }
+};
+Chart.register(timeoutLinePlugin);
 const CHECKER_COLORS = {
     pyright: '#3178c6',
     pyrefly: '#e74c3c',
@@ -81,10 +121,12 @@ async function init() {
         const urlDate = getDateFromUrl();
         await loadBenchmarkData(urlDate, currentOs);
         updateTimestamp();
+        populateSummary();
+        populateFailureTable();
         createLatencyChart();
         createOkChart();
         createSuccessChart();
-        createPackageComparisonChart();
+        createLatencyDistributionChart();
         populateResultsTable();
         setupFilters();
         setupDateSelector();
@@ -166,7 +208,10 @@ async function loadBenchmarkData(date = null, os = 'ubuntu') {
             `../lsp/benchmark/results/benchmark_${date}_${os}.json`,
             // Fallback to non-OS-specific files for backwards compatibility
             `./results/benchmark_${date}.json`,
-            `../lsp/benchmark/results/benchmark_${date}.json`
+            `../lsp/benchmark/results/benchmark_${date}.json`,
+            // Fallback to latest if date-specific file doesn't exist
+            `./results/latest-${os}.json`,
+            `../lsp/benchmark/results/latest-${os}.json`
         ];
     }
     else {
@@ -243,10 +288,12 @@ async function switchToDate(date, os = 'ubuntu') {
         Object.values(charts).forEach((chart) => chart?.destroy());
         charts = {};
         // Recreate charts and table
+        populateSummary();
+        populateFailureTable();
         createLatencyChart();
         createOkChart();
         createSuccessChart();
-        createPackageComparisonChart();
+        createLatencyDistributionChart();
         populateResultsTable();
     }
     catch (error) {
@@ -532,7 +579,8 @@ function createLatencyChart() {
                     callbacks: {
                         label: (tooltipCtx) => `${tooltipCtx.raw.toFixed(1)} ms`
                     }
-                }
+                },
+                timeoutLine: { value: getTimeoutForData(), label: `${getTimeoutForData()} ms timeout`, color: '#f85149' }
             },
             scales: {
                 y: {
@@ -664,58 +712,104 @@ function createOkChart() {
     });
 }
 /**
- * Create package comparison chart
+ * Create latency distribution box-and-whisker chart.
+ * Uses @sgratzl/chartjs-chart-boxplot loaded via CDN.
+ * One box per checker built from per-package mean latencies.
+ * P95 shown as a scatter dot overlay per checker.
  */
-function createPackageComparisonChart() {
+function createLatencyDistributionChart() {
     if (!benchmarkData)
         return;
-    const canvas = document.getElementById('packageComparisonChart');
+    const canvas = document.getElementById('latencyDistributionChart');
     const ctx = canvas?.getContext('2d');
     if (!ctx)
         return;
-    const results = (benchmarkData.results || []).filter(r => !r.error).slice(0, 10);
     const checkers = benchmarkData.type_checkers || [];
-    const labels = results.map(r => r.package_name);
-    const datasets = checkers.map(checker => ({
-        label: CHECKER_NAMES[checker] || checker,
-        data: results.map(r => {
-            const metrics = r.metrics?.[checker];
-            return metrics?.latency_ms?.p95 || 0;
-        }),
-        backgroundColor: CHECKER_COLORS[checker] || '#888',
-        borderRadius: 4,
-        borderWidth: 0
-    }));
-    charts.packageComparison = new Chart(ctx, {
-        type: 'bar',
-        data: { labels, datasets },
+    const labels = checkers.map(c => CHECKER_NAMES[c] || c);
+    const results = (benchmarkData.results || []).filter(r => !r.error);
+    // Per-package mean latencies for each checker (builds the box)
+    const meanValues = checkers.map(c => results
+        .map(r => r.metrics?.[c]?.latency_ms?.mean)
+        .filter((v) => v != null && v > 0));
+    // Median of per-package P95 latencies for each checker (the P95 dot)
+    const p95Medians = checkers.map(c => {
+        const vals = results
+            .map(r => r.metrics?.[c]?.latency_ms?.p95)
+            .filter((v) => v != null && v > 0)
+            .sort((a, b) => a - b);
+        return vals.length > 0 ? vals[Math.floor(vals.length * 0.5)] : null;
+    });
+    // Reasonable y-axis max based on the P95 dots + headroom
+    const validP95 = p95Medians.filter((v) => v != null);
+    const yMax = validP95.length > 0 ? Math.max(...validP95) * 1.3 : 500;
+    charts.latencyDistribution = new Chart(ctx, {
+        type: 'boxplot',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Mean Latency',
+                    backgroundColor: checkers.map(c => (CHECKER_COLORS[c] || '#888') + '55'),
+                    borderColor: checkers.map(c => CHECKER_COLORS[c] || '#888'),
+                    borderWidth: 2,
+                    outlierRadius: 2,
+                    outlierColor: '#8b949e',
+                    medianColor: '#fff',
+                    itemRadius: 0,
+                    coef: 1.5,
+                    data: meanValues,
+                },
+                {
+                    type: 'scatter',
+                    label: 'P95 (median across packages)',
+                    data: p95Medians.map((v, i) => v != null ? { x: i, y: v } : null).filter(Boolean),
+                    backgroundColor: checkers.map(c => CHECKER_COLORS[c] || '#888'),
+                    borderColor: '#fff',
+                    borderWidth: 2,
+                    pointRadius: 7,
+                    pointStyle: 'triangle',
+                }
+            ]
+        },
         options: {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Latency by Package (p95)',
-                    color: '#c9d1d9',
-                    font: { size: 16 }
-                },
                 legend: {
                     position: 'top',
                     labels: {
                         color: '#c9d1d9',
                         usePointStyle: true,
-                        padding: 20
+                        padding: 20,
                     }
                 },
                 tooltip: {
                     callbacks: {
-                        label: (tooltipCtx) => `${tooltipCtx.dataset.label}: ${tooltipCtx.raw.toFixed(1)} ms`
+                        label: (tooltipCtx) => {
+                            const parsed = tooltipCtx.parsed;
+                            if (!parsed)
+                                return '';
+                            // Scatter point (P95)
+                            if (tooltipCtx.datasetIndex === 1) {
+                                return `P95: ${parsed.y?.toFixed(1)} ms`;
+                            }
+                            // Boxplot
+                            return [
+                                `${labels[tooltipCtx.dataIndex]}`,
+                                `  Min: ${parsed.min?.toFixed(1)} ms`,
+                                `  Q1: ${parsed.q1?.toFixed(1)} ms`,
+                                `  Median: ${parsed.median?.toFixed(1)} ms`,
+                                `  Q3: ${parsed.q3?.toFixed(1)} ms`,
+                                `  Max: ${parsed.max?.toFixed(1)} ms`,
+                            ];
+                        }
                     }
-                }
+                },
             },
             scales: {
                 y: {
                     beginAtZero: true,
+                    max: yMax,
                     grid: { color: '#30363d' },
                     ticks: {
                         color: '#8b949e',
@@ -734,6 +828,103 @@ function createPackageComparisonChart() {
             }
         }
     });
+}
+// ---------------------------------------------------------------------------
+// Summary & Failures
+// ---------------------------------------------------------------------------
+/**
+ * Populate run summary cards
+ */
+function populateSummary() {
+    if (!benchmarkData)
+        return;
+    const results = benchmarkData.results || [];
+    const checkers = benchmarkData.type_checkers || [];
+    const testedPackages = results.filter(r => !r.error).length;
+    const el1 = document.getElementById('summaryPackages');
+    if (el1)
+        el1.textContent = String(testedPackages);
+    const el2 = document.getElementById('summaryCheckers');
+    if (el2)
+        el2.textContent = String(checkers.length);
+    const el3 = document.getElementById('summaryRuns');
+    if (el3)
+        el3.textContent = String(benchmarkData.runs_per_package || '-');
+}
+/**
+ * Categorize a checker failure into a human-readable reason.
+ */
+function categorizeFailure(metrics, packageError) {
+    if (packageError)
+        return packageError;
+    if (!metrics)
+        return 'No data';
+    if (metrics.error) {
+        const err = metrics.error.toLowerCase();
+        if (err.includes('failed to start') || err.includes('spawn') || err.includes('not found'))
+            return 'Failed to start';
+        if (err.includes('timeout') || err.includes('timed out'))
+            return 'Timeout';
+        if (err.includes('skipped after consecutive'))
+            return 'Consecutive timeouts (bailed)';
+        return metrics.error;
+    }
+    if (metrics.ok_pct === 0)
+        return 'All requests timed out';
+    if (metrics.ok_pct != null && metrics.ok_pct < 50)
+        return `${(100 - metrics.ok_pct).toFixed(0)}% timed out`;
+    return 'Failed';
+}
+/**
+ * Populate the failure summary table
+ */
+function populateFailureTable() {
+    if (!benchmarkData)
+        return;
+    const results = benchmarkData.results || [];
+    const checkers = benchmarkData.type_checkers || [];
+    const failureDiv = document.getElementById('failureSummary');
+    const tbody = document.getElementById('failureBody');
+    if (!failureDiv || !tbody)
+        return;
+    const failures = [];
+    for (const result of results) {
+        if (result.error) {
+            failures.push({
+                package: result.package_name,
+                checker: 'All',
+                reason: categorizeFailure(undefined, result.error)
+            });
+            continue;
+        }
+        for (const checker of checkers) {
+            const m = result.metrics?.[checker];
+            if (!m)
+                continue;
+            // Flag as failure if checker didn't start, or all requests timed out
+            if (!m.ok || m.ok_pct === 0) {
+                failures.push({
+                    package: result.package_name,
+                    checker: CHECKER_NAMES[checker] || checker,
+                    reason: categorizeFailure(m, null)
+                });
+            }
+        }
+    }
+    if (failures.length === 0) {
+        failureDiv.style.display = 'none';
+        return;
+    }
+    failureDiv.style.display = 'block';
+    tbody.innerHTML = failures.map(f => `
+        <tr>
+            <td class="package-name">${f.package}</td>
+            <td>${f.checker === 'All'
+        ? '<span class="status-badge error">All</span>'
+        : `<span class="checker-badge ${f.checker.toLowerCase()}">${f.checker}</span>`}</td>
+            <td><span class="status-badge error">${f.reason}</span></td>
+        </tr>
+    `).join('');
 }
 /**
  * Populate the results table
