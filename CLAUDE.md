@@ -31,7 +31,7 @@ This project analyzes Python type coverage across popular PyPI packages and benc
 3. **Typeshed**: Don't modify files in `typeshed/` - it's a git submodule
 4. **Type annotations**: Required on all functions
 5. **Python version**: 3.12
-6. **Git workflow**: NEVER push to main. Always push a feature branch to origin and let the user merge.
+6. **Git workflow**: NEVER commit or push directly to main. Always create a feature branch, push it to origin, and let the user merge.
 
 ## Pre-Commit Checklist
 
