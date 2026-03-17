@@ -1,0 +1,85 @@
+name: Deploy Site
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ref: main
+
+      - name: Setup SSH Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to published-report
+        run: |
+          export GIT_SSH_COMMAND=$(git config --local core.sshCommand)
+          git clone --branch published-report --single-branch --depth 1 \
+            "git@github.com:${{ github.repository }}.git" /tmp/deploy
+
+          # Copy site files (HTML, JS, CSS) — no data files
+          cp index.html /tmp/deploy/
+          cp prioritized/index.html /tmp/deploy/prioritized/
+
+          cp historical_data/coverage-trends.html /tmp/deploy/historical_data/
+
+          cp prioritized/historical_data/coverage-trends.html /tmp/deploy/prioritized/historical_data/
+
+          mkdir -p /tmp/deploy/scripts
+          cp scripts/main.js /tmp/deploy/scripts/
+          mkdir -p /tmp/deploy/prioritized/scripts
+          cp prioritized/scripts/main.js /tmp/deploy/prioritized/scripts/
+          mkdir -p /tmp/deploy/historical_data/scripts
+          cp historical_data/scripts/coverage-trends.js /tmp/deploy/historical_data/scripts/
+          mkdir -p /tmp/deploy/prioritized/historical_data/scripts
+          cp prioritized/historical_data/scripts/coverage-trends.js /tmp/deploy/prioritized/historical_data/scripts/
+
+          cp historical_data/graph.css /tmp/deploy/historical_data/
+          cp prioritized/historical_data/graph.css /tmp/deploy/prioritized/historical_data/
+
+          mkdir -p /tmp/deploy/lsp/benchmark
+          cp lsp/benchmark/index.html /tmp/deploy/lsp/benchmark/
+          mkdir -p /tmp/deploy/lsp/benchmark/scripts
+          cp lsp/benchmark/scripts/lsp-benchmark.js /tmp/deploy/lsp/benchmark/scripts/
+          mkdir -p /tmp/deploy/lsp/benchmark/styles
+          cp lsp/benchmark/styles/lsp-benchmark.css /tmp/deploy/lsp/benchmark/styles/
+
+          mkdir -p /tmp/deploy/typecheck_benchmark
+          cp typecheck_benchmark/index.html /tmp/deploy/typecheck_benchmark/
+          mkdir -p /tmp/deploy/typecheck_benchmark/scripts
+          cp typecheck_benchmark/scripts/typecheck-benchmark.js /tmp/deploy/typecheck_benchmark/scripts/
+          mkdir -p /tmp/deploy/typecheck_benchmark/styles
+          cp typecheck_benchmark/styles/typecheck-benchmark.css /tmp/deploy/typecheck_benchmark/styles/
+
+          cd /tmp/deploy
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add \
+            index.html prioritized/index.html \
+            historical_data/coverage-trends.html prioritized/historical_data/coverage-trends.html \
+            scripts/ prioritized/scripts/ \
+            historical_data/scripts/ prioritized/historical_data/scripts/ \
+            historical_data/graph.css prioritized/historical_data/graph.css \
+            lsp/benchmark/index.html lsp/benchmark/scripts/lsp-benchmark.js lsp/benchmark/styles/lsp-benchmark.css \
+            typecheck_benchmark/index.html typecheck_benchmark/scripts/typecheck-benchmark.js typecheck_benchmark/styles/typecheck-benchmark.css
+          git diff --staged --quiet && echo "No changes to deploy" && exit 0
+          git commit -m "Deploy site update from main [skip ci]"
+          git push origin published-report
