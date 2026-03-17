@@ -35,7 +35,14 @@ jobs:
           git clone --branch published-report --single-branch --depth 1 \
             "git@github.com:${{ github.repository }}.git" /tmp/deploy
 
-          # Copy site files (HTML, JS, CSS) — no data files
+          # Copy data files
+          mkdir -p /tmp/deploy/lsp/benchmark/results
+          cp lsp/benchmark/results/benchmark_*.json /tmp/deploy/lsp/benchmark/results/ 2>/dev/null || true
+          cp lsp/benchmark/results/latest-*.json /tmp/deploy/lsp/benchmark/results/ 2>/dev/null || true
+          mkdir -p /tmp/deploy/typecheck_benchmark/results
+          cp typecheck_benchmark/results/*.json /tmp/deploy/typecheck_benchmark/results/ 2>/dev/null || true
+
+          # Copy site files (HTML, JS, CSS)
           cp index.html /tmp/deploy/
           cp prioritized/index.html /tmp/deploy/prioritized/
 
@@ -79,7 +86,9 @@ jobs:
             historical_data/scripts/ prioritized/historical_data/scripts/ \
             historical_data/graph.css prioritized/historical_data/graph.css \
             lsp/benchmark/index.html lsp/benchmark/scripts/lsp-benchmark.js lsp/benchmark/styles/lsp-benchmark.css \
-            typecheck_benchmark/index.html typecheck_benchmark/scripts/typecheck-benchmark.js typecheck_benchmark/styles/typecheck-benchmark.css
+            lsp/benchmark/results/ \
+            typecheck_benchmark/index.html typecheck_benchmark/scripts/typecheck-benchmark.js typecheck_benchmark/styles/typecheck-benchmark.css \
+            typecheck_benchmark/results/
           git diff --staged --quiet && echo "No changes to deploy" && exit 0
           git commit -m "Deploy site update from main [skip ci]"
           git push origin published-report
