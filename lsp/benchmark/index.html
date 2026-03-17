@@ -12,7 +12,7 @@
     <header class="hero">
         <div class="container">
             <h1>🚀 LSP Performance Benchmarks</h1>
-            <p class="subtitle">Daily performance analysis of Python type checkers</p>
+            <p class="subtitle">Daily performance analysis of Python language servers</p>
             <p class="description">
                 Measuring <code>textDocument/definition</code> (Go to Definition) latency and accuracy 
                 across popular Python packages
@@ -70,7 +70,7 @@
                         <thead>
                             <tr>
                                 <th>Package</th>
-                                <th>Type Checker</th>
+                                <th>LSP</th>
                                 <th>Reason</th>
                             </tr>
                         </thead>
@@ -82,7 +82,7 @@
 
         <!-- Comparison Charts -->
         <section id="comparison" class="section">
-            <h2>📈 Type Checker Comparison</h2>
+            <h2>📈 LSP Comparison</h2>
 
             <div class="chart-grid">
                 <div class="chart-card">
@@ -128,7 +128,7 @@
                     <thead>
                         <tr>
                             <th>Package</th>
-                            <th>Type Checker</th>
+                            <th>LSP</th>
                             <th>Avg Latency</th>
                             <th>P50 Latency</th>
                             <th>P95 Latency</th>
@@ -153,7 +153,7 @@
                     <h3>🎯 What We Measure</h3>
                     <p>
                         We benchmark the <code>textDocument/definition</code> LSP request (Go to Definition) 
-                        across different type checker language servers. This is one of the most commonly used 
+                        across different Python language servers. This is one of the most commonly used 
                         IDE features for code navigation.
                     </p>
                 </div>
@@ -162,7 +162,7 @@
                     <ol>
                         <li>Clone the top Python packages from GitHub</li>
                         <li>Pre-pick all random Python files and identifier positions for the run</li>
-                        <li>For each type checker, start a single LSP server per repository</li>
+                        <li>For each language server, start a single LSP server per repository</li>
                         <li>Send all "Go to Definition" requests to the same server instance</li>
                         <li>Measure latency and verify if returned locations are valid</li>
                     </ol>
@@ -171,7 +171,7 @@
                         Timeouts are counted as failures and excluded from latency statistics.
                     </p>
                     <p class="method-note">
-                        <strong>🔁 Server Lifecycle:</strong> One LSP server is started per type checker per
+                        <strong>🔁 Server Lifecycle:</strong> One LSP server is started per language server per
                         repository. All test cases for that repo are sent to the same server, reflecting
                         real-world IDE usage where a single server handles multiple requests. All type
                         checkers receive identical test cases for fair comparison.
@@ -196,7 +196,7 @@
 
         <!-- Legend -->
         <section class="section">
-            <h2>🏷️ Type Checkers & Language Servers</h2>
+            <h2>🏷️ Language Servers</h2>
             <div class="legend-grid">
                 <div class="legend-item pyright">
                     <span class="legend-color"></span>
