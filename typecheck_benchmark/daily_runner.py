@@ -16,6 +16,7 @@ import os
 import re
 import signal
 import shutil
+import statistics
 import subprocess
 import sys
 import tempfile
@@ -42,6 +43,16 @@ DEFAULT_MEMORY_LIMIT_MB: int = 4096
 # ---------------------------------------------------------------------------
 
 
+class RunStats(TypedDict):
+    """Statistical summary of multiple benchmark runs."""
+
+    min: float
+    max: float
+    mean: float
+    median: float
+    stddev: float
+
+
 class TimingMetrics(TypedDict, total=False):
     """Timing metrics for a single type checker run on a single package."""
 
@@ -49,6 +60,9 @@ class TimingMetrics(TypedDict, total=False):
     execution_time_s: float
     peak_memory_mb: float
     error_message: str | None
+    runs: int
+    execution_time_stats: RunStats
+    peak_memory_stats: RunStats
 
 
 class PackageResult(TypedDict, total=False):
@@ -77,7 +91,7 @@ class AggregateStats(TypedDict, total=False):
     max_peak_memory_mb: float
 
 
-class BenchmarkOutput(TypedDict):
+class BenchmarkOutput(TypedDict, total=False):
     """Top-level JSON output."""
 
     timestamp: str
@@ -85,6 +99,7 @@ class BenchmarkOutput(TypedDict):
     type_checkers: list[str]
     type_checker_versions: dict[str, str]
     package_count: int
+    runs_per_package: int
     aggregate: dict[str, AggregateStats]
     results: list[PackageResult]
 
@@ -140,20 +155,33 @@ def _monitor_memory_linux(
         stop_event.wait(0.01)
 
 
-def _get_peak_memory_macos(pid: int) -> float:
-    """Get peak memory for a process on macOS using ps."""
-    try:
-        result = subprocess.run(
-            ["ps", "-o", "rss=", "-p", str(pid)],
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            return int(result.stdout.strip()) / 1024  # KB -> MB
-    except (subprocess.TimeoutExpired, ValueError, OSError):
-        pass
-    return 0.0
+def _parse_macos_time_stderr(stderr: str) -> tuple[float, str]:
+    """Extract peak RSS from /usr/bin/time -l output mixed into stderr.
+
+    Returns (peak_memory_mb, stderr_without_time_output).
+    """
+    peak_bytes = 0
+    filtered_lines: list[str] = []
+    in_time_output = False
+    for line in stderr.splitlines(keepends=True):
+        stripped = line.strip()
+        # /usr/bin/time -l output starts with "  0.12 real  0.01 user  0.00 sys"
+        if re.match(r"\d+\.\d+\s+real\s+", stripped):
+            in_time_output = True
+            continue
+        if in_time_output:
+            m = re.match(r"(\d+)\s+maximum resident set size", stripped)
+            if m:
+                peak_bytes = int(m.group(1))
+                continue
+            # Other /usr/bin/time stat lines (instructions, faults, etc.)
+            if re.match(r"\d+\s+\w", stripped):
+                continue
+            # No longer in time output
+            in_time_output = False
+        filtered_lines.append(line)
+    peak_mb = round(peak_bytes / (1024 * 1024), 1) if peak_bytes else 0.0
+    return peak_mb, "".join(filtered_lines)
 
 
 def run_process_with_timeout(
@@ -168,12 +196,11 @@ def run_process_with_timeout(
     """
     start_time = time.time()
 
-    # Snapshot macOS child memory high-water mark before spawning so we can
-    # compute the delta attributable to this child process alone.
-    darwin_maxrss_before: int = 0
-    if sys.platform == "darwin":
-        import resource
-        darwin_maxrss_before = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+    # On macOS, wrap with /usr/bin/time -l to get peak RSS from stderr
+    actual_cmd = cmd
+    use_macos_time = sys.platform == "darwin"
+    if use_macos_time:
+        actual_cmd = ["/usr/bin/time", "-l"] + cmd
 
     kwargs: dict[str, Any] = {
         "cwd": cwd,
@@ -184,9 +211,9 @@ def run_process_with_timeout(
     if sys.platform != "win32":
         kwargs["start_new_session"] = True
 
-    process = subprocess.Popen(cmd, **kwargs)
+    process = subprocess.Popen(actual_cmd, **kwargs)
 
-    # Memory monitoring thread (Linux only for /proc-based monitoring)
+    # Memory monitoring thread (Linux only — macOS uses /usr/bin/time -l)
     peak_kb: list[int] = [0]
     killed: list[bool] = [False]
     stop_event = threading.Event()
@@ -266,18 +293,15 @@ def run_process_with_timeout(
     reader_err.join(timeout=5)
 
     # Compute peak memory
+    raw_stderr = stderr_chunks[0] if stderr_chunks else ""
     if sys.platform == "linux":
         peak_memory_mb = round(peak_kb[0] / 1024, 1)
-    elif sys.platform == "darwin":
-        # On macOS, ru_maxrss from RUSAGE_CHILDREN is a running high-water
-        # mark across ALL children ever spawned.  Subtract the snapshot we
-        # took before spawning this child to isolate its contribution.
-        import resource
-        darwin_maxrss_after = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
-        delta = max(0, darwin_maxrss_after - darwin_maxrss_before)
-        peak_memory_mb = round(delta / (1024 * 1024), 1)  # bytes -> MB
+        clean_stderr = raw_stderr
+    elif use_macos_time:
+        peak_memory_mb, clean_stderr = _parse_macos_time_stderr(raw_stderr)
     else:
         peak_memory_mb = 0.0
+        clean_stderr = raw_stderr
 
     if oom_killed or timed_out:
         return {
@@ -292,7 +316,7 @@ def run_process_with_timeout(
 
     return {
         "stdout": stdout_chunks[0] if stdout_chunks else "",
-        "stderr": stderr_chunks[0] if stderr_chunks else "",
+        "stderr": clean_stderr,
         "returncode": process.returncode,
         "timed_out": False,
         "execution_time_s": round(execution_time, 2),
@@ -695,6 +719,17 @@ def compute_percentile(values: Sequence[float | int], percentile: float) -> floa
     return sorted_values[lower] + fraction * (sorted_values[upper] - sorted_values[lower])
 
 
+def compute_run_stats(values: list[float]) -> RunStats:
+    """Compute min/max/mean/median/stddev for a list of values."""
+    return {
+        "min": round(min(values), 2),
+        "max": round(max(values), 2),
+        "mean": round(statistics.mean(values), 2),
+        "median": round(statistics.median(values), 2),
+        "stddev": round(statistics.stdev(values), 2) if len(values) > 1 else 0.0,
+    }
+
+
 def compute_aggregate_stats(
     results: list[PackageResult],
     type_checkers: list[str],
@@ -754,6 +789,7 @@ def run_benchmark(
     output_dir: Path | None = None,
     os_name: str | None = None,
     install_envs_file: Path | None = None,
+    runs: int = 1,
 ) -> Path:
     """Run the full benchmark suite.
 
@@ -765,6 +801,7 @@ def run_benchmark(
         output_dir: Where to write JSON results.
         os_name: OS name for filename (ubuntu, macos, windows).
         install_envs_file: Path to install_envs.json.
+        runs: Number of runs per checker per package.
 
     Returns:
         Path to the dated output JSON file.
@@ -797,6 +834,7 @@ def run_benchmark(
     print(f"Packages: {len(packages)}")
     print(f"Type checkers: {', '.join(type_checkers)}")
     print(f"Timeout: {timeout}s per checker")
+    print(f"Runs per checker: {runs}")
     print("=" * 70)
 
     # Versions
@@ -808,7 +846,7 @@ def run_benchmark(
     print()
 
     # Run benchmarks
-    all_results = _run_all(packages, type_checkers, timeout)
+    all_results = _run_all(packages, type_checkers, timeout, runs)
 
     # Aggregate
     aggregate = compute_aggregate_stats(all_results, type_checkers)
@@ -816,7 +854,7 @@ def run_benchmark(
     # Save
     output_file = _save_results(
         all_results, aggregate, type_checkers, versions, len(packages),
-        output_dir, os_name,
+        output_dir, os_name, runs,
     )
 
     # Print summary
@@ -833,6 +871,7 @@ def _run_all(
     packages: list[dict[str, Any]],
     type_checkers: list[str],
     timeout: int,
+    runs: int = 1,
 ) -> list[PackageResult]:
     """Run benchmarks for all packages."""
     all_results: list[PackageResult] = []
@@ -846,7 +885,7 @@ def _run_all(
 
             print(f"\n[{i}/{len(packages)}] {name}")
 
-            result = _benchmark_package(pkg, temp_path, type_checkers, timeout)
+            result = _benchmark_package(pkg, temp_path, type_checkers, timeout, runs)
             all_results.append(result)
 
     return all_results
@@ -857,6 +896,7 @@ def _benchmark_package(
     temp_path: Path,
     type_checkers: list[str],
     timeout: int,
+    runs: int = 1,
 ) -> PackageResult:
     """Benchmark a single package: clone, install deps, run checkers."""
     name = pkg["name"]
@@ -912,16 +952,54 @@ def _benchmark_package(
             }
             continue
 
-        print(f"    Running {checker}...")
-        m = run_checker(checker, package_path, resolved_paths, timeout)
-        metrics[checker] = m
+        print(f"    Running {checker}... ({runs} run{'s' if runs > 1 else ''})")
+        times: list[float] = []
+        memories: list[float] = []
+        failed_metric: TimingMetrics | None = None
 
-        if m.get("ok"):
-            peak = m.get("peak_memory_mb", 0)
-            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
-            print(f"      {m['execution_time_s']:.1f}s{mem_str}")
+        for run_idx in range(runs):
+            if runs > 1:
+                print(f"      Run {run_idx + 1}/{runs}...", end=" ")
+            m = run_checker(checker, package_path, resolved_paths, timeout)
+            if not m.get("ok"):
+                if runs > 1:
+                    print(f"Failed: {m.get('error_message', 'Unknown')}")
+                failed_metric = m
+                break
+            times.append(m["execution_time_s"])
+            memories.append(m.get("peak_memory_mb", 0.0))
+            if runs > 1:
+                peak = m.get("peak_memory_mb", 0)
+                mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+                print(f"{m['execution_time_s']:.1f}s{mem_str}")
+
+        if failed_metric is not None:
+            failed_metric["runs"] = len(times) + 1
+            metrics[checker] = failed_metric
+            if runs == 1:
+                print(f"      Failed: {failed_metric.get('error_message', 'Unknown')}")
         else:
-            print(f"      Failed: {m.get('error_message', 'Unknown')}")
+            result_metric: TimingMetrics = {
+                "ok": True,
+                "execution_time_s": round(statistics.mean(times), 2),
+                "peak_memory_mb": round(statistics.mean(memories), 2),
+                "runs": runs,
+            }
+            if runs > 1:
+                result_metric["execution_time_stats"] = compute_run_stats(times)
+                result_metric["peak_memory_stats"] = compute_run_stats(memories)
+
+            metrics[checker] = result_metric
+            peak = result_metric["peak_memory_mb"]
+            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+            if runs > 1:
+                time_stats = result_metric["execution_time_stats"]
+                print(
+                    f"      Mean: {result_metric['execution_time_s']:.1f}s{mem_str} "
+                    f"(stddev: {time_stats['stddev']:.2f}s)"
+                )
+            else:
+                print(f"      {result_metric['execution_time_s']:.1f}s{mem_str}")
 
     # Cleanup cloned repo
     shutil.rmtree(package_path, ignore_errors=True)
@@ -942,6 +1020,7 @@ def _save_results(
     package_count: int,
     output_dir: Path,
     os_name: str | None = None,
+    runs: int = 1,
 ) -> Path:
     """Save benchmark results to JSON."""
     timestamp = datetime.now(timezone.utc)
@@ -960,6 +1039,7 @@ def _save_results(
         "type_checkers": type_checkers,
         "type_checker_versions": {k: v for k, v in versions.items() if k in type_checkers},
         "package_count": package_count,
+        "runs_per_package": runs,
         "aggregate": aggregate,
         "results": results,
     }
@@ -1039,6 +1119,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--install-envs", type=Path, default=None,
         help="Path to install_envs.json (default: typecheck_benchmark/install_envs.json)",
     )
+    parser.add_argument(
+        "--runs", "-r", type=int, default=1,
+        help="Number of runs per checker per package (default: 1)",
+    )
     return parser.parse_args(argv)
 
 
@@ -1053,6 +1137,7 @@ def main(argv: list[str] | None = None) -> int:
         output_dir=args.output,
         os_name=args.os_name,
         install_envs_file=args.install_envs,
+        runs=args.runs,
     )
     return 0
 
