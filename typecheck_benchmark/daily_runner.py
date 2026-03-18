@@ -790,6 +790,7 @@ def run_benchmark(
     os_name: str | None = None,
     install_envs_file: Path | None = None,
     runs: int = 1,
+    local_dir: Path | None = None,
 ) -> Path:
     """Run the full benchmark suite.
 
@@ -802,6 +803,7 @@ def run_benchmark(
         os_name: OS name for filename (ubuntu, macos, windows).
         install_envs_file: Path to install_envs.json.
         runs: Number of runs per checker per package.
+        local_dir: Path to a local directory to benchmark directly.
 
     Returns:
         Path to the dated output JSON file.
@@ -811,6 +813,11 @@ def run_benchmark(
     if output_dir is None:
         output_dir = ROOT_DIR / "results"
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    if local_dir is not None:
+        return _run_local_benchmark(
+            local_dir, type_checkers, timeout, output_dir, os_name, runs,
+        )
 
     # Load packages
     packages = load_install_envs(install_envs_file)
@@ -865,6 +872,142 @@ def run_benchmark(
     print(f"\nResults saved to: {output_file}")
 
     return output_file
+
+
+def _run_local_benchmark(
+    local_dir: Path,
+    type_checkers: list[str],
+    timeout: int,
+    output_dir: Path,
+    os_name: str | None,
+    runs: int,
+) -> Path:
+    """Run benchmark against a local directory (no clone/install)."""
+    local_dir = local_dir.resolve()
+    if not local_dir.is_dir():
+        print(f"Error: {local_dir} is not a directory")
+        return output_dir / "empty.json"
+
+    name = local_dir.name
+
+    # Header
+    print("=" * 70)
+    print("Type Checker Timing Benchmark (local)")
+    print("=" * 70)
+    print(f"Directory: {local_dir}")
+    print(f"Type checkers: {', '.join(type_checkers)}")
+    print(f"Timeout: {timeout}s per checker")
+    print(f"Runs per checker: {runs}")
+    print("=" * 70)
+
+    # Versions
+    versions = get_type_checker_versions()
+    print("\nType Checker Versions:")
+    for tc_name, version in versions.items():
+        if tc_name in type_checkers:
+            print(f"  {tc_name}: {version}")
+    print()
+
+    # Run checkers
+    print(f"\n[1/1] {name} (local)")
+    result = _benchmark_local_dir(local_dir, type_checkers, timeout, runs)
+    all_results = [result]
+
+    # Aggregate
+    aggregate = compute_aggregate_stats(all_results, type_checkers)
+
+    # Save
+    output_file = _save_results(
+        all_results, aggregate, type_checkers, versions, 1,
+        output_dir, os_name, runs,
+    )
+
+    # Print summary
+    print("\n" + "=" * 70)
+    print("Benchmark Complete!")
+    print("=" * 70)
+    _print_summary(aggregate, type_checkers)
+    print(f"\nResults saved to: {output_file}")
+
+    return output_file
+
+
+def _benchmark_local_dir(
+    local_dir: Path,
+    type_checkers: list[str],
+    timeout: int,
+    runs: int = 1,
+) -> PackageResult:
+    """Benchmark a local directory: run checkers without clone/install."""
+    name = local_dir.name
+
+    metrics: dict[str, TimingMetrics] = {}
+    for checker in type_checkers:
+        if not is_type_checker_available(checker):
+            print(f"    Skipping {checker}: not installed")
+            metrics[checker] = {
+                "ok": False,
+                "execution_time_s": 0.0,
+                "peak_memory_mb": 0.0,
+                "error_message": "Not installed",
+            }
+            continue
+
+        print(f"    Running {checker}... ({runs} run{'s' if runs > 1 else ''})")
+        times: list[float] = []
+        memories: list[float] = []
+        failed_metric: TimingMetrics | None = None
+
+        for run_idx in range(runs):
+            if runs > 1:
+                print(f"      Run {run_idx + 1}/{runs}...", end=" ")
+            m = run_checker(checker, local_dir, None, timeout)
+            if not m.get("ok"):
+                if runs > 1:
+                    print(f"Failed: {m.get('error_message', 'Unknown')}")
+                failed_metric = m
+                break
+            times.append(m["execution_time_s"])
+            memories.append(m.get("peak_memory_mb", 0.0))
+            if runs > 1:
+                peak = m.get("peak_memory_mb", 0)
+                mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+                print(f"{m['execution_time_s']:.1f}s{mem_str}")
+
+        if failed_metric is not None:
+            failed_metric["runs"] = len(times) + 1
+            metrics[checker] = failed_metric
+            if runs == 1:
+                print(f"      Failed: {failed_metric.get('error_message', 'Unknown')}")
+        else:
+            result_metric: TimingMetrics = {
+                "ok": True,
+                "execution_time_s": round(statistics.mean(times), 2),
+                "peak_memory_mb": round(statistics.mean(memories), 2),
+                "runs": runs,
+            }
+            if runs > 1:
+                result_metric["execution_time_stats"] = compute_run_stats(times)
+                result_metric["peak_memory_stats"] = compute_run_stats(memories)
+
+            metrics[checker] = result_metric
+            peak = result_metric["peak_memory_mb"]
+            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+            if runs > 1:
+                time_stats = result_metric["execution_time_stats"]
+                print(
+                    f"      Mean: {result_metric['execution_time_s']:.1f}s{mem_str} "
+                    f"(stddev: {time_stats['stddev']:.2f}s)"
+                )
+            else:
+                print(f"      {result_metric['execution_time_s']:.1f}s{mem_str}")
+
+    return {
+        "package_name": name,
+        "github_url": None,
+        "error": None,
+        "metrics": metrics,
+    }
 
 
 def _run_all(
@@ -1123,6 +1266,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--runs", "-r", type=int, default=1,
         help="Number of runs per checker per package (default: 1)",
     )
+    parser.add_argument(
+        "--local", type=Path, default=None,
+        help="Path to a local directory to benchmark instead of cloning from GitHub",
+    )
     return parser.parse_args(argv)
 
 
@@ -1138,6 +1285,7 @@ def main(argv: list[str] | None = None) -> int:
         os_name=args.os_name,
         install_envs_file=args.install_envs,
         runs=args.runs,
+        local_dir=args.local,
     )
     return 0
 

@@ -19,6 +19,7 @@ Then verify with: `which python` (should show `.venv/bin/python`)
 | Install deps | `pip install -r requirements.txt` |
 | Run main | `python main.py <num_packages>` |
 | Run LSP benchmark | `python -m lsp.benchmark.daily_runner --packages 5 --runs 3` |
+| Run benchmark on local dir | `python -m typecheck_benchmark --local /path/to/project` |
 
 ## Project Overview
 
