@@ -121,9 +121,7 @@ Run daily command for prioritized list:
 
 `python main.py --package-list included_packages.txt  --archive-prioritized`
 
-### Type check the project (of course!)
+### Type check the project
 
-We use [Pyrefly](https://pyrefly.org/) to check the project. You can also use the accompanying IDE extension in [VSCode](https://marketplace.visualstudio.com/items?itemName=meta.pyrefly).
-
-`$ pyrefly check`
+`pyrefly check`
 
