@@ -554,6 +554,8 @@ def _write_dummy_mypy_config(
         f.write("[mypy]\n")
         if check_paths:
             f.write(f"files = {', '.join(check_paths)}\n")
+        # Check bodies of untyped functions (other checkers do this by default)
+        f.write("check_untyped_defs = True\n")
         # Exclude test dirs to avoid duplicate module / syntax errors
         # that cause mypy to bail out without checking anything
         f.write("exclude = (?x)(\n    /tests/\n    | /test_\n    | /testing/\n  )\n")
