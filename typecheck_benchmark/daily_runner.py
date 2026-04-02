@@ -436,8 +436,15 @@ def clone_package(
     dest: Path,
     timeout: int = 180,
 ) -> Path | None:
-    """Shallow-clone a GitHub repository."""
+    """Shallow-clone a GitHub repository.
+
+    If *dest/name* already exists (e.g. from a previous run with
+    ``--repo-cache``), the existing checkout is reused.
+    """
     target = dest / name
+    if target.exists():
+        print(f"  Reusing cached clone at {target}")
+        return target
     try:
         print(f"  Cloning {github_url}...")
         result = subprocess.run(
@@ -459,7 +466,16 @@ def clone_package(
 
 
 def install_deps(package_path: Path, env_config: dict[str, Any]) -> bool:
-    """Install dependencies for a package."""
+    """Install dependencies for a package.
+
+    When a repo-cache directory is used, a ``.deps_installed`` marker file is
+    written after a successful install so subsequent runs skip the step.
+    """
+    marker = package_path / ".deps_installed"
+    if marker.exists():
+        print("  Dependencies already installed (cached)")
+        return True
+
     install_self = env_config.get("install", False)
     deps = env_config.get("deps", [])
     install_env = env_config.get("install_env", {})
@@ -501,6 +517,8 @@ def install_deps(package_path: Path, env_config: dict[str, Any]) -> bool:
             print(f"  Warning: pip install deps timed out")
             return False
 
+    # Mark deps as installed so cached clones skip this step next time.
+    marker.touch()
     return True
 
 
@@ -790,6 +808,7 @@ def run_benchmark(
     os_name: str | None = None,
     install_envs_file: Path | None = None,
     runs: int = 1,
+    repo_cache: Path | None = None,
 ) -> Path:
     """Run the full benchmark suite.
 
@@ -802,6 +821,8 @@ def run_benchmark(
         os_name: OS name for filename (ubuntu, macos, windows).
         install_envs_file: Path to install_envs.json.
         runs: Number of runs per checker per package.
+        repo_cache: Persistent directory for cloned repos. When set, repos
+            and their installed deps are kept between runs.
 
     Returns:
         Path to the dated output JSON file.
@@ -846,7 +867,7 @@ def run_benchmark(
     print()
 
     # Run benchmarks
-    all_results = _run_all(packages, type_checkers, timeout, runs)
+    all_results = _run_all(packages, type_checkers, timeout, runs, repo_cache=repo_cache)
 
     # Aggregate
     aggregate = compute_aggregate_stats(all_results, type_checkers)
@@ -872,21 +893,34 @@ def _run_all(
     type_checkers: list[str],
     timeout: int,
     runs: int = 1,
+    repo_cache: Path | None = None,
 ) -> list[PackageResult]:
-    """Run benchmarks for all packages."""
+    """Run benchmarks for all packages.
+
+    Args:
+        repo_cache: If provided, clones are stored in this persistent
+            directory and reused across runs instead of a temporary directory.
+    """
     all_results: list[PackageResult] = []
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        temp_path = Path(temp_dir)
-
+    if repo_cache:
+        repo_cache.mkdir(parents=True, exist_ok=True)
+        print(f"Using repo cache: {repo_cache}")
         for i, pkg in enumerate(packages, 1):
-            name = pkg["name"]
-            github_url = pkg.get("github_url", "")
-
-            print(f"\n[{i}/{len(packages)}] {name}")
-
-            result = _benchmark_package(pkg, temp_path, type_checkers, timeout, runs)
+            print(f"\n[{i}/{len(packages)}] {pkg['name']}")
+            result = _benchmark_package(
+                pkg, repo_cache, type_checkers, timeout, runs, persistent=True,
+            )
             all_results.append(result)
+    else:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            for i, pkg in enumerate(packages, 1):
+                print(f"\n[{i}/{len(packages)}] {pkg['name']}")
+                result = _benchmark_package(
+                    pkg, temp_path, type_checkers, timeout, runs,
+                )
+                all_results.append(result)
 
     return all_results
 
@@ -897,8 +931,14 @@ def _benchmark_package(
     type_checkers: list[str],
     timeout: int,
     runs: int = 1,
+    persistent: bool = False,
 ) -> PackageResult:
-    """Benchmark a single package: clone, install deps, run checkers."""
+    """Benchmark a single package: clone, install deps, run checkers.
+
+    Args:
+        persistent: When True (repo-cache mode), the cloned repo and
+            installed deps are kept on disk for reuse in later runs.
+    """
     name = pkg["name"]
     github_url = pkg.get("github_url", "")
 
@@ -1001,8 +1041,9 @@ def _benchmark_package(
             else:
                 print(f"      {result_metric['execution_time_s']:.1f}s{mem_str}")
 
-    # Cleanup cloned repo
-    shutil.rmtree(package_path, ignore_errors=True)
+    # Cleanup cloned repo (skip in repo-cache mode)
+    if not persistent:
+        shutil.rmtree(package_path, ignore_errors=True)
 
     return {
         "package_name": name,
@@ -1123,6 +1164,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--runs", "-r", type=int, default=1,
         help="Number of runs per checker per package (default: 1)",
     )
+    parser.add_argument(
+        "--repo-cache", type=Path, default=None,
+        help="Persistent directory for cloned repos. Repos and installed deps "
+        "are kept between runs, skipping re-clone and re-install.",
+    )
     return parser.parse_args(argv)
 
 
@@ -1138,6 +1184,7 @@ def main(argv: list[str] | None = None) -> int:
         os_name=args.os_name,
         install_envs_file=args.install_envs,
         runs=args.runs,
+        repo_cache=args.repo_cache,
     )
     return 0
 

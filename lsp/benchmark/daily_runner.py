@@ -263,6 +263,9 @@ def fetch_github_package(
 ) -> Path | None:
     """Clone a GitHub repository for benchmarking.
 
+    If *temp_dir/package_name* already exists (e.g. from a previous run with
+    ``--repo-cache``), the existing checkout is reused.
+
     Args:
         github_url: URL of the GitHub repository.
         package_name: Name to use for the cloned directory.
@@ -273,6 +276,10 @@ def fetch_github_package(
         Path to the cloned repository, or None on failure.
     """
     target_path = temp_dir / package_name
+
+    if target_path.exists():
+        print(f"  Reusing cached clone at {target_path}")
+        return target_path
 
     try:
         print(f"  Cloning {github_url}...")
@@ -632,6 +639,7 @@ def run_daily_benchmark(
     seed: int | None = None,
     os_name: str | None = None,
     warmup_s: float = 0.0,
+    repo_cache: Path | None = None,
 ) -> Path:
     """Run the daily benchmark suite.
 
@@ -643,6 +651,9 @@ def run_daily_benchmark(
         output_dir: Directory to write results to.
         seed: Random seed for reproducibility.
         os_name: OS name to include in output filename (e.g., ubuntu, macos, windows).
+        warmup_s: Seconds to wait after initialization.
+        repo_cache: Persistent directory for cloned repos. When set, repos
+            are kept between runs, skipping re-clone.
 
     Returns:
         Path to the output JSON file.
@@ -673,7 +684,10 @@ def run_daily_benchmark(
         print(f"  {name}: {version}")
     print()
 
-    all_results = _run_all_benchmarks(packages, type_checkers, runs_per_package, seed, warmup_s=warmup_s)
+    all_results = _run_all_benchmarks(
+        packages, type_checkers, runs_per_package, seed,
+        warmup_s=warmup_s, repo_cache=repo_cache,
+    )
 
     # Compute aggregate statistics
     aggregate_stats = compute_aggregate_stats(all_results, type_checkers)
@@ -721,6 +735,7 @@ def _run_all_benchmarks(
     runs_per_package: int,
     seed: int | None,
     warmup_s: float = 0.0,
+    repo_cache: Path | None = None,
 ) -> list[PackageResult]:
     """Run benchmarks for all packages.
 
@@ -731,26 +746,38 @@ def _run_all_benchmarks(
         seed: Random seed for reproducibility.
         warmup_s: Seconds to wait after opening a document before sending
                   the definition request.
+        repo_cache: If provided, clones are stored in this persistent
+            directory and reused across runs.
 
     Returns:
         List of package results.
     """
     all_results: list[PackageResult] = []
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        temp_path = Path(temp_dir)
-
+    if repo_cache:
+        repo_cache.mkdir(parents=True, exist_ok=True)
+        print(f"Using repo cache: {repo_cache}")
         for i, package in enumerate(packages, 1):
             package_name = package["name"]
             github_url = package.get("github_url")
-
             print(f"\n[{i}/{len(packages)}] Processing {package_name}")
-
             result = _benchmark_single_package(
-                package, github_url, temp_path, type_checkers, runs_per_package, seed,
-                warmup_s=warmup_s,
+                package, github_url, repo_cache, type_checkers,
+                runs_per_package, seed, warmup_s=warmup_s, persistent=True,
             )
             all_results.append(result)
+    else:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            for i, package in enumerate(packages, 1):
+                package_name = package["name"]
+                github_url = package.get("github_url")
+                print(f"\n[{i}/{len(packages)}] Processing {package_name}")
+                result = _benchmark_single_package(
+                    package, github_url, temp_path, type_checkers,
+                    runs_per_package, seed, warmup_s=warmup_s,
+                )
+                all_results.append(result)
 
     return all_results
 
@@ -763,6 +790,7 @@ def _benchmark_single_package(
     runs_per_package: int,
     seed: int | None,
     warmup_s: float = 0.0,
+    persistent: bool = False,
 ) -> PackageResult:
     """Benchmark a single package.
 
@@ -775,6 +803,8 @@ def _benchmark_single_package(
         seed: Random seed for reproducibility.
         warmup_s: Seconds to wait after opening a document before sending
                   the definition request.
+        persistent: When True (repo-cache mode), the cloned repo is kept
+            on disk for reuse in later runs.
 
     Returns:
         Package result dictionary.
@@ -830,8 +860,9 @@ def _benchmark_single_package(
             "metrics": {},
         }
     finally:
-        # Cleanup package directory
-        shutil.rmtree(package_path, ignore_errors=True)
+        # Cleanup package directory (skip in repo-cache mode)
+        if not persistent:
+            shutil.rmtree(package_path, ignore_errors=True)
 
 
 def _save_results(
@@ -964,6 +995,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Seconds to wait after initialization before sending definition "
         "requests. Gives the server time to index/analyze (default: 30).",
     )
+    parser.add_argument(
+        "--repo-cache",
+        type=Path,
+        default=None,
+        help="Persistent directory for cloned repos. Repos are kept between "
+        "runs, skipping re-clone.",
+    )
 
     return parser.parse_args(argv)
 
@@ -988,6 +1026,7 @@ def main(argv: list[str] | None = None) -> int:
         seed=args.seed,
         os_name=args.os_name,
         warmup_s=args.warmup,
+        repo_cache=args.repo_cache,
     )
 
     return 0
