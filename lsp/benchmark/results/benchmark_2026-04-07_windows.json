@@ -1,0 +1,3523 @@
+{
+  "timestamp": "2026-04-07T04:59:30.734271+00:00",
+  "date": "2026-04-07",
+  "type_checkers": [
+    "pyright",
+    "pyrefly",
+    "ty",
+    "zuban"
+  ],
+  "type_checker_versions": {
+    "pyright": "1.1.408",
+    "pyrefly": "0.60.0",
+    "ty": "0.0.29",
+    "zuban": "0.7.0"
+  },
+  "package_count": 53,
+  "runs_per_package": 100,
+  "aggregate": {
+    "pyright": {
+      "packages_tested": 51,
+      "total_runs": 5100,
+      "total_ok": 5054,
+      "total_found": 4034,
+      "total_valid": 4034,
+      "avg_latency_ms": 54.36105092581242,
+      "min_latency_ms": 22.437396907223995,
+      "max_latency_ms": 102.19913163266321,
+      "ok_rate": 99.09803921568627,
+      "success_rate": 79.09803921568627
+    },
+    "pyrefly": {
+      "packages_tested": 51,
+      "total_runs": 5100,
+      "total_ok": 5091,
+      "total_found": 4516,
+      "total_valid": 4516,
+      "avg_latency_ms": 26.558441856536483,
+      "min_latency_ms": 7.0336060000590805,
+      "max_latency_ms": 132.99623131313345,
+      "ok_rate": 99.82352941176471,
+      "success_rate": 88.54901960784314
+    },
+    "ty": {
+      "packages_tested": 51,
+      "total_runs": 5100,
+      "total_ok": 5093,
+      "total_found": 4686,
+      "total_valid": 4686,
+      "avg_latency_ms": 24.24324357650349,
+      "min_latency_ms": 1.4030090000096607,
+      "max_latency_ms": 162.57955000000206,
+      "ok_rate": 99.86274509803921,
+      "success_rate": 91.88235294117646
+    },
+    "zuban": {
+      "packages_tested": 0,
+      "total_runs": 0,
+      "total_ok": 0,
+      "total_found": 0,
+      "total_valid": 0,
+      "avg_latency_ms": null,
+      "min_latency_ms": null,
+      "max_latency_ms": null,
+      "ok_rate": 0.0,
+      "success_rate": 0.0
+    }
+  },
+  "results": [
+    {
+      "package_name": "aiohttp",
+      "github_url": "https://github.com/aio-libs/aiohttp",
+      "ranking": 1,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.412600000042403,
+            "p95": 685.885300000109,
+            "min": 0.9360000000242508,
+            "max": 1072.192100000052,
+            "mean": 102.19913163266321
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.168499999991582,
+            "p95": 95.16320000000178,
+            "min": 0.6253999999898952,
+            "max": 437.36379999995734,
+            "mean": 19.573852525255838
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.9236999999302498,
+            "p95": 158.00919999992402,
+            "min": 0.4565000000411601,
+            "max": 643.8653000000158,
+            "mean": 28.163400000001957
+          }
+        }
+      }
+    },
+    {
+      "package_name": "airflow",
+      "github_url": "https://github.com/apache/airflow",
+      "ranking": 2,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 44,
+          "found_pct": 44.0,
+          "valid_count": 44,
+          "valid_pct": 44.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 19.00090000003729,
+            "p95": 252.12280000005194,
+            "min": 0.9405000000697328,
+            "max": 725.0923999999941,
+            "mean": 50.55641010100928
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 68,
+          "found_pct": 68.0,
+          "valid_count": 68,
+          "valid_pct": 68.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.0621000001028733,
+            "p95": 43.04099999990285,
+            "min": 0.583400000095935,
+            "max": 562.2572999998283,
+            "mean": 18.021170000015445
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 70,
+          "found_pct": 70.0,
+          "valid_count": 70,
+          "valid_pct": 70.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.766700000189303,
+            "p95": 260.62000000001717,
+            "min": 0.4392000000734697,
+            "max": 359.108100000185,
+            "mean": 54.03511399999843
+          }
+        }
+      }
+    },
+    {
+      "package_name": "ansible",
+      "github_url": "https://github.com/ansible/ansible",
+      "ranking": 3,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 97,
+          "ok_pct": 97.0,
+          "found_count": 71,
+          "found_pct": 71.0,
+          "valid_count": 71,
+          "valid_pct": 71.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.229100000107792,
+            "p95": 236.61409999999705,
+            "min": 0.9425000000646833,
+            "max": 982.7314000001479,
+            "mean": 55.33112474227123
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 97,
+          "ok_pct": 97.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.809100000102262,
+            "p95": 158.04860000002918,
+            "min": 0.6016999998337269,
+            "max": 1409.8019999998996,
+            "mean": 36.37165360825194
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.3580000002093584,
+            "p95": 356.65100000005623,
+            "min": 0.5541999998968095,
+            "max": 635.3079000000434,
+            "mean": 51.75126400000636
+          }
+        }
+      }
+    },
+    {
+      "package_name": "black",
+      "github_url": "https://github.com/psf/black",
+      "ranking": 6,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": false,
+          "error": "'charmap' codec can't encode character '\\U0002825f' in position 122: character maps to <undefined>",
+          "latency_ms": null
+        },
+        "pyrefly": {
+          "ok": false,
+          "error": "'charmap' codec can't encode character '\\U0002825f' in position 122: character maps to <undefined>",
+          "latency_ms": null
+        },
+        "ty": {
+          "ok": false,
+          "error": "'charmap' codec can't encode character '\\U0002825f' in position 122: character maps to <undefined>",
+          "latency_ms": null
+        }
+      }
+    },
+    {
+      "package_name": "boto3",
+      "github_url": "https://github.com/boto/boto3",
+      "ranking": 7,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 79,
+          "found_pct": 79.0,
+          "valid_count": 79,
+          "valid_pct": 79.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.923700000063036,
+            "p95": 630.3514000001087,
+            "min": 1.0240000001431326,
+            "max": 1502.164300000004,
+            "mean": 70.84144700000024
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.2237000000350235,
+            "p95": 27.210199999899487,
+            "min": 0.5939000000125816,
+            "max": 969.1987999999583,
+            "mean": 24.699857575748837
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7481999998617539,
+            "p95": 9.41160000002128,
+            "min": 0.43249999998806743,
+            "max": 45.49560000009478,
+            "mean": 2.262011000000257
+          }
+        }
+      }
+    },
+    {
+      "package_name": "botocore",
+      "github_url": "https://github.com/boto/botocore",
+      "ranking": 8,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.19880000001649,
+            "p95": 163.1597000000511,
+            "min": 0.9706000000733184,
+            "max": 1497.9284000000916,
+            "mean": 44.146086868694866
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.093600000009246,
+            "p95": 39.03500000001259,
+            "min": 0.5695999998351908,
+            "max": 676.1501999999382,
+            "mean": 24.15352400000529
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7732999999916501,
+            "p95": 45.74810000008256,
+            "min": 0.46639999982289737,
+            "max": 112.45729999996001,
+            "mean": 6.0406150000039815
+          }
+        }
+      }
+    },
+    {
+      "package_name": "celery",
+      "github_url": "https://github.com/celery/celery",
+      "ranking": 9,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 10.015300000077332,
+            "p95": 434.51180000010936,
+            "min": 1.35309999996025,
+            "max": 1208.6759999999686,
+            "mean": 76.34448888889396
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.355399999894871,
+            "p95": 52.98219999986031,
+            "min": 0.668800000084957,
+            "max": 1735.6394999999338,
+            "mean": 43.501060999994934
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8426999997936946,
+            "p95": 482.18659999997726,
+            "min": 0.46059999999670254,
+            "max": 1160.960199999863,
+            "mean": 51.76430299999765
+          }
+        }
+      }
+    },
+    {
+      "package_name": "ComfyUI",
+      "github_url": "https://github.com/comfyanonymous/ComfyUI",
+      "ranking": 14,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 97,
+          "ok_pct": 97.0,
+          "found_count": 55,
+          "found_pct": 55.0,
+          "valid_count": 55,
+          "valid_pct": 55.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.72390000017731,
+            "p95": 93.23040000003857,
+            "min": 1.0614000000259693,
+            "max": 390.8840000001419,
+            "mean": 22.437396907223995
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 74,
+          "found_pct": 74.0,
+          "valid_count": 74,
+          "valid_pct": 74.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.363599999986036,
+            "p95": 202.65730000005533,
+            "min": 0.4859000000578817,
+            "max": 986.6961000000174,
+            "mean": 32.88945299998204
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7175000000643195,
+            "p95": 195.5540999999812,
+            "min": 0.49999999987448973,
+            "max": 522.5356999999349,
+            "mean": 26.59861100001308
+          }
+        }
+      }
+    },
+    {
+      "package_name": "cryptography",
+      "github_url": "https://github.com/pyca/cryptography",
+      "ranking": 15,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 76,
+          "found_pct": 76.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.450500000004467,
+            "p95": 335.43009999993956,
+            "min": 0.7740999999441556,
+            "max": 1661.7954999999256,
+            "mean": 66.57267599998477
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.503799999885814,
+            "p95": 37.14910000007876,
+            "min": 0.596099999938815,
+            "max": 323.5761000000821,
+            "mean": 10.622500000015407
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.698499999998603,
+            "p95": 53.27590000001692,
+            "min": 0.3804000000400265,
+            "max": 308.9336000000458,
+            "mean": 10.396939999998267
+          }
+        }
+      }
+    },
+    {
+      "package_name": "dask",
+      "github_url": "https://github.com/dask/dask",
+      "ranking": 16,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 82,
+          "found_pct": 82.0,
+          "valid_count": 82,
+          "valid_pct": 82.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 10.302400000000489,
+            "p95": 392.3677999998745,
+            "min": 1.5121999999792024,
+            "max": 975.4801000001407,
+            "mean": 58.01553636362282
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 10.348300000032395,
+            "p95": 250.2675000000636,
+            "min": 0.50809999993362,
+            "max": 1841.8335000001207,
+            "mean": 54.06293399999868
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6524000000354135,
+            "p95": 102.57660000002033,
+            "min": 0.3881000000092172,
+            "max": 242.14040000015302,
+            "mean": 12.782581818185857
+          }
+        }
+      }
+    },
+    {
+      "package_name": "django",
+      "github_url": "https://github.com/django/django",
+      "ranking": 18,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.192799999984345,
+            "p95": 701.7820999999458,
+            "min": 1.1575000000902946,
+            "max": 1767.1020000000226,
+            "mean": 86.92062699999951
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.7763000000741158,
+            "p95": 178.61339999990378,
+            "min": 0.5929000001287932,
+            "max": 673.9737000000332,
+            "mean": 28.860604999997577
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.755400000116424,
+            "p95": 158.1639000000905,
+            "min": 0.410899999906178,
+            "max": 353.2760000000508,
+            "mean": 26.95235100000673
+          }
+        }
+      }
+    },
+    {
+      "package_name": "fastapi",
+      "github_url": "https://github.com/fastapi/fastapi",
+      "ranking": 19,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 63,
+          "found_pct": 63.0,
+          "valid_count": 63,
+          "valid_pct": 63.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.4482999999690946,
+            "p95": 189.74070000012944,
+            "min": 0.776299999870389,
+            "max": 1608.0005999999685,
+            "mean": 34.797018000003845
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 84,
+          "found_pct": 84.0,
+          "valid_count": 84,
+          "valid_pct": 84.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.2408999998333456,
+            "p95": 32.4207999999544,
+            "min": 0.46279999992293597,
+            "max": 308.7712999999894,
+            "mean": 10.176458000000821
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6381000000601489,
+            "p95": 4.671499999858497,
+            "min": 0.2910000000611035,
+            "max": 175.32940000000963,
+            "mean": 4.411965000001601
+          }
+        }
+      }
+    },
+    {
+      "package_name": "flask",
+      "github_url": "https://github.com/pallets/flask",
+      "ranking": 20,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 56,
+          "found_pct": 56.0,
+          "valid_count": 56,
+          "valid_pct": 56.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.7052999998413725,
+            "p95": 147.82129999980498,
+            "min": 0.9098000000449247,
+            "max": 964.7241000000122,
+            "mean": 35.58938999999782
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.9399000000012165,
+            "p95": 38.7026999999307,
+            "min": 0.5355999999210326,
+            "max": 165.79030000002604,
+            "mean": 9.661184999972647
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7129999999051506,
+            "p95": 18.63709999997809,
+            "min": 0.4227000001719716,
+            "max": 125.54609999983768,
+            "mean": 3.907083999997667
+          }
+        }
+      }
+    },
+    {
+      "package_name": "gradio",
+      "github_url": "https://github.com/gradio-app/gradio",
+      "ranking": 21,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.686400000035064,
+            "p95": 296.2539000000106,
+            "min": 1.0055000000193104,
+            "max": 1361.0155999999733,
+            "mean": 63.12596999999414
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.7691000000468193,
+            "p95": 65.6744999998864,
+            "min": 0.5031000000599306,
+            "max": 496.5327999998408,
+            "mean": 16.596555999990414
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.9976999999707914,
+            "p95": 71.91779999993742,
+            "min": 0.41639999994913524,
+            "max": 213.28110000013112,
+            "mean": 12.437835999999152
+          }
+        }
+      }
+    },
+    {
+      "package_name": "homeassistant",
+      "github_url": "https://github.com/home-assistant/core",
+      "ranking": 22,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 74,
+          "found_pct": 74.0,
+          "valid_count": 74,
+          "valid_pct": 74.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 10.51040000015746,
+            "p95": 84.91950000006909,
+            "min": 1.334000000042579,
+            "max": 613.2037999998374,
+            "mean": 25.122148484864038
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 83,
+          "valid_pct": 83.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.3020999999753258,
+            "p95": 22.23380000009456,
+            "min": 0.5760999999893102,
+            "max": 696.2489000000005,
+            "mean": 16.074141000012787
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6713000000218017,
+            "p95": 57.016700000076526,
+            "min": 0.38440000002992747,
+            "max": 635.9044999999242,
+            "mean": 12.996104999999716
+          }
+        }
+      }
+    },
+    {
+      "package_name": "httpcore",
+      "github_url": "https://github.com/encode/httpcore",
+      "ranking": 23,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.228400000054535,
+            "p95": 159.48720000005778,
+            "min": 1.6461999998682586,
+            "max": 1045.4114000003756,
+            "mean": 42.09895099998903
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.2272999997076113,
+            "p95": 15.69149999977526,
+            "min": 0.4831999999623804,
+            "max": 350.56680000025153,
+            "mean": 9.042445000036423
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6509999998343119,
+            "p95": 11.129800000162504,
+            "min": 0.3297999996902945,
+            "max": 64.02119999984279,
+            "mean": 1.9569379999848024
+          }
+        }
+      }
+    },
+    {
+      "package_name": "httpx",
+      "github_url": "https://github.com/encode/httpx",
+      "ranking": 24,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 9.650500000134343,
+            "p95": 188.82959999973536,
+            "min": 1.7812000000958506,
+            "max": 1642.2735000001012,
+            "mean": 52.27066600004491
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.226900000252499,
+            "p95": 34.08820000004198,
+            "min": 0.5402000001595297,
+            "max": 488.0474999999933,
+            "mean": 13.06973399999606
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7789000001139357,
+            "p95": 16.22419999966951,
+            "min": 0.4056999996464583,
+            "max": 85.9654999999293,
+            "mean": 3.5200169999870923
+          }
+        }
+      }
+    },
+    {
+      "package_name": "jinja2",
+      "github_url": "https://github.com/pallets/jinja",
+      "ranking": 26,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 15.53409999996802,
+            "p95": 249.39150000000154,
+            "min": 0.9961999999177351,
+            "max": 1421.172800000022,
+            "mean": 53.155684999992445
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.71710000015446,
+            "p95": 29.8729999999523,
+            "min": 0.5037000000811531,
+            "max": 381.6885999999613,
+            "mean": 10.7503229999611
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6832000003669236,
+            "p95": 30.864400000155,
+            "min": 0.35809999963021255,
+            "max": 199.9561000002359,
+            "mean": 5.750224000048547
+          }
+        }
+      }
+    },
+    {
+      "package_name": "langchain",
+      "github_url": "https://github.com/langchain-ai/langchain",
+      "ranking": 27,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 83,
+          "valid_pct": 83.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.905000000282598,
+            "p95": 114.26120000032824,
+            "min": 0.8441999998467509,
+            "max": 1236.8741999998747,
+            "mean": 31.96041199996216
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.3732000002164568,
+            "p95": 18.864699999994627,
+            "min": 0.48179999976127874,
+            "max": 255.413999999746,
+            "mean": 8.347804999980326
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8354000001418171,
+            "p95": 12.280599999940023,
+            "min": 0.366799999937939,
+            "max": 189.32570000015403,
+            "mean": 4.343692000034025
+          }
+        }
+      }
+    },
+    {
+      "package_name": "langflow",
+      "github_url": "https://github.com/langflow-ai/langflow",
+      "ranking": 28,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 70,
+          "found_pct": 70.0,
+          "valid_count": 70,
+          "valid_pct": 70.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.955700000209617,
+            "p95": 206.7246999999952,
+            "min": 1.036600000134058,
+            "max": 1017.3667999997633,
+            "mean": 34.958074999995006
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.4068999998926301,
+            "p95": 39.151200000105746,
+            "min": 0.522499999988213,
+            "max": 311.1175999997613,
+            "mean": 9.611203000008572
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.0736999997789098,
+            "p95": 96.9374000001153,
+            "min": 0.3664000000753731,
+            "max": 391.43079999985275,
+            "mean": 16.427614999979596
+          }
+        }
+      }
+    },
+    {
+      "package_name": "luigi",
+      "github_url": "https://github.com/spotify/luigi",
+      "ranking": 29,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.823899999995774,
+            "p95": 239.63460000004488,
+            "min": 0.9608000000298489,
+            "max": 668.4973000001264,
+            "mean": 37.939737373732775
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.082500000095024,
+            "p95": 36.47999999975582,
+            "min": 0.4801999998562678,
+            "max": 824.3775999999343,
+            "mean": 27.36538799997561
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.773600000229635,
+            "p95": 85.6434000002082,
+            "min": 0.4150999998273619,
+            "max": 173.99850000037986,
+            "mean": 8.008498000021973
+          }
+        }
+      }
+    },
+    {
+      "package_name": "manim",
+      "github_url": "https://github.com/ManimCommunity/manim",
+      "ranking": 30,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 77,
+          "found_pct": 77.0,
+          "valid_count": 77,
+          "valid_pct": 77.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.138500000204658,
+            "p95": 211.60520000012184,
+            "min": 0.6648000003224297,
+            "max": 913.9291999999841,
+            "mean": 33.579688888903085
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 82,
+          "found_pct": 82.0,
+          "valid_count": 82,
+          "valid_pct": 82.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.7767999997413426,
+            "p95": 34.517200000209414,
+            "min": 0.4868999999416701,
+            "max": 1013.4619999998904,
+            "mean": 19.670273999995516
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7510999998885382,
+            "p95": 140.69610000024113,
+            "min": 0.3372999999555759,
+            "max": 623.1385000000955,
+            "mean": 29.093558999966262
+          }
+        }
+      }
+    },
+    {
+      "package_name": "markitdown",
+      "github_url": "https://github.com/microsoft/markitdown",
+      "ranking": 31,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 83,
+          "valid_pct": 83.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.567300000417163,
+            "p95": 222.36900000007154,
+            "min": 0.9515000001556473,
+            "max": 985.6985000001259,
+            "mean": 47.67724099998759
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.2580999998353946,
+            "p95": 19.98090000006414,
+            "min": 0.4853999998886138,
+            "max": 1027.4018999998589,
+            "mean": 16.93116499998723
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7142999997995503,
+            "p95": 12.40540000026158,
+            "min": 0.39359999982480076,
+            "max": 41.31820000020525,
+            "mean": 2.1274519999860786
+          }
+        }
+      }
+    },
+    {
+      "package_name": "matplotlib",
+      "github_url": "https://github.com/matplotlib/matplotlib",
+      "ranking": 33,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 26,
+          "found_pct": 26.0,
+          "valid_count": 26,
+          "valid_pct": 26.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.31220000043686,
+            "p95": 187.4284999998963,
+            "min": 0.8106999998744868,
+            "max": 1328.0555999999706,
+            "mean": 44.235802000007425
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 27,
+          "found_pct": 27.0,
+          "valid_count": 27,
+          "valid_pct": 27.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.2514000002047396,
+            "p95": 40.144300000065414,
+            "min": 0.5073000002084882,
+            "max": 295.93389999990904,
+            "mean": 10.049151000011989
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 60,
+          "found_pct": 60.0,
+          "valid_count": 60,
+          "valid_pct": 60.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.653399999919202,
+            "p95": 92.66879999995581,
+            "min": 0.3621999999268155,
+            "max": 167.46760000023642,
+            "mean": 11.923074999972414
+          }
+        }
+      }
+    },
+    {
+      "package_name": "networkx",
+      "github_url": "https://github.com/networkx/networkx",
+      "ranking": 34,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 18.67339999989781,
+            "p95": 350.68760000012844,
+            "min": 0.8646999999655236,
+            "max": 832.5604000001476,
+            "mean": 96.60056464648311
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.430399999819201,
+            "p95": 42.44310000012774,
+            "min": 0.5044999998062849,
+            "max": 513.0192999999963,
+            "mean": 16.101670000016384
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6822000000283879,
+            "p95": 127.18200000017532,
+            "min": 0.4156999998485844,
+            "max": 350.36760000002687,
+            "mean": 13.845632000029582
+          }
+        }
+      }
+    },
+    {
+      "package_name": "numpy",
+      "github_url": "https://github.com/numpy/numpy",
+      "ranking": 35,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 14.068800000131887,
+            "p95": 610.7461000001422,
+            "min": 0.8246000002145593,
+            "max": 1702.097700000195,
+            "mean": 87.17001458334532
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 22.82809999996971,
+            "p95": 827.1792999998979,
+            "min": 0.7381000000350468,
+            "max": 1455.7162999999491,
+            "mean": 132.99623131313345
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.93600000022343,
+            "p95": 896.9163000001572,
+            "min": 0.4227999997965526,
+            "max": 1766.1920999998983,
+            "mean": 162.57955000000206
+          }
+        }
+      }
+    },
+    {
+      "package_name": "open-webui",
+      "github_url": "https://github.com/open-webui/open-webui",
+      "ranking": 36,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 57,
+          "found_pct": 57.0,
+          "valid_count": 57,
+          "valid_pct": 57.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.776399999784189,
+            "p95": 133.8009000000966,
+            "min": 1.1622000001807464,
+            "max": 1133.1147999999303,
+            "mean": 37.00672424244171
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.4488999997629435,
+            "p95": 42.93029999962528,
+            "min": 0.5142999998497544,
+            "max": 710.3911000003791,
+            "mean": 24.80118699998002
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8473000002595654,
+            "p95": 63.673199999811914,
+            "min": 0.388699999803066,
+            "max": 460.3806000000077,
+            "mean": 15.469035999967673
+          }
+        }
+      }
+    },
+    {
+      "package_name": "openai",
+      "github_url": "https://github.com/openai/openai-python",
+      "ranking": 37,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.579599999990023,
+            "p95": 100.66090000009353,
+            "min": 1.1043000004065107,
+            "max": 1111.104399999931,
+            "mean": 32.098029000026145
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.518200000144134,
+            "p95": 23.24610000005123,
+            "min": 0.5510999999387423,
+            "max": 272.2654999997758,
+            "mean": 10.500475999974697
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6318000000646862,
+            "p95": 11.055899999973917,
+            "min": 0.366900000244641,
+            "max": 307.65999999994165,
+            "mean": 6.741029999975581
+          }
+        }
+      }
+    },
+    {
+      "package_name": "pandas",
+      "github_url": "https://github.com/pandas-dev/pandas",
+      "ranking": 39,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 11.60939999999755,
+            "p95": 518.7693000002582,
+            "min": 1.5163999996730126,
+            "max": 1698.0779999998958,
+            "mean": 74.58781632654252
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.851899999877787,
+            "p95": 202.49520000015764,
+            "min": 0.5163999999240332,
+            "max": 1351.6990000002806,
+            "mean": 51.78768199998558
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.9049000000231899,
+            "p95": 375.65660000018397,
+            "min": 0.387499999760621,
+            "max": 629.4204999999238,
+            "mean": 72.67392999999174
+          }
+        }
+      }
+    },
+    {
+      "package_name": "prefect",
+      "github_url": "https://github.com/PrefectHQ/prefect",
+      "ranking": 42,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 63,
+          "found_pct": 63.0,
+          "valid_count": 63,
+          "valid_pct": 63.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.189300000140065,
+            "p95": 295.0970000001689,
+            "min": 0.6668999999419611,
+            "max": 1066.0695000001397,
+            "mean": 45.57342121213217
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.5981000001374923,
+            "p95": 143.0385000003298,
+            "min": 0.5463999996209168,
+            "max": 383.07399999985137,
+            "mean": 19.23510899996927
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.0234000001219101,
+            "p95": 305.12229999976626,
+            "min": 0.41439999995418475,
+            "max": 730.569800000012,
+            "mean": 49.02426199996626
+          }
+        }
+      }
+    },
+    {
+      "package_name": "pydantic",
+      "github_url": "https://github.com/pydantic/pydantic",
+      "ranking": 43,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 79,
+          "found_pct": 79.0,
+          "valid_count": 79,
+          "valid_pct": 79.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 11.51110000000699,
+            "p95": 185.34879999970144,
+            "min": 0.9187000000565604,
+            "max": 643.3833999999479,
+            "mean": 39.739737373708124
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.305800000314775,
+            "p95": 70.86100000014994,
+            "min": 0.6175999997140025,
+            "max": 956.2240000000202,
+            "mean": 22.506159999993542
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8221000002777146,
+            "p95": 188.7126999999964,
+            "min": 0.49999999964711606,
+            "max": 423.8831999996364,
+            "mean": 20.030437000000347
+          }
+        }
+      }
+    },
+    {
+      "package_name": "pytest",
+      "github_url": "https://github.com/pytest-dev/pytest",
+      "ranking": 44,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.771200000002864,
+            "p95": 298.58969999986584,
+            "min": 0.7353000000875909,
+            "max": 1108.717600000091,
+            "mean": 57.36072500001228
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.7036999999836553,
+            "p95": 47.61180000014065,
+            "min": 0.5798000001959736,
+            "max": 323.5469999999623,
+            "mean": 13.89043600001969
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7267000000865664,
+            "p95": 30.970499999966705,
+            "min": 0.35879999995813705,
+            "max": 593.8400000000001,
+            "mean": 10.266208999983064
+          }
+        }
+      }
+    },
+    {
+      "package_name": "ray",
+      "github_url": "https://github.com/ray-project/ray",
+      "ranking": 47,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 75,
+          "found_pct": 75.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.099299999936193,
+            "p95": 186.14919999981794,
+            "min": 1.643699999931414,
+            "max": 1423.450700000103,
+            "mean": 56.73180714285193
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.8373999998621002,
+            "p95": 342.4921999999242,
+            "min": 0.592400000186899,
+            "max": 1254.3885000000046,
+            "mean": 50.039900000010675
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.2510999999904016,
+            "p95": 266.48210000030303,
+            "min": 0.4245000000082655,
+            "max": 853.2130000003235,
+            "mean": 52.78101999997489
+          }
+        }
+      }
+    },
+    {
+      "package_name": "requests",
+      "github_url": "https://github.com/psf/requests",
+      "ranking": 49,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.612500000097498,
+            "p95": 213.52710000019215,
+            "min": 0.7774000000608794,
+            "max": 1658.8017999997646,
+            "mean": 51.34563599998273
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.8937000001860724,
+            "p95": 23.201399999834393,
+            "min": 0.5617000001620909,
+            "max": 264.3587000002299,
+            "mean": 9.73303099999157
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6812999999965541,
+            "p95": 17.868800000087504,
+            "min": 0.3681999996842933,
+            "max": 55.35589999999502,
+            "mean": 3.0382700000336627
+          }
+        }
+      }
+    },
+    {
+      "package_name": "rich",
+      "github_url": "https://github.com/Textualize/rich",
+      "ranking": 50,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.044499999963591,
+            "p95": 336.85940000032133,
+            "min": 0.929199999973207,
+            "max": 1116.1914999997862,
+            "mean": 54.01362699996298
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.070599999977276,
+            "p95": 37.504400000216265,
+            "min": 0.48890000016399426,
+            "max": 231.8832000000839,
+            "mean": 11.578908000010415
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7683999997425417,
+            "p95": 6.828799999766488,
+            "min": 0.41140000030281954,
+            "max": 17.199299999901996,
+            "mean": 1.4030090000096607
+          }
+        }
+      }
+    },
+    {
+      "package_name": "salt",
+      "github_url": "https://github.com/saltstack/salt",
+      "ranking": 51,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 71,
+          "found_pct": 71.0,
+          "valid_count": 71,
+          "valid_pct": 71.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 19.31940000031318,
+            "p95": 431.42249999982596,
+            "min": 1.1595999999371998,
+            "max": 1164.5533999999316,
+            "mean": 101.46989999997903
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.9414999999062275,
+            "p95": 233.06339999999182,
+            "min": 0.5642999999508902,
+            "max": 1842.386400000123,
+            "mean": 46.945347999972
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 77,
+          "found_pct": 77.0,
+          "valid_count": 77,
+          "valid_pct": 77.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8584000001974346,
+            "p95": 152.71119999988514,
+            "min": 0.5236000001787033,
+            "max": 316.05850000005375,
+            "mean": 25.118532000014966
+          }
+        }
+      }
+    },
+    {
+      "package_name": "scikit-learn",
+      "github_url": "https://github.com/scikit-learn/scikit-learn",
+      "ranking": 52,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 58,
+          "found_pct": 58.0,
+          "valid_count": 58,
+          "valid_pct": 58.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 9.466199999678793,
+            "p95": 531.5561000002162,
+            "min": 1.0852999998860469,
+            "max": 1227.1593999998913,
+            "mean": 70.58734141413548
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 62,
+          "found_pct": 62.0,
+          "valid_count": 62,
+          "valid_pct": 62.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.588100000091799,
+            "p95": 224.6551999996882,
+            "min": 0.5207999997765,
+            "max": 1082.2468999999728,
+            "mean": 34.708838999986256
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 76,
+          "found_pct": 76.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7106000002750079,
+            "p95": 171.63819999996122,
+            "min": 0.37599999996018596,
+            "max": 413.8960999998744,
+            "mean": 26.724644000018998
+          }
+        }
+      }
+    },
+    {
+      "package_name": "scipy",
+      "github_url": "https://github.com/scipy/scipy",
+      "ranking": 53,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 51,
+          "found_pct": 51.0,
+          "valid_count": 51,
+          "valid_pct": 51.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.052200000089215,
+            "p95": 583.3654000002753,
+            "min": 0.8194000001822133,
+            "max": 1144.9467000002187,
+            "mean": 57.77722525256493
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 58,
+          "found_pct": 58.0,
+          "valid_count": 58,
+          "valid_pct": 58.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.863299999920855,
+            "p95": 265.85960000011255,
+            "min": 0.5645000001095468,
+            "max": 1099.3790000002264,
+            "mean": 40.60024399999293
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 74,
+          "found_pct": 74.0,
+          "valid_count": 74,
+          "valid_pct": 74.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7593999998789513,
+            "p95": 169.45890000033614,
+            "min": 0.3965000000789587,
+            "max": 505.82410000015443,
+            "mean": 33.028614999980164
+          }
+        }
+      }
+    },
+    {
+      "package_name": "scrapy",
+      "github_url": "https://github.com/scrapy/scrapy",
+      "ranking": 54,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.704399999809539,
+            "p95": 193.49560000000565,
+            "min": 0.756800000090152,
+            "max": 2012.5714999999218,
+            "mean": 45.246148999999605
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.8233999999210937,
+            "p95": 18.57830000017202,
+            "min": 0.5151000000296335,
+            "max": 493.3358000002954,
+            "mean": 9.4185950000292
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6643000001531618,
+            "p95": 16.801499999928637,
+            "min": 0.3608999995776685,
+            "max": 136.8040000002111,
+            "mean": 4.17872599997736
+          }
+        }
+      }
+    },
+    {
+      "package_name": "sentry-sdk",
+      "github_url": "https://github.com/getsentry/sentry-python",
+      "ranking": 55,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.4141999999046675,
+            "p95": 214.42609999985507,
+            "min": 0.9473000000070897,
+            "max": 1224.0702999997666,
+            "mean": 51.69642500000464
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.759299999979703,
+            "p95": 45.80869999972492,
+            "min": 0.6268000001909968,
+            "max": 260.2846999998292,
+            "mean": 13.973384999981135
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6833999996160856,
+            "p95": 97.60729999970863,
+            "min": 0.45880000016040867,
+            "max": 421.79029999988416,
+            "mean": 12.731641000032141
+          }
+        }
+      }
+    },
+    {
+      "package_name": "setuptools",
+      "github_url": "https://github.com/pypa/setuptools",
+      "ranking": 56,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 10.50180000038381,
+            "p95": 318.7189000000217,
+            "min": 0.8864000001267414,
+            "max": 1771.4602999999443,
+            "mean": 72.7854859999843
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.9589999999188876,
+            "p95": 33.933499999875494,
+            "min": 0.5166999999346444,
+            "max": 342.67480000016803,
+            "mean": 10.607914999982313
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8370000000468281,
+            "p95": 18.511400000079448,
+            "min": 0.4007000002275163,
+            "max": 226.58159999991767,
+            "mean": 5.0311339999962
+          }
+        }
+      }
+    },
+    {
+      "package_name": "sqlalchemy",
+      "github_url": "https://github.com/sqlalchemy/sqlalchemy",
+      "ranking": 59,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 49,
+          "found_pct": 49.0,
+          "valid_count": 49,
+          "valid_pct": 49.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 9.936400000242429,
+            "p95": 158.09420000005048,
+            "min": 1.0568000002422195,
+            "max": 809.1138999998293,
+            "mean": 42.83875408168105
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.239999999754218,
+            "p95": 82.32779999980266,
+            "min": 0.4918999998153595,
+            "max": 1024.0265000002182,
+            "mean": 25.73903499998778
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7723999997324427,
+            "p95": 101.75170000002254,
+            "min": 0.4460000000108266,
+            "max": 582.8822999997101,
+            "mean": 22.22221299998637
+          }
+        }
+      }
+    },
+    {
+      "package_name": "starlette",
+      "github_url": "https://github.com/encode/starlette",
+      "ranking": 61,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.724099999701139,
+            "p95": 205.1021000002038,
+            "min": 1.0756000001492794,
+            "max": 967.700899999727,
+            "mean": 32.017085858592736
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.1308999998836953,
+            "p95": 33.58189999971728,
+            "min": 0.5316000001585053,
+            "max": 1974.855800000114,
+            "mean": 27.55336399999578
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6438000000343891,
+            "p95": 23.75949999986915,
+            "min": 0.4221000003781228,
+            "max": 211.57839999978023,
+            "mean": 6.188967999996748
+          }
+        }
+      }
+    },
+    {
+      "package_name": "streamlit",
+      "github_url": "https://github.com/streamlit/streamlit",
+      "ranking": 62,
+      "error": "Failed to clone repository",
+      "metrics": {}
+    },
+    {
+      "package_name": "sympy",
+      "github_url": "https://github.com/sympy/sympy",
+      "ranking": 63,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 95,
+          "ok_pct": 95.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.312599999750091,
+            "p95": 310.20059999991645,
+            "min": 0.741099999686412,
+            "max": 1471.7560999997659,
+            "mean": 67.92415473680529
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 24.924599999849306,
+            "p95": 571.5063000002374,
+            "min": 0.6886999999551335,
+            "max": 1346.6683999999987,
+            "mean": 99.64492244898328
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.4428000004045316,
+            "p95": 291.6556000000128,
+            "min": 0.4642000003514113,
+            "max": 384.47709999991275,
+            "mean": 50.5740170000081
+          }
+        }
+      }
+    },
+    {
+      "package_name": "tensorflow",
+      "github_url": "https://github.com/tensorflow/tensorflow",
+      "ranking": 64,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 71,
+          "found_pct": 71.0,
+          "valid_count": 71,
+          "valid_pct": 71.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 13.121399999818095,
+            "p95": 156.50240000013582,
+            "min": 0.9854999998424319,
+            "max": 774.5276999999078,
+            "mean": 39.732718749983555
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 11.12009999997099,
+            "p95": 469.9924999999894,
+            "min": 0.6416000001081557,
+            "max": 691.8814000000566,
+            "mean": 82.44541400000799
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 12.956199999734963,
+            "p95": 378.60219999993205,
+            "min": 0.4750000002786692,
+            "max": 662.7677000001313,
+            "mean": 77.40420900002846
+          }
+        }
+      }
+    },
+    {
+      "package_name": "transformers",
+      "github_url": "https://github.com/huggingface/transformers",
+      "ranking": 69,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 55,
+          "found_pct": 55.0,
+          "valid_count": 55,
+          "valid_pct": 55.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.854700000123557,
+            "p95": 170.492700000068,
+            "min": 0.6612999995923019,
+            "max": 1242.5464000002648,
+            "mean": 47.858781818151805
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 68,
+          "found_pct": 68.0,
+          "valid_count": 68,
+          "valid_pct": 68.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 10.330500000236498,
+            "p95": 154.85379999972793,
+            "min": 0.6351999995786173,
+            "max": 1627.2251000000324,
+            "mean": 52.60692121211575
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 76,
+          "found_pct": 76.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7792000001245469,
+            "p95": 1152.7051000002757,
+            "min": 0.36339999996926053,
+            "max": 1696.620400000029,
+            "mean": 138.7621145833672
+          }
+        }
+      }
+    },
+    {
+      "package_name": "trio",
+      "github_url": "https://github.com/python-trio/trio",
+      "ranking": 70,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 73,
+          "found_pct": 73.0,
+          "valid_count": 73,
+          "valid_pct": 73.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.150899999691319,
+            "p95": 214.74429999989297,
+            "min": 0.9084999996957777,
+            "max": 1463.49999999984,
+            "mean": 49.530656999986604
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.562299999884999,
+            "p95": 51.37269999977434,
+            "min": 0.5202000002100249,
+            "max": 507.3210000000472,
+            "mean": 15.632854999976189
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7195999996838509,
+            "p95": 19.82799999996132,
+            "min": 0.3467000001364795,
+            "max": 345.66469999981564,
+            "mean": 6.763509000011254
+          }
+        }
+      }
+    },
+    {
+      "package_name": "typer",
+      "github_url": "https://github.com/tiangolo/typer",
+      "ranking": 71,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.801999999974214,
+            "p95": 204.1718000000401,
+            "min": 0.7785999996485771,
+            "max": 1381.9634999999835,
+            "mean": 44.74676900001214
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.091199999995297,
+            "p95": 9.372600000460807,
+            "min": 0.5897999999433523,
+            "max": 209.02060000025813,
+            "mean": 8.525729000020874
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7272999991982942,
+            "p95": 17.670799999905284,
+            "min": 0.4397000002427376,
+            "max": 160.62020000026678,
+            "mean": 4.649601000055554
+          }
+        }
+      }
+    },
+    {
+      "package_name": "urllib3",
+      "github_url": "https://github.com/urllib3/urllib3",
+      "ranking": 73,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.02300000032119,
+            "p95": 289.2156000007162,
+            "min": 0.8559999996577972,
+            "max": 929.8217999994449,
+            "mean": 60.58803131308921
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.2330000003639725,
+            "p95": 65.77930000003107,
+            "min": 0.6270000003496534,
+            "max": 565.357700000277,
+            "mean": 16.21839499996895
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.785600000199338,
+            "p95": 44.497700000647455,
+            "min": 0.4195000001345761,
+            "max": 155.96740000000864,
+            "mean": 6.967861000057383
+          }
+        }
+      }
+    },
+    {
+      "package_name": "uvicorn",
+      "github_url": "https://github.com/encode/uvicorn",
+      "ranking": 74,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.117900000186637,
+            "p95": 492.5972000000911,
+            "min": 0.6810000004406902,
+            "max": 1555.6071000000884,
+            "mean": 67.63368599999012
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.723100000366685,
+            "p95": 33.86600000067119,
+            "min": 0.5129999999553547,
+            "max": 313.184600000568,
+            "mean": 11.017199999969307
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7145999998101615,
+            "p95": 13.492100000803475,
+            "min": 0.3875999991578283,
+            "max": 95.54399999979069,
+            "mean": 2.63387100001637
+          }
+        }
+      }
+    },
+    {
+      "package_name": "wheel",
+      "github_url": "https://github.com/pypa/wheel",
+      "ranking": 75,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.539599999588972,
+            "p95": 488.12739999993937,
+            "min": 0.9436000000278,
+            "max": 996.4107000005242,
+            "mean": 76.87349800002266
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.1474000004673144,
+            "p95": 13.289900000017951,
+            "min": 0.5578999998760992,
+            "max": 318.5066000005463,
+            "mean": 7.0336060000590805
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7939000006444985,
+            "p95": 13.225199999396864,
+            "min": 0.45709999994869577,
+            "max": 29.147999999622698,
+            "mean": 2.3950000000240834
+          }
+        }
+      }
+    },
+    {
+      "package_name": "yt-dlp",
+      "github_url": "https://github.com/yt-dlp/yt-dlp",
+      "ranking": 78,
+      "error": null,
+      "metrics": {
+        "zuban": {
+          "ok": false,
+          "error": "Type checker not installed",
+          "latency_ms": null
+        },
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.7544000006164424,
+            "p95": 217.3157999995965,
+            "min": 1.01619999986724,
+            "max": 1212.6226999998835,
+            "mean": 41.003121212123354
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.770200000370096,
+            "p95": 61.041900000418536,
+            "min": 0.9627999997974257,
+            "max": 383.80229999984294,
+            "mean": 18.53553800005102
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7095000000845175,
+            "p95": 141.5832999991835,
+            "min": 0.44859999979962595,
+            "max": 412.6739000002999,
+            "mean": 15.527130999980727
+          }
+        }
+      }
+    }
+  ],
+  "os": "windows"
+}
