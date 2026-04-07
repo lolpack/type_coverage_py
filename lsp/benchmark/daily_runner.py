@@ -182,7 +182,7 @@ TYPE_CHECKER_COMMANDS: dict[str, str] = {
     "pyright": "pyright-langserver --stdio",
     "pyrefly": "pyrefly lsp",
     "ty": "ty server",
-    "zuban": "zubanls",
+    "zuban": "zuban server",
 }
 
 DEFAULT_TYPE_CHECKERS: list[str] = ["pyright", "pyrefly", "ty", "zuban"]
