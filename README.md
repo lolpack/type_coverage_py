@@ -89,7 +89,7 @@ Runs daily at 10 AM EST. Analyzes a curated list of packages (defined in `includ
 Runs daily at 3 AM UTC on Ubuntu and Windows, weekly on Tuesdays for macOS. Benchmarks LSP performance (time-to-first-diagnostic, completions, hover) across Pyright, Pyrefly, ty, and Zuban on the prioritized package list. Each OS produces a separate results JSON. Deploys to `published-report` with retry logic for concurrent matrix job pushes.
 
 ### Daily Type Checker Timing Benchmark (`typecheck-benchmark.yml`)
-Runs daily at 5 AM UTC on Ubuntu and Windows, weekly on Wednesdays for macOS. Measures full type-checking time across Pyright, Pyrefly, ty, mypy, and Zuban on packages with install configurations. Each OS produces a separate results JSON. Deploys to `published-report` with retry logic for concurrent matrix job pushes.
+Runs daily at 5 AM UTC on Ubuntu and Windows, weekly on Wednesdays for macOS. Measures full type-checking time across Pyright, Pyrefly, ty, mypy, and Zuban on packages with install configurations. Each checker is run 5 times per package and results are averaged. Each OS produces a separate results JSON. Deploys to `published-report` with retry logic for concurrent matrix job pushes.
 
 ## Development
 

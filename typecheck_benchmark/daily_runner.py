@@ -1265,8 +1265,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Path to install_envs.json (default: typecheck_benchmark/install_envs.json)",
     )
     parser.add_argument(
-        "--runs", "-r", type=int, default=1,
-        help="Number of runs per checker per package (default: 1)",
+        "--runs", "-r", type=int, default=5,
+        help="Number of runs per checker per package (default: 5)",
     )
     parser.add_argument(
         "--local", type=Path, default=None,

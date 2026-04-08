@@ -44,6 +44,7 @@ interface TimingBenchmarkData {
     type_checkers: string[];
     type_checker_versions?: Record<string, string>;
     package_count: number;
+    runs_per_package?: number;
     aggregate: Record<string, TimingAggregateEntry>;
     results: TimingBenchmarkResult[];
 }
@@ -146,6 +147,7 @@ function getDemoData(): TimingBenchmarkData {
         type_checkers: ['pyright', 'pyrefly', 'ty', 'mypy', 'zuban'],
         type_checker_versions: { pyright: '1.1.408', pyrefly: '0.54.0', ty: '0.0.19', mypy: '1.19.1', zuban: '0.6.1' },
         package_count: 5,
+        runs_per_package: 5,
         aggregate: {
             pyright:  { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 12.5, p90_execution_time_s: 22.0, p95_execution_time_s: 25.0, max_execution_time_s: 30.0, total_execution_time_s: 62.5, avg_peak_memory_mb: 350, p90_peak_memory_mb: 480, p95_peak_memory_mb: 500, max_peak_memory_mb: 550 },
             pyrefly:  { packages_tested: 5, packages_failed: 0, avg_execution_time_s: 3.2, p90_execution_time_s: 5.5, p95_execution_time_s: 6.0, max_execution_time_s: 8.0, total_execution_time_s: 16.0, avg_peak_memory_mb: 280, p90_peak_memory_mb: 380, p95_peak_memory_mb: 400, max_peak_memory_mb: 420 },
@@ -285,7 +287,9 @@ function updateTimestamp(): void {
     if (!el) return;
     if (benchmarkData?.timestamp) {
         const d = new Date(benchmarkData.timestamp);
-        el.textContent = `Last updated: ${d.toLocaleDateString()} at ${d.toLocaleTimeString()}`;
+        const runs = benchmarkData.runs_per_package;
+        const runsStr = runs && runs > 1 ? ` | ${runs} runs per package` : '';
+        el.textContent = `Last updated: ${d.toLocaleDateString()} at ${d.toLocaleTimeString()}${runsStr}`;
     } else {
         el.textContent = 'Demo data';
     }
