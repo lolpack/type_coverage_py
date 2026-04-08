@@ -167,8 +167,8 @@
                     <ol>
                         <li>Shallow-clone each package from GitHub</li>
                         <li>Install package dependencies per <code>install_envs.json</code></li>
-                        <li>Run each type checker with a 5-minute timeout</li>
-                        <li>Record wall-clock time and peak memory usage</li>
+                        <li>Run each type checker with 1 warmup run (discarded) + 5 measured runs, with a 5-minute timeout per run</li>
+                        <li>Record wall-clock time and peak memory usage (mean of 5 measured runs)</li>
                     </ol>
                     <p class="method-note">
                         <strong>Timeout:</strong> Each type checker has a 5-minute timeout.

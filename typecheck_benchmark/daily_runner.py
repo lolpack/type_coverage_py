@@ -793,6 +793,7 @@ def run_benchmark(
     install_envs_file: Path | None = None,
     runs: int = 1,
     local_dir: Path | None = None,
+    warmup: int = 1,
 ) -> Path:
     """Run the full benchmark suite.
 
@@ -806,6 +807,7 @@ def run_benchmark(
         install_envs_file: Path to install_envs.json.
         runs: Number of runs per checker per package.
         local_dir: Path to a local directory to benchmark directly.
+        warmup: Number of warmup runs to discard before measured runs.
 
     Returns:
         Path to the dated output JSON file.
@@ -819,6 +821,7 @@ def run_benchmark(
     if local_dir is not None:
         return _run_local_benchmark(
             local_dir, type_checkers, timeout, output_dir, os_name, runs,
+            warmup,
         )
 
     # Load packages
@@ -844,6 +847,7 @@ def run_benchmark(
     print(f"Type checkers: {', '.join(type_checkers)}")
     print(f"Timeout: {timeout}s per checker")
     print(f"Runs per checker: {runs}")
+    print(f"Warmup runs: {warmup}")
     print("=" * 70)
 
     # Versions
@@ -855,7 +859,7 @@ def run_benchmark(
     print()
 
     # Run benchmarks
-    all_results = _run_all(packages, type_checkers, timeout, runs)
+    all_results = _run_all(packages, type_checkers, timeout, runs, warmup)
 
     # Aggregate
     aggregate = compute_aggregate_stats(all_results, type_checkers)
@@ -863,7 +867,7 @@ def run_benchmark(
     # Save
     output_file = _save_results(
         all_results, aggregate, type_checkers, versions, len(packages),
-        output_dir, os_name, runs,
+        output_dir, os_name, runs, warmup,
     )
 
     # Print summary
@@ -883,6 +887,7 @@ def _run_local_benchmark(
     output_dir: Path,
     os_name: str | None,
     runs: int,
+    warmup: int = 1,
 ) -> Path:
     """Run benchmark against a local directory (no clone/install)."""
     local_dir = local_dir.resolve()
@@ -900,6 +905,7 @@ def _run_local_benchmark(
     print(f"Type checkers: {', '.join(type_checkers)}")
     print(f"Timeout: {timeout}s per checker")
     print(f"Runs per checker: {runs}")
+    print(f"Warmup runs: {warmup}")
     print("=" * 70)
 
     # Versions
@@ -912,7 +918,7 @@ def _run_local_benchmark(
 
     # Run checkers
     print(f"\n[1/1] {name} (local)")
-    result = _benchmark_local_dir(local_dir, type_checkers, timeout, runs)
+    result = _benchmark_local_dir(local_dir, type_checkers, timeout, runs, warmup)
     all_results = [result]
 
     # Aggregate
@@ -921,7 +927,7 @@ def _run_local_benchmark(
     # Save
     output_file = _save_results(
         all_results, aggregate, type_checkers, versions, 1,
-        output_dir, os_name, runs,
+        output_dir, os_name, runs, warmup,
     )
 
     # Print summary
@@ -939,6 +945,7 @@ def _benchmark_local_dir(
     type_checkers: list[str],
     timeout: int,
     runs: int = 1,
+    warmup: int = 1,
 ) -> PackageResult:
     """Benchmark a local directory: run checkers without clone/install."""
     name = local_dir.name
@@ -955,32 +962,36 @@ def _benchmark_local_dir(
             }
             continue
 
-        print(f"    Running {checker}... ({runs} run{'s' if runs > 1 else ''})")
+        total = warmup + runs
+        print(f"    Running {checker}... ({warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
         times: list[float] = []
         memories: list[float] = []
         failed_metric: TimingMetrics | None = None
 
-        for run_idx in range(runs):
-            if runs > 1:
-                print(f"      Run {run_idx + 1}/{runs}...", end=" ")
+        for run_idx in range(total):
+            is_warmup = run_idx < warmup
+            if is_warmup:
+                label = f"Warmup {run_idx + 1}/{warmup}"
+            else:
+                label = f"Run {run_idx - warmup + 1}/{runs}"
+            print(f"      {label}...", end=" ")
             m = run_checker(checker, local_dir, None, timeout)
             if not m.get("ok"):
-                if runs > 1:
-                    print(f"Failed: {m.get('error_message', 'Unknown')}")
+                print(f"Failed: {m.get('error_message', 'Unknown')}")
                 failed_metric = m
                 break
-            times.append(m["execution_time_s"])
-            memories.append(m.get("peak_memory_mb", 0.0))
-            if runs > 1:
-                peak = m.get("peak_memory_mb", 0)
-                mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+            peak = m.get("peak_memory_mb", 0)
+            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+            if is_warmup:
+                print(f"{m['execution_time_s']:.1f}s{mem_str} (discarded)")
+            else:
+                times.append(m["execution_time_s"])
+                memories.append(m.get("peak_memory_mb", 0.0))
                 print(f"{m['execution_time_s']:.1f}s{mem_str}")
 
         if failed_metric is not None:
             failed_metric["runs"] = len(times) + 1
             metrics[checker] = failed_metric
-            if runs == 1:
-                print(f"      Failed: {failed_metric.get('error_message', 'Unknown')}")
         else:
             result_metric: TimingMetrics = {
                 "ok": True,
@@ -1017,6 +1028,7 @@ def _run_all(
     type_checkers: list[str],
     timeout: int,
     runs: int = 1,
+    warmup: int = 1,
 ) -> list[PackageResult]:
     """Run benchmarks for all packages."""
     all_results: list[PackageResult] = []
@@ -1030,7 +1042,9 @@ def _run_all(
 
             print(f"\n[{i}/{len(packages)}] {name}")
 
-            result = _benchmark_package(pkg, temp_path, type_checkers, timeout, runs)
+            result = _benchmark_package(
+                pkg, temp_path, type_checkers, timeout, runs, warmup,
+            )
             all_results.append(result)
 
     return all_results
@@ -1042,6 +1056,7 @@ def _benchmark_package(
     type_checkers: list[str],
     timeout: int,
     runs: int = 1,
+    warmup: int = 1,
 ) -> PackageResult:
     """Benchmark a single package: clone, install deps, run checkers."""
     name = pkg["name"]
@@ -1097,32 +1112,36 @@ def _benchmark_package(
             }
             continue
 
-        print(f"    Running {checker}... ({runs} run{'s' if runs > 1 else ''})")
+        total = warmup + runs
+        print(f"    Running {checker}... ({warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
         times: list[float] = []
         memories: list[float] = []
         failed_metric: TimingMetrics | None = None
 
-        for run_idx in range(runs):
-            if runs > 1:
-                print(f"      Run {run_idx + 1}/{runs}...", end=" ")
+        for run_idx in range(total):
+            is_warmup = run_idx < warmup
+            if is_warmup:
+                label = f"Warmup {run_idx + 1}/{warmup}"
+            else:
+                label = f"Run {run_idx - warmup + 1}/{runs}"
+            print(f"      {label}...", end=" ")
             m = run_checker(checker, package_path, resolved_paths, timeout)
             if not m.get("ok"):
-                if runs > 1:
-                    print(f"Failed: {m.get('error_message', 'Unknown')}")
+                print(f"Failed: {m.get('error_message', 'Unknown')}")
                 failed_metric = m
                 break
-            times.append(m["execution_time_s"])
-            memories.append(m.get("peak_memory_mb", 0.0))
-            if runs > 1:
-                peak = m.get("peak_memory_mb", 0)
-                mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+            peak = m.get("peak_memory_mb", 0)
+            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+            if is_warmup:
+                print(f"{m['execution_time_s']:.1f}s{mem_str} (discarded)")
+            else:
+                times.append(m["execution_time_s"])
+                memories.append(m.get("peak_memory_mb", 0.0))
                 print(f"{m['execution_time_s']:.1f}s{mem_str}")
 
         if failed_metric is not None:
             failed_metric["runs"] = len(times) + 1
             metrics[checker] = failed_metric
-            if runs == 1:
-                print(f"      Failed: {failed_metric.get('error_message', 'Unknown')}")
         else:
             result_metric: TimingMetrics = {
                 "ok": True,
@@ -1166,6 +1185,7 @@ def _save_results(
     output_dir: Path,
     os_name: str | None = None,
     runs: int = 1,
+    warmup: int = 1,
 ) -> Path:
     """Save benchmark results to JSON."""
     timestamp = datetime.now(timezone.utc)
@@ -1185,6 +1205,7 @@ def _save_results(
         "type_checker_versions": {k: v for k, v in versions.items() if k in type_checkers},
         "package_count": package_count,
         "runs_per_package": runs,
+        "warmup_runs": warmup,
         "aggregate": aggregate,
         "results": results,
     }
@@ -1265,8 +1286,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Path to install_envs.json (default: typecheck_benchmark/install_envs.json)",
     )
     parser.add_argument(
-        "--runs", "-r", type=int, default=1,
-        help="Number of runs per checker per package (default: 1)",
+        "--runs", "-r", type=int, default=5,
+        help="Number of runs per checker per package (default: 5)",
+    )
+    parser.add_argument(
+        "--warmup", "-w", type=int, default=1,
+        help="Number of warmup runs to discard before measured runs (default: 1)",
     )
     parser.add_argument(
         "--local", type=Path, default=None,
@@ -1288,6 +1313,7 @@ def main(argv: list[str] | None = None) -> int:
         install_envs_file=args.install_envs,
         runs=args.runs,
         local_dir=args.local,
+        warmup=args.warmup,
     )
     return 0
 
