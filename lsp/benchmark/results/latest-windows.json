@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-11T04:42:12.158258+00:00",
-  "date": "2026-04-11",
+  "timestamp": "2026-04-12T05:00:55.386857+00:00",
+  "date": "2026-04-12",
   "type_checkers": [
     "pyright",
     "pyrefly",
@@ -17,52 +17,52 @@
   "runs_per_package": 100,
   "aggregate": {
     "pyright": {
-      "packages_tested": 43,
-      "total_runs": 4300,
-      "total_ok": 4267,
-      "total_found": 3388,
-      "total_valid": 3388,
-      "avg_latency_ms": 58.62178455907466,
-      "min_latency_ms": 21.38237171717917,
-      "max_latency_ms": 135.07834343435474,
-      "ok_rate": 99.23255813953489,
-      "success_rate": 78.79069767441861
+      "packages_tested": 52,
+      "total_runs": 5200,
+      "total_ok": 5161,
+      "total_found": 4041,
+      "total_valid": 4041,
+      "avg_latency_ms": 58.761597653676475,
+      "min_latency_ms": 11.223568686872191,
+      "max_latency_ms": 132.27460824744168,
+      "ok_rate": 99.25,
+      "success_rate": 77.71153846153847
     },
     "pyrefly": {
-      "packages_tested": 43,
-      "total_runs": 4300,
-      "total_ok": 4203,
-      "total_found": 3731,
-      "total_valid": 3731,
-      "avg_latency_ms": 29.417190857829652,
-      "min_latency_ms": 7.043433999970148,
-      "max_latency_ms": 183.62253061224587,
-      "ok_rate": 97.74418604651163,
-      "success_rate": 86.76744186046511
+      "packages_tested": 52,
+      "total_runs": 5200,
+      "total_ok": 5126,
+      "total_found": 4552,
+      "total_valid": 4552,
+      "avg_latency_ms": 25.894879222649312,
+      "min_latency_ms": 7.534675999997944,
+      "max_latency_ms": 121.42095918367738,
+      "ok_rate": 98.57692307692307,
+      "success_rate": 87.53846153846155
     },
     "ty": {
-      "packages_tested": 43,
-      "total_runs": 4300,
-      "total_ok": 4293,
-      "total_found": 3969,
-      "total_valid": 3969,
-      "avg_latency_ms": 29.629448621172262,
-      "min_latency_ms": 1.4144099999839455,
-      "max_latency_ms": 236.16668762886866,
-      "ok_rate": 99.83720930232558,
-      "success_rate": 92.30232558139535
+      "packages_tested": 52,
+      "total_runs": 5200,
+      "total_ok": 5193,
+      "total_found": 4758,
+      "total_valid": 4758,
+      "avg_latency_ms": 23.94122331596302,
+      "min_latency_ms": 1.3962329999912981,
+      "max_latency_ms": 190.68202000003566,
+      "ok_rate": 99.86538461538461,
+      "success_rate": 91.5
     },
     "zuban": {
-      "packages_tested": 43,
-      "total_runs": 4300,
-      "total_ok": 3299,
-      "total_found": 3039,
-      "total_valid": 3039,
-      "avg_latency_ms": 11.453658104375894,
-      "min_latency_ms": 1.5042790000029527,
-      "max_latency_ms": 86.90931599999885,
-      "ok_rate": 76.72093023255813,
-      "success_rate": 70.67441860465117
+      "packages_tested": 52,
+      "total_runs": 5200,
+      "total_ok": 4298,
+      "total_found": 3942,
+      "total_valid": 3942,
+      "avg_latency_ms": 6.647652367627779,
+      "min_latency_ms": 1.7761999999765976,
+      "max_latency_ms": 47.570924000010564,
+      "ok_rate": 82.65384615384616,
+      "success_rate": 75.8076923076923
     }
   },
   "results": [
@@ -75,22 +75,40 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 99,
-          "ok_pct": 99.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
           "found_count": 93,
           "found_pct": 93.0,
           "valid_count": 93,
           "valid_pct": 93.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 8.8312999999971,
-            "p95": 546.9851999999946,
-            "min": 0.9349000000042906,
-            "max": 1254.1961000000015,
-            "mean": 81.64721212120935
+            "p50": 13.707900000099471,
+            "p95": 580.1288000000113,
+            "min": 0.9454999999434222,
+            "max": 1754.556999999977,
+            "mean": 93.52293899999722
           }
         },
         "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.489000000148735,
+            "p95": 48.569199999974444,
+            "min": 0.552199999901859,
+            "max": 281.6362000000936,
+            "mean": 17.387540404042003
+          }
+        },
+        "ty": {
           "ok": true,
           "runs": 100,
           "ok_count": 100,
@@ -101,29 +119,11 @@
           "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 5.357600000024831,
-            "p95": 117.28830000004109,
-            "min": 0.5534999999667889,
-            "max": 1950.029900000004,
-            "mean": 38.9997870000002
-          }
-        },
-        "ty": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 100,
-          "found_pct": 100.0,
-          "valid_count": 100,
-          "valid_pct": 100.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 0.8743999999865082,
-            "p95": 195.0353000000291,
-            "min": 0.4515000000537839,
-            "max": 234.3678999999952,
-            "mean": 19.36305300000072
+            "p50": 0.9799000001748936,
+            "p95": 110.77589999990778,
+            "min": 0.3959999999096908,
+            "max": 583.1479999999374,
+            "mean": 22.825623000005635
           }
         },
         "zuban": {
@@ -150,50 +150,561 @@
       "package_name": "airflow",
       "github_url": "https://github.com/apache/airflow",
       "ranking": 2,
-      "error": "Failed to clone repository",
-      "metrics": {}
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 35,
+          "found_pct": 35.0,
+          "valid_count": 35,
+          "valid_pct": 35.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.548299999825758,
+            "p95": 823.9450000000943,
+            "min": 0.771099999838043,
+            "max": 1990.3765999999905,
+            "mean": 121.13504848484854
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 34,
+          "ok_pct": 34.0,
+          "found_count": 23,
+          "found_pct": 23.0,
+          "valid_count": 23,
+          "valid_pct": 23.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 9.413900000026842,
+            "p95": 366.65309999989404,
+            "min": 0.6559999999353749,
+            "max": 1130.5423000001156,
+            "mean": 62.25342941178604
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 74,
+          "found_pct": 74.0,
+          "valid_count": 74,
+          "valid_pct": 74.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.9698999999491207,
+            "p95": 433.18090000002485,
+            "min": 0.42750000011437805,
+            "max": 586.4371999998639,
+            "mean": 96.20700200000329
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 76,
+          "found_pct": 76.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8000000000265572,
+            "p95": 148.17139999991014,
+            "min": 0.6386999998539977,
+            "max": 360.8418999999685,
+            "mean": 18.612173999999868
+          }
+        }
+      }
     },
     {
       "package_name": "ansible",
       "github_url": "https://github.com/ansible/ansible",
       "ranking": 3,
-      "error": "Failed to clone repository",
-      "metrics": {}
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 70,
+          "found_pct": 70.0,
+          "valid_count": 70,
+          "valid_pct": 70.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.877199999938966,
+            "p95": 199.80850000001737,
+            "min": 1.821900000095411,
+            "max": 1880.0612,
+            "mean": 65.07693163265156
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.780299999993076,
+            "p95": 58.713699999998425,
+            "min": 0.6144000001313543,
+            "max": 1873.554500000182,
+            "mean": 33.386404000002585
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.161099999990256,
+            "p95": 285.512400000016,
+            "min": 0.4507000001012784,
+            "max": 581.7212000001746,
+            "mean": 35.35411600000316
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5432000000382686,
+            "p95": 33.16050000012183,
+            "min": 0.3606000000218046,
+            "max": 503.35659999996096,
+            "mean": 9.216639999990548
+          }
+        }
+      }
     },
     {
       "package_name": "black",
       "github_url": "https://github.com/psf/black",
       "ranking": 6,
-      "error": "Failed to clone repository",
-      "metrics": {}
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 49,
+          "found_pct": 49.0,
+          "valid_count": 49,
+          "valid_pct": 49.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.3650000000307045,
+            "p95": 461.67049999985466,
+            "min": 0.6514000001516251,
+            "max": 1331.1228999998548,
+            "mean": 67.32040899998765
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 59,
+          "found_pct": 59.0,
+          "valid_count": 59,
+          "valid_pct": 59.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.9729000000315864,
+            "p95": 30.881299999919065,
+            "min": 0.4753999999138614,
+            "max": 331.3823000000866,
+            "mean": 12.427971000006437
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 57,
+          "found_pct": 57.0,
+          "valid_count": 57,
+          "valid_pct": 57.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6035999999767228,
+            "p95": 16.19299999993018,
+            "min": 0.3778000000238535,
+            "max": 582.2865000000093,
+            "mean": 8.814038000004984
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 58,
+          "found_pct": 58.0,
+          "valid_count": 58,
+          "valid_pct": 58.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4394999998567073,
+            "p95": 53.335199999992255,
+            "min": 0.30420000007325143,
+            "max": 365.492900000163,
+            "mean": 10.636079999987942
+          }
+        }
+      }
     },
     {
       "package_name": "boto3",
       "github_url": "https://github.com/boto/boto3",
       "ranking": 7,
-      "error": "Failed to clone repository",
-      "metrics": {}
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 74,
+          "found_pct": 74.0,
+          "valid_count": 74,
+          "valid_pct": 74.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.323000000065804,
+            "p95": 342.2385999999733,
+            "min": 0.9218999998665822,
+            "max": 1710.4547000001276,
+            "mean": 54.1848122448936
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 82,
+          "found_pct": 82.0,
+          "valid_count": 82,
+          "valid_pct": 82.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.447500000016589,
+            "p95": 157.78819999991356,
+            "min": 0.47410000001946173,
+            "max": 839.7515000001476,
+            "mean": 32.238907070716714
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7412999998450687,
+            "p95": 11.427200000071025,
+            "min": 0.3309999999601132,
+            "max": 85.44800000004216,
+            "mean": 3.064219999996567
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4636000001028151,
+            "p95": 19.811099999969883,
+            "min": 0.2918999998655636,
+            "max": 443.5789999999997,
+            "mean": 8.072827999985748
+          }
+        }
+      }
     },
     {
       "package_name": "botocore",
       "github_url": "https://github.com/boto/botocore",
       "ranking": 8,
-      "error": "Failed to clone repository",
-      "metrics": {}
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.5657000000337575,
+            "p95": 533.7670999999773,
+            "min": 1.2487999999848398,
+            "max": 1652.4885999999697,
+            "mean": 79.58763939395473
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.45129999980054,
+            "p95": 208.85219999991023,
+            "min": 0.5926000001181819,
+            "max": 544.5408000000498,
+            "mean": 23.265425000013238
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7706999999754771,
+            "p95": 85.12879999989309,
+            "min": 0.41069999997489504,
+            "max": 276.81600000005346,
+            "mean": 12.912008000005244
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 0,
+          "ok_pct": 0.0,
+          "found_count": 0,
+          "found_pct": 0.0,
+          "valid_count": 0,
+          "valid_pct": 0.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "mean": null
+          }
+        }
+      }
     },
     {
       "package_name": "celery",
       "github_url": "https://github.com/celery/celery",
       "ranking": 9,
-      "error": "Failed to clone repository",
-      "metrics": {}
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 83,
+          "valid_pct": 83.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.270199999993565,
+            "p95": 386.07329999990725,
+            "min": 1.0891000001720386,
+            "max": 1456.0311000000183,
+            "mean": 56.25083333333663
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.936999999927139,
+            "p95": 93.45540000003894,
+            "min": 0.4979000000275846,
+            "max": 407.11350000015045,
+            "mean": 23.679469000012432
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7372999998551677,
+            "p95": 161.08049999979812,
+            "min": 0.44969999999011634,
+            "max": 484.3627000000197,
+            "mean": 22.914701999993667
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.48809999998411513,
+            "p95": 21.325500000102693,
+            "min": 0.3544999999576248,
+            "max": 73.00089999989723,
+            "mean": 3.5468240000113838
+          }
+        }
+      }
     },
     {
       "package_name": "ComfyUI",
       "github_url": "https://github.com/comfyanonymous/ComfyUI",
       "ranking": 14,
-      "error": "Failed to clone repository",
-      "metrics": {}
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 55,
+          "found_pct": 55.0,
+          "valid_count": 55,
+          "valid_pct": 55.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.8334000000049855,
+            "p95": 416.1982000000535,
+            "min": 1.0659000001851382,
+            "max": 1630.436599999939,
+            "mean": 82.9381393939342
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 73,
+          "found_pct": 73.0,
+          "valid_count": 73,
+          "valid_pct": 73.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.609300000012809,
+            "p95": 192.06199999985074,
+            "min": 0.5446000000119966,
+            "max": 356.1121000000185,
+            "mean": 26.158189999994192
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 79,
+          "found_pct": 79.0,
+          "valid_count": 79,
+          "valid_pct": 79.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7633000000168977,
+            "p95": 219.6960000001127,
+            "min": 0.4252000001088163,
+            "max": 499.76620000006733,
+            "mean": 26.25689099998226
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 80,
+          "found_pct": 80.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5238999999619409,
+            "p95": 30.401099999835424,
+            "min": 0.37240000006022456,
+            "max": 695.9704999999303,
+            "mean": 11.573110999988785
+          }
+        }
+      }
     },
     {
       "package_name": "cryptography",
@@ -206,20 +717,118 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 73,
-          "found_pct": 73.0,
-          "valid_count": 73,
-          "valid_pct": 73.0,
+          "found_count": 68,
+          "found_pct": 68.0,
+          "valid_count": 68,
+          "valid_pct": 68.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.436800000074072,
-            "p95": 762.8667000000178,
-            "min": 0.981600000045546,
-            "max": 1572.2455000000082,
-            "mean": 93.64212000000519
+            "p50": 3.539199999977427,
+            "p95": 165.7511999999315,
+            "min": 0.8112000000437547,
+            "max": 1440.0333999999475,
+            "mean": 42.29287300001033
           }
         },
         "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.0415999999841006,
+            "p95": 31.794599999784623,
+            "min": 0.4687999999077874,
+            "max": 258.3956000000853,
+            "mean": 9.818185999981779
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5593000000772008,
+            "p95": 8.729099999982282,
+            "min": 0.36250000016480044,
+            "max": 428.4526999999798,
+            "mean": 6.854444000016429
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4451999998309475,
+            "p95": 9.06699999995908,
+            "min": 0.2947000000403932,
+            "max": 242.47990000003483,
+            "mean": 3.5507460000121682
+          }
+        }
+      }
+    },
+    {
+      "package_name": "dask",
+      "github_url": "https://github.com/dask/dask",
+      "ranking": 16,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 81,
+          "found_pct": 81.0,
+          "valid_count": 81,
+          "valid_pct": 81.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.987099999832935,
+            "p95": 198.44639999996616,
+            "min": 1.7444999998588173,
+            "max": 1594.1596000000118,
+            "mean": 52.5595887755033
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.018699999889577,
+            "p95": 246.67750000003252,
+            "min": 0.6016999998337269,
+            "max": 1043.312799999967,
+            "mean": 43.86605353534842
+          }
+        },
+        "ty": {
           "ok": true,
           "runs": 100,
           "ok_count": 100,
@@ -230,11 +839,73 @@
           "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.7025999999068517,
-            "p95": 76.56600000007074,
-            "min": 0.5148000000190223,
-            "max": 231.76760000001195,
-            "mean": 12.995140000001584
+            "p50": 0.8585999999013438,
+            "p95": 144.80809999986377,
+            "min": 0.5313999999998487,
+            "max": 1179.287400000021,
+            "mean": 31.1688249999861
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 0,
+          "ok_pct": 0.0,
+          "found_count": 0,
+          "found_pct": 0.0,
+          "valid_count": 0,
+          "valid_pct": 0.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "mean": null
+          }
+        }
+      }
+    },
+    {
+      "package_name": "django",
+      "github_url": "https://github.com/django/django",
+      "ranking": 18,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.304299999963405,
+            "p95": 91.22679999995853,
+            "min": 1.4659999999366846,
+            "max": 683.234000000084,
+            "mean": 27.215362626252087
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.5280000000075233,
+            "p95": 46.63810000010926,
+            "min": 0.5326999998942483,
+            "max": 377.20969999986664,
+            "mean": 11.026595999996971
           }
         },
         "ty": {
@@ -242,52 +913,38 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 91,
-          "found_pct": 91.0,
-          "valid_count": 91,
-          "valid_pct": 91.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6849000000102023,
-            "p95": 50.61009999997168,
-            "min": 0.3518999999414518,
-            "max": 231.92660000006526,
-            "mean": 7.721761000000242
+            "p50": 0.8098000000700267,
+            "p95": 96.51039999994282,
+            "min": 0.4224999997859413,
+            "max": 234.7393000000011,
+            "mean": 11.802963000009186
           }
         },
         "zuban": {
           "ok": true,
           "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 91,
-          "found_pct": 91.0,
-          "valid_count": 91,
-          "valid_pct": 91.0,
+          "ok_count": 0,
+          "ok_pct": 0.0,
+          "found_count": 0,
+          "found_pct": 0.0,
+          "valid_count": 0,
+          "valid_pct": 0.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5404999999427673,
-            "p95": 15.453800000045703,
-            "min": 0.3346999999394029,
-            "max": 1425.7102999999915,
-            "mean": 17.830623999996078
+            "p50": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "mean": null
           }
         }
       }
-    },
-    {
-      "package_name": "dask",
-      "github_url": "https://github.com/dask/dask",
-      "ranking": 16,
-      "error": "Failed to clone repository",
-      "metrics": {}
-    },
-    {
-      "package_name": "django",
-      "github_url": "https://github.com/django/django",
-      "ranking": 18,
-      "error": "Failed to clone repository",
-      "metrics": {}
     },
     {
       "package_name": "fastapi",
@@ -300,17 +957,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 67,
-          "found_pct": 67.0,
-          "valid_count": 67,
-          "valid_pct": 67.0,
+          "found_count": 58,
+          "found_pct": 58.0,
+          "valid_count": 58,
+          "valid_pct": 58.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 3.149699999994482,
-            "p95": 55.09970000002795,
-            "min": 0.9332999999287495,
-            "max": 1585.1019000000406,
-            "mean": 24.526886000001014
+            "p50": 3.3453999999437656,
+            "p95": 73.60259999995833,
+            "min": 1.4760000001388107,
+            "max": 1432.6264000001174,
+            "mean": 31.97155100001055
           }
         },
         "pyrefly": {
@@ -318,17 +975,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 80,
-          "found_pct": 80.0,
-          "valid_count": 80,
-          "valid_pct": 80.0,
+          "found_count": 77,
+          "found_pct": 77.0,
+          "valid_count": 77,
+          "valid_pct": 77.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.8887999999606109,
-            "p95": 9.442499999977372,
-            "min": 0.5181999999877007,
-            "max": 235.54839999997057,
-            "mean": 7.697184999993851
+            "p50": 1.8678999999792723,
+            "p95": 8.694299999888244,
+            "min": 0.5691999999726249,
+            "max": 249.788800000033,
+            "mean": 7.534675999997944
           }
         },
         "ty": {
@@ -342,11 +999,11 @@
           "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7479000000785163,
-            "p95": 82.90690000001177,
-            "min": 0.42020000000775326,
-            "max": 139.02010000003884,
-            "mean": 6.571202000003495
+            "p50": 0.6932000001143024,
+            "p95": 18.197200000031444,
+            "min": 0.4420999998728803,
+            "max": 125.47480000012001,
+            "mean": 4.050229999988915
           }
         },
         "zuban": {
@@ -360,11 +1017,11 @@
           "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.43299999992996163,
-            "p95": 3.194799999960196,
-            "min": 0.3268000000389293,
-            "max": 63.95159999999578,
-            "mean": 1.5042790000029527
+            "p50": 0.42120000011891534,
+            "p95": 10.385399999904621,
+            "min": 0.32539999983782764,
+            "max": 77.18839999984084,
+            "mean": 2.0823959999870567
           }
         }
       }
@@ -380,17 +1037,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 50,
-          "found_pct": 50.0,
-          "valid_count": 50,
-          "valid_pct": 50.0,
+          "found_count": 53,
+          "found_pct": 53.0,
+          "valid_count": 53,
+          "valid_pct": 53.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 3.8161999999601903,
-            "p95": 165.53929999997763,
-            "min": 1.3850999999931446,
-            "max": 1852.572699999996,
-            "mean": 44.639065999997456
+            "p50": 4.468800000040574,
+            "p95": 56.75669999982347,
+            "min": 1.0445000000345317,
+            "max": 1340.8770999999433,
+            "mean": 27.49718999999459
           }
         },
         "pyrefly": {
@@ -398,17 +1055,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.299499999935506,
-            "p95": 21.372199999973418,
-            "min": 0.5487999999331805,
-            "max": 329.0514999999914,
-            "mean": 10.945723999990378
+            "p50": 2.7712000000974513,
+            "p95": 30.89759999988928,
+            "min": 0.5638999998609506,
+            "max": 479.4939999999315,
+            "mean": 15.526581999993141
           }
         },
         "ty": {
@@ -416,17 +1073,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6908999999950538,
-            "p95": 21.836000000007516,
-            "min": 0.40950000004613685,
-            "max": 368.17310000003545,
-            "mean": 8.688325000000532
+            "p50": 0.7128999998258223,
+            "p95": 45.089599999982966,
+            "min": 0.42280000002392626,
+            "max": 184.7447000000102,
+            "mean": 8.29439599999887
           }
         },
         "zuban": {
@@ -434,17 +1091,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.47710000001188746,
-            "p95": 4.347199999983786,
-            "min": 0.3143999999792868,
-            "max": 187.4041999999463,
-            "mean": 3.891820000002326
+            "p50": 0.47199999994518294,
+            "p95": 5.71669999999358,
+            "min": 0.3521999999520631,
+            "max": 234.49299999992945,
+            "mean": 3.4018009999840615
           }
         }
       }
@@ -460,17 +1117,17 @@
           "runs": 100,
           "ok_count": 99,
           "ok_pct": 99.0,
-          "found_count": 87,
-          "found_pct": 87.0,
-          "valid_count": 87,
-          "valid_pct": 87.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.057800000055067,
-            "p95": 182.72669999998925,
-            "min": 1.7843000000539178,
-            "max": 897.121499999912,
-            "mean": 35.96701919191403
+            "p50": 4.548699999986638,
+            "p95": 239.89170000004378,
+            "min": 0.8288999999876978,
+            "max": 861.8649999998524,
+            "mean": 39.961799999990475
           }
         },
         "pyrefly": {
@@ -478,17 +1135,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 94,
-          "found_pct": 94.0,
-          "valid_count": 94,
-          "valid_pct": 94.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.8860999999787964,
-            "p95": 29.980799999975716,
-            "min": 0.6082999999534877,
-            "max": 776.4381999999159,
-            "mean": 16.217461999996203
+            "p50": 2.219100000047547,
+            "p95": 169.58550000003925,
+            "min": 0.5513000000973989,
+            "max": 791.5440000001581,
+            "mean": 27.483361000010973
           }
         },
         "ty": {
@@ -496,17 +1153,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.8715000000165674,
-            "p95": 87.55589999998392,
-            "min": 0.4253999999264124,
-            "max": 162.824999999998,
-            "mean": 11.616139000012708
+            "p50": 0.9272999998302112,
+            "p95": 68.45619999990049,
+            "min": 0.4164000001765089,
+            "max": 187.64420000002247,
+            "mean": 9.950212000003376
           }
         },
         "zuban": {
@@ -514,17 +1171,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5037999999331078,
-            "p95": 38.549299999999675,
-            "min": 0.318899999911082,
-            "max": 222.1015999999736,
-            "mean": 7.198073999985581
+            "p50": 0.4618999998911022,
+            "p95": 14.19250000003558,
+            "min": 0.31619999981558067,
+            "max": 221.48610000022018,
+            "mean": 4.088513999993211
           }
         }
       }
@@ -538,19 +1195,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 99,
-          "ok_pct": 99.0,
-          "found_count": 81,
-          "found_pct": 81.0,
-          "valid_count": 81,
-          "valid_pct": 81.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 79,
+          "found_pct": 79.0,
+          "valid_count": 79,
+          "valid_pct": 79.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 13.032599999974082,
-            "p95": 105.4665000000341,
-            "min": 1.7181999999138498,
-            "max": 558.0635999999686,
-            "mean": 34.14614545454587
+            "p50": 9.040899999945395,
+            "p95": 152.55170000000362,
+            "min": 1.5209000002869288,
+            "max": 2001.4046000001144,
+            "mean": 45.725499000004675
           }
         },
         "pyrefly": {
@@ -564,11 +1221,11 @@
           "valid_pct": 87.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.259699999991426,
-            "p95": 22.062800000071547,
-            "min": 0.5943999999544758,
-            "max": 966.9877999999699,
-            "mean": 16.665256999999656
+            "p50": 1.1910999996871396,
+            "p95": 60.895999999956985,
+            "min": 0.5599000000984233,
+            "max": 520.1207000000068,
+            "mean": 11.661239000018213
           }
         },
         "ty": {
@@ -576,17 +1233,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 88,
-          "found_pct": 88.0,
-          "valid_count": 88,
-          "valid_pct": 88.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.9050999999544729,
-            "p95": 93.94900000006601,
-            "min": 0.4940000000033251,
-            "max": 180.04840000003242,
-            "mean": 16.27283400000124
+            "p50": 0.6948999998712679,
+            "p95": 56.559200000265264,
+            "min": 0.42300000040995656,
+            "max": 296.75989999986996,
+            "mean": 10.442629000017405
           }
         },
         "zuban": {
@@ -594,17 +1251,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 88,
-          "found_pct": 88.0,
-          "valid_count": 88,
-          "valid_pct": 88.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5226999999194959,
-            "p95": 18.026999999960935,
-            "min": 0.39540000000215514,
-            "max": 111.58509999995658,
-            "mean": 3.800408000004154
+            "p50": 0.5443000000013853,
+            "p95": 19.04370000011113,
+            "min": 0.36550000004353933,
+            "max": 84.07219999980953,
+            "mean": 4.084267999992335
           }
         }
       }
@@ -620,17 +1277,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 83,
-          "found_pct": 83.0,
-          "valid_count": 83,
-          "valid_pct": 83.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.124399999862362,
-            "p95": 184.18820000010783,
-            "min": 2.0081000000118365,
-            "max": 837.5398999999106,
-            "mean": 43.22781999999506
+            "p50": 5.51339999992706,
+            "p95": 143.211699999938,
+            "min": 1.460899999983667,
+            "max": 742.6908000002186,
+            "mean": 34.169543000039084
           }
         },
         "pyrefly": {
@@ -638,17 +1295,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 84,
-          "found_pct": 84.0,
-          "valid_count": 84,
-          "valid_pct": 84.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.276500000059968,
-            "p95": 17.415399999890724,
-            "min": 0.5424999999377178,
-            "max": 241.45309999994424,
-            "mean": 9.661184999972647
+            "p50": 4.372300000341056,
+            "p95": 19.381899999643792,
+            "min": 0.5350999999791384,
+            "max": 167.30359999974098,
+            "mean": 8.463548000004266
           }
         },
         "ty": {
@@ -656,17 +1313,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 88,
-          "found_pct": 88.0,
-          "valid_count": 88,
-          "valid_pct": 88.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.728199999912249,
-            "p95": 9.037199999966106,
-            "min": 0.41970000006585906,
-            "max": 95.96190000002025,
-            "mean": 2.8412209999783045
+            "p50": 0.6524999998873682,
+            "p95": 7.123200000023644,
+            "min": 0.38750000021536835,
+            "max": 22.78630000000703,
+            "mean": 1.3962329999912981
           }
         },
         "zuban": {
@@ -674,17 +1331,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 88,
-          "found_pct": 88.0,
-          "valid_count": 88,
-          "valid_pct": 88.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.44930000012755045,
-            "p95": 19.539500000064436,
-            "min": 0.3172000001541164,
-            "max": 140.39890000003652,
-            "mean": 3.7564910000037344
+            "p50": 0.4079000000274391,
+            "p95": 8.590899999944668,
+            "min": 0.3275000003668538,
+            "max": 70.26830000040718,
+            "mean": 1.7761999999765976
           }
         }
       }
@@ -706,11 +1363,11 @@
           "valid_pct": 96.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 12.40090000010241,
-            "p95": 199.4480000000749,
-            "min": 1.0749000000487285,
-            "max": 1266.1365999999816,
-            "mean": 54.10358700000643
+            "p50": 8.586599999944156,
+            "p95": 293.7495000001036,
+            "min": 1.0769999998956337,
+            "max": 1298.349700000017,
+            "mean": 57.7714730000298
           }
         },
         "pyrefly": {
@@ -718,17 +1375,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 95,
-          "found_pct": 95.0,
-          "valid_count": 95,
-          "valid_pct": 95.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.5438000000121974,
-            "p95": 72.48370000002069,
-            "min": 0.5175999999664782,
-            "max": 421.79700000019693,
-            "mean": 15.82810199998903
+            "p50": 3.9029999998092535,
+            "p95": 32.971399999951245,
+            "min": 0.5409000000327069,
+            "max": 240.3509999999187,
+            "mean": 11.428540000019893
           }
         },
         "ty": {
@@ -736,35 +1393,35 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7858000001306209,
-            "p95": 18.471599999884347,
-            "min": 0.46429999997599225,
-            "max": 60.88599999998223,
-            "mean": 3.19406100001288
+            "p50": 0.7381000000350468,
+            "p95": 14.120599999841943,
+            "min": 0.3854999999930442,
+            "max": 233.36599999993268,
+            "mean": 5.507938999980979
           }
         },
         "zuban": {
           "ok": true,
           "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5432000000382686,
-            "p95": 8.832499999925858,
-            "min": 0.32289999990098295,
-            "max": 1745.5715000000964,
-            "mean": 18.98985800001128
+            "p50": 0.48089999972944497,
+            "p95": 10.398099999747501,
+            "min": 0.3196000002390065,
+            "max": 55.56129999968107,
+            "mean": 2.278093939403701
           }
         }
       }
@@ -778,42 +1435,6 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 99,
-          "ok_pct": 99.0,
-          "found_count": 92,
-          "found_pct": 92.0,
-          "valid_count": 92,
-          "valid_pct": 92.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 14.410400000087975,
-            "p95": 480.38740000015423,
-            "min": 1.9211999999697582,
-            "max": 848.7004999999499,
-            "mean": 64.21104848485848
-          }
-        },
-        "pyrefly": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 3.5204000000703672,
-            "p95": 41.27509999989343,
-            "min": 0.6140000000414148,
-            "max": 526.8690999998853,
-            "mean": 14.71411800000169
-          }
-        },
-        "ty": {
-          "ok": true,
-          "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
           "found_count": 94,
@@ -822,11 +1443,47 @@
           "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.8955999999216147,
-            "p95": 104.26959999995233,
-            "min": 0.41390000001229055,
-            "max": 160.41019999988748,
-            "mean": 11.971308000004228
+            "p50": 11.655199999950128,
+            "p95": 322.635800000171,
+            "min": 1.625000000331056,
+            "max": 1178.5930999999437,
+            "mean": 54.081397000018114
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.3985999998549232,
+            "p95": 53.49720000003799,
+            "min": 0.515700000050856,
+            "max": 138.17909999988842,
+            "mean": 10.306325000005927
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7648999999219086,
+            "p95": 26.077099999838538,
+            "min": 0.46639999982289737,
+            "max": 152.82329999990907,
+            "mean": 4.362217999992026
           }
         },
         "zuban": {
@@ -834,17 +1491,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5703000001631153,
-            "p95": 35.988300000099116,
-            "min": 0.39209999999911815,
-            "max": 217.54580000015267,
-            "mean": 7.7088610000259905
+            "p50": 0.49219999982597074,
+            "p95": 20.35589999968579,
+            "min": 0.32929999997577397,
+            "max": 113.82400000002235,
+            "mean": 4.299074999980803
           }
         }
       }
@@ -858,19 +1515,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 99,
-          "ok_pct": 99.0,
-          "found_count": 84,
-          "found_pct": 84.0,
-          "valid_count": 84,
-          "valid_pct": 84.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 83,
+          "valid_pct": 83.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 3.5090999999738415,
-            "p95": 78.57390000003761,
-            "min": 1.2899999999262945,
-            "max": 1009.8370999999133,
-            "mean": 32.65322525252293
+            "p50": 3.523299999869778,
+            "p95": 207.4612999999772,
+            "min": 1.1825000001408625,
+            "max": 1082.6974999999948,
+            "mean": 38.81226399996649
           }
         },
         "pyrefly": {
@@ -878,17 +1535,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 95,
-          "found_pct": 95.0,
-          "valid_count": 95,
-          "valid_pct": 95.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.6682000000400876,
-            "p95": 58.44519999982367,
-            "min": 0.5717999999887979,
-            "max": 254.99320000017178,
-            "mean": 11.253847999998925
+            "p50": 1.418099999682454,
+            "p95": 21.877199999835284,
+            "min": 0.5220000002736924,
+            "max": 497.9451999997764,
+            "mean": 10.93766699997559
           }
         },
         "ty": {
@@ -902,11 +1559,11 @@
           "valid_pct": 95.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.130399999965448,
-            "p95": 165.53739999994832,
-            "min": 0.4739999999401334,
-            "max": 407.49849999997423,
-            "mean": 22.70549800000026
+            "p50": 0.9701999997560051,
+            "p95": 74.65030000003026,
+            "min": 0.37909999991825316,
+            "max": 325.67420000032143,
+            "mean": 10.429074000012406
           }
         },
         "zuban": {
@@ -920,11 +1577,11 @@
           "valid_pct": 95.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5254000000149972,
-            "p95": 27.745899999899848,
-            "min": 0.3899000000728847,
-            "max": 75.51000000012209,
-            "mean": 4.28289800000357
+            "p50": 0.45069999987390474,
+            "p95": 4.401300000154151,
+            "min": 0.3069999997933337,
+            "max": 118.27220000031957,
+            "mean": 3.6641279999730614
           }
         }
       }
@@ -940,17 +1597,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 59,
-          "found_pct": 59.0,
-          "valid_count": 59,
-          "valid_pct": 59.0,
+          "found_count": 63,
+          "found_pct": 63.0,
+          "valid_count": 63,
+          "valid_pct": 63.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 8.657800000037241,
-            "p95": 482.7654000000621,
-            "min": 1.6439999999420252,
-            "max": 1537.2760000000198,
-            "mean": 69.59232200000542
+            "p50": 5.709299999580253,
+            "p95": 206.9461000000956,
+            "min": 1.1862000001201523,
+            "max": 1540.753499999937,
+            "mean": 45.79574500000945
           }
         },
         "pyrefly": {
@@ -958,17 +1615,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 84,
-          "found_pct": 84.0,
-          "valid_count": 84,
-          "valid_pct": 84.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.6999999998006388,
-            "p95": 36.758499999905325,
-            "min": 0.5710000000362925,
-            "max": 609.836100000166,
-            "mean": 14.714392000014413
+            "p50": 2.805600000101549,
+            "p95": 66.53640000013183,
+            "min": 0.5067000001872657,
+            "max": 230.94870000022638,
+            "mean": 12.52041000000645
           }
         },
         "ty": {
@@ -976,17 +1633,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 83,
-          "found_pct": 83.0,
-          "valid_count": 83,
-          "valid_pct": 83.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.3413000001492037,
-            "p95": 177.1272000000863,
-            "min": 0.45969999996486877,
-            "max": 344.6602999999868,
-            "mean": 30.251613000002635
+            "p50": 1.0475999997652252,
+            "p95": 119.42920000001322,
+            "min": 0.3885999999511114,
+            "max": 1195.2713999999105,
+            "mean": 24.19710399999076
           }
         },
         "zuban": {
@@ -994,17 +1651,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 84,
-          "found_pct": 84.0,
-          "valid_count": 84,
-          "valid_pct": 84.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5807000000004336,
-            "p95": 81.78509999993366,
-            "min": 0.35309999998389685,
-            "max": 111.35980000017298,
-            "mean": 7.5980499999946005
+            "p50": 0.4874999999628926,
+            "p95": 48.45430000023043,
+            "min": 0.30569999989893404,
+            "max": 111.41829999996844,
+            "mean": 5.0449269999990065
           }
         }
       }
@@ -1020,35 +1677,35 @@
           "runs": 100,
           "ok_count": 99,
           "ok_pct": 99.0,
-          "found_count": 86,
-          "found_pct": 86.0,
-          "valid_count": 86,
-          "valid_pct": 86.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 6.738999999924999,
-            "p95": 705.7832000000417,
-            "min": 0.9113999999499356,
-            "max": 1333.380100000113,
-            "mean": 90.30156464646466
-          }
-        },
-        "pyrefly": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 97,
-          "ok_pct": 97.0,
           "found_count": 88,
           "found_pct": 88.0,
           "valid_count": 88,
           "valid_pct": 88.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.6222999999372405,
-            "p95": 248.0666999999812,
-            "min": 0.624900000048001,
-            "max": 916.8144999998731,
-            "mean": 34.69248762884649
+            "p50": 4.808600000160368,
+            "p95": 247.0853999998326,
+            "min": 0.6266999998842948,
+            "max": 1534.7999000000527,
+            "mean": 61.08039797978067
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.7687999997615407,
+            "p95": 60.26479999991352,
+            "min": 0.5649999998240673,
+            "max": 1320.635399999901,
+            "mean": 25.35583900000347
           }
         },
         "ty": {
@@ -1056,17 +1713,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 90,
-          "found_pct": 90.0,
-          "valid_count": 90,
-          "valid_pct": 90.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.8096999999906984,
-            "p95": 19.00030000001607,
-            "min": 0.4129999999804568,
-            "max": 528.209600000082,
-            "mean": 9.296522000001914
+            "p50": 0.7896000001892389,
+            "p95": 23.184500000297703,
+            "min": 0.44100000013713725,
+            "max": 219.53389999998763,
+            "mean": 6.205379000016364
           }
         },
         "zuban": {
@@ -1074,17 +1731,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 90,
-          "found_pct": 90.0,
-          "valid_count": 90,
-          "valid_pct": 90.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5684000000201195,
-            "p95": 30.829600000060964,
-            "min": 0.39199999991978984,
-            "max": 322.925400000031,
-            "mean": 7.714026000021477
+            "p50": 0.48589999960313435,
+            "p95": 21.30410000017946,
+            "min": 0.3260000003137975,
+            "max": 88.36350000001403,
+            "mean": 4.343663000013294
           }
         }
       }
@@ -1106,11 +1763,11 @@
           "valid_pct": 80.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 3.4995000000890286,
-            "p95": 114.12519999998949,
-            "min": 1.1890000000676082,
-            "max": 248.94229999995332,
-            "mean": 21.38237171717917
+            "p50": 3.337699999974575,
+            "p95": 105.07779999988998,
+            "min": 0.9084999996957777,
+            "max": 596.3528000002043,
+            "mean": 23.6196454545068
           }
         },
         "pyrefly": {
@@ -1118,17 +1775,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 83,
-          "found_pct": 83.0,
-          "valid_count": 83,
-          "valid_pct": 83.0,
+          "found_count": 81,
+          "found_pct": 81.0,
+          "valid_count": 81,
+          "valid_pct": 81.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.250200000115001,
-            "p95": 47.76010000000497,
-            "min": 0.5464000000756641,
-            "max": 725.7041999998819,
-            "mean": 20.042042999998557
+            "p50": 4.150300000219431,
+            "p95": 28.580700000020443,
+            "min": 0.4766000001836801,
+            "max": 438.87519999998403,
+            "mean": 17.278734000028635
           }
         },
         "ty": {
@@ -1136,17 +1793,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 89,
-          "found_pct": 89.0,
-          "valid_count": 89,
-          "valid_pct": 89.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.8275000000139698,
-            "p95": 182.5510999999551,
-            "min": 0.41759999999158026,
-            "max": 606.1220000001413,
-            "mean": 27.2048159999963
+            "p50": 0.7676000000174099,
+            "p95": 183.48240000022997,
+            "min": 0.3762999999707972,
+            "max": 610.7121999998526,
+            "mean": 25.906498999997893
           }
         },
         "zuban": {
@@ -1154,17 +1811,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 89,
-          "found_pct": 89.0,
-          "valid_count": 89,
-          "valid_pct": 89.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.505499999917447,
-            "p95": 55.16430000011496,
-            "min": 0.3481000001102075,
-            "max": 696.0411000000022,
-            "mean": 12.607351999997718
+            "p50": 0.46109999993859674,
+            "p95": 28.00200000001496,
+            "min": 0.3241999997953826,
+            "max": 489.6648999997524,
+            "mean": 9.137200999984998
           }
         }
       }
@@ -1178,55 +1835,55 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 99,
-          "ok_pct": 99.0,
-          "found_count": 79,
-          "found_pct": 79.0,
-          "valid_count": 79,
-          "valid_pct": 79.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 7.228100000020277,
-            "p95": 825.6366000000526,
-            "min": 1.0359000000335072,
-            "max": 1627.5868000000173,
-            "mean": 110.6990626262607
+            "p50": 3.9090999998734333,
+            "p95": 422.68430000012813,
+            "min": 0.8409000001847744,
+            "max": 770.004400000289,
+            "mean": 54.580930000010994
           }
         },
         "pyrefly": {
           "ok": true,
           "runs": 100,
-          "ok_count": 11,
-          "ok_pct": 11.0,
-          "found_count": 11,
-          "found_pct": 11.0,
-          "valid_count": 11,
-          "valid_pct": 11.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.77140000016152,
-            "p95": 617.4628000001121,
-            "min": 0.7124000001113018,
-            "max": 617.4628000001121,
-            "mean": 103.77790909096389
+            "p50": 2.066800000193325,
+            "p95": 19.3968000003224,
+            "min": 0.4925999996885366,
+            "max": 441.2307999996301,
+            "mean": 12.600637000023198
           }
         },
         "ty": {
           "ok": true,
           "runs": 100,
-          "ok_count": 98,
-          "ok_pct": 98.0,
-          "found_count": 89,
-          "found_pct": 89.0,
-          "valid_count": 89,
-          "valid_pct": 89.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.9319000000687083,
-            "p95": 134.2638999999508,
-            "min": 0.514699999939694,
-            "max": 1689.4084999998995,
-            "mean": 39.69528673469679
+            "p50": 0.7116000001587963,
+            "p95": 9.02349999978469,
+            "min": 0.39890000016384874,
+            "max": 19.599599999764905,
+            "mean": 1.61417400001028
           }
         },
         "zuban": {
@@ -1234,17 +1891,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 91,
-          "found_pct": 91.0,
-          "valid_count": 91,
-          "valid_pct": 91.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.584499999831678,
-            "p95": 393.54640000010477,
-            "min": 0.41030000011232914,
-            "max": 1632.9248000001826,
-            "mean": 64.4057909999924
+            "p50": 0.42519999988144264,
+            "p95": 20.543699999961973,
+            "min": 0.32549999968978227,
+            "max": 36.70330000022659,
+            "mean": 2.4071480000247902
           }
         }
       }
@@ -1260,17 +1917,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 30,
-          "found_pct": 30.0,
-          "valid_count": 30,
-          "valid_pct": 30.0,
+          "found_count": 27,
+          "found_pct": 27.0,
+          "valid_count": 27,
+          "valid_pct": 27.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.273900000043795,
-            "p95": 196.83520000012322,
-            "min": 1.1341000001721113,
-            "max": 1770.2287999998134,
-            "mean": 73.74212799999896
+            "p50": 4.105900000013207,
+            "p95": 142.2048999997969,
+            "min": 1.1380999999346386,
+            "max": 1412.8959999998187,
+            "mean": 56.06043499996758
           }
         },
         "pyrefly": {
@@ -1278,17 +1935,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 29,
-          "found_pct": 29.0,
-          "valid_count": 29,
-          "valid_pct": 29.0,
+          "found_count": 37,
+          "found_pct": 37.0,
+          "valid_count": 37,
+          "valid_pct": 37.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 3.7624999999934516,
-            "p95": 48.28730000008363,
-            "min": 0.6026000000929344,
-            "max": 248.53719999987334,
-            "mean": 16.184538000004522
+            "p50": 1.5258000003086636,
+            "p95": 36.8823999997403,
+            "min": 0.45689999979003915,
+            "max": 210.08849999998347,
+            "mean": 7.624996999993527
           }
         },
         "ty": {
@@ -1296,17 +1953,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 60,
-          "found_pct": 60.0,
-          "valid_count": 60,
-          "valid_pct": 60.0,
+          "found_count": 61,
+          "found_pct": 61.0,
+          "valid_count": 61,
+          "valid_pct": 61.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.8182999999917229,
-            "p95": 335.7465999999931,
-            "min": 0.4475000000638829,
-            "max": 625.125399999888,
-            "mean": 37.55281799999466
+            "p50": 0.6588000001102046,
+            "p95": 143.81690000027447,
+            "min": 0.4073000000062166,
+            "max": 637.2301999999763,
+            "mean": 22.952952000009645
           }
         },
         "zuban": {
@@ -1314,17 +1971,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 60,
-          "found_pct": 60.0,
-          "valid_count": 60,
-          "valid_pct": 60.0,
+          "found_count": 61,
+          "found_pct": 61.0,
+          "valid_count": 61,
+          "valid_pct": 61.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5278999999518419,
-            "p95": 38.10820000012427,
-            "min": 0.3648000001703622,
-            "max": 526.957799999991,
-            "mean": 11.641312999997808
+            "p50": 0.4757000001518463,
+            "p95": 17.25449999958073,
+            "min": 0.3259000000070955,
+            "max": 237.34160000003612,
+            "mean": 4.803631999971003
           }
         }
       }
@@ -1340,17 +1997,17 @@
           "runs": 100,
           "ok_count": 99,
           "ok_pct": 99.0,
-          "found_count": 91,
-          "found_pct": 91.0,
-          "valid_count": 91,
-          "valid_pct": 91.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 14.421500000025844,
-            "p95": 647.0173000000159,
-            "min": 0.9935000000496075,
-            "max": 1078.5690000000159,
-            "mean": 135.07834343435474
+            "p50": 17.3359000000346,
+            "p95": 356.52970000001005,
+            "min": 0.8751000000302156,
+            "max": 717.526099999759,
+            "mean": 96.63689191916322
           }
         },
         "pyrefly": {
@@ -1358,17 +2015,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 92,
-          "found_pct": 92.0,
-          "valid_count": 92,
-          "valid_pct": 92.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 5.622299999913594,
-            "p95": 129.40429999980552,
-            "min": 0.702499999988504,
-            "max": 470.0883000000431,
-            "mean": 21.17706699997825
+            "p50": 5.1058000003649795,
+            "p95": 236.25589999983276,
+            "min": 0.6042999998498999,
+            "max": 666.1863999997877,
+            "mean": 29.22667100001945
           }
         },
         "ty": {
@@ -1376,17 +2033,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 94,
-          "found_pct": 94.0,
-          "valid_count": 94,
-          "valid_pct": 94.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7435999998506304,
-            "p95": 275.1186999998936,
-            "min": 0.49030000013772224,
-            "max": 471.7402999999649,
-            "mean": 28.265927999982523
+            "p50": 0.6819000000177766,
+            "p95": 179.10929999970904,
+            "min": 0.4291999998713436,
+            "max": 485.30239999990954,
+            "mean": 17.81039499999224
           }
         },
         "zuban": {
@@ -1418,19 +2075,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 94,
-          "ok_pct": 94.0,
+          "ok_count": 97,
+          "ok_pct": 97.0,
           "found_count": 91,
           "found_pct": 91.0,
           "valid_count": 91,
           "valid_pct": 91.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 9.981200000083845,
-            "p95": 383.618800000022,
-            "min": 1.2790999999197084,
-            "max": 2101.6608999998425,
-            "mean": 85.6531265957422
+            "p50": 26.459799999884126,
+            "p95": 677.3694000003161,
+            "min": 1.5569000001960376,
+            "max": 1795.3011999998125,
+            "mean": 132.27460824744168
           }
         },
         "pyrefly": {
@@ -1438,17 +2095,17 @@
           "runs": 100,
           "ok_count": 98,
           "ok_pct": 98.0,
-          "found_count": 96,
-          "found_pct": 96.0,
-          "valid_count": 96,
-          "valid_pct": 96.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 39.192499999899155,
-            "p95": 720.4013000000486,
-            "min": 1.6391999999996187,
-            "max": 1983.5297999998147,
-            "mean": 183.62253061224587
+            "p50": 16.044699999838485,
+            "p95": 338.27030000020386,
+            "min": 0.7107999999789172,
+            "max": 1128.8719999997738,
+            "mean": 64.83246224491045
           }
         },
         "ty": {
@@ -1456,17 +2113,17 @@
           "runs": 100,
           "ok_count": 97,
           "ok_pct": 97.0,
-          "found_count": 96,
-          "found_pct": 96.0,
-          "valid_count": 96,
-          "valid_pct": 96.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 38.49270000000615,
-            "p95": 1109.1818999998395,
-            "min": 0.4451999998309475,
-            "max": 2071.184399999993,
-            "mean": 236.16668762886866
+            "p50": 7.071600000017497,
+            "p95": 446.85759999993024,
+            "min": 0.45329999966270407,
+            "max": 695.4753999998502,
+            "mean": 74.9987907216264
           }
         },
         "zuban": {
@@ -1474,17 +2131,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 99,
-          "found_pct": 99.0,
-          "valid_count": 99,
-          "valid_pct": 99.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.050900000085676,
-            "p95": 731.5410000001066,
-            "min": 0.41390000001229055,
-            "max": 1154.796000000033,
-            "mean": 86.90931599999885
+            "p50": 1.2297000002945424,
+            "p95": 315.39880000036646,
+            "min": 0.40339999986827024,
+            "max": 1086.0602000002473,
+            "mean": 47.570924000010564
           }
         }
       }
@@ -1498,19 +2155,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 99,
-          "ok_pct": 99.0,
-          "found_count": 62,
-          "found_pct": 62.0,
-          "valid_count": 62,
-          "valid_pct": 62.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 63,
+          "found_pct": 63.0,
+          "valid_count": 63,
+          "valid_pct": 63.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 8.422800000062125,
-            "p95": 154.40479999983836,
-            "min": 2.0124000000123488,
-            "max": 432.0646000001034,
-            "mean": 31.406488888882855
+            "p50": 8.157200000368903,
+            "p95": 409.2412999998487,
+            "min": 1.1752999998861924,
+            "max": 1145.651600000292,
+            "mean": 68.47552000001087
           }
         },
         "pyrefly": {
@@ -1518,17 +2175,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 88,
-          "found_pct": 88.0,
-          "valid_count": 88,
-          "valid_pct": 88.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.217700000026525,
-            "p95": 56.719799999882525,
-            "min": 0.5306999998992978,
-            "max": 1147.3524000000452,
-            "mean": 23.86326200001122
+            "p50": 4.583800000091287,
+            "p95": 57.45620000016061,
+            "min": 0.5760999997619365,
+            "max": 915.891499999816,
+            "mean": 21.264054999996915
           }
         },
         "ty": {
@@ -1536,17 +2193,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 90,
-          "found_pct": 90.0,
-          "valid_count": 90,
-          "valid_pct": 90.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.8989000000383385,
-            "p95": 44.1344000000754,
-            "min": 0.48039999978755077,
-            "max": 1970.9490000000187,
-            "mean": 25.46125599998959
+            "p50": 0.882499999988795,
+            "p95": 100.88970000015252,
+            "min": 0.3982000002906716,
+            "max": 375.6422000001294,
+            "mean": 14.596695999975964
           }
         },
         "zuban": {
@@ -1554,17 +2211,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 90,
-          "found_pct": 90.0,
-          "valid_count": 90,
-          "valid_pct": 90.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.4983000001175242,
-            "p95": 16.363899999987552,
-            "min": 0.3497000000152184,
-            "max": 1156.8386999999802,
-            "mean": 14.13230699999076
+            "p50": 0.4748999999719672,
+            "p95": 24.960700000065117,
+            "min": 0.33970000004046597,
+            "max": 218.06000000015047,
+            "mean": 5.805013999993207
           }
         }
       }
@@ -1578,6 +2235,24 @@
         "pyright": {
           "ok": true,
           "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.1506999998782703,
+            "p95": 32.96010000030947,
+            "min": 1.5991000000212807,
+            "max": 225.69030000022394,
+            "mean": 11.223568686872191
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
           "found_count": 94,
@@ -1586,29 +2261,11 @@
           "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.718699999832097,
-            "p95": 88.64900000003217,
-            "min": 1.7121999999289983,
-            "max": 1266.1522999999306,
-            "mean": 24.51912400000083
-          }
-        },
-        "pyrefly": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 4.800700000032521,
-            "p95": 18.63150000008318,
-            "min": 0.584299999900395,
-            "max": 201.3792000000194,
-            "mean": 8.333056000030865
+            "p50": 4.132400000344205,
+            "p95": 15.315299999656418,
+            "min": 0.5654999999933352,
+            "max": 244.70250000013039,
+            "mean": 9.293499000018528
           }
         },
         "ty": {
@@ -1616,17 +2273,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 96,
-          "found_pct": 96.0,
-          "valid_count": 96,
-          "valid_pct": 96.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7431999999880645,
-            "p95": 39.03300000001764,
-            "min": 0.4531000001861685,
-            "max": 145.06380000011632,
-            "mean": 4.468279999996412
+            "p50": 0.6727999998474843,
+            "p95": 46.64339999999356,
+            "min": 0.4026999999950931,
+            "max": 83.8951000000634,
+            "mean": 4.880752000021857
           }
         },
         "zuban": {
@@ -1634,17 +2291,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 96,
-          "found_pct": 96.0,
-          "valid_count": 96,
-          "valid_pct": 96.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.4699000000982778,
-            "p95": 5.63519999991513,
-            "min": 0.3543000000263419,
-            "max": 67.38620000010087,
-            "mean": 2.1219520000090597
+            "p50": 0.47020000010888907,
+            "p95": 8.185900000171387,
+            "min": 0.3492999999252788,
+            "max": 63.516599999729806,
+            "mean": 1.9469939999771668
           }
         }
       }
@@ -1660,17 +2317,17 @@
           "runs": 100,
           "ok_count": 98,
           "ok_pct": 98.0,
-          "found_count": 74,
-          "found_pct": 74.0,
-          "valid_count": 74,
-          "valid_pct": 74.0,
+          "found_count": 80,
+          "found_pct": 80.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 9.71239999989848,
-            "p95": 172.51020000003336,
-            "min": 1.8179999999574648,
-            "max": 1541.7661999999837,
-            "mean": 56.45175510205393
+            "p50": 14.338299999963056,
+            "p95": 465.3590000002623,
+            "min": 1.0591000000204076,
+            "max": 1368.5676999998577,
+            "mean": 70.91745918368434
           }
         },
         "pyrefly": {
@@ -1678,17 +2335,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 76,
-          "found_pct": 76.0,
-          "valid_count": 76,
-          "valid_pct": 76.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 83,
+          "valid_pct": 83.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 8.20779999980914,
-            "p95": 167.6734000000124,
-            "min": 0.5926000001181819,
-            "max": 1556.6060000001016,
-            "mean": 43.085529000002225
+            "p50": 8.463099999971746,
+            "p95": 232.06180000033783,
+            "min": 0.5527999996957078,
+            "max": 1049.5144000001346,
+            "mean": 38.337767000002714
           }
         },
         "ty": {
@@ -1696,35 +2353,35 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 87,
-          "found_pct": 87.0,
-          "valid_count": 87,
-          "valid_pct": 87.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.5095999999630294,
-            "p95": 353.2361000000037,
-            "min": 0.4629999998542189,
-            "max": 621.6186999999991,
-            "mean": 64.47221200000513
+            "p50": 1.0615999999572523,
+            "p95": 295.4482999998618,
+            "min": 0.39719999995213584,
+            "max": 546.6261999999915,
+            "mean": 60.937819000014315
           }
         },
         "zuban": {
           "ok": true,
           "runs": 100,
-          "ok_count": 0,
-          "ok_pct": 0.0,
-          "found_count": 0,
-          "found_pct": 0.0,
-          "valid_count": 0,
-          "valid_pct": 0.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": null,
-            "p95": null,
-            "min": null,
-            "max": null,
-            "mean": null
+            "p50": 0.60120000034658,
+            "p95": 68.96620000043185,
+            "min": 0.457399999959307,
+            "max": 420.17390000000887,
+            "mean": 11.34288299999298
           }
         }
       }
@@ -1740,17 +2397,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 53,
-          "found_pct": 53.0,
-          "valid_count": 53,
-          "valid_pct": 53.0,
+          "found_count": 57,
+          "found_pct": 57.0,
+          "valid_count": 57,
+          "valid_pct": 57.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 9.83500000006643,
-            "p95": 649.7127000000091,
-            "min": 1.0522000000037224,
-            "max": 1593.8826999999947,
-            "mean": 80.21400599999197
+            "p50": 7.743599999685102,
+            "p95": 757.6214999999138,
+            "min": 1.0397000000921253,
+            "max": 1610.1542999999765,
+            "mean": 79.64490399998795
           }
         },
         "pyrefly": {
@@ -1758,17 +2415,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 88,
-          "found_pct": 88.0,
-          "valid_count": 88,
-          "valid_pct": 88.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.1510999999918567,
-            "p95": 158.42079999993075,
-            "min": 0.531199999841192,
-            "max": 428.90719999991234,
-            "mean": 20.682609999996657
+            "p50": 2.9752999998891028,
+            "p95": 191.11090000023978,
+            "min": 0.5205000002206361,
+            "max": 1402.028799999698,
+            "mean": 39.08715999999458
           }
         },
         "ty": {
@@ -1776,17 +2433,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 91,
-          "found_pct": 91.0,
-          "valid_count": 91,
-          "valid_pct": 91.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.9680000000571454,
-            "p95": 350.58989999993173,
-            "min": 0.4007000000001426,
-            "max": 952.0638999999846,
-            "mean": 51.57669699999133
+            "p50": 0.9624999997868144,
+            "p95": 268.21479999989606,
+            "min": 0.4094000000804954,
+            "max": 449.0872000001218,
+            "mean": 37.29563099999723
           }
         },
         "zuban": {
@@ -1800,11 +2457,11 @@
           "valid_pct": 91.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5548999999973603,
-            "p95": 88.82180000000517,
-            "min": 0.3670000000965956,
-            "max": 157.7167999998892,
-            "mean": 9.26451799998631
+            "p50": 0.5366000000321947,
+            "p95": 35.30869999985953,
+            "min": 0.346100000115257,
+            "max": 185.36479999966105,
+            "mean": 6.554838000006384
           }
         }
       }
@@ -1820,17 +2477,17 @@
           "runs": 100,
           "ok_count": 99,
           "ok_pct": 99.0,
-          "found_count": 76,
-          "found_pct": 76.0,
-          "valid_count": 76,
-          "valid_pct": 76.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 83,
+          "valid_pct": 83.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 14.177300000028481,
-            "p95": 131.70179999997345,
-            "min": 1.7153999999663938,
-            "max": 365.08920000005674,
-            "mean": 32.9410525252565
+            "p50": 9.792999999717722,
+            "p95": 98.66999999985637,
+            "min": 1.4860999999655178,
+            "max": 436.7696999997861,
+            "mean": 26.302560606065086
           }
         },
         "pyrefly": {
@@ -1838,17 +2495,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.335000000035507,
-            "p95": 184.76480000003903,
-            "min": 0.5239999998138956,
-            "max": 514.949500000057,
-            "mean": 27.333295000007638
+            "p50": 3.851299999951152,
+            "p95": 53.16930000026332,
+            "min": 0.5438000002868648,
+            "max": 487.37489999984973,
+            "mean": 20.056579000024612
           }
         },
         "ty": {
@@ -1856,35 +2513,35 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.795899999957328,
-            "p95": 139.96820000011212,
-            "min": 0.483400000121037,
-            "max": 496.7113000000154,
-            "mean": 18.863283000007414
+            "p50": 0.7368999999926018,
+            "p95": 118.4997000000294,
+            "min": 0.42690000009315554,
+            "max": 292.7773999999772,
+            "mean": 11.25147500001276
           }
         },
         "zuban": {
           "ok": true,
           "runs": 100,
-          "ok_count": 0,
-          "ok_pct": 0.0,
-          "found_count": 0,
-          "found_pct": 0.0,
-          "valid_count": 0,
-          "valid_pct": 0.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
           "errors": 0,
           "latency_ms": {
-            "p50": null,
-            "p95": null,
-            "min": null,
-            "max": null,
-            "mean": null
+            "p50": 0.47349999977086554,
+            "p95": 19.076400000358262,
+            "min": 0.3392999997231527,
+            "max": 49.48670000021593,
+            "mean": 2.566597000022739
           }
         }
       }
@@ -1900,38 +2557,20 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 92,
-          "found_pct": 92.0,
-          "valid_count": 92,
-          "valid_pct": 92.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 7.550400000127411,
-            "p95": 297.4461999999676,
-            "min": 1.1171999999533,
-            "max": 1684.2377999998916,
-            "mean": 61.902261000002454
-          }
-        },
-        "pyrefly": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
           "found_count": 93,
           "found_pct": 93.0,
           "valid_count": 93,
           "valid_pct": 93.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 3.329300000132207,
-            "p95": 42.101699999875564,
-            "min": 0.5381999999372056,
-            "max": 231.29190000008748,
-            "mean": 12.772187999969447
+            "p50": 7.711599999765895,
+            "p95": 149.29050000000643,
+            "min": 1.1122000000796106,
+            "max": 1559.4437999998263,
+            "mean": 44.73326800000905
           }
         },
-        "ty": {
+        "pyrefly": {
           "ok": true,
           "runs": 100,
           "ok_count": 100,
@@ -1942,14 +2581,14 @@
           "valid_pct": 95.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6852999999864551,
-            "p95": 35.52250000007007,
-            "min": 0.38390000008803327,
-            "max": 307.31809999997495,
-            "mean": 10.893590999999105
+            "p50": 3.311999999823456,
+            "p95": 57.064099999934115,
+            "min": 0.528900000063004,
+            "max": 419.72430000032546,
+            "mean": 14.201245999984167
           }
         },
-        "zuban": {
+        "ty": {
           "ok": true,
           "runs": 100,
           "ok_count": 100,
@@ -1960,11 +2599,29 @@
           "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5327999999735766,
-            "p95": 24.54670000020087,
-            "min": 0.3581000000849599,
-            "max": 75.07839999993848,
-            "mean": 3.5584740000081183
+            "p50": 0.6475000000136788,
+            "p95": 46.85070000004998,
+            "min": 0.3913000000466127,
+            "max": 258.8289000000259,
+            "mean": 7.722788000041874
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5151000000296335,
+            "p95": 24.020800000016607,
+            "min": 0.32389999978477135,
+            "max": 57.02279999968596,
+            "mean": 3.6139519999869663
           }
         }
       }
@@ -1980,17 +2637,17 @@
           "runs": 100,
           "ok_count": 99,
           "ok_pct": 99.0,
-          "found_count": 59,
-          "found_pct": 59.0,
-          "valid_count": 59,
-          "valid_pct": 59.0,
+          "found_count": 68,
+          "found_pct": 68.0,
+          "valid_count": 68,
+          "valid_pct": 68.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 7.480900000246038,
-            "p95": 319.11669999999503,
-            "min": 0.9751000002324872,
-            "max": 1716.97979999999,
-            "mean": 70.36912828286836
+            "p50": 10.647399999925256,
+            "p95": 303.8878000002114,
+            "min": 0.8585999999013438,
+            "max": 1069.6124000000964,
+            "mean": 57.13040909091947
           }
         },
         "pyrefly": {
@@ -1998,20 +2655,38 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 85,
-          "found_pct": 85.0,
-          "valid_count": 85,
-          "valid_pct": 85.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 5.064100000254257,
-            "p95": 229.38829999975496,
-            "min": 0.49780000017563,
-            "max": 605.6774999997288,
-            "mean": 36.178231999983836
+            "p50": 3.3644999998614367,
+            "p95": 215.6239999999343,
+            "min": 0.4911000000902277,
+            "max": 987.5873000000865,
+            "mean": 39.19345400000111
           }
         },
         "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.9541999997964012,
+            "p95": 299.6229000000312,
+            "min": 0.38580000000365544,
+            "max": 958.4079999999631,
+            "mean": 47.197589999996126
+          }
+        },
+        "zuban": {
           "ok": true,
           "runs": 100,
           "ok_count": 100,
@@ -2022,29 +2697,11 @@
           "valid_pct": 88.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.2412999996959115,
-            "p95": 269.79350000010527,
-            "min": 0.38180000001375447,
-            "max": 528.5458000003018,
-            "mean": 51.50913899998159
-          }
-        },
-        "zuban": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 84,
-          "found_pct": 84.0,
-          "valid_count": 84,
-          "valid_pct": 84.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 0.5197999998927116,
-            "p95": 22.235299999920244,
-            "min": 0.32940000028247596,
-            "max": 43.088799999623006,
-            "mean": 2.7434689999836337
+            "p50": 0.5309000002853281,
+            "p95": 24.884500000098342,
+            "min": 0.326500000028318,
+            "max": 64.84050000017305,
+            "mean": 3.650050999990526
           }
         }
       }
@@ -2060,17 +2717,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 96,
-          "found_pct": 96.0,
-          "valid_count": 96,
-          "valid_pct": 96.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.894999999985885,
-            "p95": 283.7235000001783,
-            "min": 1.032899999700021,
-            "max": 912.2973999997157,
-            "mean": 62.07624000001488
+            "p50": 7.738399999652756,
+            "p95": 365.9796000001734,
+            "min": 1.5075000001161243,
+            "max": 1658.4781000001385,
+            "mean": 73.2740400000148
           }
         },
         "pyrefly": {
@@ -2078,17 +2735,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 93,
-          "found_pct": 93.0,
-          "valid_count": 93,
-          "valid_pct": 93.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 3.582400000141206,
-            "p95": 25.463500000114436,
-            "min": 0.497699999868928,
-            "max": 639.5252000002074,
-            "mean": 15.231553000012354
+            "p50": 3.091399999902933,
+            "p95": 34.44970000009562,
+            "min": 0.5034000000705419,
+            "max": 393.9140000002226,
+            "mean": 11.317686999973375
           }
         },
         "ty": {
@@ -2096,17 +2753,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7040000000415603,
-            "p95": 7.157399999869085,
-            "min": 0.39919999971971265,
-            "max": 63.91190000022107,
-            "mean": 2.4118519999865384
+            "p50": 0.6903000003148918,
+            "p95": 25.945400000182417,
+            "min": 0.43290000030538067,
+            "max": 316.04890000016894,
+            "mean": 6.9421940000165705
           }
         },
         "zuban": {
@@ -2114,17 +2771,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.45959999988554046,
-            "p95": 17.688999999791122,
-            "min": 0.2923999995800841,
-            "max": 47.081100000013976,
-            "mean": 2.678241000003254
+            "p50": 0.46900000006644404,
+            "p95": 12.406900000314636,
+            "min": 0.31249999983629095,
+            "max": 272.2592000000077,
+            "mean": 4.517120000004979
           }
         }
       }
@@ -2140,17 +2797,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 99,
-          "found_pct": 99.0,
-          "valid_count": 99,
-          "valid_pct": 99.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.39379999988887,
-            "p95": 446.16269999960423,
-            "min": 0.893000000360189,
-            "max": 1043.5790000001361,
-            "mean": 53.906141000043135
+            "p50": 3.6760000002686866,
+            "p95": 411.40120000000024,
+            "min": 1.5898000001470791,
+            "max": 1227.5397000003068,
+            "mean": 58.52374699997199
           }
         },
         "pyrefly": {
@@ -2158,17 +2815,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 100,
-          "found_pct": 100.0,
-          "valid_count": 100,
-          "valid_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.1067000001930865,
-            "p95": 35.6723999998394,
-            "min": 0.4831999999623804,
-            "max": 963.9393000002201,
-            "mean": 18.754767000000356
+            "p50": 4.590399999869987,
+            "p95": 60.220500000014,
+            "min": 0.493800000185729,
+            "max": 761.9666999999026,
+            "mean": 19.72465299999385
           }
         },
         "ty": {
@@ -2176,17 +2833,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 99,
-          "found_pct": 99.0,
-          "valid_count": 99,
-          "valid_pct": 99.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.8377999997719598,
-            "p95": 3.2687999996596773,
-            "min": 0.43719999985114555,
-            "max": 30.288200000086363,
-            "mean": 1.606455999985883
+            "p50": 0.7584999998471176,
+            "p95": 14.624500000081753,
+            "min": 0.3849999998237763,
+            "max": 49.859400000059395,
+            "mean": 2.681516999964515
           }
         },
         "zuban": {
@@ -2194,17 +2851,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 100,
-          "found_pct": 100.0,
-          "valid_count": 100,
-          "valid_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.4926999999952386,
-            "p95": 9.961700000076235,
-            "min": 0.34109999978682026,
-            "max": 1736.0052000003634,
-            "mean": 19.41502800001672
+            "p50": 0.45439999985319446,
+            "p95": 15.016600000308244,
+            "min": 0.3381999999874097,
+            "max": 2001.6254000001936,
+            "mean": 21.802056999986235
           }
         }
       }
@@ -2220,17 +2877,17 @@
           "runs": 100,
           "ok_count": 98,
           "ok_pct": 98.0,
-          "found_count": 84,
-          "found_pct": 84.0,
-          "valid_count": 84,
-          "valid_pct": 84.0,
+          "found_count": 82,
+          "found_pct": 82.0,
+          "valid_count": 82,
+          "valid_pct": 82.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 8.508700000220415,
-            "p95": 858.9333999998416,
-            "min": 0.7789999999658903,
-            "max": 1513.3544000000256,
-            "mean": 111.8242836734671
+            "p50": 20.888799999738694,
+            "p95": 882.8039999998509,
+            "min": 0.8754999998927815,
+            "max": 1200.8723999997528,
+            "mean": 125.34526836736163
           }
         },
         "pyrefly": {
@@ -2238,17 +2895,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 93,
-          "found_pct": 93.0,
-          "valid_count": 93,
-          "valid_pct": 93.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.22589999975753,
-            "p95": 164.53850000016246,
-            "min": 0.5095999999866763,
-            "max": 1774.5872000000418,
-            "mean": 53.907685999988644
+            "p50": 2.68869999990784,
+            "p95": 280.66209999997227,
+            "min": 0.6725000002916204,
+            "max": 1067.1039000003475,
+            "mean": 50.995688000011796
           }
         },
         "ty": {
@@ -2256,17 +2913,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 88,
-          "found_pct": 88.0,
-          "valid_count": 88,
-          "valid_pct": 88.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.0075000000142609,
-            "p95": 183.9896999999837,
-            "min": 0.5476999999700638,
-            "max": 431.30989999963276,
-            "mean": 42.19147599996177
+            "p50": 1.1099000003014226,
+            "p95": 269.71980000007534,
+            "min": 0.4611999997905514,
+            "max": 333.02429999957894,
+            "mean": 46.44577900000968
           }
         },
         "zuban": {
@@ -2274,17 +2931,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 93,
-          "found_pct": 93.0,
-          "valid_count": 93,
-          "valid_pct": 93.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5623000001833134,
-            "p95": 22.840200000246114,
-            "min": 0.3961000002163928,
-            "max": 173.99380000006204,
-            "mean": 5.881612000011955
+            "p50": 0.5710999998882471,
+            "p95": 16.132499999912397,
+            "min": 0.4127000001972192,
+            "max": 254.92730000041774,
+            "mean": 5.431613999990077
           }
         }
       }
@@ -2298,19 +2955,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 99,
-          "ok_pct": 99.0,
-          "found_count": 59,
-          "found_pct": 59.0,
-          "valid_count": 59,
-          "valid_pct": 59.0,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 54,
+          "found_pct": 54.0,
+          "valid_count": 54,
+          "valid_pct": 54.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 8.96920000013779,
-            "p95": 207.51780000000508,
-            "min": 0.7878000001255714,
-            "max": 1972.6833999998235,
-            "mean": 67.58771515152525
+            "p50": 8.927800000037678,
+            "p95": 423.70789999995395,
+            "min": 1.0385000000496802,
+            "max": 1809.6805000000131,
+            "mean": 89.88130510205133
           }
         },
         "pyrefly": {
@@ -2318,17 +2975,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 66,
-          "found_pct": 66.0,
-          "valid_count": 66,
-          "valid_pct": 66.0,
+          "found_count": 56,
+          "found_pct": 56.0,
+          "valid_count": 56,
+          "valid_pct": 56.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 5.3646999999728,
-            "p95": 184.02470000000903,
-            "min": 0.5069999997431296,
-            "max": 1466.396799999984,
-            "mean": 39.67522899999949
+            "p50": 7.226400000035937,
+            "p95": 225.01770000008037,
+            "min": 0.6239999997887935,
+            "max": 913.4177999999338,
+            "mean": 39.54926599996725
           }
         },
         "ty": {
@@ -2336,17 +2993,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 74,
-          "found_pct": 74.0,
-          "valid_count": 74,
-          "valid_pct": 74.0,
+          "found_count": 70,
+          "found_pct": 70.0,
+          "valid_count": 70,
+          "valid_pct": 70.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.701299999946059,
-            "p95": 163.54720000026646,
-            "min": 0.3337000002829882,
-            "max": 337.52959999992527,
-            "mean": 23.886115000000245
+            "p50": 0.7918000001154724,
+            "p95": 183.92549999998664,
+            "min": 0.4397000002427376,
+            "max": 427.95829999977286,
+            "mean": 31.001322000015534
           }
         },
         "zuban": {
@@ -2378,19 +3035,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 98,
-          "ok_pct": 98.0,
-          "found_count": 48,
-          "found_pct": 48.0,
-          "valid_count": 48,
-          "valid_pct": 48.0,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 53,
+          "found_pct": 53.0,
+          "valid_count": 53,
+          "valid_pct": 53.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.259499999941909,
-            "p95": 202.92019999988042,
-            "min": 0.9747999997671286,
-            "max": 1675.1985000000786,
-            "mean": 58.98498979591954
+            "p50": 7.298199999695498,
+            "p95": 692.5919999998769,
+            "min": 0.913700000182871,
+            "max": 1466.3072000003012,
+            "mean": 85.96010303029867
           }
         },
         "pyrefly": {
@@ -2398,17 +3055,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 60,
-          "found_pct": 60.0,
-          "valid_count": 60,
-          "valid_pct": 60.0,
+          "found_count": 64,
+          "found_pct": 64.0,
+          "valid_count": 64,
+          "valid_pct": 64.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 5.3831000000172935,
-            "p95": 311.57089999987875,
-            "min": 0.4896000000371714,
-            "max": 1082.9871000000821,
-            "mean": 43.178450000041266
+            "p50": 3.2533000003240886,
+            "p95": 209.64299999968716,
+            "min": 0.517299999955867,
+            "max": 1667.731200000162,
+            "mean": 43.26263200001904
           }
         },
         "ty": {
@@ -2416,17 +3073,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 78,
-          "found_pct": 78.0,
-          "valid_count": 78,
-          "valid_pct": 78.0,
+          "found_count": 77,
+          "found_pct": 77.0,
+          "valid_count": 77,
+          "valid_pct": 77.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6514000001516251,
-            "p95": 281.5963999996711,
-            "min": 0.36940000018148567,
-            "max": 858.4437999998045,
-            "mean": 42.3237730000028
+            "p50": 0.7464999998774147,
+            "p95": 204.98610000004192,
+            "min": 0.38429999995059916,
+            "max": 283.1290999997691,
+            "mean": 32.385310999975445
           }
         },
         "zuban": {
@@ -2434,17 +3091,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 79,
-          "found_pct": 79.0,
-          "valid_count": 79,
-          "valid_pct": 79.0,
+          "found_count": 77,
+          "found_pct": 77.0,
+          "valid_count": 77,
+          "valid_pct": 77.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.49770000032367534,
-            "p95": 37.032600000202365,
-            "min": 0.3328000002511544,
-            "max": 904.4060000001082,
-            "mean": 16.391980000007607
+            "p50": 0.5257999996501894,
+            "p95": 67.85110000009809,
+            "min": 0.32869999995455146,
+            "max": 372.0573999999033,
+            "mean": 13.002879000018766
           }
         }
       }
@@ -2460,17 +3117,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 90,
-          "found_pct": 90.0,
-          "valid_count": 90,
-          "valid_pct": 90.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.734300000061921,
-            "p95": 205.12439999993148,
-            "min": 0.9814999998525309,
-            "max": 1411.6202000000158,
-            "mean": 48.440001999965716
+            "p50": 4.305500000100437,
+            "p95": 173.83180000024367,
+            "min": 0.8354999999937718,
+            "max": 1249.0595999997822,
+            "mean": 41.675725000004604
           }
         },
         "pyrefly": {
@@ -2478,17 +3135,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 99,
-          "found_pct": 99.0,
-          "valid_count": 99,
-          "valid_pct": 99.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.8968999999960943,
-            "p95": 93.1482999999389,
-            "min": 0.49489999992147204,
-            "max": 459.8407999997107,
-            "mean": 16.313038999996934
+            "p50": 3.208699999959208,
+            "p95": 23.838099999920814,
+            "min": 0.4963999999745283,
+            "max": 284.39909999997326,
+            "mean": 9.487776000005397
           }
         },
         "ty": {
@@ -2496,17 +3153,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 99,
-          "found_pct": 99.0,
-          "valid_count": 99,
-          "valid_pct": 99.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6779000000278756,
-            "p95": 46.72570000002452,
-            "min": 0.42290000010325457,
-            "max": 134.98600000002625,
-            "mean": 6.27830099998846
+            "p50": 0.6539999999404245,
+            "p95": 17.20660000000862,
+            "min": 0.40620000027047354,
+            "max": 91.70910000011645,
+            "mean": 2.953324000036446
           }
         },
         "zuban": {
@@ -2514,17 +3171,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 99,
-          "found_pct": 99.0,
-          "valid_count": 99,
-          "valid_pct": 99.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.44040000011591474,
-            "p95": 31.85730000041076,
-            "min": 0.3257999997003935,
-            "max": 164.5104000003812,
-            "mean": 4.785347000015463
+            "p50": 0.4214000000501983,
+            "p95": 17.537799999900017,
+            "min": 0.313699999878736,
+            "max": 69.56170000012207,
+            "mean": 2.7500970000028246
           }
         }
       }
@@ -2540,17 +3197,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 83,
-          "found_pct": 83.0,
-          "valid_count": 83,
-          "valid_pct": 83.0,
+          "found_count": 84,
+          "found_pct": 84.0,
+          "valid_count": 84,
+          "valid_pct": 84.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.962200000089069,
-            "p95": 236.97700000002442,
-            "min": 1.7234000001735694,
-            "max": 1252.559100000326,
-            "mean": 52.16705200002707
+            "p50": 5.128700000113895,
+            "p95": 211.06270000018412,
+            "min": 0.7776999996167433,
+            "max": 1455.3372000000309,
+            "mean": 45.147172000051796
           }
         },
         "pyrefly": {
@@ -2558,17 +3215,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 93,
-          "found_pct": 93.0,
-          "valid_count": 93,
-          "valid_pct": 93.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.3538999998891086,
-            "p95": 50.540799999907904,
-            "min": 0.5159000002095127,
-            "max": 299.70529999991413,
-            "mean": 12.706682999987606
+            "p50": 2.248900000267895,
+            "p95": 77.74609999978566,
+            "min": 0.47459999996135593,
+            "max": 421.6261999999915,
+            "mean": 16.695692000002964
           }
         },
         "ty": {
@@ -2576,17 +3233,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6565000003320165,
-            "p95": 13.474899999891932,
-            "min": 0.42610000036802376,
-            "max": 368.92779999971026,
-            "mean": 7.967329000020982
+            "p50": 0.6132999997134903,
+            "p95": 87.99050000015995,
+            "min": 0.40320000016436097,
+            "max": 307.6480999998239,
+            "mean": 10.621525999995356
           }
         },
         "zuban": {
@@ -2594,17 +3251,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.4687000000558328,
-            "p95": 23.653299999750743,
-            "min": 0.3179999998792482,
-            "max": 167.7073000000746,
-            "mean": 4.6658559999923455
+            "p50": 0.450999999884516,
+            "p95": 23.19230000011885,
+            "min": 0.3034999999727006,
+            "max": 75.86940000010145,
+            "mean": 3.677302000014606
           }
         }
       }
@@ -2618,19 +3275,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 89,
-          "found_pct": 89.0,
-          "valid_count": 89,
-          "valid_pct": 89.0,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.207800000083807,
-            "p95": 275.19719999963854,
-            "min": 1.4314000000013039,
-            "max": 1108.3788999999342,
-            "mean": 63.46523700000034
+            "p50": 8.699699999851873,
+            "p95": 425.6163000000015,
+            "min": 0.6761999998161627,
+            "max": 637.6218999998855,
+            "mean": 69.9659434343437
           }
         },
         "pyrefly": {
@@ -2638,17 +3295,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 92,
-          "found_pct": 92.0,
-          "valid_count": 92,
-          "valid_pct": 92.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.1027000002031855,
-            "p95": 33.07130000030156,
-            "min": 0.5163999999240332,
-            "max": 529.523799999879,
-            "mean": 21.289656000035393
+            "p50": 3.9942000003065914,
+            "p95": 59.57849999958853,
+            "min": 0.5446000000119966,
+            "max": 359.0125000000626,
+            "mean": 17.185457999980827
           }
         },
         "ty": {
@@ -2656,17 +3313,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 94,
-          "found_pct": 94.0,
-          "valid_count": 94,
-          "valid_pct": 94.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.8879000001797976,
-            "p95": 28.9281000000301,
-            "min": 0.37179999981162837,
-            "max": 734.6881000003123,
-            "mean": 14.909931000006509
+            "p50": 0.8444000000054075,
+            "p95": 56.6979000000174,
+            "min": 0.43879999975615647,
+            "max": 574.1550000002462,
+            "mean": 15.15818199999103
           }
         },
         "zuban": {
@@ -2680,11 +3337,11 @@
           "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.47289999974964303,
-            "p95": 13.693200000034267,
-            "min": 0.3214999996998813,
-            "max": 659.5619999998235,
-            "mean": 8.998874999983855
+            "p50": 0.5123999999341322,
+            "p95": 14.403700000002573,
+            "min": 0.342100000125356,
+            "max": 478.37699999990946,
+            "mean": 8.249799999971401
           }
         }
       }
@@ -2698,19 +3355,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 44,
-          "found_pct": 44.0,
-          "valid_count": 44,
-          "valid_pct": 44.0,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 40,
+          "found_pct": 40.0,
+          "valid_count": 40,
+          "valid_pct": 40.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 10.360799999943993,
-            "p95": 240.87310000004436,
-            "min": 1.9074000001637614,
-            "max": 1761.7565000000468,
-            "mean": 51.376545000021
+            "p50": 8.247000000210392,
+            "p95": 285.32739999991463,
+            "min": 1.8313999999008956,
+            "max": 1977.6686999998674,
+            "mean": 56.54734848482317
           }
         },
         "pyrefly": {
@@ -2718,17 +3375,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 91,
-          "found_pct": 91.0,
-          "valid_count": 91,
-          "valid_pct": 91.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.026900000098976,
-            "p95": 168.09750000038548,
-            "min": 0.5111999998916872,
-            "max": 761.3022999998975,
-            "mean": 34.444616999985556
+            "p50": 4.562999999961903,
+            "p95": 139.9900000001253,
+            "min": 0.500099999953818,
+            "max": 714.8729000000458,
+            "mean": 30.550525000053312
           }
         },
         "ty": {
@@ -2736,17 +3393,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 94,
-          "found_pct": 94.0,
-          "valid_count": 94,
-          "valid_pct": 94.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6374999998115527,
-            "p95": 78.53750000003856,
-            "min": 0.4364999999779684,
-            "max": 347.1863999998277,
-            "mean": 11.634508000024653
+            "p50": 0.7264999999279098,
+            "p95": 190.8791000000747,
+            "min": 0.33600000006117625,
+            "max": 367.692100000113,
+            "mean": 20.71757200002139
           }
         },
         "zuban": {
@@ -2780,17 +3437,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 96,
-          "found_pct": 96.0,
-          "valid_count": 96,
-          "valid_pct": 96.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.795999999714695,
-            "p95": 212.11410000023534,
-            "min": 1.3724000000365777,
-            "max": 1124.6817000001101,
-            "mean": 40.53550800001176
+            "p50": 5.617200000415323,
+            "p95": 172.25719999987632,
+            "min": 0.7695999997849867,
+            "max": 1339.4219000001613,
+            "mean": 37.295048999990286
           }
         },
         "pyrefly": {
@@ -2804,11 +3461,11 @@
           "valid_pct": 97.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 3.8260999999693013,
-            "p95": 40.58039999972607,
-            "min": 0.5490000003192108,
-            "max": 207.13860000023487,
-            "mean": 12.086315000001377
+            "p50": 3.4556000000520726,
+            "p95": 28.293000000303437,
+            "min": 0.5503000002136105,
+            "max": 452.19130000032237,
+            "mean": 15.029202000032456
           }
         },
         "ty": {
@@ -2816,17 +3473,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7370999996965111,
-            "p95": 7.493500000236963,
-            "min": 0.41809999993347446,
-            "max": 158.04260000004433,
-            "mean": 4.161131000023488
+            "p50": 0.7286999998541432,
+            "p95": 13.425900000129332,
+            "min": 0.4193999998278741,
+            "max": 206.5152999998645,
+            "mean": 3.7895939999589245
           }
         },
         "zuban": {
@@ -2834,17 +3491,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.456300000223564,
-            "p95": 5.987499999719148,
-            "min": 0.3360999999131309,
-            "max": 80.79649999990579,
-            "mean": 1.7929289999892717
+            "p50": 0.45700000009674113,
+            "p95": 21.026399999755085,
+            "min": 0.33290000010310905,
+            "max": 200.77989999981583,
+            "mean": 4.383948999989116
           }
         }
       }
@@ -2865,6 +3522,24 @@
         "pyright": {
           "ok": true,
           "runs": 100,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 12.789299999894865,
+            "p95": 211.6384000000835,
+            "min": 1.2698000000455067,
+            "max": 911.386599999787,
+            "mean": 49.739012500012336
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
           "ok_count": 98,
           "ok_pct": 98.0,
           "found_count": 97,
@@ -2873,29 +3548,11 @@
           "valid_pct": 97.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 14.501399999971909,
-            "p95": 270.23910000025353,
-            "min": 1.729900000100315,
-            "max": 819.1933999996763,
-            "mean": 54.092129591847936
-          }
-        },
-        "pyrefly": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 98,
-          "ok_pct": 98.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 20.723800000268966,
-            "p95": 395.33110000002125,
-            "min": 0.6980000002840825,
-            "max": 904.4902999999067,
-            "mean": 68.457295918353
+            "p50": 40.59419999975944,
+            "p95": 932.4265999998715,
+            "min": 0.6472000000030675,
+            "max": 1449.1730000004281,
+            "mean": 121.42095918367738
           }
         },
         "ty": {
@@ -2909,11 +3566,11 @@
           "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 20.682899999883375,
-            "p95": 628.082500000346,
-            "min": 0.602699999944889,
-            "max": 810.2714999999989,
-            "mean": 100.33702100002301
+            "p50": 45.7949000001463,
+            "p95": 752.061600000161,
+            "min": 0.6001000001560897,
+            "max": 1197.200900000098,
+            "mean": 190.68202000003566
           }
         },
         "zuban": {
@@ -2947,38 +3604,20 @@
           "runs": 100,
           "ok_count": 98,
           "ok_pct": 98.0,
-          "found_count": 74,
-          "found_pct": 74.0,
-          "valid_count": 74,
-          "valid_pct": 74.0,
+          "found_count": 78,
+          "found_pct": 78.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 9.730300000228453,
-            "p95": 743.2408999998188,
-            "min": 1.827800000228308,
-            "max": 1661.9235000002845,
-            "mean": 96.45694387756744
+            "p50": 14.523100000133127,
+            "p95": 606.3012999998136,
+            "min": 1.0849999998754356,
+            "max": 1230.5867000000035,
+            "mean": 97.90864183671555
           }
         },
         "pyrefly": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 88,
-          "found_pct": 88.0,
-          "valid_count": 88,
-          "valid_pct": 88.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 6.788700000015524,
-            "p95": 444.27219999988665,
-            "min": 0.6014000000504893,
-            "max": 1695.8816000001207,
-            "mean": 95.00648900001579
-          }
-        },
-        "ty": {
           "ok": true,
           "runs": 100,
           "ok_count": 100,
@@ -2989,11 +3628,29 @@
           "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 5.03309999976409,
-            "p95": 263.1977999999435,
-            "min": 0.5072999997537408,
-            "max": 398.4574999999495,
-            "mean": 59.9229540000033
+            "p50": 4.991099999642756,
+            "p95": 470.27040000011766,
+            "min": 0.6739999998899293,
+            "max": 1340.0354000000334,
+            "mean": 84.50259399999595
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.759800000101677,
+            "p95": 245.23469999985537,
+            "min": 0.5038000003878551,
+            "max": 474.96700000010605,
+            "mean": 52.59363900000608
           }
         },
         "zuban": {
@@ -3025,19 +3682,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 98,
-          "ok_pct": 98.0,
+          "ok_count": 99,
+          "ok_pct": 99.0,
           "found_count": 47,
           "found_pct": 47.0,
           "valid_count": 47,
           "valid_pct": 47.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.087600000228122,
-            "p95": 144.39989999982572,
-            "min": 1.0171999997510284,
-            "max": 753.3013000002029,
-            "mean": 30.528846938759855
+            "p50": 5.377299999963725,
+            "p95": 221.63810000029116,
+            "min": 1.0167999998884625,
+            "max": 1925.7374000003438,
+            "mean": 59.52590505046258
           }
         },
         "pyrefly": {
@@ -3045,35 +3702,35 @@
           "runs": 100,
           "ok_count": 99,
           "ok_pct": 99.0,
-          "found_count": 65,
-          "found_pct": 65.0,
-          "valid_count": 65,
-          "valid_pct": 65.0,
+          "found_count": 67,
+          "found_pct": 67.0,
+          "valid_count": 67,
+          "valid_pct": 67.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 12.809700000161683,
-            "p95": 134.17819999995118,
-            "min": 0.6518999998661457,
-            "max": 1154.018300000189,
-            "mean": 34.40076363634062
+            "p50": 11.255100000198581,
+            "p95": 212.85949999992226,
+            "min": 0.6566000001839711,
+            "max": 1514.746599999853,
+            "mean": 57.62167272725969
           }
         },
         "ty": {
           "ok": true,
           "runs": 100,
-          "ok_count": 98,
-          "ok_pct": 98.0,
-          "found_count": 85,
-          "found_pct": 85.0,
-          "valid_count": 85,
-          "valid_pct": 85.0,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 82,
+          "found_pct": 82.0,
+          "valid_count": 82,
+          "valid_pct": 82.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 1.2507999999797903,
-            "p95": 1315.217400000165,
-            "min": 0.4113999998480722,
-            "max": 1984.9860999997873,
-            "mean": 171.95636734693056
+            "p50": 0.7452999998349696,
+            "p95": 520.9909000000152,
+            "min": 0.4843000001528708,
+            "max": 1794.716299999891,
+            "mean": 109.26134270836012
           }
         },
         "zuban": {
@@ -3081,17 +3738,17 @@
           "runs": 100,
           "ok_count": 99,
           "ok_pct": 99.0,
-          "found_count": 70,
-          "found_pct": 70.0,
-          "valid_count": 70,
-          "valid_pct": 70.0,
+          "found_count": 75,
+          "found_pct": 75.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.5673000000570028,
-            "p95": 22.773700000016106,
-            "min": 0.3858999998556101,
-            "max": 970.0522999996792,
-            "mean": 12.837244444406018
+            "p50": 0.5418000000645407,
+            "p95": 19.738699999834353,
+            "min": 0.41499999997540726,
+            "max": 113.01090000006297,
+            "mean": 3.8786868686895675
           }
         }
       }
@@ -3105,19 +3762,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 99,
-          "ok_pct": 99.0,
-          "found_count": 78,
-          "found_pct": 78.0,
-          "valid_count": 78,
-          "valid_pct": 78.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 75,
+          "found_pct": 75.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.382399999893096,
-            "p95": 309.61530000013227,
-            "min": 1.0376000000178465,
-            "max": 907.1785000001,
-            "mean": 53.97358383839729
+            "p50": 7.405999999718915,
+            "p95": 204.53699999961827,
+            "min": 1.2904999998681888,
+            "max": 1605.5825000003097,
+            "mean": 46.85622199999216
           }
         },
         "pyrefly": {
@@ -3125,17 +3782,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 93,
-          "found_pct": 93.0,
-          "valid_count": 93,
-          "valid_pct": 93.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.8592999997272273,
-            "p95": 33.49560000015117,
-            "min": 0.5913999998483632,
-            "max": 670.3773999997793,
-            "mean": 21.657174999972995
+            "p50": 4.038699999910023,
+            "p95": 38.82479999992938,
+            "min": 0.5610000002889137,
+            "max": 497.8131000002577,
+            "mean": 20.736766000027274
           }
         },
         "ty": {
@@ -3143,17 +3800,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 95,
-          "found_pct": 95.0,
-          "valid_count": 95,
-          "valid_pct": 95.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6851999996797531,
-            "p95": 8.840999999847554,
-            "min": 0.45799999998052954,
-            "max": 215.480800000023,
-            "mean": 4.232129999982135
+            "p50": 0.7252999998854648,
+            "p95": 27.717700000266632,
+            "min": 0.41739999960554997,
+            "max": 330.08079999990514,
+            "mean": 6.464517000017622
           }
         },
         "zuban": {
@@ -3161,17 +3818,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 95,
-          "found_pct": 95.0,
-          "valid_count": 95,
-          "valid_pct": 95.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.48100000003614696,
-            "p95": 10.029699999904551,
-            "min": 0.33389999998689746,
-            "max": 74.2445000000771,
-            "mean": 2.9645970000046873
+            "p50": 0.4781000002367364,
+            "p95": 18.854899999951158,
+            "min": 0.3268999998908839,
+            "max": 181.23049999985597,
+            "mean": 3.52738199999294
           }
         }
       }
@@ -3187,17 +3844,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.8449999999793363,
-            "p95": 244.7162000003118,
-            "min": 0.7889999997132691,
-            "max": 1100.2840999999535,
-            "mean": 41.67643199999475
+            "p50": 2.7149000006829738,
+            "p95": 273.6291000001074,
+            "min": 0.843699999677483,
+            "max": 1295.7503999996334,
+            "mean": 53.80262699997729
           }
         },
         "pyrefly": {
@@ -3205,17 +3862,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 95,
-          "found_pct": 95.0,
-          "valid_count": 95,
-          "valid_pct": 95.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.947299999959796,
-            "p95": 14.850900000055844,
-            "min": 0.4880000001321605,
-            "max": 246.65569999979198,
-            "mean": 7.043433999970148
+            "p50": 3.013200000168581,
+            "p95": 17.04249999966123,
+            "min": 0.5011999992348137,
+            "max": 330.5141000000731,
+            "mean": 9.514746999884665
           }
         },
         "ty": {
@@ -3229,11 +3886,11 @@
           "valid_pct": 100.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7997000002433197,
-            "p95": 8.717000000160624,
-            "min": 0.4540999998425832,
-            "max": 101.13950000004479,
-            "mean": 2.891459999973449
+            "p50": 0.7212999998955638,
+            "p95": 9.489899999607587,
+            "min": 0.4116000000067288,
+            "max": 129.8951999997371,
+            "mean": 3.9882299998953386
           }
         },
         "zuban": {
@@ -3247,11 +3904,11 @@
           "valid_pct": 100.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.38690000019414583,
-            "p95": 8.759699999700388,
-            "min": 0.3087000000050466,
-            "max": 41.892599999755475,
-            "mean": 1.718243999994229
+            "p50": 0.42329999996582046,
+            "p95": 10.047200000371959,
+            "min": 0.30530000003636815,
+            "max": 72.87629999973433,
+            "mean": 2.15413199998693
           }
         }
       }
@@ -3265,19 +3922,19 @@
         "pyright": {
           "ok": true,
           "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 93,
-          "found_pct": 93.0,
-          "valid_count": 93,
-          "valid_pct": 93.0,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 6.908800000019255,
-            "p95": 214.9824999996781,
-            "min": 1.7638000003898924,
-            "max": 1789.0222999999423,
-            "mean": 49.32622500000889
+            "p50": 7.721800000581425,
+            "p95": 152.48169999995298,
+            "min": 1.1207000006834278,
+            "max": 845.7056999995984,
+            "mean": 37.38832525246063
           }
         },
         "pyrefly": {
@@ -3291,11 +3948,11 @@
           "valid_pct": 94.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.0256000002518704,
-            "p95": 34.70350000043254,
-            "min": 0.5355000002964516,
-            "max": 551.9287000001896,
-            "mean": 13.003146000005472
+            "p50": 4.728200000499783,
+            "p95": 45.87290000017674,
+            "min": 0.4676000007748371,
+            "max": 327.53909999973985,
+            "mean": 14.438008000015543
           }
         },
         "ty": {
@@ -3303,35 +3960,35 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 98,
-          "found_pct": 98.0,
-          "valid_count": 98,
-          "valid_pct": 98.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7949000000735396,
-            "p95": 20.054999999956635,
-            "min": 0.4225000002406887,
-            "max": 193.48249999984546,
-            "mean": 4.985615999989932
+            "p50": 0.7104000005710986,
+            "p95": 35.34669999953621,
+            "min": 0.41229999987990595,
+            "max": 134.75070000004052,
+            "mean": 5.375895000042874
           }
         },
         "zuban": {
           "ok": true,
           "runs": 100,
-          "ok_count": 0,
-          "ok_pct": 0.0,
-          "found_count": 0,
-          "found_pct": 0.0,
-          "valid_count": 0,
-          "valid_pct": 0.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
           "errors": 0,
           "latency_ms": {
-            "p50": null,
-            "p95": null,
-            "min": null,
-            "max": null,
-            "mean": null
+            "p50": 0.48009999954956584,
+            "p95": 12.209100000291073,
+            "min": 0.3360999999131309,
+            "max": 53.746500000670494,
+            "mean": 2.7189150000594964
           }
         }
       }
@@ -3353,32 +4010,14 @@
           "valid_pct": 90.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 5.185700000311044,
-            "p95": 243.34920000001148,
-            "min": 1.0032000000137486,
-            "max": 1165.661900000032,
-            "mean": 47.244040000018686
+            "p50": 4.493100000217964,
+            "p95": 186.0710000000836,
+            "min": 0.9255999993911246,
+            "max": 791.2819000002855,
+            "mean": 37.93450300006043
           }
         },
         "pyrefly": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 89,
-          "found_pct": 89.0,
-          "valid_count": 89,
-          "valid_pct": 89.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 2.6142000001527776,
-            "p95": 22.834599999896454,
-            "min": 0.5001999998057727,
-            "max": 364.775500000178,
-            "mean": 8.377316999985851
-          }
-        },
-        "ty": {
           "ok": true,
           "runs": 100,
           "ok_count": 100,
@@ -3389,11 +4028,29 @@
           "valid_pct": 95.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.6640999999945052,
-            "p95": 7.867700000133482,
-            "min": 0.4033000000163156,
-            "max": 215.15180000005785,
-            "mean": 4.505951999985882
+            "p50": 2.638699999806704,
+            "p95": 24.304700000357116,
+            "min": 0.45619999946211465,
+            "max": 269.08559999992576,
+            "mean": 7.916549999972631
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6272000000535627,
+            "p95": 15.714699999989534,
+            "min": 0.3589000007195864,
+            "max": 70.96100000035221,
+            "mean": 2.7265839999927266
           }
         },
         "zuban": {
@@ -3401,17 +4058,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 94,
-          "found_pct": 94.0,
-          "valid_count": 94,
-          "valid_pct": 94.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.4530999999587948,
-            "p95": 12.13019999977405,
-            "min": 0.29859999995096587,
-            "max": 38.76060000038706,
-            "mean": 1.955124999981308
+            "p50": 0.43249999998806743,
+            "p95": 8.353600000191364,
+            "min": 0.3203999995093909,
+            "max": 79.16430000022956,
+            "mean": 2.699971000010919
           }
         }
       }
@@ -3427,17 +4084,17 @@
           "runs": 100,
           "ok_count": 100,
           "ok_pct": 100.0,
-          "found_count": 96,
-          "found_pct": 96.0,
-          "valid_count": 96,
-          "valid_pct": 96.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 5.522499999642605,
-            "p95": 330.06239999986065,
-            "min": 1.2005000003227906,
-            "max": 1068.1164000002354,
-            "mean": 62.145672000024206
+            "p50": 5.649199999425036,
+            "p95": 434.51830000049085,
+            "min": 0.9252999998352607,
+            "max": 1193.0532999995194,
+            "mean": 63.60381499996947
           }
         },
         "pyrefly": {
@@ -3451,11 +4108,11 @@
           "valid_pct": 100.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 2.8519999996206025,
-            "p95": 18.414499999835243,
-            "min": 0.5249999999250576,
-            "max": 357.0073999999295,
-            "mean": 8.08149799999228
+            "p50": 2.907299999606039,
+            "p95": 16.300700000101642,
+            "min": 0.5024000001867535,
+            "max": 265.6170000000202,
+            "mean": 9.036102000027313
           }
         },
         "ty": {
@@ -3469,11 +4126,11 @@
           "valid_pct": 100.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.7328000001507462,
-            "p95": 8.651099999951839,
-            "min": 0.4428999995980121,
-            "max": 11.698499999965861,
-            "mean": 1.4144099999839455
+            "p50": 0.7501999998567044,
+            "p95": 12.212900000122318,
+            "min": 0.38560000029974617,
+            "max": 63.39289999959874,
+            "mean": 2.536242000041966
           }
         },
         "zuban": {
@@ -3487,11 +4144,11 @@
           "valid_pct": 100.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 0.4438000000845932,
-            "p95": 16.27069999995001,
-            "min": 0.3320000000712753,
-            "max": 30.605899999955,
-            "mean": 2.225757999981397
+            "p50": 0.45560000035038684,
+            "p95": 14.576699999452103,
+            "min": 0.2931000008175033,
+            "max": 35.923299999922165,
+            "mean": 2.3759400000380992
           }
         }
       }
@@ -3507,20 +4164,38 @@
           "runs": 100,
           "ok_count": 99,
           "ok_pct": 99.0,
-          "found_count": 96,
-          "found_pct": 96.0,
-          "valid_count": 96,
-          "valid_pct": 96.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.150400000071386,
-            "p95": 109.73590000003242,
-            "min": 1.247800000328425,
-            "max": 481.78490000009333,
-            "mean": 21.912284848477068
+            "p50": 4.025199999887263,
+            "p95": 51.070700000309444,
+            "min": 1.1623999998846557,
+            "max": 1290.6286999996155,
+            "mean": 24.676687878761157
           }
         },
         "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.978300000402669,
+            "p95": 86.26319999984844,
+            "min": 0.54439999985334,
+            "max": 333.08469999974477,
+            "mean": 17.824121999929048
+          }
+        },
+        "ty": {
           "ok": true,
           "runs": 100,
           "ok_count": 100,
@@ -3531,47 +4206,29 @@
           "valid_pct": 99.0,
           "errors": 0,
           "latency_ms": {
-            "p50": 4.358599999704893,
-            "p95": 152.53600000005463,
-            "min": 0.7287000003088906,
-            "max": 383.4080999999969,
-            "mean": 19.887145999991844
-          }
-        },
-        "ty": {
-          "ok": true,
-          "runs": 100,
-          "ok_count": 100,
-          "ok_pct": 100.0,
-          "found_count": 97,
-          "found_pct": 97.0,
-          "valid_count": 97,
-          "valid_pct": 97.0,
-          "errors": 0,
-          "latency_ms": {
-            "p50": 0.7379000003311376,
-            "p95": 28.658000000177708,
-            "min": 0.43359999972381047,
-            "max": 1122.0604999998613,
-            "mean": 19.82597700000497
+            "p50": 0.6656000005023088,
+            "p95": 83.67539999926521,
+            "min": 0.39089999972929945,
+            "max": 226.57949999938864,
+            "mean": 8.443014000004041
           }
         },
         "zuban": {
           "ok": true,
           "runs": 100,
-          "ok_count": 0,
-          "ok_pct": 0.0,
-          "found_count": 0,
-          "found_pct": 0.0,
-          "valid_count": 0,
-          "valid_pct": 0.0,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
           "errors": 0,
           "latency_ms": {
-            "p50": null,
-            "p95": null,
-            "min": null,
-            "max": null,
-            "mean": null
+            "p50": 0.45960000079503516,
+            "p95": 4.26919999972597,
+            "min": 0.3300000007584458,
+            "max": 342.03100000013364,
+            "mean": 5.008503999997629
           }
         }
       }
