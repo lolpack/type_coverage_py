@@ -189,10 +189,12 @@ def run_process_with_timeout(
     cwd: Path,
     timeout: int,
     memory_limit_mb: int = DEFAULT_MEMORY_LIMIT_MB,
+    capture_output: bool = True,
 ) -> ProcessResult:
     """Run a process with timeout and memory monitoring.
 
-    Returns timing and memory information.
+    When *capture_output* is False, stdout/stderr go to DEVNULL to avoid
+    pipe I/O overhead in timing.  (macOS stderr stays piped for /usr/bin/time.)
     """
     start_time = time.time()
 
@@ -202,10 +204,12 @@ def run_process_with_timeout(
     if use_macos_time:
         actual_cmd = ["/usr/bin/time", "-l"] + cmd
 
+    # macOS stderr must stay piped for /usr/bin/time -l memory stats
+    need_stderr_pipe = capture_output or use_macos_time
     kwargs: dict[str, Any] = {
         "cwd": cwd,
-        "stdout": subprocess.PIPE,
-        "stderr": subprocess.PIPE,
+        "stdout": subprocess.PIPE if capture_output else subprocess.DEVNULL,
+        "stderr": subprocess.PIPE if need_stderr_pipe else subprocess.DEVNULL,
         "text": True,
     }
     if sys.platform != "win32":
@@ -227,26 +231,22 @@ def run_process_with_timeout(
         )
         monitor_thread.start()
 
-    # Read stdout/stderr in background threads
+    # Drain piped streams in background threads
     stdout_chunks: list[str] = []
     stderr_chunks: list[str] = []
 
-    def _read_stdout() -> None:
-        try:
-            stdout_chunks.append(process.stdout.read())  # type: ignore[union-attr]
-        except (ValueError, OSError):
-            pass
+    def _make_reader(stream: Any, chunks: list[str]) -> threading.Thread:
+        def _read() -> None:
+            try:
+                chunks.append(stream.read())
+            except (ValueError, OSError):
+                pass
+        t = threading.Thread(target=_read, daemon=True)
+        t.start()
+        return t
 
-    def _read_stderr() -> None:
-        try:
-            stderr_chunks.append(process.stderr.read())  # type: ignore[union-attr]
-        except (ValueError, OSError):
-            pass
-
-    reader_out = threading.Thread(target=_read_stdout, daemon=True)
-    reader_err = threading.Thread(target=_read_stderr, daemon=True)
-    reader_out.start()
-    reader_err.start()
+    reader_out = _make_reader(process.stdout, stdout_chunks) if capture_output else None
+    reader_err = _make_reader(process.stderr, stderr_chunks) if need_stderr_pipe else None
 
     # Poll until process exits, timeout, or OOM kill
     deadline = start_time + timeout
@@ -275,10 +275,11 @@ def run_process_with_timeout(
 
     # Close pipes so reader threads unblock
     for pipe in (process.stdout, process.stderr):
-        try:
-            pipe.close()  # type: ignore[union-attr]
-        except OSError:
-            pass
+        if pipe is not None:
+            try:
+                pipe.close()
+            except OSError:
+                pass
 
     try:
         process.wait(timeout=5)
@@ -289,8 +290,10 @@ def run_process_with_timeout(
     if monitor_thread is not None:
         monitor_thread.join(timeout=2)
 
-    reader_out.join(timeout=5)
-    reader_err.join(timeout=5)
+    if reader_out is not None:
+        reader_out.join(timeout=5)
+    if reader_err is not None:
+        reader_err.join(timeout=5)
 
     # Compute peak memory
     raw_stderr = stderr_chunks[0] if stderr_chunks else ""
@@ -604,8 +607,13 @@ def run_checker(
     package_path: Path,
     check_paths: list[Path] | None,
     timeout: int,
+    capture_output: bool = True,
 ) -> TimingMetrics:
-    """Run a single type checker and return timing metrics only."""
+    """Run a single type checker and return timing metrics only.
+
+    When *capture_output* is False, output is discarded (no pipe overhead)
+    and error detection is skipped — caller must have done a capture pass first.
+    """
     # Convert absolute check_paths to relative strings from package root
     rel_paths: list[str] | None = None
     if check_paths:
@@ -652,7 +660,9 @@ def run_checker(
             "error_message": f"Unknown checker: {checker}",
         }
 
-    result = run_process_with_timeout(cmd, cwd=cwd, timeout=timeout)
+    result = run_process_with_timeout(
+        cmd, cwd=cwd, timeout=timeout, capture_output=capture_output,
+    )
 
     if result["timed_out"] or result.get("oom_killed"):
         msg = "OOM killed" if result.get("oom_killed") else "Timeout"
@@ -664,6 +674,13 @@ def run_checker(
             "execution_time_s": result["execution_time_s"],
             "peak_memory_mb": result.get("peak_memory_mb", 0.0),
             "error_message": msg,
+        }
+
+    if not capture_output:
+        return {
+            "ok": True,
+            "execution_time_s": result["execution_time_s"],
+            "peak_memory_mb": result.get("peak_memory_mb", 0.0),
         }
 
     # Detect fatal errors: mypy exits with code 2 for fatal errors (code 1 = type errors found).
@@ -962,20 +979,26 @@ def _benchmark_local_dir(
             }
             continue
 
-        total = warmup + runs
-        print(f"    Running {checker}... ({warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
+        # First warmup captures output for error detection; rest use DEVNULL.
+        effective_warmup = max(1, warmup)
+        total = effective_warmup + runs
+        print(f"    Running {checker}... ({effective_warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
         times: list[float] = []
         memories: list[float] = []
         failed_metric: TimingMetrics | None = None
 
         for run_idx in range(total):
-            is_warmup = run_idx < warmup
+            is_warmup = run_idx < effective_warmup
+            capture = run_idx == 0
             if is_warmup:
-                label = f"Warmup {run_idx + 1}/{warmup}"
+                label = "Check" if warmup == 0 else f"Warmup {run_idx + 1}/{effective_warmup}"
             else:
-                label = f"Run {run_idx - warmup + 1}/{runs}"
+                label = f"Run {run_idx - effective_warmup + 1}/{runs}"
             print(f"      {label}...", end=" ")
-            m = run_checker(checker, local_dir, None, timeout)
+            m = run_checker(
+                checker, local_dir, None, timeout,
+                capture_output=capture,
+            )
             if not m.get("ok"):
                 print(f"Failed: {m.get('error_message', 'Unknown')}")
                 failed_metric = m
@@ -1112,20 +1135,26 @@ def _benchmark_package(
             }
             continue
 
-        total = warmup + runs
-        print(f"    Running {checker}... ({warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
+        # First warmup captures output for error detection; rest use DEVNULL.
+        effective_warmup = max(1, warmup)
+        total = effective_warmup + runs
+        print(f"    Running {checker}... ({effective_warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
         times: list[float] = []
         memories: list[float] = []
         failed_metric: TimingMetrics | None = None
 
         for run_idx in range(total):
-            is_warmup = run_idx < warmup
+            is_warmup = run_idx < effective_warmup
+            capture = run_idx == 0
             if is_warmup:
-                label = f"Warmup {run_idx + 1}/{warmup}"
+                label = "Check" if warmup == 0 else f"Warmup {run_idx + 1}/{effective_warmup}"
             else:
-                label = f"Run {run_idx - warmup + 1}/{runs}"
+                label = f"Run {run_idx - effective_warmup + 1}/{runs}"
             print(f"      {label}...", end=" ")
-            m = run_checker(checker, package_path, resolved_paths, timeout)
+            m = run_checker(
+                checker, package_path, resolved_paths, timeout,
+                capture_output=capture,
+            )
             if not m.get("ok"):
                 print(f"Failed: {m.get('error_message', 'Unknown')}")
                 failed_metric = m
