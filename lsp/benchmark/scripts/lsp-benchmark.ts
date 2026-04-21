@@ -215,6 +215,11 @@ async function init(): Promise<void> {
 // Date/OS selector
 // ---------------------------------------------------------------------------
 
+function updateDiscontinuedBanner(os: string): void {
+    const banner = document.getElementById('discontinuedBanner');
+    if (banner) banner.style.display = (os === 'macos' || os === 'windows') ? 'block' : 'none';
+}
+
 /**
  * Setup date selector event listeners
  */
@@ -261,10 +266,12 @@ function setupDateSelector(): void {
     if (osSelect) {
         osSelect.addEventListener('change', async () => {
             currentOs = osSelect.value;
+            updateDiscontinuedBanner(currentOs);
             const date = dateInput.value || null;
             await switchToDate(date, currentOs);
         });
     }
+    updateDiscontinuedBanner(currentOs);
 }
 
 // ---------------------------------------------------------------------------

@@ -141,6 +141,11 @@ function renderAll() {
 // ---------------------------------------------------------------------------
 // Date/OS selector
 // ---------------------------------------------------------------------------
+function updateDiscontinuedBanner(os) {
+    const banner = document.getElementById('discontinuedBanner');
+    if (banner)
+        banner.style.display = (os === 'macos' || os === 'windows') ? 'block' : 'none';
+}
 function setupDateSelector() {
     const dateInput = document.getElementById('dateSelect');
     const loadBtn = document.getElementById('loadDateBtn');
@@ -166,9 +171,11 @@ function setupDateSelector() {
     if (osSelect) {
         osSelect.addEventListener('change', async () => {
             currentOs = osSelect.value;
+            updateDiscontinuedBanner(currentOs);
             await switchToDate(dateInput.value || null, currentOs);
         });
     }
+    updateDiscontinuedBanner(currentOs);
 }
 async function switchToDate(date, os) {
     try {

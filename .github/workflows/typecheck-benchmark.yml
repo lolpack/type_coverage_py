@@ -2,10 +2,8 @@ name: Daily Type Checker Timing Benchmark
 
 on:
   schedule:
-    # Daily at 5 AM UTC (ubuntu + windows)
+    # Daily at 5 AM UTC (ubuntu only)
     - cron: '0 5 * * *'
-    # Weekly on Wednesdays at 5 AM UTC (macos)
-    - cron: '0 5 * * 3'
   workflow_dispatch:
     inputs:
       package_count:
@@ -18,11 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ${{ fromJSON(
-          github.event_name == 'workflow_dispatch' && '["ubuntu-latest","macos-latest","windows-latest"]' ||
-          github.event.schedule == '0 5 * * 3' && '["macos-latest"]' ||
-          '["ubuntu-latest","windows-latest"]'
-          ) }}
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 480
 
