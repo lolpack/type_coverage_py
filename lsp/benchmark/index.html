@@ -21,8 +21,8 @@
                 <label for="osSelect">Platform:</label>
                 <select id="osSelect" class="filter-select">
                     <option value="ubuntu">Ubuntu</option>
-                    <option value="macos">macOS</option>
-                    <option value="windows">Windows</option>
+                    <option value="macos">macOS (discontinued)</option>
+                    <option value="windows">Windows (discontinued)</option>
                 </select>
                 <label for="dateSelect">Date:</label>
                 <input type="date" id="dateSelect" class="date-input">
@@ -36,6 +36,7 @@
     <nav class="nav-bar">
         <div class="container">
             <a href="/index.html" class="back-link">← Back to Type Coverage</a>
+            <a href="/typecheck_benchmark/" class="back-link">Compare Type Checking Performance</a>
             <div class="nav-links">
                 <a href="#summary">Summary</a>
                 <a href="#comparison">Comparison</a>
@@ -44,6 +45,18 @@
             </div>
         </div>
     </nav>
+
+    <div class="container">
+        <div id="discontinuedBanner" class="method-card" style="display:none; margin-top: 1.5rem; border-left: 4px solid #f59e0b; padding: 1rem 1.5rem;">
+            <h3>macOS &amp; Windows Benchmarks Discontinued</h3>
+            <p>
+                Automated macOS and Windows benchmarks have been discontinued.
+                Historical data for those platforms remains available by selecting past dates.
+                For current macOS or Windows results, benchmarks are best run locally &mdash;
+                see the <a href="https://github.com/lolpack/type_coverage_py/blob/main/BENCHMARKS.md">local benchmark guide</a>.
+            </p>
+        </div>
+    </div>
 
     <main class="container">
         <!-- Run Summary -->
@@ -237,7 +250,7 @@
     <footer class="footer">
         <div class="container">
             <p>Part of the <a href="https://github.com/lolpack/type_coverage_py">Python Type Coverage</a> project</p>
-            <p>Benchmarks run daily via GitHub Actions</p>
+            <p>Benchmarks run daily on Ubuntu via GitHub Actions | <a href="/typecheck_benchmark/">Typecheck Benchmark</a></p>
         </div>
     </footer>
 

@@ -8,6 +8,7 @@ Calculate the Type Coverage for top Python packages. This analysis aims to deter
 - Coverage Trends: [https://python-type-checking.com/historical_data/coverage-trends.html](https://python-type-checking.com/historical_data/coverage-trends.html)
 - Prioritized Coverage Reports: [https://python-type-checking.com/prioritized/](https://python-type-checking.com/prioritized/)
 - LSP Performance Benchmark: [https://python-type-checking.com/lsp/benchmark/](https://python-type-checking.com/lsp/benchmark/)
+- Type Checker Timing Benchmark: [https://python-type-checking.com/typecheck_benchmark/](https://python-type-checking.com/typecheck_benchmark/)
 
 - Prioritized list of packages included in analysis with Pyright: https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt
 - Coverage trends for prioritized list: [https://python-type-checking.com/prioritized/historical_data/coverage-trends.html](https://python-type-checking.com/prioritized/historical_data/coverage-trends.html)
@@ -86,10 +87,12 @@ Runs daily at 8 AM EST. Analyzes the top 2000 PyPI packages for type coverage us
 Runs daily at 10 AM EST. Analyzes a curated list of packages (defined in `included_packages.txt`) with Pyright stats. Generates `prioritized/package_report.json` and daily snapshots in `prioritized/historical_data/json/`. Deploys prioritized data and site files to `published-report`.
 
 ### Daily LSP Benchmark (`lsp-benchmark.yml`)
-Runs daily at 3 AM UTC on Ubuntu and Windows, weekly on Tuesdays for macOS. Benchmarks LSP performance (time-to-first-diagnostic, completions, hover) across Pyright, Pyrefly, ty, and Zuban on the prioritized package list. Each OS produces a separate results JSON. Deploys to `published-report` with retry logic for concurrent matrix job pushes.
+Runs daily at 3 AM UTC on Ubuntu. Benchmarks LSP performance (time-to-first-diagnostic, completions, hover) across Pyright, Pyrefly, ty, and Zuban on the prioritized package list. Deploys to `published-report`.
 
 ### Daily Type Checker Timing Benchmark (`typecheck-benchmark.yml`)
-Runs daily at 5 AM UTC on Ubuntu and Windows, weekly on Wednesdays for macOS. Measures full type-checking time across Pyright, Pyrefly, ty, mypy, and Zuban on packages with install configurations. Each checker is run 5 times per package and results are averaged. Each OS produces a separate results JSON. Deploys to `published-report` with retry logic for concurrent matrix job pushes.
+Runs daily at 5 AM UTC on Ubuntu. Measures full type-checking time across Pyright, Pyrefly, ty, mypy, and Zuban on packages with install configurations. Each checker is run 5 times per package and results are averaged. Deploys to `published-report`.
+
+> **Note:** macOS and Windows CI benchmarks have been discontinued due to high GitHub Actions runner costs. See [BENCHMARKS.md](BENCHMARKS.md) for instructions on running benchmarks locally on those platforms.
 
 ## Development
 

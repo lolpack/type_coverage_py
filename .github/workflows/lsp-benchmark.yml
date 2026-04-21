@@ -2,10 +2,8 @@ name: Daily LSP Benchmark
 
 on:
   schedule:
-    # Daily at 3 AM UTC (ubuntu + windows)
+    # Daily at 3 AM UTC (ubuntu only)
     - cron: '0 3 * * *'
-    # Weekly on Tuesdays at 3 AM UTC (macos)
-    - cron: '0 3 * * 2'
   workflow_dispatch:
     inputs:
       package_count:
@@ -22,11 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ${{ fromJSON(
-          github.event_name == 'workflow_dispatch' && '["ubuntu-latest","macos-latest","windows-latest"]' ||
-          github.event.schedule == '0 3 * * 2' && '["macos-latest"]' ||
-          '["ubuntu-latest","windows-latest"]'
-          ) }}
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 360
 
