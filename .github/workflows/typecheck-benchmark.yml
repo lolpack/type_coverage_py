@@ -17,7 +17,7 @@ on:
       warmup_runs:
         description: 'Number of warmup runs before measuring'
         required: false
-        default: '0'
+        default: '1'
 
 jobs:
   benchmark:
@@ -91,7 +91,7 @@ jobs:
         run: |
           PACKAGE_COUNT="${{ github.event.inputs.package_count || '0' }}"
           RUNS="${{ github.event.inputs.runs_per_package || '1' }}"
-          WARMUP="${{ github.event.inputs.warmup_runs || '0' }}"
+          WARMUP="${{ github.event.inputs.warmup_runs || '1' }}"
 
           # Determine OS name
           case "${{ matrix.os }}" in
