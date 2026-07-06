@@ -4,6 +4,7 @@ import tempfile
 import os
 from typing import Any
 import pytest
+import requests
 from unittest.mock import Mock, patch
 from analyzer.package_analyzer import download_package, extract_files, find_stub_package
 
@@ -22,6 +23,8 @@ def test_download_package(monkeypatch: pytest.MonkeyPatch) -> None:
 
     def mock_get(*args: Any, **kwargs: Any) -> Any:
         class MockResponse:
+            status_code = 200
+
             def raise_for_status(self) -> None:
                 pass
 
@@ -45,6 +48,52 @@ def test_download_package(monkeypatch: pytest.MonkeyPatch) -> None:
         assert os.path.exists(result_dir)
 
 
+def test_download_package_retries_transient_download_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def create_mock_tar_gz() -> bytes:
+        tar_bytes = BytesIO()
+        with tarfile.open(fileobj=tar_bytes, mode='w:gz') as tar:
+            info = tarfile.TarInfo(name="test.py")
+            info.size = len(b"print('Hello, world!')")
+            tar.addfile(info, BytesIO(b"print('Hello, world!')"))
+        tar_bytes.seek(0)
+        return tar_bytes.read()
+
+    calls: list[str] = []
+
+    def mock_get(url: str, *args: Any, **kwargs: Any) -> Any:
+        calls.append(url)
+        if url.endswith("fake_package.tar.gz") and calls.count(url) == 1:
+            raise requests.exceptions.ChunkedEncodingError("broken stream")
+
+        class MockResponse:
+            status_code = 200
+
+            def raise_for_status(self) -> None:
+                pass
+
+            def json(self) -> dict[str, Any]:
+                return {
+                    "urls": [{"packagetype": "sdist", "url": "https://example.com/fake_package.tar.gz"}]
+                }
+
+            @property
+            def content(self) -> bytes:
+                return create_mock_tar_gz()
+
+        return MockResponse()
+
+    monkeypatch.setattr("requests.get", mock_get)
+    monkeypatch.setattr("analyzer.package_analyzer.time.sleep", lambda _: None)
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        result_dir = download_package("fake_package", temp_dir)
+        assert os.path.exists(result_dir)
+
+    assert calls.count("https://example.com/fake_package.tar.gz") == 2
+
+
 def test_extract_files(monkeypatch: pytest.MonkeyPatch) -> None:
     def mock_download_package(package_name: str, temp_dir: str) -> str:
         os.makedirs(f"{temp_dir}/fake_package_dir", exist_ok=True)
@@ -61,6 +110,22 @@ def test_extract_files(monkeypatch: pytest.MonkeyPatch) -> None:
         assert len(files) > 0  # Expect at least one file to be extracted
 
 
+def test_extract_files_skips_unrecoverable_download_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def mock_download_package(package_name: str, temp_dir: str) -> str:
+        raise requests.exceptions.ChunkedEncodingError("broken stream")
+
+    monkeypatch.setattr(
+        "analyzer.package_analyzer.download_package", mock_download_package)
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        files, has_py_typed = extract_files("fake_package", temp_dir)
+
+    assert files == []
+    assert has_py_typed is False
+
+
 def test_find_stub_package_success() -> None:
     # Mock a successful response for an existing stub package
     with patch("requests.get") as mock_get:
@@ -73,8 +138,8 @@ def test_find_stub_package_success() -> None:
         expected_url = f"https://pypi.org/project/{package_name}-stubs/"
 
         assert stub_url == expected_url
-        mock_get.assert_called_once_with(
-            f"https://pypi.org/pypi/{package_name}-stubs/json")
+        mock_get.assert_called_once()
+        assert mock_get.call_args.args[0] == f"https://pypi.org/pypi/{package_name}-stubs/json"
 
 
 def test_find_stub_package_not_found() -> None:
@@ -88,5 +153,5 @@ def test_find_stub_package_not_found() -> None:
         stub_url = find_stub_package(package_name)
 
         assert stub_url is None
-        mock_get.assert_called_once_with(
-            f"https://pypi.org/pypi/{package_name}-stubs/json")
+        mock_get.assert_called_once()
+        assert mock_get.call_args.args[0] == f"https://pypi.org/pypi/{package_name}-stubs/json"

@@ -10,6 +10,14 @@ on:
         description: 'Number of packages to benchmark (0 = all with install config)'
         required: false
         default: '0'
+      runs_per_package:
+        description: 'Number of measured benchmark runs per checker/package'
+        required: false
+        default: '1'
+      warmup_runs:
+        description: 'Number of warmup runs before measuring'
+        required: false
+        default: '0'
 
 jobs:
   benchmark:
@@ -82,6 +90,8 @@ jobs:
         shell: bash
         run: |
           PACKAGE_COUNT="${{ github.event.inputs.package_count || '0' }}"
+          RUNS="${{ github.event.inputs.runs_per_package || '1' }}"
+          WARMUP="${{ github.event.inputs.warmup_runs || '0' }}"
 
           # Determine OS name
           case "${{ matrix.os }}" in
@@ -95,13 +105,17 @@ jobs:
             python -m typecheck_benchmark \
               --checkers pyright pyrefly ty mypy zuban \
               --output typecheck_benchmark/results \
-              --os-name "$OS_NAME"
+              --os-name "$OS_NAME" \
+              --runs "$RUNS" \
+              --warmup "$WARMUP"
           else
             python -m typecheck_benchmark \
               --packages "$PACKAGE_COUNT" \
               --checkers pyright pyrefly ty mypy zuban \
               --output typecheck_benchmark/results \
-              --os-name "$OS_NAME"
+              --os-name "$OS_NAME" \
+              --runs "$RUNS" \
+              --warmup "$WARMUP"
           fi
 
       - name: Upload Results Artifact
@@ -157,8 +171,10 @@ jobs:
           git diff --staged --quiet && exit 0
           git commit -m "Update typecheck timing benchmark results [skip ci]"
           for i in 1 2 3 4 5; do
-            git push origin published-report && break
+            git push origin published-report && exit 0
             echo "Push failed, retrying ($i/5)..."
             git pull --rebase origin published-report
             sleep $((i * 5))
           done
+          echo "Push failed after 5 attempts"
+          exit 1

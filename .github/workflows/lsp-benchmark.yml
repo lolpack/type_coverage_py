@@ -163,8 +163,10 @@ jobs:
           git diff --staged --quiet && exit 0
           git commit -m "Update LSP benchmark results [skip ci]"
           for i in 1 2 3 4 5; do
-            git push origin published-report && break
+            git push origin published-report && exit 0
             echo "Push failed, retrying ($i/5)..."
             git pull --rebase origin published-report
             sleep $((i * 5))
           done
+          echo "Push failed after 5 attempts"
+          exit 1
