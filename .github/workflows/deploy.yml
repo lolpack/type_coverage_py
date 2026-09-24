@@ -40,6 +40,11 @@ jobs:
           # copying it here could overwrite a newer published result with an
           # older one.
 
+          # Shared design system, consumed by every maintained page
+          mkdir -p /tmp/deploy/assets/styles
+          cp assets/styles/tokens.css /tmp/deploy/assets/styles/
+          cp assets/styles/site.css /tmp/deploy/assets/styles/
+
           # Copy site files (HTML, JS, CSS)
           cp index.html /tmp/deploy/
           cp prioritized/index.html /tmp/deploy/prioritized/
@@ -78,6 +83,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add \
+            assets/styles/tokens.css assets/styles/site.css \
             index.html prioritized/index.html \
             historical_data/coverage-trends.html prioritized/historical_data/coverage-trends.html \
             scripts/ prioritized/scripts/ \

@@ -3,12 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Type Checker Timing Benchmark | Python Type Coverage</title>
+    <title>Type Checker Benchmarks | Python Type Checking</title>
+    <meta name="description" content="Daily measurements of wall-clock type checking time and peak memory across mypy, Pyright, Pyrefly, ty and Zuban on open-source Python projects.">
+    <link rel="canonical" href="https://python-type-checking.com/typecheck_benchmark/">
+    <link rel="stylesheet" href="/assets/styles/tokens.css">
+    <link rel="stylesheet" href="/assets/styles/site.css">
     <link rel="stylesheet" href="styles/typecheck-benchmark.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
-    <header class="hero">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="site-header__brand" href="/">Python Type Checking</a>
+            <nav class="site-nav" aria-label="Site">
+                <a href="/#history">History</a>
+                <a href="/#surveys">State of typing</a>
+                <a href="/#benchmarks" aria-current="page">Benchmarks</a>
+                <a href="/#contribute">Contribute</a>
+                <a href="https://github.com/lolpack/type_coverage_py">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
         <div class="container">
             <h1>Type Checker Timing Benchmarks</h1>
             <p class="subtitle">Daily performance analysis of Python type checkers</p>
@@ -30,11 +49,11 @@
             </div>
             <div class="last-updated" id="lastUpdated">Loading...</div>
         </div>
-    </header>
+    </div>
 
-    <nav class="nav-bar">
+    <nav class="nav-bar" aria-label="Benchmark sections">
         <div class="container">
-            <a href="/index.html" class="back-link">&larr; Back to Type Coverage</a>
+            <a href="/" class="back-link">&larr; Python Type Checking</a>
             <a href="/lsp/benchmark/" class="back-link">Compare LSP Performance</a>
             <div class="nav-links">
                 <a href="#comparison">Comparison</a>
@@ -50,13 +69,13 @@
             <p>
                 Automated macOS and Windows benchmarks have been discontinued.
                 Historical data for those platforms remains available by selecting past dates.
-                For current macOS or Windows results, benchmarks are best run locally &mdash;
-                see the <a href="https://github.com/lolpack/type_coverage_py/blob/main/BENCHMARKS.md">local benchmark guide</a>.
+                For current macOS or Windows results, benchmarks are best run locally.
+                See the <a href="https://github.com/lolpack/type_coverage_py/blob/main/BENCHMARKS.md">local benchmark guide</a>.
             </p>
         </div>
     </div>
 
-    <main class="container">
+    <main id="main" class="container">
         <!-- Failure Summary -->
         <section id="summary" class="section">
             <h2>Run Summary</h2>
@@ -94,12 +113,12 @@
             <div class="chart-grid">
                 <div class="chart-card">
                     <h3>Average Execution Time (s)</h3>
-                    <p class="chart-description">Lower is better &mdash; mean time to type check each package</p>
+                    <p class="chart-description">Lower is better: mean time to type check each package</p>
                     <canvas id="avgTimeChart"></canvas>
                 </div>
                 <div class="chart-card">
                     <h3>Average Peak Memory (MB)</h3>
-                    <p class="chart-description">Lower is better &mdash; mean peak RSS during type checking</p>
+                    <p class="chart-description">Lower is better: mean peak RSS during type checking</p>
                     <canvas id="avgMemoryChart"></canvas>
                 </div>
             </div>
@@ -301,10 +320,17 @@
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>Part of the <a href="https://github.com/lolpack/type_coverage_py">Python Type Coverage</a> project</p>
-            <p>Benchmarks run daily on Ubuntu via GitHub Actions | <a href="/lsp/benchmark/">LSP Benchmark</a></p>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <p class="site-footer__disclosure">
+                Part of <a href="/">Python Type Checking</a>. Benchmarks run daily on Ubuntu
+                via GitHub Actions. This is an independent resource, not an official Python
+                project.
+            </p>
+            <p>
+                <a href="/lsp/benchmark/">Language server benchmark</a> &middot;
+                <a href="https://github.com/lolpack/type_coverage_py">Source</a>
+            </p>
         </div>
     </footer>
 
