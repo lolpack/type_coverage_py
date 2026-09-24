@@ -190,6 +190,7 @@ class TestTimeline:
         "pytype winds down feature development",
         "ty reaches beta",
         "The 2025 survey",
+        "Pyrefly reaches version 1.0",
         "What are types for in an agentic world?",   # 2026, open question
     ]
 
@@ -295,6 +296,7 @@ class TestTimeline:
         assert "November 20, 2023" in joined       # PEP 729 resolution
         assert "August 20, 2025" in joined         # pytype FAQ
         assert "December 16, 2025" in joined       # ty beta
+        assert "May 12, 2026" in joined                # Pyrefly 1.0
 
 
 class TestSurveys:
