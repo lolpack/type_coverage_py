@@ -1,130 +1,108 @@
-# type_coverage_py ✅
+# Python Type Checking
 
-Calculate the Type Coverage for top Python packages. This analysis aims to determine how well typed popular Python packages are and compares the coverage of exported APIs and the whole package (including tests). [PEP-561](https://peps.python.org/pep-0561/) defines the creation, location and MRO of Python type hints which can be inline with the code or stored as separate stubs (.pyi files). Indicate that your package is type checked, by including a `py.typed` file in distribution.
+Source for [python-type-checking.com](https://python-type-checking.com/): the
+story, state, and future of typed Python, plus two performance benchmarks for
+Python type checkers.
 
-## Coverage Reports
+## What this site publishes
 
-- Daily coverage calculator: [https://python-type-checking.com](https://python-type-checking.com/)
-- Coverage Trends: [https://python-type-checking.com/historical_data/coverage-trends.html](https://python-type-checking.com/historical_data/coverage-trends.html)
-- Prioritized Coverage Reports: [https://python-type-checking.com/prioritized/](https://python-type-checking.com/prioritized/)
-- LSP Performance Benchmark: [https://python-type-checking.com/lsp/benchmark/](https://python-type-checking.com/lsp/benchmark/)
-- Type Checker Timing Benchmark: [https://python-type-checking.com/typecheck_benchmark/](https://python-type-checking.com/typecheck_benchmark/)
+| Page | What it is |
+|---|---|
+| [`/`](https://python-type-checking.com/) | Editorial homepage: how Python typing developed, what the annual surveys say, where to compare tools, and how to contribute. |
+| [`/lsp/benchmark/`](https://python-type-checking.com/lsp/benchmark/) | **Language server performance.** `textDocument/definition` (Go to Definition) latency, completion/error rates, and returned-location validity across Pyright, Pyrefly, ty, and Zuban. |
+| [`/typecheck_benchmark/`](https://python-type-checking.com/typecheck_benchmark/) | **Type checker performance.** Wall-clock execution time and peak memory across mypy, Pyright, Pyrefly, ty, and Zuban. |
 
-- Prioritized list of packages included in analysis with Pyright: https://github.com/lolpack/type_coverage_py/blob/main/included_packages.txt
-- Coverage trends for prioritized list: [https://python-type-checking.com/prioritized/historical_data/coverage-trends.html](https://python-type-checking.com/prioritized/historical_data/coverage-trends.html)
+### Looking for package type coverage?
 
-Top pypi packages pulled from this project [https://github.com/hugovk/top-pypi-packages](https://github.com/hugovk/top-pypi-packages)
+This project originally measured type-annotation coverage across popular PyPI
+packages, because incomplete library typing was, and remains, a real
+ecosystem problem. **That measurement is retired.** For current package typing
+metrics, use [Joren's Typestats dashboard](https://jorenham.github.io/typestats/dashboard/).
 
-## Methodology
+The historical coverage data this project collected stays in the repository and
+at its existing URLs. It is frozen: nothing recomputes or refreshes it.
 
-This section outlines how the script analyzes Python packages, checks for typeshed availability, and calculates type coverage. The process involves three key steps: package extraction, typeshed check, and type coverage calculation.
+- Last report: [`package_report.json`](package_report.json), [`stats_as_csv.csv`](stats_as_csv.csv)
+- Dated snapshots: `historical_data/json/`, `historical_data/html/`
+- Prioritized list: `prioritized/`
 
-### **Package Extraction**
+## Benchmarks
 
-- **Downloading**: The script downloads the source distribution of each selected package from PyPI and extracts it into a temporary directory.
-- **File Extraction**: It identifies and extracts all Python files (`.py`) and type stub files (`.pyi`) from the package for analysis.
+Both benchmarks draw their corpus from a single source of truth,
+[`typecheck_benchmark/install_envs.json`](typecheck_benchmark/install_envs.json),
+selecting packages with `install: true` or a non-empty `deps` list. They always
+measure the same set of projects.
 
-### **Typeshed Check**
+### Language server benchmark (`lsp-benchmark.yml`)
 
-- **Typeshed Directory**: The script checks if a corresponding stub exists in the `typeshed` repository, which contains type stubs for standard library modules and popular third-party packages.
-- **Existence Check**: If a typeshed stub exists, it is recorded as `HasTypeShed: Yes`; otherwise, it is marked as `HasTypeShed: No`.
-- **Typeshed Merge**: Pull available typestubs from typeshed with the same package name. If a local `.pyi` file exists, prefer it over typeshed.
+Runs daily at 03:00 UTC on Ubuntu, and on demand. Measures the
+`textDocument/definition` request against Pyright, Pyrefly, ty, and Zuban.
 
-### **Stubs Package Check**
+It reports request latency, how often a request completed without error, and
+whether the returned location is structurally valid. **A location that exists is
+not necessarily the semantically correct definition.** This is a performance
+and liveness measurement, not a correctness one.
 
-If a package has a corresponding stubs package (`[package name]-stubs`), then we pull the stubs package and merge it with the source files the same way we would for typeshed stubs. This happens before typeshed stubs are merged, so in any conflict the stubs package would take priority.
+### Type checker timing benchmark (`typecheck-benchmark.yml`)
 
-If a stubs package exists, it is recorded as `HasStubsPackage: Yes`; otherwise, it is marked as `HasStubsPackage: No`.
+Runs daily at 05:00 UTC on Ubuntu, and on demand. Measures wall-clock time and
+peak memory for mypy, Pyright, Pyrefly, ty, and Zuban.
 
-### **Stubs package Check**
+The scheduled run defaults to **one warmup run plus one measured run** per
+package (`runs_per_package: 1`, `warmup_runs: 1`). Warmup runs are discarded.
+Both values are adjustable when dispatching the workflow manually, and the local
+CLI takes the same flags.
 
-- Check pypi for a package called {package}-stubs like https://pypi.org/project/pandas-stubs/ for stubs hosted outside of typeshed.
+> macOS and Windows CI benchmarks were discontinued because of GitHub Actions
+> runner cost. Results for those platforms are historical; current runs on them
+> are local. See [BENCHMARKS.md](BENCHMARKS.md).
 
-### **Type Coverage Calculation**
-
-- **Parameter Coverage**:
-  - The script analyzes function definitions in the extracted files and calculates the percentage of function parameters that have type annotations.
-  - **Handling `.pyi` files**: If a function is defined in a `.pyi` file, it takes precedence over any corresponding function in a `.py` file. The parameter counts from `.pyi` files will overwrite those from `.py` files for the same function.
-  - The formula used:
-  $$\[
-  \text{Parameter Coverage} = \left( \frac{\text{Number of Parameters with Type Annotations}}{\text{Total Number of Parameters}} \right) \times 100
-  \]$$
-
-- **Return Type Coverage**:
-  - The script calculates the percentage of functions that have return type annotations.
-  - **Handling `.pyi` files**: Similar to parameter coverage, if a function is defined in a `.pyi` file, the return type annotations from the `.pyi` file will overwrite those from any corresponding `.py` file.
-  - The formula used:
-  $$\[
-  \text{Return Type Coverage} = \left( \frac{\text{Number of Functions with Return Type Annotations}}{\text{Total Number of Functions}} \right) \times 100
-  \]$$
-
-- **Skipped Files**:
-  - Files that cannot be processed due to syntax or encoding errors are skipped, and the number of skipped files is recorded.
-
-- **Overall Coverage**:
-  - The script calculates and returns the overall coverage, combining parameter coverage and return type coverage. The maximum number of skipped files between the parameter and return type calculations is recorded.
-
-This methodology ensures an accurate and detailed analysis of type coverage for popular Python packages, taking into account the presence of type stub files (`.pyi`) which are prioritized over implementation files (`.py`) for the same functions.
-
-### Pyright Stats Integration
-- **Exposed package APIs:** Pyright will calculatue coverage for stubs and packages installed with pip or other package managers looking at just the exposed APIs. Include `py.typed` in your package to calculate coverage: `pyright --ignoreexternal --verifytypes {package}
-- **Pyright Analysis:** The script can optionally run Pyright to gather additional type information statistics for each package.
-- **Stats Structure:** Pyright stats include counts of known, ambiguous, and unknown types for each package.
-
-## Branching Strategy
-
-- **`main`** — Development branch. All code changes (Python, TypeScript, HTML, CSS, workflow YAML) are made here.
-- **`published-report`** — Deploy-only branch. Contains only the generated site files (HTML, CSS, compiled JS, data JSON) served by GitHub Pages. Never commit code changes directly to this branch.
-
-All four CI workflows check out `main` for code, fetch accumulated data from `published-report`, run their task, build the frontend, and deploy results back to `published-report` via a shallow-clone push. This one-way flow ensures workflow YAML always comes from `main` and prevents build artifacts (e.g. `node_modules`, `.pyright_output`) from being committed to the deploy branch.
-
-## GitHub Actions Workflows
-
-### Daily Package Data Update (`main.yml`)
-Runs daily at 8 AM EST. Analyzes the top 2000 PyPI packages for type coverage using Pyright and typeshed stubs. Generates `package_report.json` and a daily historical snapshot in `historical_data/json/`. Deploys data files plus all site assets (HTML, JS, CSS) to `published-report`.
-
-### Daily Prioritized List Runner (`prioritized.yaml`)
-Runs daily at 10 AM EST. Analyzes a curated list of packages (defined in `included_packages.txt`) with Pyright stats. Generates `prioritized/package_report.json` and daily snapshots in `prioritized/historical_data/json/`. Deploys prioritized data and site files to `published-report`.
-
-### Daily LSP Benchmark (`lsp-benchmark.yml`)
-Runs daily at 3 AM UTC on Ubuntu. Benchmarks LSP performance (time-to-first-diagnostic, completions, hover) across Pyright, Pyrefly, ty, and Zuban on the prioritized package list. Deploys to `published-report`.
-
-### Daily Type Checker Timing Benchmark (`typecheck-benchmark.yml`)
-Runs daily at 5 AM UTC on Ubuntu. Measures full type-checking time across Pyright, Pyrefly, ty, mypy, and Zuban on packages with install configurations. Each checker is run 5 times per package and results are averaged. Deploys to `published-report`.
-
-> **Note:** macOS and Windows CI benchmarks have been discontinued due to high GitHub Actions runner costs. See [BENCHMARKS.md](BENCHMARKS.md) for instructions on running benchmarks locally on those platforms.
+Performance is one dimension of choosing a tool. These measurements do not
+establish type-checking correctness, language-feature completeness, or which
+checker is best for a given project.
 
 ## Development
 
-Clone the typeshed repo into the root of the project
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 
-`git clone git@github.com:python/typeshed.git`
+npm ci
+```
 
-Call the main function with the top N packages to analyze, the max is 8,000.
+| Task | Command |
+|---|---|
+| Run tests | `pytest` |
+| Type check Python | `pyrefly check` |
+| Type check TypeScript | `npm run check` |
+| Compile TypeScript | `npm run build` |
+| Lint hooks | `pre-commit run --all-files` |
 
-`python main.py 100`
+### Running the benchmarks locally
 
-Alternatively call with a single package
+```bash
+# Language server benchmark
+python -m lsp.benchmark.daily_runner --packages 5 --runs 3
 
-`python main.py --package-name flask`
+# Type checker timing benchmark, against a local project
+python -m typecheck_benchmark --local /path/to/project
+```
 
-Analyze the top N packages and generate both JSON and HTML reports:
+## Branching strategy
 
-`python main.py 100 --write-json --write-html`
+- **`main`**: development branch. All code, content, and workflow changes.
+- **`published-report`**: deploy-only branch served by GitHub Pages. Never
+  commit code changes here directly.
 
-Run daily command for Github Actions: Generate historical coverage report to create the file historical_data/coverage-trends.html
+Workflows check out `main`, run their task, and push their own output to
+`published-report`. The benchmark workflows publish only their own results; site
+assets are published by `deploy.yml`.
 
-`python main.py 2000 --create-daily`
+## Contributing
 
-Generate report from a specific list of packages
+Corrections to the site's history, sources, or wording are welcome. Open an
+issue or a pull request. For Python typing language design, use the
+[Python Typing Discourse](https://discuss.python.org/c/typing/32).
 
-`python main.py --pyright-stats --package-list included_packages.txt --write-json --write-html --output-list-only`
-
-Run daily command for prioritized list:
-
-`python main.py --package-list included_packages.txt  --archive-prioritized`
-
-### Type check the project
-
-`pyrefly check`
-
+This is an independent resource, not an official Python project.

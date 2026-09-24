@@ -17,13 +17,19 @@ Then verify with: `which python` (should show `.venv/bin/python`)
 | Run tests | `python -m pytest tests/ -v` |
 | Type check | `pyrefly check` |
 | Install deps | `pip install -r requirements.txt` |
-| Run main | `python main.py <num_packages>` |
 | Run LSP benchmark | `python -m lsp.benchmark.daily_runner --packages 5 --runs 3` |
 | Run benchmark on local dir | `python -m typecheck_benchmark --local /path/to/project` |
 
 ## Project Overview
 
-This project analyzes Python type coverage across popular PyPI packages and benchmarks LSP performance.
+This project publishes [python-type-checking.com](https://python-type-checking.com/):
+an editorial homepage about the history and state of typed Python, plus two
+performance benchmarks (language server latency and type checker timing).
+
+Package type-coverage generation is **retired**. The historical data stays in
+the repository at its existing paths, but nothing recomputes it. Don't add a
+replacement crawler. Current package typing metrics live at
+[Typestats](https://jorenham.github.io/typestats/dashboard/).
 
 ## Key Rules
 
