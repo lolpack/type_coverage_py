@@ -58,8 +58,6 @@ jobs:
 
           cp prioritized/historical_data/coverage-trends.html /tmp/deploy/prioritized/historical_data/
 
-          mkdir -p /tmp/deploy/scripts
-          cp scripts/main.js /tmp/deploy/scripts/
           mkdir -p /tmp/deploy/prioritized/scripts
           cp prioritized/scripts/main.js /tmp/deploy/prioritized/scripts/
           mkdir -p /tmp/deploy/historical_data/scripts
@@ -92,7 +90,7 @@ jobs:
             index.html 404.html favicon.svg robots.txt sitemap.xml \
             prioritized/index.html \
             historical_data/coverage-trends.html prioritized/historical_data/coverage-trends.html \
-            scripts/ prioritized/scripts/ \
+            prioritized/scripts/ \
             historical_data/scripts/ prioritized/historical_data/scripts/ \
             historical_data/graph.css prioritized/historical_data/graph.css \
             lsp/benchmark/index.html lsp/benchmark/scripts/lsp-benchmark.js lsp/benchmark/styles/lsp-benchmark.css \

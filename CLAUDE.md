@@ -56,3 +56,23 @@ Type check **all** modified Python files, including files in `tests/`, `lsp/`, a
 ## Package Source
 
 Both the LSP benchmark and typecheck benchmark use `typecheck_benchmark/install_envs.json` as their single source of truth for packages. They must always test the same set of packages.
+
+## Site structure
+
+| Path | What it is |
+|------|------------|
+| `index.html` | The homepage. Hand-authored static HTML, no JavaScript. See `docs/content-maintenance.md` before editing content. |
+| `assets/styles/tokens.css` | Shared design tokens. Both dashboards and the homepage consume these, so don't fork them. |
+| `assets/styles/site.css` | Shared header, nav, footer and common components. No chart or table selectors belong here. |
+| `assets/styles/home.css` | Homepage only. |
+| `lsp/benchmark/`, `typecheck_benchmark/` | The two dashboards, at their canonical URLs. |
+| `historical_data/`, `prioritized/`, `package_report.json` | Frozen coverage data and its viewers. Leave alone. |
+
+### Publishing ownership
+
+- `deploy.yml` publishes **site assets only** (HTML, CSS, JS, favicon, sitemap, robots, CNAME).
+- Each benchmark workflow publishes **only its own results** under `*/results/`.
+
+Never cross these. A site deploy that writes result JSON can overwrite newer
+published results with the sparse copy on `main`; a benchmark job that writes
+page assets can revert a newer UI release.
