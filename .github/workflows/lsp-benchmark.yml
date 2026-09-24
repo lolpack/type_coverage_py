@@ -151,6 +151,13 @@ jobs:
           mkdir -p /tmp/deploy/lsp/benchmark/styles
           cp lsp/benchmark/styles/lsp-benchmark.css /tmp/deploy/lsp/benchmark/styles/
 
+          # Shared design system. The dashboard HTML above links these, so
+          # publish them together; otherwise this job can put a page live
+          # that references stylesheets deploy.yml has not shipped yet.
+          mkdir -p /tmp/deploy/assets/styles
+          cp assets/styles/tokens.css /tmp/deploy/assets/styles/
+          cp assets/styles/site.css /tmp/deploy/assets/styles/
+
           # Commit and push (with retry for concurrent matrix jobs)
           cd /tmp/deploy
           git config user.name "github-actions[bot]"
@@ -159,7 +166,8 @@ jobs:
             lsp/benchmark/results/ \
             lsp/benchmark/index.html \
             lsp/benchmark/scripts/lsp-benchmark.js \
-            lsp/benchmark/styles/lsp-benchmark.css
+            lsp/benchmark/styles/lsp-benchmark.css \
+            assets/styles/tokens.css assets/styles/site.css
           git diff --staged --quiet && exit 0
           git commit -m "Update LSP benchmark results [skip ci]"
           for i in 1 2 3 4 5; do
