@@ -286,6 +286,26 @@ class TestTimeline:
         assert "2008" in entry, "the Python 3.0 release year must be stated"
         assert "shipped 2008 in Python 3.0" in entry
 
+    def test_pep_484_does_not_claim_runtime_semantics(self, text: str) -> None:
+        """PEP 484 gives annotations a conventional static, not runtime, meaning."""
+        entry = text.split("PEP 484 standardizes type hints")[1].split("</li>")[0]
+        assert "static type checkers" in entry
+        assert "runtime meaning" in entry
+        assert "turned annotations from a general-purpose hook into" not in entry
+
+    def test_pep_695_is_not_reduced_to_cosmetic_syntax(self, text: str) -> None:
+        """The PEP also specifies annotation scopes and lazy evaluation."""
+        entry = text.split("Type parameters get dedicated syntax")[1].split("</li>")[0]
+        assert "annotation scope" in entry
+        assert "lazy evaluation" in entry
+        assert "not new expressive power" not in entry
+
+    def test_pep_729_describes_council_responsibilities(self, text: str) -> None:
+        """The PEP assigns stewardship; it did not create every listed artifact."""
+        entry = text.split("PEP 729 establishes the Typing Council")[1].split("</li>")[0]
+        assert "made it responsible for" in entry
+        assert "maintained typing specification" in entry
+
     def test_key_dates_are_stated_with_the_precision_the_source_supports(
         self, html: str
     ) -> None:
