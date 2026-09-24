@@ -1,261 +1,802 @@
 <!DOCTYPE html>
+<!--
+  python-type-checking.com homepage.
+
+  This page is hand-authored static HTML on purpose: it is a curated
+  narrative that changes a few times a year, and a plain file is easier to
+  review and edit than a content pipeline. It requires no JavaScript.
+
+  To add a timeline event, copy an existing <li class="timeline__item ...">
+  block and keep it in chronological order. Categories are Language, Tools,
+  Ecosystem and Governance; the category name must stay visible in the badge,
+  because the coloured dot alone is not an accessible label. Every factual
+  claim carries a primary source link in its .sources line.
+
+  See docs/content-maintenance.md.
+-->
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Package Type Coverage Report</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/jdecked/twemoji/master/assets/svg/2705.svg" type="image/svg+xml"/>
-    <style>
-        :root {
-            --primary-color: #1a73e8;
-            --primary-hover: #1557b0;
-            --bg-color: #f9fbfc;
-            --card-bg: #fff;
-            --text-color: #333;
-            --text-muted: #666;
-            --border-color: #e2e8f0;
-            --table-header-bg: #f0f4f8;
-            --table-row-even: #fafafa;
-            --table-row-hover: #f1f8ff;
-            --success-color: #22c55e;
-            --shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Type Checking: History, Surveys, and Benchmarks</title>
+    <meta name="description" content="The story, state, and future of typed Python: how type hints developed, what the annual typing surveys say, and how today's type checkers and language servers perform.">
+    <link rel="canonical" href="https://python-type-checking.com/">
 
-        * {
-            box-sizing: border-box;
-        }
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Python Type Checking">
+    <meta property="og:title" content="Python Type Checking: The story, state, and future of typed Python">
+    <meta property="og:description" content="How Python typing developed, what developers say about it, and how today's type checkers and language servers perform.">
+    <meta property="og:url" content="https://python-type-checking.com/">
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 40px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            font-size: 2.5em;
-            margin-bottom: 30px;
-        }
-
-        .preamble {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            font-size: 1rem;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .preamble ul {
-            padding-left: 1.5rem;
-            margin: 0;
-        }
-
-        .preamble li {
-            margin-bottom: 12px;
-        }
-
-        .preamble a {
-            color: var(--primary-color);
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .preamble a:hover {
-            text-decoration: underline;
-        }
-
-        .github-link {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 1rem;
-        }
-
-        .github-link a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .github-link a:hover {
-            text-decoration: underline;
-        }
-
-        .controls {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .controls label {
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .controls input[type="date"] {
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        .controls select {
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1rem;
-            min-width: 200px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2rem;
-            color: var(--text-muted);
-        }
-
-        .table-container {
-            max-width: 100%;
-            overflow-x: auto;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
-        table th, table td {
-            padding: 12px 10px;
-            border: 1px solid var(--border-color);
-            text-align: left;
-        }
-
-        table th {
-            background-color: var(--table-header-bg);
-            color: var(--text-color);
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        table tr:nth-child(even) {
-            background-color: var(--table-row-even);
-        }
-
-        table tr:hover {
-            background-color: var(--table-row-hover);
-        }
-
-        .coverage-cell {
-            text-align: right;
-            padding-right: 10px;
-            font-family: 'Consolas', 'Monaco', monospace;
-        }
-
-        .boolean-yes {
-            background-color: var(--success-color) !important;
-            color: white;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .boolean-no {
-            text-align: center;
-            color: var(--text-muted);
-        }
-
-        .package-link {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .package-link:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-    </style>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/tokens.css">
+    <link rel="stylesheet" href="/assets/styles/site.css">
+    <link rel="stylesheet" href="/assets/styles/home.css">
 </head>
 <body>
-    <h1>📦 Package Type Coverage Report</h1>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="preamble">
-        <ul>
-            <li>✅ <strong>Better Reliability:</strong> Type annotations help catch bugs early and improve confidence in your codebase.</li>
-            <li>🚀 <strong>Developer Velocity:</strong> Great type coverage improves editor support, autocompletion, and navigation.</li>
-            <li>📚 <strong>Living Documentation:</strong> Type hints clarify APIs without relying solely on comments or docstrings, and they are validated automatically.</li>
-            <li>🔍 <strong>Community Visibility:</strong> This site tracks the top 2,000 PyPI packages—stand out by adding great types!</li>
-        </ul>
-        <ul>
-            <li>
-                📈 <a href="historical_data/coverage-trends.html">View historical coverage trends</a>
-            </li>
-            <li>
-                🎯 <a href="prioritized/index.html">View prioritized packages</a> (packages with Pyright stats)
-            </li>
-            <li>
-                ❓ Have questions or ideas? 
-                <a href="https://github.com/lolpack/type_coverage_py/issues" target="_blank">Leave an issue on GitHub</a>.
-            </li>
-            <li>
-                ✍️ Want to contribute types? 
-                <a href="https://github.com/lolpack/type_coverage_py/issues" target="_blank">Find an open issue or start one</a> and make a real impact!
-            </li>
-        </ul>
-    </div>
-
-    <p class="github-link">
-        🛠️ See code and methodology here: 
-        <a href="https://github.com/lolpack/type_coverage_py" target="_blank">https://github.com/lolpack/type_coverage_py</a>
-    </p>
-
-    <div class="controls">
-        <div>
-            <label for="date-picker">📅 View historical data: </label>
-            <select id="date-picker">
-                <option value="">Latest</option>
-            </select>
+    <header class="site-header site-header--sticky">
+        <div class="site-header__inner">
+            <a class="site-header__brand" href="/">Python Type Checking</a>
+            <nav class="site-nav" aria-label="Site">
+                <a href="#history">History</a>
+                <a href="#surveys">State of typing</a>
+                <a href="#benchmarks">Benchmarks</a>
+                <a href="#contribute">Contribute</a>
+                <a href="https://github.com/lolpack/type_coverage_py">GitHub</a>
+            </nav>
         </div>
-    </div>
+    </header>
 
-    <div id="table-container" class="table-container">
-        <div class="loading">Loading package data...</div>
-    </div>
+    <main id="main">
 
-    <script type="module" src="scripts/main.js"></script>
+        <!-- ============================================ Hero ============ -->
+        <section class="hero">
+            <div class="wrap">
+                <h1>The story, state, and future of typed Python.</h1>
+                <p class="hero__lead">
+                    Python typing grew through shared standards, competing implementations,
+                    better library annotations, and a lot of community collaboration.
+                    Explore how it developed, compare today's tools, and help shape what
+                    comes next.
+                </p>
+
+                <div class="hero__actions">
+                    <a class="link-button link-button--primary" href="#history">Explore the history</a>
+                    <a class="link-button link-button--secondary" href="#benchmarks">Compare tools</a>
+                    <a class="link-button link-button--secondary" href="#contribute">Improve the ecosystem</a>
+                </div>
+
+                <div class="site-notice site-notice--archive handoff">
+                    <p>
+                        <strong>Looking for package type coverage?</strong>
+                        This site used to measure annotation coverage across popular PyPI
+                        packages. That measurement is retired. For current numbers, use
+                        <a href="https://jorenham.github.io/typestats/dashboard/">Joren's Typestats dashboard</a>.
+                    </p>
+                    <p>
+                        Our historical coverage data is preserved unchanged at its original
+                        locations, including the
+                        <a href="/historical_data/coverage-trends.html">coverage trends</a> and
+                        <a href="/prioritized/">prioritized</a> pages.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================== Orientation ============= -->
+        <section class="section" id="orientation">
+            <div class="wrap">
+                <span class="section__eyebrow">First, the short version</span>
+                <h2>What type annotations do, and don't do</h2>
+                <div class="section__intro">
+                    <p>
+                        A Python annotation records what a name is expected to be. Nothing
+                        reads it at runtime by default; it is information for <em>tools</em>.
+                        Type checkers use it to find mistakes before the program runs, and
+                        editors use it for navigation, completion and refactoring.
+                    </p>
+                    <p>
+                        Adoption is gradual by design. You can annotate one function, one
+                        module, or an entire package, and unannotated code keeps working.
+                        Python remains dynamically typed: annotations do not, on their own,
+                        enforce anything at runtime.
+                    </p>
+                    <p class="sources">
+                        <a href="https://typing.python.org/en/latest/">Python typing documentation</a>
+                        <a href="https://peps.python.org/pep-0484/">PEP 484</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================== History ============= -->
+        <section class="section" id="history">
+            <div class="wrap">
+                <span class="section__eyebrow">How we got here</span>
+                <h2>How Python learned to describe types</h2>
+                <div class="section__intro">
+                    <p>
+                        This is a curated path through two decades of work, not a list of
+                        every typing PEP. Four threads run through it: changes to the
+                        <strong>language</strong>, the <strong>tools</strong> that read
+                        annotations, the <strong>ecosystem</strong> that distributes them,
+                        and the <strong>governance</strong> that keeps them coherent.
+                    </p>
+                </div>
+
+                <ol class="timeline">
+
+                    <li class="timeline__item timeline__item--language">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">Proposed 2006 &middot; shipped 2008 in Python 3.0</span>
+                            <span class="timeline__tag">Language</span>
+                        </div>
+                        <h3>Function annotations provide the syntax</h3>
+                        <p>
+                            PEP 3107 added a place to attach arbitrary expressions to
+                            function parameters and return values, deliberately without
+                            prescribing what they mean. Types were one suggested use among
+                            several. It was proposed in 2006 and the syntax shipped two
+                            years later in Python 3.0; the interpretation came later still.
+                        </p>
+                        <p class="sources"><a href="https://peps.python.org/pep-3107/">PEP 3107: Function Annotations</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2012</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>Google starts building pytype</h3>
+                        <p>
+                            Work began on pytype to bring static checking to Google's very
+                            large Python codebase. It took an inference-first approach:
+                            rather than requiring annotations, it inferred types and
+                            recorded them in separate interface files. This is when
+                            development started, not a public release.
+                        </p>
+                        <p class="sources"><a href="https://github.com/google/pytype/blob/main/README.md">google/pytype README</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">December 7, 2012</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>mypy's source becomes public</h3>
+                        <p>
+                            Jukka Lehtosalo released the source of an experimental checker
+                            for a Python dialect with optional static types. The early
+                            prototype was not today's mypy, but it made the case that
+                            gradual typing could work in practice, and it shaped the
+                            standard that followed.
+                        </p>
+                        <p class="sources"><a href="https://mypy-lang.org/news.html">mypy news</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--language">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2015 · Python 3.5</span>
+                            <span class="timeline__tag">Language</span>
+                        </div>
+                        <h3>PEP 484 standardizes type hints</h3>
+                        <p>
+                            One shared vocabulary, so that a person, a checker and an editor
+                            could all read the same annotation and agree on what it meant.
+                            PEP 484 brought the <code>typing</code> module into the standard
+                            library and turned annotations from a general-purpose hook into
+                            a type system.
+                        </p>
+                        <p class="sources"><a href="https://peps.python.org/pep-0484/">PEP 484: Type Hints</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--ecosystem">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2015 onward</span>
+                            <span class="timeline__tag">Ecosystem</span>
+                        </div>
+                        <h3>Typeshed becomes shared infrastructure</h3>
+                        <p>
+                            Every checker needs to know the types of the standard library
+                            and of popular third-party packages. Rather than each tool
+                            maintaining its own copy, typeshed collects those stubs in one
+                            repository that the whole ecosystem contributes to and depends
+                            on, including teams who otherwise compete on checkers.
+                        </p>
+                        <p class="sources"><a href="https://github.com/python/typeshed">python/typeshed</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--language">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2016 · Python 3.6</span>
+                            <span class="timeline__tag">Language</span>
+                        </div>
+                        <h3>Variable annotations become syntax</h3>
+                        <p>
+                            PEP 526 extended annotations past function signatures to
+                            variables, class attributes and module-level names, so a type
+                            could be stated where the value is defined instead of in a
+                            comment.
+                        </p>
+                        <p class="sources"><a href="https://peps.python.org/pep-0526/">PEP 526: Syntax for Variable Annotations</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">May 2018</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>Pyre is open-sourced</h3>
+                        <p>
+                            Meta released Pyre, a checker built for codebases large enough
+                            that incremental performance is a design constraint rather than
+                            an optimisation. This is its public-release milestone; work on
+                            it had been under way internally beforehand.
+                        </p>
+                        <p class="sources"><a href="https://developers.facebook.com/blog/post/2021/05/10/eli5-pyre-fast-error-flagging-python-codebases/">Meta engineering: Pyre retrospective</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--ecosystem">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2018 · Python 3.7 era</span>
+                            <span class="timeline__tag">Ecosystem</span>
+                        </div>
+                        <h3>Types travel with packages</h3>
+                        <p>
+                            PEP 561 answered a practical question: how does a checker find
+                            the types for a dependency you installed? A package ships a
+                            <code>py.typed</code> marker with inline annotations, or ships
+                            stubs, or a separate <code>-stubs</code> distribution provides
+                            them. This is the machinery that decides whether your
+                            dependencies are usefully typed for you.
+                        </p>
+                        <p class="sources"><a href="https://peps.python.org/pep-0561/">PEP 561: Distributing and Packaging Type Information</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2019</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>Pyright joins the ecosystem</h3>
+                        <p>
+                            Microsoft released Pyright, a checker designed to be fast enough
+                            to run continuously inside an editor. It tied checking closely to
+                            the editing experience, a pattern most later tools followed.
+                            Pyright the checker is distinct from the Pylance extension that
+                            builds on it.
+                        </p>
+                        <p class="sources"><a href="https://github.com/microsoft/pyright">microsoft/pyright</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--language">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2019 · Python 3.8</span>
+                            <span class="timeline__tag">Language</span>
+                        </div>
+                        <h3>Protocols describe structural interfaces</h3>
+                        <p>
+                            PEP 544 gave duck typing a static form: a type can be defined by
+                            the methods an object has rather than by what it inherits from.
+                            It let the type system describe how Python is actually written.
+                        </p>
+                        <p class="sources"><a href="https://peps.python.org/pep-0544/">PEP 544: Protocols, structural subtyping</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--language">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2020–2022 · Python 3.9–3.11</span>
+                            <span class="timeline__tag">Language</span>
+                        </div>
+                        <h3>Everyday annotations get shorter</h3>
+                        <p>
+                            A run of changes made ordinary annotations less noisy, which did
+                            more for adoption than any single large feature:
+                            <code>list[str]</code> instead of importing
+                            <code>List</code>, <code>X | None</code> instead of
+                            <code>Optional[X]</code>, and <code>Self</code> for methods that
+                            return their own class.
+                        </p>
+                        <details>
+                            <summary>Which PEP shipped when</summary>
+                            <p>
+                                PEP 585 (built-in generics) in Python 3.9, PEP 604
+                                (<code>X | Y</code> unions) in Python 3.10, and PEP 673
+                                (<code>Self</code>) in Python 3.11.
+                            </p>
+                        </details>
+                        <p class="sources">
+                            <a href="https://peps.python.org/pep-0585/">PEP 585</a>
+                            <a href="https://peps.python.org/pep-0604/">PEP 604</a>
+                            <a href="https://peps.python.org/pep-0673/">PEP 673</a>
+                        </p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--language">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2023 · Python 3.12</span>
+                            <span class="timeline__tag">Language</span>
+                        </div>
+                        <h3>Type parameters get dedicated syntax</h3>
+                        <p>
+                            PEP 695 introduced <code>def f[T](x: T) -&gt; T</code> and the
+                            <code>type</code> statement, so generics no longer required
+                            declaring a <code>TypeVar</code> separately. Ergonomics, not new
+                            expressive power, and ergonomics is what gets used.
+                        </p>
+                        <p class="sources"><a href="https://peps.python.org/pep-0695/">PEP 695: Type Parameter Syntax</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--governance">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">November 20, 2023</span>
+                            <span class="timeline__tag">Governance</span>
+                        </div>
+                        <h3>PEP 729 establishes the Typing Council</h3>
+                        <p>
+                            With several independent checkers in wide use, "what does this
+                            annotation mean?" needed an answer that was not just one tool's
+                            behaviour. PEP 729 set up a council, a maintained specification,
+                            and a conformance test suite that implementations can be
+                            measured against. This date is the PEP's resolution, not a
+                            membership announcement.
+                        </p>
+                        <p class="sources"><a href="https://peps.python.org/pep-0729/">PEP 729: Typing governance process</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--ecosystem">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">December 9, 2024</span>
+                            <span class="timeline__tag">Ecosystem</span>
+                        </div>
+                        <h3>The 2024 typing survey asks developers directly</h3>
+                        <p>
+                            The first of the annual typed-Python surveys reported what people
+                            get out of typing and where it still hurts. Incomplete or
+                            incorrect types in third-party libraries came through as a
+                            recurring source of friction.
+                            <a href="#surveys">See the survey section below.</a>
+                        </p>
+                        <p class="sources"><a href="https://engineering.fb.com/2024/12/09/developer-tools/typed-python-2024-survey-meta/">Typed Python in 2024</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">May 15, 2025</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>Pyrefly's public alpha</h3>
+                        <p>
+                            Meta announced Pyrefly, a type checker and IDE experience written
+                            in Rust, as the successor to its work on Pyre.
+                        </p>
+                        <p class="sources"><a href="https://engineering.fb.com/2025/05/15/developer-tools/introducing-pyrefly-a-new-type-checker-and-ide-experience-for-python/">Introducing Pyrefly</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">June 10, 2025</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>ZubanLS reaches public alpha</h3>
+                        <p>
+                            A Rust-based type checker and language server from the author of
+                            the Jedi language server, aiming at mypy-compatible behaviour.
+                        </p>
+                        <details>
+                            <summary>Later milestones</summary>
+                            <p>
+                                ZubanLS went on to a beta release and was open-sourced later
+                                in 2025; the project blog tracks the sequence.
+                            </p>
+                        </details>
+                        <p class="sources"><a href="https://zubanls.com/blog/">ZubanLS blog</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">August 20, 2025</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>pytype winds down feature development</h3>
+                        <p>
+                            Google announced that pytype's new feature development is ending
+                            and that <strong>Python 3.12 is its final supported version</strong>,
+                            as investment shifts toward other approaches. The project's FAQ
+                            still allows for bug fixes. This is a wind-down of feature work,
+                            not a statement that the repository was archived or that all
+                            maintenance stopped that day.
+                        </p>
+                        <details>
+                            <summary>Why this one matters to the story</summary>
+                            <p>
+                                pytype opened this timeline in 2012 and closes a chapter of it
+                                here. It was the most prominent inference-first checker: it
+                                aimed to be useful on code that had no annotations at all,
+                                where the rest of the ecosystem converged on reading
+                                annotations developers write. Neither approach is universally
+                                better, and the trade-off it explored has not gone away.
+                            </p>
+                        </details>
+                        <p class="sources">
+                            <a href="https://github.com/google/pytype/blob/main/README.md">pytype README</a>
+                            <a href="https://github.com/google/pytype/issues/1925">pytype FAQ</a>
+                        </p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">December 16, 2025</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>ty reaches beta</h3>
+                        <p>
+                            Astral's Rust-based type checker and language server moved to
+                            beta, having been introduced publicly earlier in 2025.
+                        </p>
+                        <p class="sources"><a href="https://astral.sh/blog/ty">Astral: ty</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--ecosystem">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">December 22, 2025</span>
+                            <span class="timeline__tag">Ecosystem</span>
+                        </div>
+                        <h3>The 2025 survey revisits adoption and friction</h3>
+                        <p>
+                            A second year of responses, and the same headline complaint:
+                            library types that are missing, incomplete or wrong.
+                            <a href="#surveys">See the survey section below.</a>
+                        </p>
+                        <p class="sources"><a href="https://engineering.fb.com/2025/12/22/developer-tools/python-typing-survey-2025-code-quality-flexibility-typing-adoption/">Python typing survey 2025</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--open">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">2026</span>
+                            <span class="timeline__tag">Open question</span>
+                        </div>
+                        <h3>What are types for in an agentic world?</h3>
+                        <p>
+                            Every entry above already happened. This one has not. Coding
+                            agents now read and write a lot of Python, and it is an open
+                            question how much the type system should be built for them as
+                            well as for people. Nobody has the answer yet, which is exactly
+                            why it belongs at the end of the story rather than in it.
+                            <a href="#future">Read the open questions.</a>
+                        </p>
+                    </li>
+
+                </ol>
+
+                <div class="timeline__next">
+                    <h3>The next chapter is open</h3>
+                    <p>
+                        The timeline stops at what has actually happened. Where it goes
+                        next is genuinely undecided, and the community is
+                        <a href="#future">still working out the answer</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================== Surveys ============= -->
+        <section class="section" id="surveys">
+            <div class="wrap">
+                <span class="section__eyebrow">Typing today</span>
+                <h2>Useful types. An unfinished ecosystem.</h2>
+                <div class="section__intro">
+                    <p>
+                        Two annual surveys now ask Python developers how typing is working
+                        for them. Both are self-selected samples of people who chose to
+                        respond to a survey about typing, so read them as signal about that
+                        population, not as a measurement of all Python developers.
+                    </p>
+                </div>
+
+                <div class="card-grid">
+                    <article class="card">
+                        <span class="card__year">Published December 9, 2024</span>
+                        <h3>The 2024 typing survey</h3>
+                        <p class="stat">88%
+                            <span class="stat__label">of respondents said they always or often use types</span>
+                            <span class="stat__caveat">Self-selected sample of survey respondents, not a measurement of all Python developers.</span>
+                        </p>
+                        <p>
+                            Respondents pointed to catching bugs earlier and to better editor
+                            support. The friction they reported was less about the language
+                            than about their dependencies.
+                        </p>
+                        <div class="card__actions">
+                            <a class="link-button link-button--secondary" href="https://engineering.fb.com/2024/12/09/developer-tools/typed-python-2024-survey-meta/">Read the 2024 report</a>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <span class="card__year">Published December 22, 2025</span>
+                        <h3>The 2025 typing survey</h3>
+                        <p class="stat">86%
+                            <span class="stat__label">of respondents said they always or often use type hints</span>
+                            <span class="stat__caveat">Self-selected sample of survey respondents, not a measurement of all Python developers. The two years are separate samples and should not be read as a trend line.</span>
+                        </p>
+                        <p>
+                            The same theme returned, more sharply: incomplete or incorrect
+                            annotations in third-party libraries, and a continuing request for
+                            better library coverage.
+                        </p>
+                        <div class="card__actions">
+                            <a class="link-button link-button--secondary" href="https://engineering.fb.com/2025/12/22/developer-tools/python-typing-survey-2025-code-quality-flexibility-typing-adoption/">Read the 2025 report</a>
+                        </div>
+                    </article>
+
+                    <article class="card card--forthcoming">
+                        <span class="card__year">2026</span>
+                        <span class="badge">Results coming soon</span>
+                        <h3>The 2026 typing survey</h3>
+                        <p>
+                            Not published yet. When the results are out, they will be linked
+                            here. Until then there is nothing to report: no preview numbers,
+                            no date.
+                        </p>
+                        <div class="card__actions">
+                            <a class="link-button link-button--secondary" href="https://discuss.python.org/c/typing/32">Join the typing discussion</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====================================== Ecosystem ============= -->
+        <section class="section" id="ecosystem">
+            <div class="wrap">
+                <span class="section__eyebrow">The ecosystem</span>
+                <h2>Your types are only as good as your dependencies'</h2>
+                <div class="section__intro">
+                    <p>
+                        You can annotate your own code carefully and still get little out of
+                        it. The moment a call crosses into a dependency that ships no types,
+                        or ships types that are wrong, the checker loses the thread. Values
+                        become <code>Any</code>, errors stop being caught, and completion in
+                        your editor goes quiet.
+                    </p>
+                    <p>
+                        This is what both surveys keep surfacing, and it is why this site
+                        existed in the first place: it measured type-annotation coverage
+                        across popular PyPI packages to make the gap visible.
+                    </p>
+                    <p>
+                        <strong>That measurement is now retired</strong>, and the job has
+                        passed to a tool that does it better. Joren's Typestats dashboard
+                        tracks package typing across the ecosystem today. Our historical data
+                        stays online, unchanged and clearly frozen. The two use different
+                        methodologies, so don't read them as one continuous trend.
+                    </p>
+                </div>
+
+                <div class="card__actions" style="margin-top: var(--space-5);">
+                    <a class="link-button link-button--primary" href="https://jorenham.github.io/typestats/dashboard/">Explore package typing with Typestats</a>
+                    <a class="link-button link-button--secondary" href="/historical_data/coverage-trends.html">View our frozen historical data</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================== Benchmarks ============= -->
+        <section class="section" id="benchmarks">
+            <div class="wrap">
+                <span class="section__eyebrow">Compare today's tools</span>
+                <h2>Compare the tools, understand the measurements</h2>
+                <div class="section__intro">
+                    <p>
+                        There are now several mature Python type checkers, most with a
+                        language server attached. We run two benchmarks daily against a
+                        shared corpus of open-source Python projects.
+                    </p>
+                </div>
+
+                <div class="card-grid card-grid--two">
+                    <article class="card card--benchmark">
+                        <h3>Type checker performance</h3>
+                        <p>
+                            Wall-clock execution time and peak memory when checking
+                            open-source Python projects from a cold start.
+                        </p>
+                        <p class="card__checkers">Measures: mypy · Pyright · Pyrefly · ty · Zuban</p>
+                        <div class="card__actions">
+                            <a class="link-button link-button--primary" href="/typecheck_benchmark/">View the timing benchmark</a>
+                        </div>
+                    </article>
+
+                    <article class="card card--benchmark">
+                        <h3>Language server performance</h3>
+                        <p>
+                            <code>textDocument/definition</code> (Go to Definition) latency,
+                            how often a request completes without error, and whether the
+                            location returned is valid.
+                        </p>
+                        <p class="card__checkers">Measures: Pyright · Pyrefly · ty · Zuban</p>
+                        <div class="card__actions">
+                            <a class="link-button link-button--primary" href="/lsp/benchmark/">View the LSP benchmark</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="site-notice scope-note">
+                    <p>
+                        Performance is one dimension of choosing a tool, and the easiest one
+                        to measure. These numbers say nothing about type-checking
+                        correctness, language-feature completeness, or which checker suits a
+                        given project. A returned definition location that exists is not
+                        automatically the semantically right one.
+                    </p>
+                    <p>
+                        For the other dimension, the Typing Council publishes a
+                        <a href="https://htmlpreview.github.io/?https://github.com/python/typing/blob/main/conformance/results/results.html">conformance test suite and results</a>,
+                        which report how each checker behaves against the typing
+                        specification. Read it alongside these benchmarks: a fast checker
+                        that disagrees with the spec is not obviously the right choice.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====================================== Contribute ============ -->
+        <section class="section" id="contribute">
+            <div class="wrap">
+                <span class="section__eyebrow">Improve the ecosystem</span>
+                <h2>Make the next dependency better typed</h2>
+                <div class="section__intro">
+                    <p>
+                        The library-typing gap closes one package at a time, and the work is
+                        unusually tractable: a small, well-scoped annotation fix to a widely
+                        used package helps everyone who imports it.
+                    </p>
+                </div>
+
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>1. Improve a library you already use</h3>
+                        <p>
+                            Start with a dependency whose gaps you've actually hit. Read its
+                            contribution policy first, then propose a small improvement to
+                            the public API surface, and add a test so it doesn't regress.
+                        </p>
+                        <div class="card__actions">
+                            <a class="link-button link-button--secondary" href="https://jorenham.github.io/typestats/dashboard/">Find gaps with Typestats</a>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <h3>2. Improve shared stubs</h3>
+                        <p>
+                            When a package can't ship its own types, typeshed carries them for
+                            the whole ecosystem. A fix there reaches every checker and every
+                            downstream user at once.
+                        </p>
+                        <div class="card__actions">
+                            <a class="link-button link-button--secondary" href="https://github.com/python/typeshed/blob/main/CONTRIBUTING.md">Typeshed contributing guide</a>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <h3>3. Keep improvements from regressing</h3>
+                        <p>
+                            Annotation coverage tends to drift back down unless something in
+                            CI notices. A threshold check is a cheap ratchet. Pyrefly is one
+                            tool that reports coverage; other checkers offer comparable
+                            reporting.
+                        </p>
+                        <div class="code-block"><code># Example annotation-coverage gate. Pick a threshold that
+# reflects where your project is today, then raise it.
+pyrefly coverage check src/ --fail-under 80</code></div>
+                        <p>
+                            Install or pin a Pyrefly version that supports this command, point
+                            it at your real source path, and take a baseline before choosing a
+                            number. Ordinary coverage counts an annotation even when it is
+                            <code>Any</code>; <code>--strict</code> excludes those, and
+                            <code>--public-only</code> narrows it to your exported surface.
+                        </p>
+                        <p class="sources"><a href="https://pyrefly.org/en/docs/report/">Pyrefly coverage reporting</a></p>
+                    </article>
+                </div>
+
+                <div class="caveat">
+                    <p>
+                        <strong>Annotation coverage is not a quality score.</strong> It is not
+                        test coverage, it is not type completeness in every sense, and it is
+                        certainly not proof of correctness. What the annotations actually say,
+                        how the checker is configured, and how much <code>Any</code> is hiding
+                        inside them all matter more than the percentage. Never add
+                        <code>Any</code> to move a number.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================= Future ============= -->
+        <section class="section" id="future">
+            <div class="wrap">
+                <span class="section__eyebrow">Where typing goes next</span>
+                <h2>Could static types become part of the interface between code and agents?</h2>
+                <div class="section__intro">
+                    <p>
+                        This is a question, not a finding. But it is worth asking, because
+                        coding agents are now another reader, and author, of Python.
+                    </p>
+                    <p>
+                        Types encode things an agent otherwise has to guess: the shape of the
+                        data, where an API boundary is, what a function promises to return.
+                        Checker diagnostics are a fast, precise feedback signal on a proposed
+                        edit, available before anything runs. Both properties look useful for
+                        navigating a repository, refactoring across it, and validating a
+                        change.
+                    </p>
+                    <p>
+                        How much that helps in practice depends on the task, the tooling, the
+                        configuration, and, again, the quality of the annotations involved.
+                        We don't have a number for it, and we would rather say so than invent
+                        one.
+                    </p>
+                    <p>
+                        And passing a type checker has never meant a program is correct. It
+                        doesn't establish that the logic is right, and it doesn't remove the
+                        need for tests, runtime validation, review, or security analysis. That
+                        was true before agents and it stays true now.
+                    </p>
+                    <p>
+                        Typing's open questions are not only about agents, either: easier
+                        adoption in existing codebases, clearer diagnostics and documentation,
+                        more consistent behaviour between checkers, and better ways to express
+                        what real library APIs actually do.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================== Get involved ============ -->
+        <section class="closing" id="get-involved">
+            <div class="wrap">
+                <span class="section__eyebrow">Get involved</span>
+                <h2>The next chapter is being written.</h2>
+                <div class="section__intro">
+                    <p>
+                        Python's type system got here through proposals, implementations,
+                        stub contributions and a lot of argument in public. That is still how
+                        it moves.
+                    </p>
+                </div>
+
+                <div class="closing__actions">
+                    <a class="link-button link-button--primary" href="https://discuss.python.org/c/typing/32">Join the typing discussion</a>
+                    <a class="link-button link-button--secondary" href="#contribute">Contribute library types</a>
+                    <a class="link-button link-button--secondary" href="https://github.com/python/typeshed/blob/main/CONTRIBUTING.md">Contribute to typeshed</a>
+                    <a class="link-button link-button--secondary" href="https://github.com/lolpack/type_coverage_py/issues">Improve this site</a>
+                </div>
+
+                <p class="closing__line">
+                    Python typing is still evolving. Help shape what comes next.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <p class="site-footer__disclosure">
+                Maintained by Aaron Pollack, who works on Pyrefly. Community contributions
+                and corrections are welcome. This is an independent resource, not an
+                official Python project, and it is not endorsed by the PSF, the Typing
+                Council, or any checker's maintainers.
+            </p>
+            <p>
+                <a href="/typecheck_benchmark/">Type checker benchmark</a> &middot;
+                <a href="/lsp/benchmark/">LSP benchmark</a> &middot;
+                <a href="https://github.com/lolpack/type_coverage_py/issues">Suggest a correction</a> &middot;
+                <a href="https://github.com/lolpack/type_coverage_py">Source</a>
+            </p>
+        </div>
+    </footer>
 </body>
 </html>

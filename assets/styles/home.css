@@ -1,0 +1,460 @@
+/*
+ * Homepage-only styles for python-type-checking.com.
+ *
+ * Loaded after tokens.css and site.css. Everything here is scoped to the
+ * homepage's own classes; the dashboards never load this file.
+ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    font-size: 17px;
+    min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+}
+
+code {
+    font-family: var(--font-mono);
+    background: var(--color-bg-tertiary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.875em;
+}
+
+a {
+    color: var(--color-accent);
+}
+
+.wrap {
+    max-width: var(--width-page);
+    margin: 0 auto;
+    padding: 0 var(--space-5);
+}
+
+.prose {
+    max-width: var(--width-prose);
+}
+
+/* --------------------------------------------------------------- hero --- */
+
+.hero {
+    background: linear-gradient(160deg, var(--color-bg-secondary) 0%, var(--color-bg) 70%);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-9) 0 var(--space-8);
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-text-bright);
+    max-width: 20ch;
+}
+
+.hero__lead {
+    margin-top: var(--space-5);
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    color: var(--color-text);
+    max-width: var(--width-prose);
+}
+
+.hero__actions {
+    margin-top: var(--space-6);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.handoff {
+    margin-top: var(--space-7);
+    max-width: 72ch;
+}
+
+.handoff strong {
+    color: var(--color-text-bright);
+}
+
+/* ------------------------------------------------------------ sections -- */
+
+.section {
+    padding: var(--space-9) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.section:last-of-type {
+    border-bottom: none;
+}
+
+.section__eyebrow {
+    display: block;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+}
+
+.section h1,
+.section h2 {
+    font-size: clamp(1.5rem, 3.2vw, 2.125rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-bright);
+    max-width: 24ch;
+}
+
+.section__intro {
+    margin-top: var(--space-4);
+    max-width: var(--width-prose);
+}
+
+.section__intro p + p {
+    margin-top: var(--space-4);
+}
+
+.section h3 {
+    color: var(--color-text-bright);
+    font-size: 1.125rem;
+    line-height: 1.35;
+}
+
+/* ----------------------------------------------------------- timeline --- */
+
+.timeline {
+    margin-top: var(--space-7);
+    list-style: none;
+    position: relative;
+    max-width: 860px;
+}
+
+/* The rail is decorative; it is drawn on the list, not on each item, so a
+   screen reader sees a plain ordered sequence of events. */
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: var(--color-border);
+}
+
+.timeline__item {
+    position: relative;
+    padding-left: var(--space-6);
+    padding-bottom: var(--space-6);
+}
+
+.timeline__item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 2px solid var(--color-border);
+}
+
+.timeline__item--language::before { border-color: var(--color-accent); }
+.timeline__item--tools::before    { border-color: var(--color-pyrefly); }
+.timeline__item--ecosystem::before{ border-color: var(--color-success); }
+.timeline__item--governance::before { border-color: var(--color-ty); }
+
+/*
+ * The final entry is a question, not an event. Hollow dot, dashed rail stub and
+ * muted heading so it reads as unfinished rather than as something that
+ * happened. The category badge still spells out "Open question", so the
+ * distinction does not depend on noticing the styling.
+ */
+.timeline__item--open::before {
+    border-color: var(--color-text-muted);
+    border-style: dashed;
+}
+
+.timeline__item--open {
+    padding-bottom: 0;
+}
+
+.timeline__item--open h3 {
+    color: var(--color-text);
+}
+
+.timeline__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+}
+
+.timeline__date {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+/* Category is always spelled out, never encoded by the dot colour alone. */
+.timeline__tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    background: var(--color-bg-tertiary);
+}
+
+.timeline__item h3 {
+    margin-top: var(--space-2);
+}
+
+.timeline__item p {
+    margin-top: var(--space-2);
+    max-width: var(--width-prose);
+}
+
+.timeline__item details {
+    margin-top: var(--space-3);
+    max-width: var(--width-prose);
+}
+
+.timeline__item summary {
+    cursor: pointer;
+    color: var(--color-accent);
+    font-size: 0.9375rem;
+}
+
+.timeline__item details p {
+    margin-top: var(--space-2);
+}
+
+.sources {
+    margin-top: var(--space-3);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+.sources a + a::before {
+    content: " · ";
+    color: var(--color-text-muted);
+}
+
+.timeline__next {
+    margin-top: var(--space-6);
+    padding: var(--space-5);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    max-width: 860px;
+}
+
+.timeline__next h3 {
+    margin-bottom: var(--space-2);
+}
+
+/* -------------------------------------------------------------- cards --- */
+
+.card-grid {
+    margin-top: var(--space-6);
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
+.card-grid--two {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+
+.card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.card__year {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+.card p {
+    margin: 0;
+}
+
+.card ul {
+    margin: 0;
+    padding-left: var(--space-5);
+}
+
+.card li + li {
+    margin-top: var(--space-2);
+}
+
+.card__actions {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.card--forthcoming {
+    border-style: dashed;
+    background: transparent;
+}
+
+.badge {
+    align-self: flex-start;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    background: var(--color-bg-tertiary);
+}
+
+.stat {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--color-text-bright);
+    line-height: 1.1;
+}
+
+.stat__label {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: var(--color-text);
+    margin-top: var(--space-1);
+}
+
+/* The caveat sits with the number, not behind a hover. */
+.stat__caveat {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-2);
+}
+
+.card--benchmark h3 {
+    font-size: 1.25rem;
+}
+
+/*
+ * On the 404 page the cards sit directly under the page h1, so their headings
+ * are h2 rather than h3. Same visual weight either way.
+ */
+.card h2 {
+    color: var(--color-text-bright);
+    font-size: 1.125rem;
+    line-height: 1.35;
+}
+
+.card__checkers {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+.scope-note {
+    margin-top: var(--space-5);
+    max-width: 72ch;
+}
+
+/* --------------------------------------------------------------- code --- */
+
+.code-block {
+    margin-top: var(--space-4);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    overflow-x: auto;
+}
+
+.code-block code {
+    background: none;
+    padding: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-bright);
+    white-space: pre;
+}
+
+.caveat {
+    margin-top: var(--space-5);
+    max-width: 72ch;
+    border-left: 3px solid var(--color-warning);
+    padding-left: var(--space-4);
+    color: var(--color-text);
+}
+
+/* ------------------------------------------------------------- closing -- */
+
+.closing {
+    padding: var(--space-9) 0;
+}
+
+.closing__actions {
+    margin-top: var(--space-6);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.closing__line {
+    margin-top: var(--space-6);
+    font-size: 1.125rem;
+    color: var(--color-text-bright);
+}
+
+/* -------------------------------------------------------------- mobile -- */
+
+@media (max-width: 720px) {
+    body {
+        font-size: 16px;
+    }
+
+    .wrap {
+        padding: 0 var(--space-4);
+    }
+
+    .hero {
+        padding: var(--space-7) 0 var(--space-6);
+    }
+
+    .section,
+    .closing {
+        padding: var(--space-7) 0;
+    }
+
+    .hero__actions .link-button,
+    .closing__actions .link-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
