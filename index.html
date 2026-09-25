@@ -186,8 +186,9 @@
                             One shared vocabulary, so that a person, a checker and an editor
                             could all read the same annotation and agree on what it meant.
                             PEP 484 brought the <code>typing</code> module into the standard
-                            library and turned annotations from a general-purpose hook into
-                            a type system.
+                            library and gave static type checkers a shared interpretation of
+                            annotations, while deliberately leaving their runtime meaning
+                            unchanged.
                         </p>
                         <p class="sources"><a href="https://peps.python.org/pep-0484/">PEP 484: Type Hints</a></p>
                     </li>
@@ -323,8 +324,9 @@
                         <p>
                             PEP 695 introduced <code>def f[T](x: T) -&gt; T</code> and the
                             <code>type</code> statement, so generics no longer required
-                            declaring a <code>TypeVar</code> separately. Ergonomics, not new
-                            expressive power, and ergonomics is what gets used.
+                            declaring a <code>TypeVar</code> separately. It also defined a new
+                            annotation scope and lazy evaluation for type aliases and type
+                            parameter bounds and constraints.
                         </p>
                         <p class="sources"><a href="https://peps.python.org/pep-0695/">PEP 695: Type Parameter Syntax</a></p>
                     </li>
@@ -338,10 +340,10 @@
                         <p>
                             With several independent checkers in wide use, "what does this
                             annotation mean?" needed an answer that was not just one tool's
-                            behaviour. PEP 729 set up a council, a maintained specification,
-                            and a conformance test suite that implementations can be
-                            measured against. This date is the PEP's resolution, not a
-                            membership announcement.
+                            behaviour. PEP 729 set up a council and made it responsible for
+                            the maintained typing specification and a conformance test suite
+                            that implementations can be measured against. This date is the
+                            PEP's resolution, not a membership announcement.
                         </p>
                         <p class="sources"><a href="https://peps.python.org/pep-0729/">PEP 729: Typing governance process</a></p>
                     </li>
@@ -370,7 +372,7 @@
                         <h3>Pyrefly's public alpha</h3>
                         <p>
                             Meta announced Pyrefly, a type checker and IDE experience written
-                            in Rust, as the successor to its work on Pyre.
+                            in Rust, building on lessons from its work on Pyre.
                         </p>
                         <p class="sources"><a href="https://engineering.fb.com/2025/05/15/developer-tools/introducing-pyrefly-a-new-type-checker-and-ide-experience-for-python/">Introducing Pyrefly</a></p>
                     </li>
@@ -451,6 +453,19 @@
                             <a href="#surveys">See the survey section below.</a>
                         </p>
                         <p class="sources"><a href="https://engineering.fb.com/2025/12/22/developer-tools/python-typing-survey-2025-code-quality-flexibility-typing-adoption/">Python typing survey 2025</a></p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--tools">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">May 12, 2026</span>
+                            <span class="timeline__tag">Tools</span>
+                        </div>
+                        <h3>Pyrefly reaches version 1.0</h3>
+                        <p>
+                            Pyrefly released version 1.0, its first stable release after the
+                            type checker and IDE experience entered public alpha in 2025.
+                        </p>
+                        <p class="sources"><a href="https://pyrefly.org/blog/v1.0/">Pyrefly 1.0</a></p>
                     </li>
 
                     <li class="timeline__item timeline__item--open">
