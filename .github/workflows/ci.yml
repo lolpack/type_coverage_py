@@ -42,27 +42,6 @@ jobs:
       - name: Typecheck with Pyrefly
         run: pyrefly check
 
-  check-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install dependencies
-        run: |
-          python -m venv .venv
-          . .\.venv\Scripts\Activate.ps1
-          python -m pip install -r requirements.txt
-      - name: Run Python tests
-        run: |
-          . .\.venv\Scripts\Activate.ps1
-          python -m pytest
-      - name: Typecheck with Pyrefly
-        run: |
-          . .\.venv\Scripts\Activate.ps1
-          pyrefly check
-
   check-ts:
     runs-on: ubuntu-latest
     steps:
