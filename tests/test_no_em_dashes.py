@@ -71,7 +71,7 @@ def owned_files() -> list[Path]:
 
 
 OWNED_FILES = owned_files()
-IDS = [str(p.relative_to(REPO_ROOT)) for p in OWNED_FILES]
+IDS = [p.relative_to(REPO_ROOT).as_posix() for p in OWNED_FILES]
 
 
 def test_the_check_covers_the_site_copy() -> None:
