@@ -509,8 +509,12 @@ class TestLinksAndAssets:
             "/assets/styles/home.css",
         ]
 
-    def test_page_works_without_javascript(self, page: PageParser) -> None:
-        assert page.scripts == [], "the homepage narrative must not require JavaScript"
+    def test_only_analytics_uses_javascript(self, page: PageParser) -> None:
+        # Analytics is optional; the homepage narrative still renders as HTML.
+        assert page.scripts == [
+            "https://www.googletagmanager.com/gtag/js?id=G-X8JVYS90EK",
+            "inline",
+        ], "only the Google tag and its initializer may use JavaScript"
 
     def test_no_remote_font_or_script_requests(self, html: str) -> None:
         for host in ("fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"):
