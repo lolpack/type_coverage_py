@@ -47,6 +47,8 @@ import time
 import traceback
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
+from urllib.parse import urlparse
+from urllib.request import url2pathname
 
 
 JsonObj = Dict[str, Any]
@@ -100,15 +102,14 @@ def _path_to_uri(path: Path) -> str:
 
 
 def _uri_to_path(uri: str) -> Path:
-    # Minimal file URI decoding (good enough for local Windows paths)
-    if uri.startswith("file:///"):
-        # file:///C:/...
-        path = uri[len("file:///") :]
-        return Path(path.replace("/", "\\"))
-    if uri.startswith("file://"):
-        path = uri[len("file://") :]
-        return Path(path)
-    return Path(uri)
+    parsed = urlparse(uri)
+    if parsed.scheme != "file":
+        return Path(uri)
+    path = parsed.path
+    if parsed.netloc and parsed.netloc != "localhost":
+        path = f"//{parsed.netloc}{path}"
+    # Decode escapes once and preserve native drive letters or UNC paths.
+    return Path(url2pathname(path))
 
 
 _IDENTIFIER_RE = re.compile(r"\b[A-Za-z_][A-Za-z0-9_]*\b")
@@ -784,8 +785,8 @@ def _looks_like_valid_location(
     # Note: we intentionally do *not* require the file to live under --root.
     # Many servers legally return locations in stdlib, site-packages, or vendored
     # typeshed, and the caller considers that a "pass".
-    p = _uri_to_path(loc.uri)
     try:
+        p = _uri_to_path(loc.uri)
         p.resolve()
     except Exception:
         return False
@@ -800,12 +801,7 @@ def _looks_like_valid_location(
     # statement that brought the symbol into scope.
     if source_uri and loc.uri == source_uri:
         try:
-            # Use urllib for cross-platform URI-to-path (don't rely on _uri_to_path
-            # which has Windows-specific logic).
-            from urllib.parse import unquote, urlparse
-
-            file_path = Path(unquote(urlparse(loc.uri).path))
-            with open(file_path, "r", errors="replace") as fh:
+            with p.open(encoding="utf-8", errors="replace") as fh:
                 for i, line in enumerate(fh):
                     if i == loc.range.start.line:
                         stripped = line.lstrip()

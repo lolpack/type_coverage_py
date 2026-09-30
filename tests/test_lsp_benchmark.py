@@ -7,11 +7,14 @@ from typing import Any
 
 import sys
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from lsp.lsp_benchmark import (
     _parse_definition_result,
     _looks_like_valid_location,
+    _uri_to_path,
     Location,
     Range,
     Position,
@@ -161,9 +164,13 @@ class TestParseDefinitionResult:
 class TestLooksLikeValidLocation:
     """Tests for _looks_like_valid_location function."""
 
+    def test_malformed_file_uri_fails(self, tmp_path: Path) -> None:
+        loc = _make_location_obj("file://[invalid/module.py")
+        assert _looks_like_valid_location(loc, tmp_path) is False
+
     def test_valid_file_location(self, tmp_path: Path) -> None:
         """Test that a valid file location passes validation."""
-        loc = _make_location_obj(f"file://{tmp_path}/test.py")
+        loc = _make_location_obj((tmp_path / "test.py").as_uri())
 
         result = _looks_like_valid_location(loc, tmp_path)
 
@@ -171,7 +178,7 @@ class TestLooksLikeValidLocation:
 
     def test_negative_line_fails(self, tmp_path: Path) -> None:
         """Test that negative line number fails validation."""
-        loc = _make_location_obj(f"file://{tmp_path}/test.py", start_line=-1)
+        loc = _make_location_obj((tmp_path / "test.py").as_uri(), start_line=-1)
 
         result = _looks_like_valid_location(loc, tmp_path)
 
@@ -179,7 +186,7 @@ class TestLooksLikeValidLocation:
 
     def test_negative_character_fails(self, tmp_path: Path) -> None:
         """Test that negative character position fails validation."""
-        loc = _make_location_obj(f"file://{tmp_path}/test.py", start_char=-1)
+        loc = _make_location_obj((tmp_path / "test.py").as_uri(), start_char=-1)
 
         result = _looks_like_valid_location(loc, tmp_path)
 
@@ -187,11 +194,29 @@ class TestLooksLikeValidLocation:
 
     def test_negative_end_line_fails(self, tmp_path: Path) -> None:
         """Test that negative end line fails validation."""
-        loc = _make_location_obj(f"file://{tmp_path}/test.py", end_line=-1)
+        loc = _make_location_obj((tmp_path / "test.py").as_uri(), end_line=-1)
 
         result = _looks_like_valid_location(loc, tmp_path)
 
         assert result is False
+
+
+class TestFileUris:
+    @pytest.mark.parametrize("name", ["module.py", "with spaces.py", "literal%20name.py"])
+    def test_native_path_round_trip(self, tmp_path: Path, name: str) -> None:
+        path = tmp_path / name
+        assert _uri_to_path(path.as_uri()) == path
+
+    def test_localhost_is_a_local_path(self, tmp_path: Path) -> None:
+        path = tmp_path / "module.py"
+        uri = path.as_uri().replace("file:///", "file://localhost/", 1)
+        assert _uri_to_path(uri) == path
+
+    @pytest.mark.skipif(sys.platform != "win32", reason="Windows UNC path")
+    def test_windows_unc_path(self) -> None:
+        assert _uri_to_path("file://server/share/with%20spaces.py") == Path(
+            "//server/share/with spaces.py"
+        )
 
 
 class TestImportLineFiltering:
@@ -206,6 +231,14 @@ class TestImportLineFiltering:
     def test_same_file_from_import_rejected(self, tmp_path: Path) -> None:
         """Navigating to a 'from X import Y' line in the same file is invalid."""
         uri = self._write_file(tmp_path, "mod.py", "from os import path\n\ndef foo(): pass\n")
+        loc = _make_location_obj(uri, start_line=0)
+        assert _looks_like_valid_location(loc, tmp_path, source_uri=uri) is False
+
+    @pytest.mark.parametrize("name", ["with spaces.py", "literal%20name.py"])
+    def test_same_file_import_with_escaped_path_rejected(
+        self, tmp_path: Path, name: str
+    ) -> None:
+        uri = self._write_file(tmp_path, name, "from os import path\n")
         loc = _make_location_obj(uri, start_line=0)
         assert _looks_like_valid_location(loc, tmp_path, source_uri=uri) is False
 

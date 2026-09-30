@@ -146,7 +146,8 @@ def _monitor_memory_linux(
                 if killed is not None:
                     killed[0] = True
                 try:
-                    os.killpg(os.getpgid(pid), signal.SIGKILL)
+                    if sys.platform == "linux":
+                        os.killpg(os.getpgid(pid), signal.SIGKILL)
                 except (ProcessLookupError, OSError):
                     pass
                 break
