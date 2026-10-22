@@ -13,7 +13,7 @@ on:
       runs_per_package:
         description: 'Number of measured benchmark runs per checker/package'
         required: false
-        default: '1'
+        default: '5'
       warmup_runs:
         description: 'Number of warmup runs before measuring'
         required: false
@@ -90,7 +90,7 @@ jobs:
         shell: bash
         run: |
           PACKAGE_COUNT="${{ github.event.inputs.package_count || '0' }}"
-          RUNS="${{ github.event.inputs.runs_per_package || '1' }}"
+          RUNS="${{ github.event.inputs.runs_per_package || '5' }}"
           WARMUP="${{ github.event.inputs.warmup_runs || '1' }}"
 
           # Determine OS name

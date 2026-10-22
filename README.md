@@ -48,8 +48,9 @@ and liveness measurement, not a correctness one.
 Runs daily at 05:00 UTC on Ubuntu, and on demand. Measures wall-clock time and
 peak memory for mypy, Pyright, Pyrefly, ty, and Zuban.
 
-The scheduled run defaults to **one warmup run plus one measured run** per
-package (`runs_per_package: 1`, `warmup_runs: 1`). Warmup runs are discarded.
+The scheduled run defaults to **one warmup run plus five measured runs** per
+package (`runs_per_package: 5`, `warmup_runs: 1`). Warmup runs are discarded,
+and the measured runs are averaged.
 Both values are adjustable when dispatching the workflow manually, and the local
 CLI takes the same flags.
 
