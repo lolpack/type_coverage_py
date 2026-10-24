@@ -1,0 +1,114 @@
+name: Typecheck Benchmark Combo Experiment
+
+# Measures PR 1 + PR 2 against this branch (mypy checks test code like the
+# other checkers, plus best-effort dependency installs), paired on the same
+# runner. Also records peak memory.
+#
+# Experiment only: uploads artifacts and a job summary, never publishes.
+
+on:
+  push:
+    branches: [benchmark-combo-experiment]
+    paths:
+      - '.github/workflows/typecheck-combo-experiment.yml'
+      - 'typecheck_benchmark/**'
+
+jobs:
+  experiment:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { experiment: combo, shard: 0, shards: 4, packages: '' }
+          - { experiment: combo, shard: 1, shards: 4, packages: '' }
+          - { experiment: combo, shard: 2, shards: 4, packages: '' }
+          - { experiment: combo, shard: 3, shards: 4, packages: '' }
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python Dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Node.js (for Pyright)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Same installation as typecheck-benchmark.yml.
+      - name: Install Type Checkers
+        shell: bash
+        run: |
+          npm install -g pyright
+          pip install --upgrade pyrefly ty mypy zuban
+          pyright --version; pyrefly --version; ty --version; zuban --version
+          python -m mypy --version
+
+      - name: Run experiment
+        shell: bash
+        run: |
+          EXTRA=()
+          if [ -n "${{ matrix.packages }}" ]; then
+            EXTRA=(--package-names ${{ matrix.packages }})
+          fi
+          python -m typecheck_benchmark.experiments.compare_inputs \
+            --experiment "${{ matrix.experiment }}" \
+            --shard "${{ matrix.shard }}" --shards "${{ matrix.shards }}" \
+            --pairs 2 \
+            --checkers pyright pyrefly ty mypy zuban \
+            "${EXTRA[@]}" \
+            --output "experiment-results/${{ matrix.experiment }}-${{ matrix.shard }}.json"
+
+      - name: Upload shard results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: combo-${{ matrix.experiment }}-${{ matrix.shard }}
+          path: experiment-results/
+          retention-days: 30
+
+  summarize:
+    needs: experiment
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download shard results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: combo-*
+          path: experiment-results
+          merge-multiple: true
+
+      - name: Summarize
+        shell: bash
+        run: |
+          python -m typecheck_benchmark.experiments.summarize_comparison experiment-results/*.json > report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: combo-report
+          path: |
+            report.md
+            experiment-results/
+          retention-days: 30
