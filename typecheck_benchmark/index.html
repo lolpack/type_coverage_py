@@ -207,7 +207,7 @@
                     <h3>Test Process</h3>
                     <ol>
                         <li>Shallow-clone each package from GitHub</li>
-                        <li>Install package dependencies per <code>install_envs.json</code></li>
+                        <li>Install package dependencies per <code>install_envs.json</code> into a fresh virtual environment used only for that package, and point every type checker at it</li>
                         <li>Run each type checker with 1 warmup run (discarded) + 1 measured run, with a 5-minute timeout per run</li>
                         <li>Record wall-clock time (to the millisecond) and peak memory usage of the measured run</li>
                     </ol>
