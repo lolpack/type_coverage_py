@@ -574,8 +574,16 @@ def install_deps(
 #   mypy     -- [mypy] section with files = path1, path2 via --config-file
 #   ty       -- [src] include = [paths] in ty.benchmark.toml via --config-file
 #   pyrefly  -- project_includes = [paths] in pyrefly.benchmark.toml via --config
-#   zuban    -- [mypy] section with files = path1, path2 via --config-file
+#   zuban    -- paths as positional arguments (zuban ignores files= in a config)
+#
+# Test code is excluded for every checker, so they all check the same files.
+# mypy needs the exclusion anyway: duplicate conftest.py modules and broken
+# test fixtures make it stop with "errors prevented further checking".
 # ---------------------------------------------------------------------------
+
+# Regex form for mypy and zuban, glob form for pyright, pyrefly and ty.
+TEST_EXCLUDE_REGEX: str = r"(/tests/|/test_|/testing/)"
+TEST_EXCLUDE_GLOBS: list[str] = ["**/tests/**", "**/test_*", "**/testing/**"]
 
 
 def _write_dummy_pyright_config(
@@ -584,7 +592,7 @@ def _write_dummy_pyright_config(
     """Write minimal pyrightconfig.json for consistent benchmarking."""
     config = {
         "include": check_paths or ["."],
-        "exclude": [],
+        "exclude": TEST_EXCLUDE_GLOBS,
         "typeCheckingMode": "basic",
         "useLibraryCodeForTypes": True,
     }
@@ -595,13 +603,7 @@ def _write_dummy_pyright_config(
 def _write_dummy_mypy_config(
     package_path: Path, check_paths: list[str] | None = None,
 ) -> Path:
-    """Write minimal mypy config for consistent benchmarking.
-
-    Excludes test directories to avoid fatal errors from duplicate
-    conftest.py modules and syntax errors in test fixture files, which
-    cause mypy to bail out with 'errors prevented further checking'
-    without actually type-checking any code.
-    """
+    """Write minimal mypy config for consistent benchmarking."""
     config_path = package_path / "mypy.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
         f.write("[mypy]\n")
@@ -609,9 +611,7 @@ def _write_dummy_mypy_config(
             f.write(f"files = {', '.join(check_paths)}\n")
         # Check bodies of untyped functions (other checkers do this by default)
         f.write("check_untyped_defs = True\n")
-        # Exclude test dirs to avoid duplicate module / syntax errors
-        # that cause mypy to bail out without checking anything
-        f.write("exclude = (?x)(\n    /tests/\n    | /test_\n    | /testing/\n  )\n")
+        f.write(f"exclude = {TEST_EXCLUDE_REGEX}\n")
     return config_path
 
 
@@ -621,10 +621,11 @@ def _write_dummy_ty_config(
     """Write minimal ty.toml for consistent benchmarking."""
     config_path = package_path / "ty.benchmark.toml"
     with open(config_path, "w", encoding="utf-8") as f:
+        f.write("[src]\n")
         if check_paths:
-            f.write("[src]\n")
             paths_toml = ", ".join(f'"{p}"' for p in check_paths)
             f.write(f"include = [{paths_toml}]\n")
+        f.write(f"exclude = {json.dumps(TEST_EXCLUDE_GLOBS)}\n")
     return config_path
 
 
@@ -637,6 +638,7 @@ def _write_dummy_pyrefly_config(
         if check_paths:
             paths_toml = ", ".join(f'"{p}"' for p in check_paths)
             f.write(f"project_includes = [{paths_toml}]\n")
+        f.write(f"project_excludes = {json.dumps(TEST_EXCLUDE_GLOBS)}\n")
     return config_path
 
 
@@ -717,7 +719,7 @@ def run_checker(
     elif checker == "zuban":
         # zuban ignores files= from --config-file, so we must always pass
         # check paths as explicit positional arguments.
-        cmd = ["zuban", "check"]
+        cmd = ["zuban", "check", "--exclude", TEST_EXCLUDE_REGEX]
         if python:
             cmd.extend(["--python-executable", python])
         if rel_paths:

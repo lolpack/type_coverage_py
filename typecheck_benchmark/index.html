@@ -255,18 +255,25 @@
                         <li><strong>Mypy:</strong> <code>[mypy]</code> with <code>files = paths</code> and <code>check_untyped_defs = True</code> via <code>--config-file</code></li>
                         <li><strong>ty:</strong> <code>[src] include = [paths]</code> in <code>ty.benchmark.toml</code> via <code>--config-file</code></li>
                         <li><strong>Pyrefly:</strong> <code>project_includes = [paths]</code> in <code>pyrefly.benchmark.toml</code> via <code>--config</code></li>
-                        <li><strong>Zuban:</strong> <code>[mypy]</code> with <code>files = paths</code> via <code>--config-file</code></li>
+                        <li><strong>Zuban:</strong> paths as arguments to <code>zuban check</code> (it ignores <code>files =</code> in a config file)</li>
                     </ul>
                     <p class="method-note">
                         This means every checker sees exactly the same target paths and
                         a neutral configuration, regardless of what the package ships.
                     </p>
                     <p class="method-note">
+                        <strong>Test code:</strong> every checker excludes test code
+                        (<code>tests/</code> and <code>testing/</code> directories, and
+                        <code>test_*</code> files), so all five check the same files.
+                        Mypy needs this in any case: duplicate <code>conftest.py</code>
+                        modules and broken test fixtures make it stop before checking
+                        anything.
+                    </p>
+                    <p class="method-note">
                         <strong>Mypy note:</strong> By default, mypy skips the bodies of
                         functions that lack type annotations. The other four checkers all
                         analyze unannotated code. We enable <code>check_untyped_defs = True</code>
-                        so that mypy checks the same amount of code as the other tools,
-                        making the comparison fair.
+                        so that mypy checks the same amount of code as the other tools.
                     </p>
                 </div>
                 <div class="method-card">

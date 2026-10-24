@@ -17,6 +17,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from typecheck_benchmark.daily_runner import (
+    TEST_EXCLUDE_REGEX,
     _benchmark_package,
     create_package_venv,
     install_deps,
@@ -98,7 +99,10 @@ class TestRunCheckerVenv:
     def test_zuban_flag_precedes_paths(self, tmp_path: Path) -> None:
         venv = tmp_path / "venv"
         cmd, _ = self._run("zuban", tmp_path, venv)
-        assert cmd == ["zuban", "check", "--python-executable", str(venv_python(venv)), "."]
+        assert cmd == [
+            "zuban", "check", "--exclude", TEST_EXCLUDE_REGEX,
+            "--python-executable", str(venv_python(venv)), ".",
+        ]
 
     @pytest.mark.parametrize("checker", ["pyright", "pyrefly", "ty", "mypy", "zuban"])
     def test_virtual_env_set(self, checker: str, tmp_path: Path) -> None:

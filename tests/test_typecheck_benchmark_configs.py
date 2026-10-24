@@ -6,14 +6,19 @@ with check_paths correctly embedded in each checker's native format.
 
 from __future__ import annotations
 
+import fnmatch
 import json
+import re
 import sys
+import tomllib
 from pathlib import Path
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from typecheck_benchmark.daily_runner import (
+    TEST_EXCLUDE_GLOBS,
+    TEST_EXCLUDE_REGEX,
     _write_dummy_mypy_config,
     _write_dummy_pyrefly_config,
     _write_dummy_pyright_config,
@@ -86,10 +91,10 @@ class TestWriteDummyMypyConfig:
 
 
 class TestWriteDummyTyConfig:
-    def test_default_empty(self, tmp_path: Path) -> None:
+    def test_default_has_no_include_but_excludes_tests(self, tmp_path: Path) -> None:
         path = _write_dummy_ty_config(tmp_path)
-        content = path.read_text()
-        assert content == ""
+        config = tomllib.loads(path.read_text())
+        assert config == {"src": {"exclude": TEST_EXCLUDE_GLOBS}}
 
     def test_check_paths_in_src_include(self, tmp_path: Path) -> None:
         path = _write_dummy_ty_config(tmp_path, ["src", "lib"])
@@ -113,10 +118,10 @@ class TestWriteDummyTyConfig:
 
 
 class TestWriteDummyPyreflyConfig:
-    def test_default_empty(self, tmp_path: Path) -> None:
+    def test_default_has_no_includes_but_excludes_tests(self, tmp_path: Path) -> None:
         path = _write_dummy_pyrefly_config(tmp_path)
-        content = path.read_text()
-        assert content == ""
+        config = tomllib.loads(path.read_text())
+        assert config == {"project_excludes": TEST_EXCLUDE_GLOBS}
 
     def test_check_paths_in_project_includes(self, tmp_path: Path) -> None:
         path = _write_dummy_pyrefly_config(tmp_path, ["src", "lib"])
@@ -247,14 +252,14 @@ class TestRunCheckerCommands:
     def test_zuban_no_check_paths_passes_dot(self, tmp_path: Path) -> None:
         cmd = self._run_and_capture_cmd("zuban", tmp_path)
         # zuban ignores --config-file, so paths are always positional
-        assert cmd == ["zuban", "check", "."]
+        assert cmd == ["zuban", "check", "--exclude", TEST_EXCLUDE_REGEX, "."]
 
     def test_zuban_with_check_paths_passes_positional(self, tmp_path: Path) -> None:
         src = tmp_path / "src"
         src.mkdir()
         cmd = self._run_and_capture_cmd("zuban", tmp_path, [src])
         # zuban ignores --config-file, so check paths are positional args
-        assert cmd == ["zuban", "check", "src"]
+        assert cmd == ["zuban", "check", "--exclude", TEST_EXCLUDE_REGEX, "src"]
 
     def test_unknown_checker_returns_error(self, tmp_path: Path) -> None:
         with patch("typecheck_benchmark.daily_runner.run_process_with_timeout") as mock:
@@ -262,3 +267,55 @@ class TestRunCheckerCommands:
         assert result["ok"] is False
         assert "Unknown checker" in (result.get("error_message") or "")
         mock.assert_not_called()
+
+
+# ---------------------------------------------------------------------------
+# Test code is excluded identically for every checker
+# ---------------------------------------------------------------------------
+
+
+class TestTestCodeExcludedForEveryChecker:
+    """Every checker must check the same files, so all exclude the same test code."""
+
+    def test_pyright(self, tmp_path: Path) -> None:
+        _write_dummy_pyright_config(tmp_path, ["src"])
+        config = json.loads((tmp_path / "pyrightconfig.json").read_text())
+        assert config["exclude"] == TEST_EXCLUDE_GLOBS
+
+    def test_pyrefly(self, tmp_path: Path) -> None:
+        config = tomllib.loads(_write_dummy_pyrefly_config(tmp_path, ["src"]).read_text())
+        assert config["project_excludes"] == TEST_EXCLUDE_GLOBS
+
+    def test_ty(self, tmp_path: Path) -> None:
+        config = tomllib.loads(_write_dummy_ty_config(tmp_path, ["src"]).read_text())
+        assert config["src"]["exclude"] == TEST_EXCLUDE_GLOBS
+
+    def test_mypy(self, tmp_path: Path) -> None:
+        content = _write_dummy_mypy_config(tmp_path, ["src"]).read_text()
+        assert f"exclude = {TEST_EXCLUDE_REGEX}\n" in content
+
+    def test_zuban(self, tmp_path: Path) -> None:
+        with patch("typecheck_benchmark.daily_runner.run_process_with_timeout") as run:
+            run.return_value = {"stdout": "", "stderr": "", "returncode": 0, "timed_out": False,
+                                "execution_time_s": 0.1, "peak_memory_mb": 1.0, "oom_killed": False}
+            run_checker("zuban", tmp_path, None, timeout=60)
+        cmd = run.call_args.args[0]
+        assert cmd[cmd.index("--exclude") + 1] == TEST_EXCLUDE_REGEX
+
+    def test_regex_and_globs_agree(self) -> None:
+        cases = {
+            "pkg/tests/test_x.py": True,
+            "pkg/sub/tests/helpers.py": True,
+            "pkg/test_utils.py": True,
+            "pkg/test_data/fixture.py": True,
+            "pkg/testing/x.py": True,
+            "pkg/contest.py": False,
+            "pkg/attest/x.py": False,
+            "pkg/latest_tests.py": False,
+            "pkg/core.py": False,
+        }
+        for path, excluded in cases.items():
+            by_regex = re.search(TEST_EXCLUDE_REGEX, "/" + path) is not None
+            by_glob = any(fnmatch.fnmatch(path, g) for g in TEST_EXCLUDE_GLOBS)
+            assert by_regex == excluded, path
+            assert by_glob == excluded, path
