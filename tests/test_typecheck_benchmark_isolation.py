@@ -240,3 +240,61 @@ class TestInstallIntoVenv:
         # importable from the package venv.
         r = subprocess.run([str(venv_python(venv)), "-c", "import pytest"], capture_output=True)
         assert r.returncode != 0
+
+
+# ---------------------------------------------------------------------------
+# install_deps – best effort
+# ---------------------------------------------------------------------------
+
+
+class TestBestEffortInstall:
+    """A failed package install must not skip the explicit deps."""
+
+    def _run(self, tmp_path: Path, failing: set[str]) -> tuple[bool, list[list[str]]]:
+        calls: list[list[str]] = []
+
+        def fake_run(cmd: list[str], **_: Any) -> Any:
+            calls.append(cmd)
+            step = "self" if "-e" in cmd else "deps"
+            return type("R", (), {"returncode": 1 if step in failing else 0, "stderr": "boom"})()
+
+        with patch("typecheck_benchmark.daily_runner.subprocess.run", side_effect=fake_run):
+            ok = install_deps(tmp_path, {"install": True, "deps": ["numpy", "scipy"]}, tmp_path / "python")
+        return ok, calls
+
+    def test_deps_installed_even_if_package_install_fails(self, tmp_path: Path) -> None:
+        ok, calls = self._run(tmp_path, failing={"self"})
+        assert ok is False
+        assert len(calls) == 2
+        assert calls[1][-2:] == ["numpy", "scipy"]
+
+    def test_deps_failure_reported(self, tmp_path: Path) -> None:
+        ok, calls = self._run(tmp_path, failing={"deps"})
+        assert ok is False
+        assert len(calls) == 2
+
+    def test_all_steps_succeed(self, tmp_path: Path) -> None:
+        ok, _ = self._run(tmp_path, failing=set())
+        assert ok is True
+
+    @pytest.mark.parametrize("install_ok", [True, False])
+    def test_install_status_recorded_in_result(self, install_ok: bool, tmp_path: Path) -> None:
+        checkout = tmp_path / "demo"
+        checkout.mkdir()
+
+        def fake_create(venv_dir: Path) -> Path:
+            venv_dir.mkdir()
+            return venv_dir
+
+        with (
+            patch("typecheck_benchmark.daily_runner.clone_package", return_value=checkout),
+            patch("typecheck_benchmark.daily_runner.create_package_venv", side_effect=fake_create),
+            patch("typecheck_benchmark.daily_runner.install_deps", return_value=install_ok),
+            patch("typecheck_benchmark.daily_runner.is_type_checker_available", return_value=True),
+            patch("typecheck_benchmark.daily_runner.run_checker",
+                  return_value={"ok": True, "execution_time_s": 0.1, "peak_memory_mb": 1.0}),
+        ):
+            result = _benchmark_package(
+                {"name": "demo", "github_url": "https://github.com/x/demo"}, tmp_path, ["ty"], timeout=60,
+            )
+        assert result["install_ok"] is install_ok
