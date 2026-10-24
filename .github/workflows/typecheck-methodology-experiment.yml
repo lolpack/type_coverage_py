@@ -24,7 +24,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        experiment: [timing, env]
+        # env results from the first run are still valid; rerun timing only
+        # after fixing the timed-wait quantization.
+        experiment: [timing]
         shard: [0, 1, 2, 3]
     runs-on: ubuntu-latest
     timeout-minutes: 350

@@ -55,7 +55,9 @@ def _fastest(results: list[dict[str, Any]], checkers: list[str], key: str) -> tu
         ms = r.get("metrics", {})
         if not all(ms.get(c, {}).get("ok") for c in checkers):
             continue
-        best = min(checkers, key=lambda c: ms[c][key])
+        ranked = sorted(checkers, key=lambda c: ms[c][key])
+        # Count exact ties as ties rather than crediting list order
+        best = "tie" if ms[ranked[0]][key] == ms[ranked[1]][key] else ranked[0]
         wins[best] += 1
         per_pkg[r["package"]] = best
     return wins, per_pkg
@@ -95,7 +97,7 @@ def summarize(name: str, exp: dict[str, Any]) -> str:
     lines.append("")
     lines.append(f"| Checker | Wins under {a_label} | Wins under {b_label} |")
     lines.append("|---|---|---|")
-    for c in checkers:
+    for c in [*checkers, "tie"]:
         lines.append(f"| {c} | {wins_a.get(c, 0)} | {wins_b.get(c, 0)} |")
     lines.append("")
     if flips:
