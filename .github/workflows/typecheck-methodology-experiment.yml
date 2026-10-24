@@ -24,9 +24,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # env results from the first run are still valid; rerun timing only
-        # after fixing the timed-wait quantization.
-        experiment: [timing]
+        # env results from the first run are still valid. Rerun timing after
+        # fixing the timed-wait quantization, and measure 1 vs 5 runs.
+        experiment: [timing, runs]
         shard: [0, 1, 2, 3]
     runs-on: ubuntu-latest
     timeout-minutes: 350
@@ -68,6 +68,7 @@ jobs:
             --experiment "${{ matrix.experiment }}" \
             --shard "${{ matrix.shard }}" --shards 4 \
             --pairs "${{ github.event.inputs.pairs || '2' }}" \
+            --runs 5 \
             --checkers pyright pyrefly ty mypy zuban \
             --output "experiment-results/${{ matrix.experiment }}-${{ matrix.shard }}.json"
 

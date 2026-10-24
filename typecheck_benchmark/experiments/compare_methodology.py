@@ -202,12 +202,55 @@ def bench_env(
     return out
 
 
+def bench_runs(
+    pkg: dict[str, Any], path: Path, temp: Path, checkers: list[str], timeout: int, runs: int,
+) -> dict[str, Any]:
+    """Production config (per-package venv, exact timing): 1 warmup + *runs* measured.
+
+    The first measured run is exactly what --runs 1 would publish, so 1 vs N
+    can be compared from the same data on the same runner.
+    """
+    # Keep the shared env in the same state as main would for later packages
+    new.install_deps(path, pkg)
+    venv = new.create_package_venv(temp / f"{pkg['name']}-venv")
+    if venv is None:
+        return {"_error": "venv creation failed"}
+    install_ok = new.install_deps(path, pkg, new.venv_python(venv))
+    paths = resolve_check_paths(path, pkg)
+    out: dict[str, Any] = {"_install": {"isolated_ok": install_ok}}
+    try:
+        for checker in checkers:
+            print(f"    {checker}...", flush=True)
+            warm, _ = run_new_captured(checker, path, paths, timeout, venv)
+            if not warm.get("ok"):
+                out[checker] = {"ok": False, "error": warm.get("error_message")}
+                print(f"      failed: {warm.get('error_message')}")
+                continue
+            times: list[float] = []
+            failed: new.TimingMetrics | None = None
+            for _ in range(runs):
+                m = new.run_checker(checker, path, paths, timeout, capture_output=False, venv=venv)
+                if not m.get("ok"):
+                    failed = m
+                    break
+                times.append(m["execution_time_s"])
+            if failed is not None:
+                out[checker] = {"ok": False, "error": failed.get("error_message"), "times": times}
+                continue
+            out[checker] = {"ok": True, "times": times}
+            print(f"      runs {[round(t, 3) for t in times]}")
+    finally:
+        shutil.rmtree(venv, ignore_errors=True)
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--experiment", choices=["timing", "env"], required=True)
+    parser.add_argument("--experiment", choices=["timing", "env", "runs"], required=True)
     parser.add_argument("--shard", type=int, default=0)
     parser.add_argument("--shards", type=int, default=1)
     parser.add_argument("--pairs", type=int, default=2)
+    parser.add_argument("--runs", type=int, default=5, help="Measured runs for --experiment runs")
     parser.add_argument("--timeout", type=int, default=new.DEFAULT_TIMEOUT)
     parser.add_argument("--checkers", nargs="+", default=new.DEFAULT_TYPE_CHECKERS)
     parser.add_argument("--package-names", nargs="+", default=None,
@@ -247,8 +290,10 @@ def main(argv: list[str] | None = None) -> int:
             try:
                 if args.experiment == "timing":
                     metrics = bench_timing(pkg, path, checkers, args.timeout, args.pairs)
-                else:
+                elif args.experiment == "env":
                     metrics = bench_env(pkg, path, temp, checkers, args.timeout, args.pairs)
+                else:
+                    metrics = bench_runs(pkg, path, temp, checkers, args.timeout, args.runs)
             finally:
                 shutil.rmtree(path, ignore_errors=True)
             results.append({"package": pkg["name"], "index": i, "metrics": metrics})
@@ -267,6 +312,7 @@ def _write(args: argparse.Namespace, versions: dict[str, str], checkers: list[st
             "shard": args.shard,
             "shards": args.shards,
             "pairs": args.pairs,
+            "runs": args.runs,
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "platform": sys.platform,
             "versions": versions,

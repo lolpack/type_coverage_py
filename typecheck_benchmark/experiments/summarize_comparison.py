@@ -167,12 +167,98 @@ def summarize(name: str, exp: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _q(values: list[float], q: float) -> float:
+    v = sorted(values)
+    return v[min(len(v) - 1, int(q * len(v)))]
+
+
+def summarize_runs(exp: dict[str, Any]) -> str:
+    """1 measured run (what --runs 1 publishes) vs the median/mean of N."""
+    checkers: list[str] = exp["checkers"]
+    results: list[dict[str, Any]] = exp["results"]
+    n = max((len(m["times"]) for r in results for c, m in r.get("metrics", {}).items()
+             if not c.startswith("_") and m.get("ok")), default=0)
+    lines = [f"## Experiment: runs: 1 measured run vs median of {n}", ""]
+    lines.append(f"Versions: {', '.join(f'{k} {v}' for k, v in exp['versions'].items())}. "
+                 f"Production config (per-package venv, exact timing), 1 warmup + {n} measured runs. "
+                 f"\"1 run\" is the first measured run, i.e. what `--runs 1` publishes.")
+    lines.append("")
+    lines.append("**How far a single run is from the median of all runs** (per package):")
+    lines.append("")
+    lines.append("| Checker | Pkgs | Median error | Median abs error | p90 error | Max error | "
+                 "Pkgs off >5% and >10ms | Pkgs off >10% and >10ms | "
+                 f"Mean vs median of {n} differ >5% | Avg time, 1 run | Avg time, median of {n} |")
+    lines.append("|---|---|---|---|---|---|---|---|---|---|---|")
+    worst: list[tuple[float, str]] = []
+    for c in checkers:
+        errs: list[float] = []
+        abs_errs: list[float] = []
+        mean_vs_median = 0
+        one: list[float] = []
+        med: list[float] = []
+        for r in results:
+            m = r.get("metrics", {}).get(c)
+            if not m or not m.get("ok") or len(m["times"]) < 2:
+                continue
+            t = m["times"]
+            md = statistics.median(t)
+            if md <= 0:
+                continue
+            e = abs(t[0] - md) / md
+            errs.append(e)
+            abs_errs.append(abs(t[0] - md))
+            worst.append((e, f"{r['package']}/{c}: 1 run {t[0]:.3f}s vs median {md:.3f}s ({[round(x, 3) for x in t]})"))
+            if abs(statistics.mean(t) - md) / md > 0.05:
+                mean_vs_median += 1
+            one.append(t[0])
+            med.append(md)
+        if not errs:
+            lines.append(f"| {c} | 0 | | | | | | | | | |")
+            continue
+        lines.append(
+            f"| {c} | {len(errs)} | {statistics.median(errs):.1%} | {statistics.median(abs_errs) * 1000:.0f} ms | "
+            f"{_q(errs, 0.9):.1%} | {max(errs):.1%} | "
+            f"{sum(e > 0.05 and a > 0.010 for e, a in zip(errs, abs_errs))} | "
+            f"{sum(e > 0.10 and a > 0.010 for e, a in zip(errs, abs_errs))} | {mean_vs_median} | "
+            f"{statistics.mean(one):.3f}s | {statistics.mean(med):.3f}s |"
+        )
+    lines.append("")
+
+    # Does the fastest checker per package change between 1 run and median of N?
+    def fastest(key: str) -> dict[str, str]:
+        per: dict[str, str] = {}
+        for r in results:
+            ms = r.get("metrics", {})
+            if not all(ms.get(c, {}).get("ok") for c in checkers):
+                continue
+            val = {c: (ms[c]["times"][0] if key == "one" else statistics.median(ms[c]["times"])) for c in checkers}
+            ranked = sorted(checkers, key=lambda c: val[c])
+            per[r["package"]] = "tie" if val[ranked[0]] == val[ranked[1]] else ranked[0]
+        return per
+
+    f1, fn = fastest("one"), fastest("median")
+    flips = [(p, f1[p], fn[p]) for p in f1 if p in fn and f1[p] != fn[p]]
+    lines.append(f"**Fastest checker per package:** differs between 1 run and median of {n} "
+                 f"for {len(flips)} of {len(f1)} packages" + (": " + ", ".join(f"{p} ({a}→{b})" for p, a, b in flips) if flips else "."))
+    lines.append("")
+    lines.append("<details><summary>Largest single-run errors</summary>")
+    lines.append("")
+    for e, text in sorted(worst, reverse=True)[:25]:
+        lines.append(f"- {e:.1%} {text}")
+    lines.append("")
+    lines.append("</details>")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     paths = [Path(p) for p in (argv if argv is not None else sys.argv[1:])]
     merged = load(paths)
     for name in ("timing", "env"):
         if name in merged:
             print(summarize(name, merged[name]))
+    if "runs" in merged:
+        print(summarize_runs(merged["runs"]))
     return 0
 
 
