@@ -197,7 +197,7 @@ def run_process_with_timeout(
     When *capture_output* is False, stdout/stderr go to DEVNULL to avoid
     pipe I/O overhead in timing.  (macOS stderr stays piped for /usr/bin/time.)
     """
-    start_time = time.time()
+    start_time = time.perf_counter()
 
     # On macOS, wrap with /usr/bin/time -l to get peak RSS from stderr
     actual_cmd = cmd
@@ -249,18 +249,16 @@ def run_process_with_timeout(
     reader_out = _make_reader(process.stdout, stdout_chunks) if capture_output else None
     reader_err = _make_reader(process.stderr, stderr_chunks) if need_stderr_pipe else None
 
-    # Poll until process exits, timeout, or OOM kill
-    deadline = start_time + timeout
-    while True:
-        if process.poll() is not None:
-            break
-        if killed[0]:
-            break
-        if time.time() >= deadline:
-            break
-        time.sleep(0.1)
+    # Block until the process exits.  wait() returns as soon as the child is
+    # reaped, so the measured time is not quantized to a polling interval.
+    # An OOM kill from the monitor thread also ends the wait, because the
+    # killed process exits.
+    try:
+        process.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        pass
 
-    execution_time = time.time() - start_time
+    execution_time = time.perf_counter() - start_time
     timed_out = False
     oom_killed = killed[0]
 
@@ -313,7 +311,7 @@ def run_process_with_timeout(
             "stderr": "",
             "returncode": -1,
             "timed_out": timed_out,
-            "execution_time_s": round(execution_time, 2),
+            "execution_time_s": round(execution_time, 3),
             "peak_memory_mb": peak_memory_mb,
             "oom_killed": oom_killed,
         }
@@ -323,7 +321,7 @@ def run_process_with_timeout(
         "stderr": clean_stderr,
         "returncode": process.returncode,
         "timed_out": False,
-        "execution_time_s": round(execution_time, 2),
+        "execution_time_s": round(execution_time, 3),
         "peak_memory_mb": peak_memory_mb,
         "oom_killed": False,
     }
@@ -742,11 +740,11 @@ def compute_percentile(values: Sequence[float | int], percentile: float) -> floa
 def compute_run_stats(values: list[float]) -> RunStats:
     """Compute min/max/mean/median/stddev for a list of values."""
     return {
-        "min": round(min(values), 2),
-        "max": round(max(values), 2),
-        "mean": round(statistics.mean(values), 2),
-        "median": round(statistics.median(values), 2),
-        "stddev": round(statistics.stdev(values), 2) if len(values) > 1 else 0.0,
+        "min": round(min(values), 3),
+        "max": round(max(values), 3),
+        "mean": round(statistics.mean(values), 3),
+        "median": round(statistics.median(values), 3),
+        "stddev": round(statistics.stdev(values), 3) if len(values) > 1 else 0.0,
     }
 
 
@@ -781,12 +779,12 @@ def compute_aggregate_stats(
         stats[checker] = {
             "packages_tested": packages_tested,
             "packages_failed": packages_failed,
-            "avg_execution_time_s": round(sum(times) / len(times), 2) if times else 0.0,
-            "p50_execution_time_s": round(compute_percentile(times, 50), 2),
-            "p90_execution_time_s": round(compute_percentile(times, 90), 2),
-            "p95_execution_time_s": round(compute_percentile(times, 95), 2),
-            "max_execution_time_s": round(max(times), 2) if times else 0.0,
-            "total_execution_time_s": round(sum(times), 2),
+            "avg_execution_time_s": round(sum(times) / len(times), 3) if times else 0.0,
+            "p50_execution_time_s": round(compute_percentile(times, 50), 3),
+            "p90_execution_time_s": round(compute_percentile(times, 90), 3),
+            "p95_execution_time_s": round(compute_percentile(times, 95), 3),
+            "max_execution_time_s": round(max(times), 3) if times else 0.0,
+            "total_execution_time_s": round(sum(times), 3),
             "avg_peak_memory_mb": round(sum(memories) / len(memories), 1) if memories else 0.0,
             "p90_peak_memory_mb": round(compute_percentile(memories, 90), 1),
             "p95_peak_memory_mb": round(compute_percentile(memories, 95), 1),
@@ -1007,11 +1005,11 @@ def _benchmark_local_dir(
             peak = m.get("peak_memory_mb", 0)
             mem_str = f", {peak:.0f}MB" if peak > 0 else ""
             if is_warmup:
-                print(f"{m['execution_time_s']:.1f}s{mem_str} (discarded)")
+                print(f"{m['execution_time_s']:.3f}s{mem_str} (discarded)")
             else:
                 times.append(m["execution_time_s"])
                 memories.append(m.get("peak_memory_mb", 0.0))
-                print(f"{m['execution_time_s']:.1f}s{mem_str}")
+                print(f"{m['execution_time_s']:.3f}s{mem_str}")
 
         if failed_metric is not None:
             failed_metric["runs"] = len(times) + 1
@@ -1019,7 +1017,7 @@ def _benchmark_local_dir(
         else:
             result_metric: TimingMetrics = {
                 "ok": True,
-                "execution_time_s": round(statistics.mean(times), 2),
+                "execution_time_s": round(statistics.mean(times), 3),
                 "peak_memory_mb": round(statistics.mean(memories), 2),
                 "runs": runs,
             }
@@ -1033,11 +1031,11 @@ def _benchmark_local_dir(
             if runs > 1:
                 time_stats = result_metric["execution_time_stats"]
                 print(
-                    f"      Mean: {result_metric['execution_time_s']:.1f}s{mem_str} "
+                    f"      Mean: {result_metric['execution_time_s']:.3f}s{mem_str} "
                     f"(stddev: {time_stats['stddev']:.2f}s)"
                 )
             else:
-                print(f"      {result_metric['execution_time_s']:.1f}s{mem_str}")
+                print(f"      {result_metric['execution_time_s']:.3f}s{mem_str}")
 
     return {
         "package_name": name,
@@ -1163,11 +1161,11 @@ def _benchmark_package(
             peak = m.get("peak_memory_mb", 0)
             mem_str = f", {peak:.0f}MB" if peak > 0 else ""
             if is_warmup:
-                print(f"{m['execution_time_s']:.1f}s{mem_str} (discarded)")
+                print(f"{m['execution_time_s']:.3f}s{mem_str} (discarded)")
             else:
                 times.append(m["execution_time_s"])
                 memories.append(m.get("peak_memory_mb", 0.0))
-                print(f"{m['execution_time_s']:.1f}s{mem_str}")
+                print(f"{m['execution_time_s']:.3f}s{mem_str}")
 
         if failed_metric is not None:
             failed_metric["runs"] = len(times) + 1
@@ -1175,7 +1173,7 @@ def _benchmark_package(
         else:
             result_metric: TimingMetrics = {
                 "ok": True,
-                "execution_time_s": round(statistics.mean(times), 2),
+                "execution_time_s": round(statistics.mean(times), 3),
                 "peak_memory_mb": round(statistics.mean(memories), 2),
                 "runs": runs,
             }
@@ -1189,11 +1187,11 @@ def _benchmark_package(
             if runs > 1:
                 time_stats = result_metric["execution_time_stats"]
                 print(
-                    f"      Mean: {result_metric['execution_time_s']:.1f}s{mem_str} "
+                    f"      Mean: {result_metric['execution_time_s']:.3f}s{mem_str} "
                     f"(stddev: {time_stats['stddev']:.2f}s)"
                 )
             else:
-                print(f"      {result_metric['execution_time_s']:.1f}s{mem_str}")
+                print(f"      {result_metric['execution_time_s']:.3f}s{mem_str}")
 
     # Cleanup cloned repo
     shutil.rmtree(package_path, ignore_errors=True)
