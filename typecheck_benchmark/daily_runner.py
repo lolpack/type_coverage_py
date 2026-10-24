@@ -254,21 +254,15 @@ def run_process_with_timeout(
     reader_out = _make_reader(process.stdout, stdout_chunks) if capture_output else None
     reader_err = _make_reader(process.stderr, stderr_chunks) if need_stderr_pipe else None
 
-    # Block until the process exits.  wait() returns as soon as the child is
-    # reaped, so the measured time is not quantized to a polling interval.
-    # An OOM kill from the monitor thread also ends the wait, because the
-    # killed process exits.
-    try:
-        process.wait(timeout=timeout)
-    except subprocess.TimeoutExpired:
-        pass
+    # Block in wait() with no timeout: it returns as soon as the child is
+    # reaped, so the measured time is exact.  (Popen.wait(timeout=...) polls
+    # with sleeps of up to 50ms, which quantizes the measurement.)  The
+    # timeout is enforced from a timer thread instead.  An OOM kill from the
+    # monitor thread also ends the wait, because the killed process exits.
+    timer_fired = threading.Event()
 
-    execution_time = time.perf_counter() - start_time
-    timed_out = False
-    oom_killed = killed[0]
-
-    if process.poll() is None and not oom_killed:
-        timed_out = True
+    def _on_timeout() -> None:
+        timer_fired.set()
         if sys.platform != "win32":
             try:
                 os.killpg(os.getpgid(process.pid), signal.SIGKILL)
@@ -276,6 +270,16 @@ def run_process_with_timeout(
                 pass
         else:
             process.kill()
+
+    timer = threading.Timer(timeout, _on_timeout)
+    timer.daemon = True
+    timer.start()
+    process.wait()
+    execution_time = time.perf_counter() - start_time
+    timer.cancel()
+
+    oom_killed = killed[0]
+    timed_out = timer_fired.is_set() and not oom_killed
 
     # Close pipes so reader threads unblock
     for pipe in (process.stdout, process.stderr):
