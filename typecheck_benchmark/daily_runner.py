@@ -597,10 +597,10 @@ def _write_dummy_mypy_config(
 ) -> Path:
     """Write minimal mypy config for consistent benchmarking.
 
-    Excludes test directories to avoid fatal errors from duplicate
-    conftest.py modules and syntax errors in test fixture files, which
-    cause mypy to bail out with 'errors prevented further checking'
-    without actually type-checking any code.
+    Test code is checked, as it is for the other checkers. On packages whose
+    tests have duplicate module names (several conftest.py files, say), mypy
+    stops with 'errors prevented further checking', which is recorded as a
+    failure.
     """
     config_path = package_path / "mypy.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
@@ -609,9 +609,6 @@ def _write_dummy_mypy_config(
             f.write(f"files = {', '.join(check_paths)}\n")
         # Check bodies of untyped functions (other checkers do this by default)
         f.write("check_untyped_defs = True\n")
-        # Exclude test dirs to avoid duplicate module / syntax errors
-        # that cause mypy to bail out without checking anything
-        f.write("exclude = (?x)(\n    /tests/\n    | /test_\n    | /testing/\n  )\n")
     return config_path
 
 
