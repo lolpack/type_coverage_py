@@ -1,0 +1,113 @@
+name: Typecheck Benchmark Methodology Experiment
+
+# Measures, independently, the effect of (1) exact process timing instead of
+# a 100ms poll loop and (2) per-package virtual environments instead of one
+# shared environment. Each experiment is a paired A/B on the same runner.
+#
+# Experiment only: uploads artifacts and a job summary, never publishes.
+
+on:
+  push:
+    branches: [benchmark-methodology-experiment]
+    paths:
+      - '.github/workflows/typecheck-methodology-experiment.yml'
+      - 'typecheck_benchmark/**'
+  workflow_dispatch:
+    inputs:
+      pairs:
+        description: 'Paired A/B runs per checker per package'
+        required: false
+        default: '2'
+
+jobs:
+  experiment:
+    strategy:
+      fail-fast: false
+      matrix:
+        experiment: [timing, env]
+        shard: [0, 1, 2, 3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python Dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Node.js (for Pyright)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Same installation as typecheck-benchmark.yml so the shared
+      # environment matches production.
+      - name: Install Type Checkers
+        shell: bash
+        run: |
+          npm install -g pyright
+          pip install --upgrade pyrefly ty mypy zuban
+          pyright --version; pyrefly --version; ty --version; zuban --version
+          python -m mypy --version
+
+      - name: Run experiment
+        shell: bash
+        run: |
+          python -m typecheck_benchmark.experiments.compare_methodology \
+            --experiment "${{ matrix.experiment }}" \
+            --shard "${{ matrix.shard }}" --shards 4 \
+            --pairs "${{ github.event.inputs.pairs || '2' }}" \
+            --checkers pyright pyrefly ty mypy zuban \
+            --output "experiment-results/${{ matrix.experiment }}-${{ matrix.shard }}.json"
+
+      - name: Upload shard results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: experiment-${{ matrix.experiment }}-${{ matrix.shard }}
+          path: experiment-results/
+          retention-days: 30
+
+  summarize:
+    needs: experiment
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download shard results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: experiment-*
+          path: experiment-results
+          merge-multiple: true
+
+      - name: Summarize
+        shell: bash
+        run: |
+          python -m typecheck_benchmark.experiments.summarize_comparison experiment-results/*.json > report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: experiment-report
+          path: |
+            report.md
+            experiment-results/
+          retention-days: 30
