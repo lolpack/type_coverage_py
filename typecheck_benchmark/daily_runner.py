@@ -191,11 +191,14 @@ def run_process_with_timeout(
     timeout: int,
     memory_limit_mb: int = DEFAULT_MEMORY_LIMIT_MB,
     capture_output: bool = True,
+    env: dict[str, str] | None = None,
 ) -> ProcessResult:
     """Run a process with timeout and memory monitoring.
 
     When *capture_output* is False, stdout/stderr go to DEVNULL to avoid
     pipe I/O overhead in timing.  (macOS stderr stays piped for /usr/bin/time.)
+
+    *env* replaces the child's environment when given.
     """
     start_time = time.perf_counter()
 
@@ -213,6 +216,8 @@ def run_process_with_timeout(
         "stderr": subprocess.PIPE if need_stderr_pipe else subprocess.DEVNULL,
         "text": True,
     }
+    if env is not None:
+        kwargs["env"] = env
     if sys.platform != "win32":
         kwargs["start_new_session"] = True
 
@@ -464,8 +469,46 @@ def clone_package(
         return None
 
 
-def install_deps(package_path: Path, env_config: dict[str, Any]) -> bool:
-    """Install dependencies for a package."""
+def venv_python(venv_dir: Path) -> Path:
+    """Return the interpreter path inside a virtual environment."""
+    if sys.platform == "win32":
+        return venv_dir / "Scripts" / "python.exe"
+    return venv_dir / "bin" / "python"
+
+
+def create_package_venv(venv_dir: Path, timeout: int = 300) -> Path | None:
+    """Create a fresh virtual environment for one package.
+
+    Each package gets its own environment so that dependencies (and stubs)
+    installed for one package can't change what the checkers resolve for
+    another, and results don't depend on package order.
+
+    The venv is created without pip; install_deps drives the runner's own pip
+    with ``--python`` so every package resolves with the same pip version.
+    """
+    try:
+        print(f"  Creating virtual environment")
+        result = subprocess.run(
+            [sys.executable, "-m", "venv", "--without-pip", str(venv_dir)],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+        )
+        if result.returncode != 0:
+            print(f"  Failed to create venv: {result.stderr[:200]}")
+            return None
+        return venv_dir
+    except subprocess.TimeoutExpired:
+        print(f"  Timeout creating venv")
+        return None
+
+
+def install_deps(
+    package_path: Path,
+    env_config: dict[str, Any],
+    python: Path | str = sys.executable,
+) -> bool:
+    """Install dependencies for a package into the *python* interpreter's environment."""
     install_self = env_config.get("install", False)
     deps = env_config.get("deps", [])
     install_env = env_config.get("install_env", {})
@@ -473,11 +516,15 @@ def install_deps(package_path: Path, env_config: dict[str, Any]) -> bool:
     env = os.environ.copy()
     env.update(install_env)
 
+    pip = [sys.executable, "-m", "pip"]
+    if str(python) != sys.executable:
+        pip.extend(["--python", str(python)])
+
     if install_self:
         print(f"  Installing package (pip install -e .)")
         try:
             result = subprocess.run(
-                [sys.executable, "-m", "pip", "install", "-e", "."],
+                pip + ["install", "-e", "."],
                 cwd=package_path,
                 capture_output=True,
                 text=True,
@@ -495,7 +542,7 @@ def install_deps(package_path: Path, env_config: dict[str, Any]) -> bool:
         print(f"  Installing deps: {', '.join(deps[:5])}{'...' if len(deps) > 5 else ''}")
         try:
             result = subprocess.run(
-                [sys.executable, "-m", "pip", "install"] + deps,
+                pip + ["install"] + deps,
                 capture_output=True,
                 text=True,
                 timeout=300,
@@ -611,11 +658,17 @@ def run_checker(
     check_paths: list[Path] | None,
     timeout: int,
     capture_output: bool = True,
+    venv: Path | None = None,
 ) -> TimingMetrics:
     """Run a single type checker and return timing metrics only.
 
     When *capture_output* is False, output is discarded (no pipe overhead)
     and error detection is skipped — caller must have done a capture pass first.
+
+    When *venv* is given, every checker is pointed at that environment
+    explicitly (and ``VIRTUAL_ENV`` is set), so third-party imports resolve
+    against the package's own dependencies rather than whatever environment
+    each checker would otherwise discover.
     """
     # Convert absolute check_paths to relative strings from package root
     rel_paths: list[str] | None = None
@@ -625,21 +678,36 @@ def run_checker(
             for p in check_paths
         ]
 
+    python: str | None = None
+    env: dict[str, str] | None = None
+    if venv is not None:
+        python = str(venv_python(venv))
+        env = os.environ.copy()
+        env["VIRTUAL_ENV"] = str(venv)
+
     if checker == "pyright":
         _write_dummy_pyright_config(package_path, rel_paths)
         cmd = ["pyright", "--outputjson"]
+        if python:
+            cmd.extend(["--pythonpath", python])
         cwd = package_path
     elif checker == "pyrefly":
         config_path = _write_dummy_pyrefly_config(package_path, rel_paths)
         cmd = ["pyrefly", "check", "--config", str(config_path)]
+        if python:
+            cmd.extend(["--python-interpreter-path", python])
         cwd = package_path
     elif checker == "ty":
         config_path = _write_dummy_ty_config(package_path, rel_paths)
         cmd = ["ty", "check", "--config-file", str(config_path)]
+        if venv is not None:
+            cmd.extend(["--python", str(venv)])
         cwd = package_path
     elif checker == "mypy":
         config_path = _write_dummy_mypy_config(package_path, rel_paths)
         cmd = [sys.executable, "-m", "mypy", "--no-incremental", "--config-file", str(config_path)]
+        if python:
+            cmd.extend(["--python-executable", python])
         # mypy needs explicit paths if no files= in config; when check_paths
         # are embedded in the config via files=, we still pass "." so mypy
         # has a target (it requires at least one positional arg or files=).
@@ -650,6 +718,8 @@ def run_checker(
         # zuban ignores files= from --config-file, so we must always pass
         # check paths as explicit positional arguments.
         cmd = ["zuban", "check"]
+        if python:
+            cmd.extend(["--python-executable", python])
         if rel_paths:
             cmd.extend(rel_paths)
         else:
@@ -664,7 +734,7 @@ def run_checker(
         }
 
     result = run_process_with_timeout(
-        cmd, cwd=cwd, timeout=timeout, capture_output=capture_output,
+        cmd, cwd=cwd, timeout=timeout, capture_output=capture_output, env=env,
     )
 
     if result["timed_out"] or result.get("oom_killed"):
@@ -1106,8 +1176,19 @@ def _benchmark_package(
             "metrics": {},
         }
 
+    # Fresh environment per package, discarded with the checkout
+    venv_dir = create_package_venv(temp_path / f"{name}-venv")
+    if not venv_dir:
+        shutil.rmtree(package_path, ignore_errors=True)
+        return {
+            "package_name": name,
+            "github_url": github_url,
+            "error": "Failed to create virtual environment",
+            "metrics": {},
+        }
+
     # Install deps
-    success = install_deps(package_path, pkg)
+    success = install_deps(package_path, pkg, venv_python(venv_dir))
     if not success:
         print(f"  Warning: dependency installation had issues, continuing anyway")
 
@@ -1156,7 +1237,7 @@ def _benchmark_package(
             print(f"      {label}...", end=" ")
             m = run_checker(
                 checker, package_path, resolved_paths, timeout,
-                capture_output=capture,
+                capture_output=capture, venv=venv_dir,
             )
             if not m.get("ok"):
                 print(f"Failed: {m.get('error_message', 'Unknown')}")
@@ -1197,8 +1278,9 @@ def _benchmark_package(
             else:
                 print(f"      {result_metric['execution_time_s']:.3f}s{mem_str}")
 
-    # Cleanup cloned repo
+    # Cleanup cloned repo and its environment
     shutil.rmtree(package_path, ignore_errors=True)
+    shutil.rmtree(venv_dir, ignore_errors=True)
 
     return {
         "package_name": name,
