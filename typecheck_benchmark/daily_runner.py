@@ -72,6 +72,9 @@ class PackageResult(TypedDict, total=False):
     github_url: str | None
     error: str | None
     metrics: dict[str, TimingMetrics]
+    # False when any dependency install step failed, so some third-party
+    # imports may not resolve for this package.
+    install_ok: bool
 
 
 class AggregateStats(TypedDict, total=False):
@@ -508,7 +511,12 @@ def install_deps(
     env_config: dict[str, Any],
     python: Path | str = sys.executable,
 ) -> bool:
-    """Install dependencies for a package into the *python* interpreter's environment."""
+    """Install dependencies for a package into the *python* interpreter's environment.
+
+    Best effort: if installing the package itself fails, its explicit deps
+    are still installed, since they are what most of its imports need.
+    Returns False if any step failed.
+    """
     install_self = env_config.get("install", False)
     deps = env_config.get("deps", [])
     install_env = env_config.get("install_env", {})
@@ -519,6 +527,8 @@ def install_deps(
     pip = [sys.executable, "-m", "pip"]
     if str(python) != sys.executable:
         pip.extend(["--python", str(python)])
+
+    ok = True
 
     if install_self:
         print(f"  Installing package (pip install -e .)")
@@ -533,10 +543,10 @@ def install_deps(
             )
             if result.returncode != 0:
                 print(f"  Warning: pip install -e . failed: {result.stderr[:200]}")
-                return False
+                ok = False
         except subprocess.TimeoutExpired:
             print(f"  Warning: pip install -e . timed out")
-            return False
+            ok = False
 
     if deps:
         print(f"  Installing deps: {', '.join(deps[:5])}{'...' if len(deps) > 5 else ''}")
@@ -549,12 +559,12 @@ def install_deps(
             )
             if result.returncode != 0:
                 print(f"  Warning: pip install deps failed: {result.stderr[:200]}")
-                return False
+                ok = False
         except subprocess.TimeoutExpired:
             print(f"  Warning: pip install deps timed out")
-            return False
+            ok = False
 
-    return True
+    return ok
 
 
 # ---------------------------------------------------------------------------
@@ -597,10 +607,10 @@ def _write_dummy_mypy_config(
 ) -> Path:
     """Write minimal mypy config for consistent benchmarking.
 
-    Excludes test directories to avoid fatal errors from duplicate
-    conftest.py modules and syntax errors in test fixture files, which
-    cause mypy to bail out with 'errors prevented further checking'
-    without actually type-checking any code.
+    Test code is checked, as it is for the other checkers. On packages whose
+    tests have duplicate module names (several conftest.py files, say), mypy
+    stops with 'errors prevented further checking', which is recorded as a
+    failure.
     """
     config_path = package_path / "mypy.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
@@ -609,9 +619,6 @@ def _write_dummy_mypy_config(
             f.write(f"files = {', '.join(check_paths)}\n")
         # Check bodies of untyped functions (other checkers do this by default)
         f.write("check_untyped_defs = True\n")
-        # Exclude test dirs to avoid duplicate module / syntax errors
-        # that cause mypy to bail out without checking anything
-        f.write("exclude = (?x)(\n    /tests/\n    | /test_\n    | /testing/\n  )\n")
     return config_path
 
 
@@ -1188,8 +1195,8 @@ def _benchmark_package(
         }
 
     # Install deps
-    success = install_deps(package_path, pkg, venv_python(venv_dir))
-    if not success:
+    install_ok = install_deps(package_path, pkg, venv_python(venv_dir))
+    if not install_ok:
         print(f"  Warning: dependency installation had issues, continuing anyway")
 
     # Resolve check_paths
@@ -1287,6 +1294,7 @@ def _benchmark_package(
         "github_url": github_url,
         "error": None,
         "metrics": metrics,
+        "install_ok": install_ok,
     }
 
 

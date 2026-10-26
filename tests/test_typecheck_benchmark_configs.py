@@ -56,7 +56,6 @@ class TestWriteDummyMypyConfig:
         content = path.read_text()
         assert "[mypy]\n" in content
         assert "files" not in content
-        assert "exclude" in content
 
     def test_check_paths_in_files(self, tmp_path: Path) -> None:
         path = _write_dummy_mypy_config(tmp_path, ["src", "lib"])
@@ -72,12 +71,10 @@ class TestWriteDummyMypyConfig:
         path = _write_dummy_mypy_config(tmp_path)
         assert path.name == "mypy.benchmark.ini"
 
-    def test_exclude_tests_dirs(self, tmp_path: Path) -> None:
-        path = _write_dummy_mypy_config(tmp_path)
+    def test_checks_test_code_like_other_checkers(self, tmp_path: Path) -> None:
+        path = _write_dummy_mypy_config(tmp_path, ["src"])
         content = path.read_text()
-        assert "/tests/" in content
-        assert "/test_" in content
-        assert "/testing/" in content
+        assert "exclude" not in content
 
 
 # ---------------------------------------------------------------------------
