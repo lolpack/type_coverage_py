@@ -3,9 +3,6 @@
  * Loads and displays timing/memory benchmark data from JSON files.
  */
 
-// Chart.js is loaded via <script> tag
-declare const Chart: any;
-
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -76,7 +73,6 @@ const CHECKER_NAMES: Record<string, string> = {
 };
 
 let benchmarkData: TimingBenchmarkData | null = null;
-let charts: Record<string, any> = {};
 let currentOs = 'ubuntu';
 
 // ---------------------------------------------------------------------------
@@ -190,15 +186,13 @@ async function init(): Promise<void> {
 
 function renderAll(): void {
     updateTimestamp();
-    populateSummary();
-    populateFailureTable();
-    createAvgTimeChart();
-    createAvgMemoryChart();
-    createP90TimeChart();
-    createP95TimeChart();
-    createSlowestPackagesChart();
-    createHighestMemoryChart();
-    populateResultsTable();
+    renderStats();
+    renderSpeed();
+    renderMemory();
+    renderFailures();
+    const search = document.getElementById('packageSearch') as HTMLInputElement | null;
+    const sort = document.getElementById('sortBy') as HTMLSelectElement | null;
+    populateResultsTable(search?.value || '', sort?.value || 'name');
 }
 
 // ---------------------------------------------------------------------------
@@ -248,9 +242,6 @@ async function switchToDate(date: string | null, os: string): Promise<void> {
 
         const dateInput = document.getElementById('dateSelect') as HTMLInputElement | null;
         if (dateInput && benchmarkData?.date) dateInput.value = benchmarkData.date;
-
-        Object.values(charts).forEach((c: any) => c?.destroy());
-        charts = {};
 
         renderAll();
     } catch (error) {
@@ -314,355 +305,242 @@ function updateTimestamp(): void {
 }
 
 // ---------------------------------------------------------------------------
-// Summary + failure table
+// Summaries over the packages every checker finished
 // ---------------------------------------------------------------------------
 
-function populateSummary(): void {
-    if (!benchmarkData) return;
-    const results = benchmarkData.results || [];
-    const checkers = benchmarkData.type_checkers || [];
+type SpeedMetric = 'geomean' | 'median' | 'mean' | 'total';
 
-    const testedPackages = results.filter(r => !r.error).length;
-    const summaryPackages = document.getElementById('summaryPackages');
-    if (summaryPackages) summaryPackages.textContent = String(testedPackages);
-    const summaryCheckers = document.getElementById('summaryCheckers');
-    if (summaryCheckers) summaryCheckers.textContent = String(checkers.length);
-}
-
-interface FailureRow {
-    package: string;
+interface CheckerSummary {
     checker: string;
-    reason: string;
+    geomean: number;
+    median: number;
+    mean: number;
+    total: number;
+    memGeomean: number | null;
+    failures: { pkg: string; reason: string }[];
 }
 
-function populateFailureTable(): void {
-    if (!benchmarkData) return;
-    const results = benchmarkData.results || [];
+let currentMetric: SpeedMetric = 'geomean';
+
+function geometricMean(values: number[]): number {
+    if (values.length === 0) return 0;
+    // Guard against zero times from very fast runs before taking logs
+    return Math.exp(values.reduce((s, v) => s + Math.log(Math.max(v, 0.001)), 0) / values.length);
+}
+
+function median(values: number[]): number {
+    if (values.length === 0) return 0;
+    const v = [...values].sort((a, b) => a - b);
+    const mid = Math.floor(v.length / 2);
+    return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
+}
+
+function finishedByAll(): TimingBenchmarkResult[] {
+    if (!benchmarkData) return [];
     const checkers = benchmarkData.type_checkers || [];
-    const failureDiv = document.getElementById('failureSummary');
-    const tbody = document.getElementById('failureBody');
-    if (!failureDiv || !tbody) return;
-
-    const failures: FailureRow[] = [];
-
-    // Package-level errors (e.g. clone failed)
-    for (const result of results) {
-        if (result.error) {
-            failures.push({
-                package: result.package_name,
-                checker: 'All',
-                reason: result.error
-            });
-            continue;
-        }
-        // Per-checker failures
-        for (const checker of checkers) {
-            const m = result.metrics?.[checker];
-            if (m && !m.ok) {
-                failures.push({
-                    package: result.package_name,
-                    checker: CHECKER_NAMES[checker] || checker,
-                    reason: m.error_message || 'Failed'
-                });
-            }
-        }
-    }
-
-    if (failures.length === 0) {
-        (failureDiv as HTMLElement).style.display = 'none';
-        return;
-    }
-
-    (failureDiv as HTMLElement).style.display = 'block';
-    tbody.innerHTML = failures.map(f => `
-        <tr>
-            <td class="package-name">${f.package}</td>
-            <td>${f.checker === 'All' ? '<span class="status-badge error">All</span>' : `<span class="checker-badge ${f.checker.toLowerCase()}">${f.checker}</span>`}</td>
-            <td><span class="status-badge error">${f.reason}</span></td>
-        </tr>
-    `).join('');
+    return (benchmarkData.results || []).filter(r =>
+        checkers.every(c => r.metrics?.[c]?.ok && r.metrics[c].execution_time_s != null));
 }
 
-// ---------------------------------------------------------------------------
-// Chart helpers
-// ---------------------------------------------------------------------------
-
-function barChart(canvasId: string, labels: string[], data: number[], colors: string[], unit: string, chartKey: string): void {
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx) return;
-    charts[chartKey] = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels,
-            datasets: [{ data, backgroundColor: colors, borderRadius: 6, borderWidth: 0 }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: { callbacks: { label: (tooltipCtx: any) => `${tooltipCtx.raw.toFixed(1)} ${unit}` } }
-            },
-            scales: {
-                y: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v: any) => `${v} ${unit}` } },
-                x: { grid: { display: false }, ticks: { color: '#c9d1d9' } }
-            }
-        }
+function summarize(): CheckerSummary[] {
+    if (!benchmarkData) return [];
+    const checkers = benchmarkData.type_checkers || [];
+    const common = finishedByAll();
+    return checkers.map(checker => {
+        const times = common.map(r => r.metrics[checker].execution_time_s as number);
+        const mems = common.map(r => r.metrics[checker].peak_memory_mb || 0);
+        const failures = (benchmarkData!.results || [])
+            .filter(r => !r.metrics?.[checker]?.ok)
+            .map(r => ({ pkg: r.package_name, reason: r.metrics?.[checker]?.error_message || r.error || 'Failed' }));
+        return {
+            checker,
+            geomean: geometricMean(times),
+            median: median(times),
+            mean: times.length ? times.reduce((s, v) => s + v, 0) / times.length : 0,
+            total: times.reduce((s, v) => s + v, 0),
+            memGeomean: mems.length && mems.every(m => m > 0) ? geometricMean(mems) : null,
+            failures,
+        };
     });
 }
 
-function groupedBarChart(canvasId: string, packageNames: string[], checkers: string[], getValueFn: (i: number, checker: string) => number, unit: string, chartKey: string): void {
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx) return;
-    const datasets = checkers.map(checker => ({
-        label: CHECKER_NAMES[checker] || checker,
-        data: packageNames.map((_: string, i: number) => getValueFn(i, checker)),
-        backgroundColor: CHECKER_COLORS[checker] || '#888',
-        borderRadius: 4,
-        borderWidth: 0
-    }));
-    charts[chartKey] = new Chart(ctx, {
-        type: 'bar',
-        data: { labels: packageNames, datasets },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            indexAxis: 'y',
-            plugins: {
-                legend: { position: 'top', labels: { color: '#c9d1d9', usePointStyle: true, padding: 20 } },
-                tooltip: { callbacks: { label: (tooltipCtx: any) => `${tooltipCtx.dataset.label}: ${tooltipCtx.raw.toFixed(1)} ${unit}` } }
-            },
-            scales: {
-                x: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e', callback: (v: any) => `${v} ${unit}` }, title: { display: true, text: unit, color: '#8b949e' } },
-                y: { grid: { display: false }, ticks: { color: '#c9d1d9' } }
-            }
-        }
-    });
+function formatTime(t: number): string {
+    if (t < 10) return `${t.toFixed(3)} s`;
+    if (t < 100) return `${t.toFixed(2)} s`;
+    return `${t.toFixed(1)} s`;
 }
 
-// ---------------------------------------------------------------------------
-// Chart creators
-// ---------------------------------------------------------------------------
-
-function createAvgTimeChart(): void {
-    if (!benchmarkData) return;
-    const agg = benchmarkData.aggregate || {};
-    const checkers = benchmarkData.type_checkers || [];
-    barChart('avgTimeChart',
-        checkers.map(c => CHECKER_NAMES[c] || c),
-        checkers.map(c => agg[c]?.avg_execution_time_s || 0),
-        checkers.map(c => CHECKER_COLORS[c] || '#888'),
-        's', 'avgTime');
+function withinNoise(a: number, b: number): boolean {
+    return Math.abs(a - b) <= Math.max(0.010, 0.05 * Math.min(a, b));
 }
 
-function createAvgMemoryChart(): void {
-    if (!benchmarkData) return;
-    const agg = benchmarkData.aggregate || {};
-    const checkers = benchmarkData.type_checkers || [];
-    barChart('avgMemoryChart',
-        checkers.map(c => CHECKER_NAMES[c] || c),
-        checkers.map(c => agg[c]?.avg_peak_memory_mb || 0),
-        checkers.map(c => CHECKER_COLORS[c] || '#888'),
-        'MB', 'avgMemory');
+function shortReason(reason: string): string {
+    if (/OOM/i.test(reason)) return 'Out of memory';
+    if (/Timeout/i.test(reason)) return 'Timeout (>5 min)';
+    if (/Not installed/i.test(reason)) return 'Not installed';
+    return 'Crashed';
 }
 
-function createP90TimeChart(): void {
-    if (!benchmarkData) return;
-    const agg = benchmarkData.aggregate || {};
-    const checkers = benchmarkData.type_checkers || [];
-    barChart('p90TimeChart',
-        checkers.map(c => CHECKER_NAMES[c] || c),
-        checkers.map(c => agg[c]?.p90_execution_time_s || 0),
-        checkers.map(c => CHECKER_COLORS[c] || '#888'),
-        's', 'p90Time');
+function escapeHtml(s: string): string {
+    return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
 }
 
-function createP95TimeChart(): void {
-    if (!benchmarkData) return;
-    const agg = benchmarkData.aggregate || {};
-    const checkers = benchmarkData.type_checkers || [];
-    barChart('p95TimeChart',
-        checkers.map(c => CHECKER_NAMES[c] || c),
-        checkers.map(c => agg[c]?.p95_execution_time_s || 0),
-        checkers.map(c => CHECKER_COLORS[c] || '#888'),
-        's', 'p95Time');
+function checkerLabel(checker: string): string {
+    return `<span class="checker-swatch" style="background:${CHECKER_COLORS[checker] || '#888'}"></span>${CHECKER_NAMES[checker] || checker}`;
 }
 
-interface PackageWithAvg {
-    result: TimingBenchmarkResult;
-    avg: number;
+function renderStats(): void {
+    const grid = document.getElementById('statGrid');
+    if (!grid || !benchmarkData) return;
+    const summaries = summarize();
+    const failed = summaries.reduce((n, s) => n + s.failures.length, 0);
+    const stats: [number, string][] = [
+        [benchmarkData.results?.length || 0, 'Packages tested'],
+        [finishedByAll().length, 'Finished by every checker (summarized below)'],
+        [(benchmarkData.type_checkers || []).length, 'Type checkers'],
+        [failed, "Runs that didn't finish"],
+    ];
+    grid.innerHTML = stats.map(([v, l]) =>
+        `<div class="stat-card"><div class="stat-value">${v}</div><div class="stat-label">${l}</div></div>`).join('');
 }
 
-function createSlowestPackagesChart(): void {
-    if (!benchmarkData) return;
-    const results = (benchmarkData.results || []).filter(r => !r.error);
-    const checkers = benchmarkData.type_checkers || [];
-
-    // Compute average time per package across all checkers, sort descending, take top 10
-    const withAvg: PackageWithAvg[] = results.map(r => {
-        let sum = 0, count = 0;
-        for (const c of checkers) {
-            const t = r.metrics?.[c]?.execution_time_s;
-            if (t != null && r.metrics?.[c]?.ok) { sum += t; count++; }
-        }
-        return { result: r, avg: count > 0 ? sum / count : 0 };
-    });
-    withAvg.sort((a, b) => b.avg - a.avg);
-    const top10 = withAvg.slice(0, 10);
-
-    const names = top10.map(x => x.result.package_name);
-    groupedBarChart('slowestPackagesChart', names, checkers,
-        (i: number, checker: string) => {
-            const m = top10[i].result.metrics?.[checker];
-            return (m?.ok ? m.execution_time_s : 0) || 0;
-        },
-        's', 'slowestPackages');
-}
-
-function createHighestMemoryChart(): void {
-    if (!benchmarkData) return;
-    const results = (benchmarkData.results || []).filter(r => !r.error);
-    const checkers = benchmarkData.type_checkers || [];
-
-    const withAvg: PackageWithAvg[] = results.map(r => {
-        let sum = 0, count = 0;
-        for (const c of checkers) {
-            const m = r.metrics?.[c]?.peak_memory_mb;
-            if (m != null && m > 0 && r.metrics?.[c]?.ok) { sum += m; count++; }
-        }
-        return { result: r, avg: count > 0 ? sum / count : 0 };
-    });
-    withAvg.sort((a, b) => b.avg - a.avg);
-    const top10 = withAvg.slice(0, 10);
-
-    const names = top10.map(x => x.result.package_name);
-    groupedBarChart('highestMemoryChart', names, checkers,
-        (i: number, checker: string) => {
-            const m = top10[i].result.metrics?.[checker];
-            return (m?.ok ? m.peak_memory_mb : 0) || 0;
-        },
-        'MB', 'highestMemory');
-}
-
-// ---------------------------------------------------------------------------
-// Results table
-// ---------------------------------------------------------------------------
-
-interface TimingTableRow {
-    package: string;
-    github_url: string;
-    checker: string;
-    time?: number;
-    memory?: number;
-    ok?: boolean;
-    error: string | null | undefined;
-}
-
-function populateResultsTable(filterText?: string, sortBy?: string): void {
-    filterText = filterText || '';
-    sortBy = sortBy || 'name';
-
-    if (!benchmarkData) return;
-    const tbody = document.getElementById('resultsBody');
-    if (!tbody) return;
-
-    let results = benchmarkData.results || [];
-    const checkers = benchmarkData.type_checkers || [];
-
-    if (filterText) {
-        const f = filterText.toLowerCase();
-        results = results.filter(r => r.package_name.toLowerCase().includes(f));
-    }
-
-    results = [...results].sort((a, b) => {
-        switch (sortBy) {
-            case 'time': return getMinTime(a, checkers) - getMinTime(b, checkers);
-            case 'memory': return getMinMemory(a, checkers) - getMinMemory(b, checkers);
-            default: return a.package_name.localeCompare(b.package_name);
-        }
-    });
-
-    const rows: TimingTableRow[] = [];
-    for (const result of results) {
-        for (const checker of checkers) {
-            const m = result.metrics?.[checker];
-            rows.push({
-                package: result.package_name,
-                github_url: result.github_url,
-                checker,
-                time: m?.execution_time_s,
-                memory: m?.peak_memory_mb,
-                ok: m?.ok,
-                error: result.error || m?.error_message
-            });
-        }
-    }
-
-    if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="loading-row">No results found</td></tr>';
-        return;
-    }
-
-    tbody.innerHTML = rows.map((row, idx) => {
-        const isFirst = idx === 0 || rows[idx - 1].package !== row.package;
-        const pkgCell = isFirst
-            ? `<td class="package-name" rowspan="${checkers.length}"><a href="${row.github_url}" target="_blank">${row.package}</a></td>`
-            : '';
-        const statusBadge = row.ok
-            ? '<span class="status-badge success">OK</span>'
-            : `<span class="status-badge error">${row.error || 'Failed'}</span>`;
-        return `<tr>
-            ${pkgCell}
-            <td><span class="checker-badge ${row.checker}">${CHECKER_NAMES[row.checker] || row.checker}</span></td>
-            <td class="mono">${row.time != null ? row.time.toFixed(1) + ' s' : '-'}</td>
-            <td class="mono">${row.memory != null && row.memory > 0 ? row.memory.toFixed(0) + ' MB' : '-'}</td>
-            <td>${statusBadge}</td>
-        </tr>`;
+function renderBars(containerId: string, rows: { checker: string; value: number; label: string }[],
+                    trailing: (checker: string) => string): void {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    const sorted = [...rows].sort((a, b) => a.value - b.value);
+    const max = Math.max(...sorted.map(r => r.value), 0) || 1;
+    const best = sorted[0]?.value || 0;
+    el.innerHTML = sorted.map(r => {
+        const pct = (r.value / max) * 78;
+        const rel = r.value === best ? 'lowest' : `${(r.value / best).toFixed(1)}&times; the lowest`;
+        return `<div class="bar-name">${checkerLabel(r.checker)}</div>
+            <div class="bar-track" title="${escapeHtml(CHECKER_NAMES[r.checker] || r.checker)}: ${r.label} (${rel.replace('&times;', 'x')})">
+                <div class="bar-fill" style="width:${pct}%;background:${CHECKER_COLORS[r.checker] || '#888'}"></div>
+                <span class="bar-value" style="left:calc(${pct}% + 8px)">${r.label}</span>
+            </div>
+            ${trailing(r.checker)}`;
     }).join('');
 }
 
-function getMinTime(result: TimingBenchmarkResult, checkers: string[]): number {
-    let min = Infinity;
-    for (const c of checkers) {
-        const t = result.metrics?.[c]?.execution_time_s;
-        if (t != null && t < min) min = t;
+const METRIC_DESCRIPTIONS: Record<SpeedMetric, string> = {
+    geomean: 'Geometric mean of the time per package. Every package counts equally whether it takes 0.1 s or 100 s, so one huge package can\'t dominate.',
+    median: 'Median time per package: half the packages are faster than this.',
+    mean: 'Ordinary average time per package.',
+    total: 'Total time to check all of these packages back to back.',
+};
+
+function renderSpeed(): void {
+    if (!benchmarkData) return;
+    const summaries = summarize();
+    const byChecker = new Map(summaries.map(s => [s.checker, s]));
+    document.querySelectorAll<HTMLButtonElement>('.metric-tabs button').forEach(b =>
+        b.setAttribute('aria-pressed', String(b.dataset.metric === currentMetric)));
+
+    const desc = document.getElementById('speedDescription');
+    if (desc) desc.textContent = `${METRIC_DESCRIPTIONS[currentMetric]} Lower is better. Computed over the ${finishedByAll().length} packages every checker finished.`;
+
+    renderBars('speedBars',
+        summaries.map(s => ({ checker: s.checker, value: s[currentMetric], label: formatTime(s[currentMetric]) })),
+        checker => {
+            const f = byChecker.get(checker)?.failures || [];
+            if (!f.length) return `<span class="bar-trailing">Finished all ${benchmarkData!.results.length}</span>`;
+            const list = f.map(x => `${x.pkg}: ${shortReason(x.reason)}`).join('\n');
+            return `<span class="bar-trailing"><span class="fail-chip" tabindex="0" title="${escapeHtml(list)}"><span class="fail-icon" aria-hidden="true">&#9888;</span>${f.length} didn't finish</span></span>`;
+        });
+
+    const note = document.getElementById('speedNote');
+    if (!note) return;
+    if (currentMetric === 'mean' || currentMetric === 'total') {
+        note.classList.add('warn');
+        note.textContent = `The ${currentMetric === 'mean' ? 'average' : 'total'} is dominated by the largest packages. Use it if you mostly care about very large codebases.`;
+    } else {
+        note.classList.remove('warn');
+        note.textContent = 'Packages a checker didn\'t finish are listed beside it and left out for every checker, so all are compared on the same packages.';
     }
-    return min === Infinity ? 9999 : min;
 }
 
-function getMinMemory(result: TimingBenchmarkResult, checkers: string[]): number {
-    let min = Infinity;
-    for (const c of checkers) {
-        const m = result.metrics?.[c]?.peak_memory_mb;
-        if (m != null && m > 0 && m < min) min = m;
+function renderMemory(): void {
+    const summaries = summarize();
+    const el = document.getElementById('memoryBars');
+    if (!el) return;
+    if (summaries.some(s => s.memGeomean == null)) {
+        el.innerHTML = '<p class="summary-note">Peak memory wasn\'t recorded for this run.</p>';
+        return;
     }
-    return min === Infinity ? 9999 : min;
+    renderBars('memoryBars',
+        summaries.map(s => ({ checker: s.checker, value: s.memGeomean as number, label: `${Math.round(s.memGeomean as number)} MB` })),
+        () => '<span></span>');
+}
+
+function renderFailures(): void {
+    const tbody = document.getElementById('failureBody');
+    if (!tbody) return;
+    const rows = summarize().flatMap(s => s.failures.map(f =>
+        `<tr><td>${checkerLabel(s.checker)}</td><td>${escapeHtml(f.pkg)}</td><td class="fail-text" title="${escapeHtml(f.reason)}">&#9888; ${shortReason(f.reason)}</td></tr>`));
+    tbody.innerHTML = rows.join('') || '<tr><td colspan="3">Every checker finished every package.</td></tr>';
 }
 
 // ---------------------------------------------------------------------------
-// Filters
+// Per-package table
 // ---------------------------------------------------------------------------
+
+function okTimes(r: TimingBenchmarkResult, checkers: string[]): number[] {
+    return checkers.map(c => r.metrics?.[c]).filter(m => m?.ok && m.execution_time_s != null)
+        .map(m => m!.execution_time_s as number);
+}
+
+function populateResultsTable(filterText?: string, sortBy?: string): void {
+    if (!benchmarkData) return;
+    const head = document.getElementById('resultsHead');
+    const tbody = document.getElementById('resultsBody');
+    if (!head || !tbody) return;
+    const checkers = benchmarkData.type_checkers || [];
+    const f = (filterText || '').toLowerCase();
+    let results = (benchmarkData.results || []).filter(r => r.package_name.toLowerCase().includes(f));
+
+    const slowest = (r: TimingBenchmarkResult) => Math.max(0, ...okTimes(r, checkers));
+    const spread = (r: TimingBenchmarkResult) => {
+        const t = okTimes(r, checkers);
+        return t.length ? Math.max(...t) / Math.max(Math.min(...t), 0.001) : 0;
+    };
+    results = [...results].sort((a, b) => {
+        if (sortBy === 'slowest') return slowest(b) - slowest(a);
+        if (sortBy === 'spread') return spread(b) - spread(a);
+        return a.package_name.toLowerCase().localeCompare(b.package_name.toLowerCase());
+    });
+
+    head.innerHTML = `<tr><th>Package</th>${checkers.map(c => `<th>${checkerLabel(c)}</th>`).join('')}</tr>`;
+    tbody.innerHTML = results.map(r => {
+        const times = okTimes(r, checkers);
+        const best = times.length ? Math.min(...times) : 0;
+        const cells = checkers.map(c => {
+            const m = r.metrics?.[c];
+            if (!m?.ok || m.execution_time_s == null) {
+                const reason = m?.error_message || r.error || 'Failed';
+                return `<td class="fail-text" title="${escapeHtml(reason)}">&#9888; ${shortReason(reason)}</td>`;
+            }
+            const t = m.execution_time_s;
+            const mem = m.peak_memory_mb ? `, ${Math.round(m.peak_memory_mb)} MB` : '';
+            if (withinNoise(t, best)) return `<td class="best" title="${formatTime(t)}${mem}">${formatTime(t)}</td>`;
+            return `<td title="${formatTime(t)}${mem}">${formatTime(t)}<span class="times-slower">${(t / best).toFixed(1)}&times;</span></td>`;
+        }).join('');
+        return `<tr><td>${escapeHtml(r.package_name)}</td>${cells}</tr>`;
+    }).join('') || `<tr><td colspan="${checkers.length + 1}" class="loading-row">No packages match.</td></tr>`;
+}
 
 function setupFilters(): void {
     const searchInput = document.getElementById('packageSearch') as HTMLInputElement | null;
     const sortSelect = document.getElementById('sortBy') as HTMLSelectElement | null;
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            populateResultsTable(searchInput.value, sortSelect?.value);
-        });
-    }
-    if (sortSelect) {
-        sortSelect.addEventListener('change', () => {
-            populateResultsTable(searchInput?.value, sortSelect.value);
-        });
-    }
+    const refresh = () => populateResultsTable(searchInput?.value || '', sortSelect?.value || 'name');
+    searchInput?.addEventListener('input', refresh);
+    sortSelect?.addEventListener('change', refresh);
+    document.querySelectorAll<HTMLButtonElement>('.metric-tabs button').forEach(b =>
+        b.addEventListener('click', () => {
+            currentMetric = (b.dataset.metric as SpeedMetric) || 'geomean';
+            renderSpeed();
+        }));
 }
-
-// ---------------------------------------------------------------------------
-// Boot
-// ---------------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', init);
 
