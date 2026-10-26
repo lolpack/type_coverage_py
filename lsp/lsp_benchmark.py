@@ -702,9 +702,15 @@ class LspClient:
                 except ValueError:
                     continue
 
-                body = stream.read(length)
-                if not body:
-                    return
+                # stdout is unbuffered, so one read() returns only what has
+                # arrived so far. Keep reading until the whole body is in;
+                # parsing a partial body would drop the response.
+                body = b""
+                while len(body) < length:
+                    chunk = stream.read(length - len(body))
+                    if not chunk:
+                        return
+                    body += chunk
 
                 try:
                     msg = json.loads(body.decode("utf-8", errors="replace"))
