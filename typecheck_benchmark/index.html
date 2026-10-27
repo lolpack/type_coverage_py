@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="/assets/styles/tokens.css">
     <link rel="stylesheet" href="/assets/styles/site.css">
     <link rel="stylesheet" href="styles/typecheck-benchmark.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -85,112 +84,87 @@
     </div>
 
     <main id="main" class="container">
-        <!-- Failure Summary -->
+        <!-- Run summary -->
         <section id="summary" class="section">
             <h2>Run Summary</h2>
-            <div class="summary-grid" id="summaryGrid">
-                <div class="summary-card">
-                    <div class="summary-value" id="summaryPackages">-</div>
-                    <div class="summary-label">Packages Tested</div>
-                </div>
-                <div class="summary-card">
-                    <div class="summary-value" id="summaryCheckers">-</div>
-                    <div class="summary-label">Type Checkers</div>
-                </div>
-            </div>
-            <div id="failureSummary" class="failure-summary" style="display:none;">
-                <h3>Failures</h3>
-                <div class="table-container">
-                    <table class="results-table" id="failureTable">
-                        <thead>
-                            <tr>
-                                <th>Package</th>
-                                <th>Type Checker</th>
-                                <th>Reason</th>
-                            </tr>
-                        </thead>
-                        <tbody id="failureBody"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="stat-grid" id="statGrid"></div>
         </section>
 
-        <!-- Comparison Charts -->
+        <!-- Comparison -->
         <section id="comparison" class="section">
             <h2>Type Checker Comparison</h2>
 
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <h3>Average Execution Time (s)</h3>
-                    <p class="chart-description">Lower is better: mean time to type check each package</p>
-                    <canvas id="avgTimeChart"></canvas>
+            <div class="summary-card-panel">
+                <h3>Typical time to check a package</h3>
+                <p class="chart-description" id="speedDescription"></p>
+                <div class="metric-tabs" role="group" aria-label="Summary statistic">
+                    <button type="button" data-metric="geomean" aria-pressed="true">Geometric mean</button>
+                    <button type="button" data-metric="median" aria-pressed="false">Median</button>
+                    <button type="button" data-metric="mean" aria-pressed="false">Average</button>
+                    <button type="button" data-metric="total" aria-pressed="false">Total</button>
                 </div>
-                <div class="chart-card">
-                    <h3>Average Peak Memory (MB)</h3>
-                    <p class="chart-description">Lower is better: mean peak RSS during type checking</p>
-                    <canvas id="avgMemoryChart"></canvas>
-                </div>
+                <div class="summary-bars" id="speedBars"></div>
+                <p class="summary-note" id="speedNote"></p>
             </div>
 
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <h3>P90 Execution Time (s)</h3>
-                    <p class="chart-description">90th percentile type checking time across packages</p>
-                    <canvas id="p90TimeChart"></canvas>
+            <div class="summary-grid-2">
+                <div class="summary-card-panel">
+                    <h3>Typical peak memory</h3>
+                    <p class="chart-description">Geometric mean of peak resident memory, over the same packages as above.</p>
+                    <div class="summary-bars" id="memoryBars"></div>
                 </div>
-                <div class="chart-card">
-                    <h3>P95 Execution Time (s)</h3>
-                    <p class="chart-description">95th percentile type checking time across packages</p>
-                    <canvas id="p95TimeChart"></canvas>
+                <div class="summary-card-panel">
+                    <h3>Didn't finish</h3>
+                    <p class="chart-description">
+                        Runs that hit the 5-minute timeout or the 4&nbsp;GB memory limit, or crashed.
+                        Those packages are left out of every summary above for all checkers, so each
+                        checker is summarized over the same packages.
+                    </p>
+                    <div class="table-container">
+                        <table class="results-table" id="failureTable">
+                            <thead>
+                                <tr>
+                                    <th>Type Checker</th>
+                                    <th>Package</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody id="failureBody"></tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-
-            <div class="chart-card full-width">
-                <h3>Top 10 Slowest Packages (s)</h3>
-                <p class="chart-description">Packages with the highest average execution time across checkers</p>
-                <canvas id="slowestPackagesChart"></canvas>
-            </div>
-
-            <div class="chart-card full-width">
-                <h3>Top 10 Highest Memory Packages (MB)</h3>
-                <p class="chart-description">Packages with the highest average peak memory across checkers</p>
-                <canvas id="highestMemoryChart"></canvas>
             </div>
         </section>
 
         <!-- Detailed Results Table -->
         <section id="packages" class="section">
-            <h2>Detailed Results</h2>
+            <h2>Every Package</h2>
+            <p class="chart-description">
+                Time per checker. <span class="best-marker" aria-hidden="true">&#9650;</span> marks the
+                fastest, along with any checker within run-to-run noise of it (10&nbsp;ms or 5%).
+                The small number is how many times slower than the fastest.
+            </p>
 
             <div class="filter-bar">
-                <input type="text" id="packageSearch" placeholder="Search packages..." class="search-input">
-                <select id="sortBy" class="filter-select">
-                    <option value="name">Sort by Name</option>
-                    <option value="time">Sort by Fastest</option>
-                    <option value="memory">Sort by Least Memory</option>
+                <input type="text" id="packageSearch" placeholder="Search packages..." class="search-input" aria-label="Search packages">
+                <select id="sortBy" class="filter-select" aria-label="Sort packages">
+                    <option value="name">Sort by name</option>
+                    <option value="slowest">Slowest packages first</option>
+                    <option value="spread">Biggest gap between checkers</option>
                 </select>
             </div>
 
             <div class="table-container">
-                <table class="results-table" id="resultsTable">
-                    <thead>
-                        <tr>
-                            <th>Package</th>
-                            <th>Type Checker</th>
-                            <th>Time (s)</th>
-                            <th>Memory (MB)</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
+                <table class="results-table package-table" id="resultsTable">
+                    <thead id="resultsHead"></thead>
                     <tbody id="resultsBody">
                         <tr>
-                            <td colspan="5" class="loading-row">Loading results...</td>
+                            <td class="loading-row">Loading results...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
-
         <!-- Methodology -->
         <section id="methodology" class="section">
             <h2>Methodology</h2>
@@ -272,11 +246,26 @@
                 <div class="method-card">
                     <h3>Metrics Explained</h3>
                     <ul>
-                        <li><strong>Time (s):</strong> Wall-clock execution time in seconds</li>
+                        <li><strong>Time (s):</strong> Wall-clock execution time, to the millisecond</li>
                         <li><strong>Memory (MB):</strong> Peak resident set size in megabytes</li>
-                        <li><strong>P50/P95:</strong> 50th/95th percentile across packages</li>
-                        <li><strong>Status:</strong> Whether the checker completed successfully</li>
+                        <li><strong>Didn't finish:</strong> Timed out, hit the memory limit, or crashed</li>
                     </ul>
+                </div>
+                <div class="method-card">
+                    <h3>Summary Statistics</h3>
+                    <p>
+                        Package sizes span three orders of magnitude. An ordinary average is dominated
+                        by the few largest packages, where one slow result can outweigh dozens of typical
+                        ones. The headline figure is therefore the <strong>geometric mean</strong> of the
+                        time per package, which weighs every package equally in relative terms and is the
+                        usual way benchmark suites are summarized. The median, average and total are
+                        available as alternatives; the average and total suit readers who mostly care
+                        about very large codebases.
+                    </p>
+                    <p class="method-note">
+                        Every summary uses only the packages that all checkers finished, so each checker
+                        is summarized over the same packages.
+                    </p>
                 </div>
             </div>
         </section>
