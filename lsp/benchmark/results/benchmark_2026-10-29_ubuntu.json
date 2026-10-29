@@ -1,0 +1,4311 @@
+{
+  "timestamp": "2026-10-29T04:01:44.486971+00:00",
+  "date": "2026-10-29",
+  "type_checkers": [
+    "pyright",
+    "pyrefly",
+    "ty",
+    "zuban"
+  ],
+  "type_checker_versions": {
+    "pyright": "1.1.414",
+    "pyrefly": "1.4.0",
+    "ty": "0.0.94",
+    "zuban": "0.10.1"
+  },
+  "package_count": 53,
+  "runs_per_package": 100,
+  "aggregate": {
+    "pyright": {
+      "packages_tested": 53,
+      "total_runs": 5300,
+      "total_ok": 5152,
+      "total_found": 3967,
+      "total_valid": 3964,
+      "avg_latency_ms": 37.29457201685535,
+      "min_latency_ms": 8.992193836738064,
+      "max_latency_ms": 93.26287451997814,
+      "ok_rate": 97.20754716981132,
+      "success_rate": 74.79245283018868
+    },
+    "pyrefly": {
+      "packages_tested": 53,
+      "total_runs": 5300,
+      "total_ok": 5230,
+      "total_found": 4550,
+      "total_valid": 4135,
+      "avg_latency_ms": 18.052512770288477,
+      "min_latency_ms": 4.808935859982739,
+      "max_latency_ms": 248.6313024515957,
+      "ok_rate": 98.67924528301887,
+      "success_rate": 78.01886792452831
+    },
+    "ty": {
+      "packages_tested": 53,
+      "total_runs": 5300,
+      "total_ok": 5228,
+      "total_found": 4765,
+      "total_valid": 4181,
+      "avg_latency_ms": 24.68790005832988,
+      "min_latency_ms": 1.795699779993356,
+      "max_latency_ms": 491.31454932143015,
+      "ok_rate": 98.64150943396226,
+      "success_rate": 78.88679245283019
+    },
+    "zuban": {
+      "packages_tested": 53,
+      "total_runs": 5300,
+      "total_ok": 4907,
+      "total_found": 4478,
+      "total_valid": 3902,
+      "avg_latency_ms": 15.286410275160774,
+      "min_latency_ms": 2.2102782399815624,
+      "max_latency_ms": 109.6294108124738,
+      "ok_rate": 92.58490566037736,
+      "success_rate": 73.62264150943396
+    }
+  },
+  "results": [
+    {
+      "package_name": "aiohttp",
+      "github_url": "https://github.com/aio-libs/aiohttp",
+      "ranking": 1,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 84,
+          "found_pct": 84.0,
+          "valid_count": 84,
+          "valid_pct": 84.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.917500000009568,
+            "p95": 121.49105899999313,
+            "min": 0.9498199999882218,
+            "max": 924.1211519999979,
+            "mean": 31.144486616160414
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.418122999988782,
+            "p95": 89.92776799999547,
+            "min": 0.46629799999209354,
+            "max": 1164.9750279999864,
+            "mean": 29.91947780000146
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.759288000011793,
+            "p95": 102.49145800000292,
+            "min": 0.41906600000629624,
+            "max": 485.4490130000215,
+            "mean": 21.244861309998843
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 0,
+          "ok_pct": 0.0,
+          "found_count": 0,
+          "found_pct": 0.0,
+          "valid_count": 0,
+          "valid_pct": 0.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "mean": null
+          }
+        }
+      }
+    },
+    {
+      "package_name": "airflow",
+      "github_url": "https://github.com/apache/airflow",
+      "ranking": 2,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 46,
+          "found_pct": 46.0,
+          "valid_count": 46,
+          "valid_pct": 46.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.634470000004058,
+            "p95": 332.7835489999984,
+            "min": 1.1306310000236408,
+            "max": 1110.100196000019,
+            "mean": 54.82843747475127
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 73,
+          "found_pct": 73.0,
+          "valid_count": 64,
+          "valid_pct": 64.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.886099999988346,
+            "p95": 147.80358400003024,
+            "min": 0.42069500000252447,
+            "max": 326.50612599996975,
+            "mean": 24.196119839996868
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 75,
+          "found_pct": 75.0,
+          "valid_count": 47,
+          "valid_pct": 47.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.305942999986655,
+            "p95": 185.22909600000048,
+            "min": 0.39423700002316764,
+            "max": 427.1381789999964,
+            "mean": 25.722174880002626
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 74,
+          "found_pct": 74.0,
+          "valid_count": 44,
+          "valid_pct": 44.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8414520000314951,
+            "p95": 152.59838299999728,
+            "min": 0.38200900002038907,
+            "max": 1683.5573010000076,
+            "mean": 39.28792557142826
+          }
+        }
+      }
+    },
+    {
+      "package_name": "ansible",
+      "github_url": "https://github.com/ansible/ansible",
+      "ranking": 3,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 76,
+          "found_pct": 76.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.577223000022059,
+            "p95": 79.69890399999713,
+            "min": 1.031346000047506,
+            "max": 1734.0470290000098,
+            "mean": 37.34062466666942
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 68,
+          "valid_pct": 68.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.2860579999814945,
+            "p95": 59.879170000044724,
+            "min": 0.4352729999936855,
+            "max": 194.39362399998572,
+            "mean": 9.64936630000011
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8094439999695169,
+            "p95": 97.8185499999995,
+            "min": 0.37388800001281197,
+            "max": 381.99003099998663,
+            "mean": 12.747418810000681
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4880110000158311,
+            "p95": 47.17568700004904,
+            "min": 0.3143669999872145,
+            "max": 394.68690100000003,
+            "mean": 11.898069829999258
+          }
+        }
+      }
+    },
+    {
+      "package_name": "black",
+      "github_url": "https://github.com/psf/black",
+      "ranking": 6,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 56,
+          "found_pct": 56.0,
+          "valid_count": 56,
+          "valid_pct": 56.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.8187560000105805,
+            "p95": 116.79995200000803,
+            "min": 0.6100389999801337,
+            "max": 925.9669829999666,
+            "mean": 28.301868350004042
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 59,
+          "found_pct": 59.0,
+          "valid_count": 57,
+          "valid_pct": 57.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.3490320000073552,
+            "p95": 34.88446799997291,
+            "min": 0.37855700003319726,
+            "max": 164.80459499996414,
+            "mean": 6.077047710005559
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 61,
+          "found_pct": 61.0,
+          "valid_count": 59,
+          "valid_pct": 59.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5188989999851401,
+            "p95": 34.295396999993955,
+            "min": 0.2944290000073124,
+            "max": 163.80230599997958,
+            "mean": 6.176440189999539
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 62,
+          "found_pct": 62.0,
+          "valid_count": 61,
+          "valid_pct": 61.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.45297700000901386,
+            "p95": 16.188993000014307,
+            "min": 0.2584709999950974,
+            "max": 1200.4701479999653,
+            "mean": 13.912585969999895
+          }
+        }
+      }
+    },
+    {
+      "package_name": "boto3",
+      "github_url": "https://github.com/boto/boto3",
+      "ranking": 7,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 75,
+          "found_pct": 75.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.2909759999597554,
+            "p95": 111.85072000000673,
+            "min": 0.9080859999812674,
+            "max": 758.743762999984,
+            "mean": 22.57676729000309
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 84,
+          "valid_pct": 84.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.387639999994917,
+            "p95": 19.942421999985527,
+            "min": 0.47179299997424096,
+            "max": 146.34401800003616,
+            "mean": 6.53968256000212
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 73,
+          "valid_pct": 73.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6354399999963789,
+            "p95": 8.520212000007632,
+            "min": 0.3867789999958404,
+            "max": 33.55350399999679,
+            "mean": 2.5765594299974737
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.612553999985721,
+            "p95": 15.366580000033991,
+            "min": 0.3109909999921001,
+            "max": 309.8890399999732,
+            "mean": 7.289278449995322
+          }
+        }
+      }
+    },
+    {
+      "package_name": "botocore",
+      "github_url": "https://github.com/boto/botocore",
+      "ranking": 8,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.043071000012333,
+            "p95": 82.81296000001248,
+            "min": 1.0236720000307287,
+            "max": 1639.3355609999958,
+            "mean": 40.40522495999937
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.015952999987803,
+            "p95": 30.799492000028295,
+            "min": 0.42089600003691885,
+            "max": 128.57548800002405,
+            "mean": 7.782073840002113
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.626520000025721,
+            "p95": 26.947480999979234,
+            "min": 0.34074699999564473,
+            "max": 106.21271499996965,
+            "mean": 4.629913789998454
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6881200000066201,
+            "p95": 10.376500000006672,
+            "min": 0.3117219999921872,
+            "max": 988.652787000035,
+            "mean": 13.57108379000067
+          }
+        }
+      }
+    },
+    {
+      "package_name": "celery",
+      "github_url": "https://github.com/celery/celery",
+      "ranking": 9,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 82,
+          "found_pct": 82.0,
+          "valid_count": 82,
+          "valid_pct": 82.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.953441999963616,
+            "p95": 103.02521599999181,
+            "min": 0.958801000024323,
+            "max": 1759.99296100008,
+            "mean": 43.180174160002025
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 84,
+          "found_pct": 84.0,
+          "valid_count": 71,
+          "valid_pct": 71.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.6804480000018884,
+            "p95": 34.889875999965625,
+            "min": 0.40950400000383524,
+            "max": 146.7065020000291,
+            "mean": 7.7182640300031835
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6427929999972548,
+            "p95": 42.65016699991975,
+            "min": 0.33006599994678254,
+            "max": 143.25509600007535,
+            "mean": 7.634592190008789
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7872399999087065,
+            "p95": 22.897349000004397,
+            "min": 0.30779700000493904,
+            "max": 322.09452500001134,
+            "mean": 10.772717259999354
+          }
+        }
+      }
+    },
+    {
+      "package_name": "ComfyUI",
+      "github_url": "https://github.com/comfyanonymous/ComfyUI",
+      "ranking": 14,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 48,
+          "found_pct": 48.0,
+          "valid_count": 48,
+          "valid_pct": 48.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.972652000034941,
+            "p95": 150.5012779999788,
+            "min": 1.120182000022396,
+            "max": 1642.4276989999953,
+            "mean": 60.27181683838296
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 57,
+          "found_pct": 57.0,
+          "valid_count": 49,
+          "valid_pct": 49.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.0921699999689736,
+            "p95": 154.11612800005514,
+            "min": 0.4558809999934965,
+            "max": 333.9275150000276,
+            "mean": 15.658119760003046
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 67,
+          "found_pct": 67.0,
+          "valid_count": 47,
+          "valid_pct": 47.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.9046549999993658,
+            "p95": 143.8527499999509,
+            "min": 0.3293980000762531,
+            "max": 453.89713700001266,
+            "mean": 22.163357970007382
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 70,
+          "found_pct": 70.0,
+          "valid_count": 45,
+          "valid_pct": 45.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.525681999988592,
+            "p95": 100.72052700002132,
+            "min": 0.31131100001857703,
+            "max": 927.3836500000243,
+            "mean": 28.941612989999612
+          }
+        }
+      }
+    },
+    {
+      "package_name": "cryptography",
+      "github_url": "https://github.com/pyca/cryptography",
+      "ranking": 15,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 68,
+          "found_pct": 68.0,
+          "valid_count": 68,
+          "valid_pct": 68.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.8934939999535345,
+            "p95": 106.5432929999588,
+            "min": 0.9718960000100196,
+            "max": 718.0964190000623,
+            "mean": 26.278671500000428
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.3923010000098657,
+            "p95": 85.0981230000798,
+            "min": 0.36325799999303854,
+            "max": 397.99736399993435,
+            "mean": 11.900006800007077
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5609779999531384,
+            "p95": 23.970222999992075,
+            "min": 0.36230700004580285,
+            "max": 308.101456999907,
+            "mean": 7.598657490000278
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.47494700004335755,
+            "p95": 8.075001999941378,
+            "min": 0.322913999980301,
+            "max": 821.3475950000202,
+            "mean": 11.254030800001829
+          }
+        }
+      }
+    },
+    {
+      "package_name": "dask",
+      "github_url": "https://github.com/dask/dask",
+      "ranking": 16,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 74,
+          "found_pct": 74.0,
+          "valid_count": 74,
+          "valid_pct": 74.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.478050000055191,
+            "p95": 101.93529000002854,
+            "min": 1.2032360000375775,
+            "max": 594.0046770000436,
+            "mean": 25.126214387758324
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 77,
+          "found_pct": 77.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.9997320000347827,
+            "p95": 144.8082509999722,
+            "min": 0.4657900000211157,
+            "max": 392.29199300007167,
+            "mean": 23.815867610001078
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.9419499999694381,
+            "p95": 132.44808699994337,
+            "min": 0.3933049999886862,
+            "max": 621.2146479999774,
+            "mean": 26.405400739993183
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 74,
+          "valid_pct": 74.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.193038999986129,
+            "p95": 59.413981000034255,
+            "min": 0.3076350000128514,
+            "max": 914.8448469999266,
+            "mean": 17.85511894999786
+          }
+        }
+      }
+    },
+    {
+      "package_name": "django",
+      "github_url": "https://github.com/django/django",
+      "ranking": 18,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.974557999958051,
+            "p95": 121.1652109999477,
+            "min": 1.1321380000026693,
+            "max": 1562.3923419999528,
+            "mean": 47.59410531313403
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.6914379999661833,
+            "p95": 75.63967600003707,
+            "min": 0.45079200003783626,
+            "max": 197.11969399997997,
+            "mean": 9.18779289000554
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.0021569999926214,
+            "p95": 66.46434099991438,
+            "min": 0.42722800003502925,
+            "max": 195.40415599999506,
+            "mean": 11.168461799994702
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.3991900000055466,
+            "p95": 49.784521000106,
+            "min": 0.3267799999093768,
+            "max": 168.14092900006017,
+            "mean": 11.137546809999321
+          }
+        }
+      }
+    },
+    {
+      "package_name": "fastapi",
+      "github_url": "https://github.com/fastapi/fastapi",
+      "ranking": 19,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 62,
+          "found_pct": 62.0,
+          "valid_count": 62,
+          "valid_pct": 62.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.1492509999679896,
+            "p95": 65.83928099996683,
+            "min": 1.090679999947497,
+            "max": 1706.0152800000878,
+            "mean": 28.194717819997095
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 62,
+          "valid_pct": 62.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.0829609999282184,
+            "p95": 18.267080999976315,
+            "min": 0.43119600002228253,
+            "max": 187.0574869999473,
+            "mean": 5.001716389998592
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 62,
+          "valid_pct": 62.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7089240000368591,
+            "p95": 16.157066000005216,
+            "min": 0.39885399996819615,
+            "max": 38.60164299999269,
+            "mean": 3.1740857900024366
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 79,
+          "valid_pct": 79.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.44879799997943337,
+            "p95": 44.63220699994963,
+            "min": 0.27974199997515825,
+            "max": 489.3636729999571,
+            "mean": 9.985268749991292
+          }
+        }
+      }
+    },
+    {
+      "package_name": "flask",
+      "github_url": "https://github.com/pallets/flask",
+      "ranking": 20,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 51,
+          "found_pct": 51.0,
+          "valid_count": 51,
+          "valid_pct": 51.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.6858689999471608,
+            "p95": 67.95781899995745,
+            "min": 0.8522090000724347,
+            "max": 1020.0563100000863,
+            "mean": 20.70956592998982
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.0589129999279976,
+            "p95": 30.97608999996737,
+            "min": 0.44815700005074177,
+            "max": 145.35777399999006,
+            "mean": 7.837416049998183
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 84,
+          "valid_pct": 84.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.631649000069956,
+            "p95": 29.854778999947484,
+            "min": 0.3791990000081569,
+            "max": 258.67100300001766,
+            "mean": 6.139395050005305
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4355830000122296,
+            "p95": 18.36446100003286,
+            "min": 0.2833479999253541,
+            "max": 579.1410189999624,
+            "mean": 9.47344915999679
+          }
+        }
+      }
+    },
+    {
+      "package_name": "gradio",
+      "github_url": "https://github.com/gradio-app/gradio",
+      "ranking": 21,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.659032000063235,
+            "p95": 81.59538399991106,
+            "min": 1.383377000024666,
+            "max": 1028.4715330000154,
+            "mean": 26.29605062625872
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.097953999964375,
+            "p95": 97.83324199997878,
+            "min": 0.3233639999962179,
+            "max": 393.8966350000328,
+            "mean": 14.06270252000013
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.9320510000634386,
+            "p95": 37.78312999997979,
+            "min": 0.3925449999542252,
+            "max": 481.35210399993866,
+            "mean": 10.42036675999384
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4442319999498068,
+            "p95": 41.40620599991962,
+            "min": 0.28549400008159864,
+            "max": 297.8476440000577,
+            "mean": 10.440693780001311
+          }
+        }
+      }
+    },
+    {
+      "package_name": "homeassistant",
+      "github_url": "https://github.com/home-assistant/core",
+      "ranking": 22,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 73,
+          "found_pct": 73.0,
+          "valid_count": 73,
+          "valid_pct": 73.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.855328000005102,
+            "p95": 160.71840400002202,
+            "min": 1.48459100000764,
+            "max": 982.5254259999383,
+            "mean": 31.453720744896515
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.0460959999818442,
+            "p95": 84.29999199995564,
+            "min": 0.4487280000375904,
+            "max": 368.8583749999452,
+            "mean": 12.48680999001067
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 79,
+          "valid_pct": 79.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.562025000088397,
+            "p95": 53.875854000011714,
+            "min": 0.46623100001852436,
+            "max": 254.38723600007052,
+            "mean": 10.938910260003922
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 70,
+          "valid_pct": 70.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.2578199999779827,
+            "p95": 31.15461899994898,
+            "min": 0.3247060000148849,
+            "max": 181.3553460000321,
+            "mean": 7.327739620001239
+          }
+        }
+      }
+    },
+    {
+      "package_name": "httpcore",
+      "github_url": "https://github.com/encode/httpcore",
+      "ranking": 23,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.6083299999063456,
+            "p95": 90.17750800012436,
+            "min": 1.0105769999881886,
+            "max": 1168.2889859998795,
+            "mean": 26.031865510010448
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.34386400004405,
+            "p95": 15.673795000111568,
+            "min": 0.48514400009480596,
+            "max": 249.70238399987466,
+            "mean": 7.769112099997528
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5663679999088345,
+            "p95": 7.616856999902666,
+            "min": 0.38330600000335835,
+            "max": 36.29292599998735,
+            "mean": 1.795699779993356
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 87,
+          "valid_pct": 87.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.48200099990935996,
+            "p95": 11.049170999967828,
+            "min": 0.311741999894366,
+            "max": 237.07469200007836,
+            "mean": 4.580201309979657
+          }
+        }
+      }
+    },
+    {
+      "package_name": "httpx",
+      "github_url": "https://github.com/encode/httpx",
+      "ranking": 24,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.0749560000676865,
+            "p95": 102.87567799991848,
+            "min": 1.1023609999938344,
+            "max": 1275.747272999979,
+            "mean": 31.036900120000155
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.108100999952512,
+            "p95": 30.260675999898012,
+            "min": 0.4358439998668473,
+            "max": 175.71188800002346,
+            "mean": 8.975850689976141
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.696318999871437,
+            "p95": 13.342716999886761,
+            "min": 0.3822329999820795,
+            "max": 125.49731800004338,
+            "mean": 3.5970878299985998
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.48609700002089085,
+            "p95": 21.549537000055352,
+            "min": 0.32789199985927553,
+            "max": 481.2529370001357,
+            "mean": 8.285759320017405
+          }
+        }
+      }
+    },
+    {
+      "package_name": "jinja2",
+      "github_url": "https://github.com/pallets/jinja",
+      "ranking": 26,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 66,
+          "found_pct": 66.0,
+          "valid_count": 66,
+          "valid_pct": 66.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.897038000057364,
+            "p95": 72.42236599995522,
+            "min": 1.1595050000323681,
+            "max": 1535.2884520000316,
+            "mean": 29.9352495800008
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.2602660000975447,
+            "p95": 30.89508800007934,
+            "min": 0.5241490000571503,
+            "max": 286.4077520000592,
+            "mean": 10.861017230006382
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6996560000516183,
+            "p95": 22.417899999936708,
+            "min": 0.37722399997619505,
+            "max": 78.39396100007434,
+            "mean": 3.6020187200028886
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4984600000170758,
+            "p95": 27.01037300016651,
+            "min": 0.3060009998989699,
+            "max": 133.903908000093,
+            "mean": 5.241273769997861
+          }
+        }
+      }
+    },
+    {
+      "package_name": "langchain",
+      "github_url": "https://github.com/langchain-ai/langchain",
+      "ranking": 27,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 80,
+          "found_pct": 80.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.8817080001081194,
+            "p95": 103.77994099985699,
+            "min": 1.0353200000281504,
+            "max": 1124.5204219999323,
+            "mean": 38.534687479989316
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.0279069999323838,
+            "p95": 34.42642199979673,
+            "min": 0.5212720000145055,
+            "max": 176.24179300014475,
+            "mean": 7.9570404199967015
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.677131999964331,
+            "p95": 37.9536289999578,
+            "min": 0.35242700005255756,
+            "max": 114.23740599980192,
+            "mean": 6.1078227600046375
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 79,
+          "valid_pct": 79.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5077670000446233,
+            "p95": 34.12970599993059,
+            "min": 0.3588189999845781,
+            "max": 241.59135200011406,
+            "mean": 7.196362430008776
+          }
+        }
+      }
+    },
+    {
+      "package_name": "langflow",
+      "github_url": "https://github.com/langflow-ai/langflow",
+      "ranking": 28,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 59,
+          "found_pct": 59.0,
+          "valid_count": 59,
+          "valid_pct": 59.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.856030999822906,
+            "p95": 499.0060499999345,
+            "min": 1.4283470000009402,
+            "max": 1712.1408989999054,
+            "mean": 69.12525384998162
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 57,
+          "valid_pct": 57.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.4554100000623293,
+            "p95": 38.076283000009425,
+            "min": 0.4985610000858287,
+            "max": 210.0863450000361,
+            "mean": 7.01652553998656
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 60,
+          "valid_pct": 60.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.734045000124752,
+            "p95": 103.69652300005328,
+            "min": 0.38455800017800357,
+            "max": 215.32919299988862,
+            "mean": 14.61544162000564
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 52,
+          "valid_pct": 52.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.132578999886391,
+            "p95": 49.589514999979656,
+            "min": 0.34398299999338633,
+            "max": 1056.8623960000423,
+            "mean": 17.526752099990972
+          }
+        }
+      }
+    },
+    {
+      "package_name": "luigi",
+      "github_url": "https://github.com/spotify/luigi",
+      "ranking": 29,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.329933000164601,
+            "p95": 116.56353300008959,
+            "min": 0.9046289999332657,
+            "max": 1738.4882970000035,
+            "mean": 39.77965526000389
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.422767000098247,
+            "p95": 14.484779999975217,
+            "min": 0.46440699998129276,
+            "max": 171.2605310001436,
+            "mean": 5.428653200001463
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7838639999135921,
+            "p95": 28.68935300011799,
+            "min": 0.2861240000129328,
+            "max": 64.92094800000814,
+            "mean": 4.2598816600002465
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6101090000356635,
+            "p95": 16.223661999902106,
+            "min": 0.33837199998743017,
+            "max": 868.439293000165,
+            "mean": 11.164774310016128
+          }
+        }
+      }
+    },
+    {
+      "package_name": "manim",
+      "github_url": "https://github.com/ManimCommunity/manim",
+      "ranking": 30,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 78,
+          "found_pct": 78.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.5203970001020934,
+            "p95": 73.67073099999288,
+            "min": 1.2400450000313867,
+            "max": 1078.1411139998909,
+            "mean": 21.943271525253405
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 80,
+          "found_pct": 80.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.0247970000800706,
+            "p95": 28.116847000092093,
+            "min": 0.4744959999243292,
+            "max": 371.9893889999639,
+            "mean": 13.009000079985071
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7442999999511812,
+            "p95": 60.91976500010787,
+            "min": 0.4154630000812176,
+            "max": 401.6188410000723,
+            "mean": 10.567311950021576
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 88,
+          "found_pct": 88.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5945530001554289,
+            "p95": 34.406163999847195,
+            "min": 0.338867999971626,
+            "max": 1103.0044930000713,
+            "mean": 19.63169955000012
+          }
+        }
+      }
+    },
+    {
+      "package_name": "markitdown",
+      "github_url": "https://github.com/microsoft/markitdown",
+      "ranking": 31,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 75,
+          "found_pct": 75.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.571149999923364,
+            "p95": 130.8816849998493,
+            "min": 1.1020140000255196,
+            "max": 1160.193781000089,
+            "mean": 30.607202969979426
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.3850319998691702,
+            "p95": 20.308848000013313,
+            "min": 0.5198830001518218,
+            "max": 144.41854100005003,
+            "mean": 7.338822249994337
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7621329998528381,
+            "p95": 16.171089999943433,
+            "min": 0.4036240000004909,
+            "max": 46.00036900001214,
+            "mean": 3.823197959986828
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.47735199996168376,
+            "p95": 36.830774000009114,
+            "min": 0.31265300003724406,
+            "max": 67.88973599987003,
+            "mean": 4.377026819984167
+          }
+        }
+      }
+    },
+    {
+      "package_name": "matplotlib",
+      "github_url": "https://github.com/matplotlib/matplotlib",
+      "ranking": 33,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 32,
+          "found_pct": 32.0,
+          "valid_count": 32,
+          "valid_pct": 32.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.6534820000943,
+            "p95": 114.29559899988817,
+            "min": 1.2280829998871923,
+            "max": 1019.0322930000093,
+            "mean": 29.269459969699792
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 41,
+          "found_pct": 41.0,
+          "valid_count": 22,
+          "valid_pct": 22.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.444606999939424,
+            "p95": 38.67726699991181,
+            "min": 0.5165039999610599,
+            "max": 292.21633499992095,
+            "mean": 9.899963430002572
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 65,
+          "found_pct": 65.0,
+          "valid_count": 33,
+          "valid_pct": 33.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5190189999666472,
+            "p95": 55.176713999799176,
+            "min": 0.36289700005909253,
+            "max": 459.2408680000517,
+            "mean": 14.00738355999465
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 64,
+          "found_pct": 64.0,
+          "valid_count": 32,
+          "valid_pct": 32.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5683230001523043,
+            "p95": 35.198973999968075,
+            "min": 0.2952910001567943,
+            "max": 1287.095976000046,
+            "mean": 16.446205930017186
+          }
+        }
+      }
+    },
+    {
+      "package_name": "networkx",
+      "github_url": "https://github.com/networkx/networkx",
+      "ranking": 34,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.400263999992603,
+            "p95": 87.3888099999931,
+            "min": 0.8458400000108668,
+            "max": 1865.6196459999137,
+            "mean": 38.004414409999754
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 87,
+          "found_pct": 87.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.9223899998905836,
+            "p95": 25.867383000104383,
+            "min": 0.436575999856359,
+            "max": 151.00675700000465,
+            "mean": 7.212447780000275
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6092469998293382,
+            "p95": 8.222801999863805,
+            "min": 0.32333399985873257,
+            "max": 72.3305189999337,
+            "mean": 2.5138740699844675
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7855759999984002,
+            "p95": 17.09881400006452,
+            "min": 0.2628810000260273,
+            "max": 220.158346000062,
+            "mean": 6.149080640034299
+          }
+        }
+      }
+    },
+    {
+      "package_name": "numpy",
+      "github_url": "https://github.com/numpy/numpy",
+      "ranking": 35,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 0,
+          "ok_pct": 0.0,
+          "found_count": 0,
+          "found_pct": 0.0,
+          "valid_count": 0,
+          "valid_pct": 0.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "mean": null
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 31,
+          "ok_pct": 31.0,
+          "found_count": 31,
+          "found_pct": 31.0,
+          "valid_count": 30,
+          "valid_pct": 30.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.006966000086322,
+            "p95": 1217.202307999969,
+            "min": 0.541501000043354,
+            "max": 1697.2118779999619,
+            "mean": 248.6313024515957
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 28,
+          "ok_pct": 28.0,
+          "found_count": 28,
+          "found_pct": 28.0,
+          "valid_count": 25,
+          "valid_pct": 25.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 50.220250999927885,
+            "p95": 1732.2277319999557,
+            "min": 0.40379399979428854,
+            "max": 1800.800879999997,
+            "mean": 491.31454932143015
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 16,
+          "ok_pct": 16.0,
+          "found_count": 16,
+          "found_pct": 16.0,
+          "valid_count": 12,
+          "valid_pct": 12.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.594076000055793,
+            "p95": 627.9749509999419,
+            "min": 0.4408239999520447,
+            "max": 627.9749509999419,
+            "mean": 109.6294108124738
+          }
+        }
+      }
+    },
+    {
+      "package_name": "open-webui",
+      "github_url": "https://github.com/open-webui/open-webui",
+      "ranking": 36,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 60,
+          "found_pct": 60.0,
+          "valid_count": 60,
+          "valid_pct": 60.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.918292999946061,
+            "p95": 188.32714399991346,
+            "min": 0.921041000083278,
+            "max": 1370.5999020000945,
+            "mean": 52.65255986001421
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 84,
+          "found_pct": 84.0,
+          "valid_count": 41,
+          "valid_pct": 41.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.6327569999011757,
+            "p95": 55.05477900010192,
+            "min": 0.5466710001655883,
+            "max": 161.13763099997414,
+            "mean": 10.035703740004465
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 61,
+          "valid_pct": 61.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6747639999957755,
+            "p95": 74.23064499994325,
+            "min": 0.334877999875971,
+            "max": 504.08940500005883,
+            "mean": 22.223540459983724
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 35,
+          "valid_pct": 35.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.49400500006413495,
+            "p95": 26.479613999981666,
+            "min": 0.3054800001791591,
+            "max": 428.2491410001512,
+            "mean": 8.574161609999464
+          }
+        }
+      }
+    },
+    {
+      "package_name": "openai",
+      "github_url": "https://github.com/openai/openai-python",
+      "ranking": 37,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.003946000011638,
+            "p95": 135.40960799991808,
+            "min": 1.349941999933435,
+            "max": 1098.3199810000315,
+            "mean": 36.92397098000356
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.3178310000275815,
+            "p95": 75.37847699995837,
+            "min": 0.46778400019320543,
+            "max": 366.6683900000862,
+            "mean": 13.87634657000035
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6567190000623668,
+            "p95": 169.4888130000436,
+            "min": 0.31792400000085763,
+            "max": 260.2459419999832,
+            "mean": 13.718676359997062
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5026700000598794,
+            "p95": 93.85603999999148,
+            "min": 0.2815860000282555,
+            "max": 554.9166490000061,
+            "mean": 15.500380450012017
+          }
+        }
+      }
+    },
+    {
+      "package_name": "pandas",
+      "github_url": "https://github.com/pandas-dev/pandas",
+      "ranking": 39,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 95,
+          "ok_pct": 95.0,
+          "found_count": 80,
+          "found_pct": 80.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.260856999891985,
+            "p95": 152.48277999990023,
+            "min": 1.8418910001400945,
+            "max": 306.8212600001061,
+            "mean": 26.3894926947351
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.9975390000345215,
+            "p95": 191.1798030000682,
+            "min": 0.472293000029822,
+            "max": 1150.8580239999446,
+            "mean": 45.371192290001545
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.5010619999411574,
+            "p95": 343.86347100007697,
+            "min": 0.43546300003072247,
+            "max": 1286.1189279999508,
+            "mean": 52.028874760001145
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 85,
+          "valid_pct": 85.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.8195390000528278,
+            "p95": 86.24038900006781,
+            "min": 0.4116890002023865,
+            "max": 590.3596540001672,
+            "mean": 18.45890511000789
+          }
+        }
+      }
+    },
+    {
+      "package_name": "prefect",
+      "github_url": "https://github.com/PrefectHQ/prefect",
+      "ranking": 42,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 60,
+          "found_pct": 60.0,
+          "valid_count": 60,
+          "valid_pct": 60.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.619233000037639,
+            "p95": 110.81588599995484,
+            "min": 0.6339239998851554,
+            "max": 1257.1274760000506,
+            "mean": 32.33586433332841
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 82,
+          "found_pct": 82.0,
+          "valid_count": 67,
+          "valid_pct": 67.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.578635999952894,
+            "p95": 13.15181399991161,
+            "min": 0.44278499990468845,
+            "max": 200.16791400007605,
+            "mean": 6.098455720009497
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 77,
+          "valid_pct": 77.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7235420000597514,
+            "p95": 97.74929199988946,
+            "min": 0.3975419999733276,
+            "max": 556.2454999999318,
+            "mean": 18.609201840006335
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6006870000874187,
+            "p95": 44.348337999963405,
+            "min": 0.3233550000913965,
+            "max": 1410.63539400011,
+            "mean": 25.38748725000005
+          }
+        }
+      }
+    },
+    {
+      "package_name": "pydantic",
+      "github_url": "https://github.com/pydantic/pydantic",
+      "ranking": 43,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 73,
+          "found_pct": 73.0,
+          "valid_count": 73,
+          "valid_pct": 73.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.971057999862751,
+            "p95": 167.98733700011326,
+            "min": 1.2728169999718375,
+            "max": 644.997708000119,
+            "mean": 34.50378395917151
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.03218400017613,
+            "p95": 232.29139599993687,
+            "min": 0.40410399992651946,
+            "max": 342.68431500004226,
+            "mean": 23.536469549990215
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.2540130001070793,
+            "p95": 86.53266800001802,
+            "min": 0.4031230000691721,
+            "max": 291.24075200002153,
+            "mean": 12.63058441999874
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5498969999280234,
+            "p95": 42.35336300007475,
+            "min": 0.28822800004491,
+            "max": 153.4711229999175,
+            "mean": 6.3984445300002335
+          }
+        }
+      }
+    },
+    {
+      "package_name": "pytest",
+      "github_url": "https://github.com/pytest-dev/pytest",
+      "ranking": 44,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.676449000044158,
+            "p95": 113.35148100010883,
+            "min": 0.8296099999824946,
+            "max": 503.0456570000297,
+            "mean": 21.253580424239072
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.453903000059654,
+            "p95": 24.73537299988493,
+            "min": 0.43922100007875997,
+            "max": 319.1389969999818,
+            "mean": 10.136101989994586
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.633440999990853,
+            "p95": 37.50479100017401,
+            "min": 0.3120379999472789,
+            "max": 301.48737600006825,
+            "mean": 8.266435890002413
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4776229998242343,
+            "p95": 56.48110199990697,
+            "min": 0.33257800009778293,
+            "max": 522.7282479997939,
+            "mean": 13.861938540005667
+          }
+        }
+      }
+    },
+    {
+      "package_name": "ray",
+      "github_url": "https://github.com/ray-project/ray",
+      "ranking": 47,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 78,
+          "found_pct": 78.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 14.640447000147105,
+            "p95": 638.2501609998599,
+            "min": 2.2450030000982224,
+            "max": 1195.9157350001988,
+            "mean": 81.74942571999736
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 80,
+          "found_pct": 80.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.2901279999132385,
+            "p95": 197.35826500004805,
+            "min": 0.412210000149571,
+            "max": 434.2070650000096,
+            "mean": 28.158693989998937
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 80,
+          "valid_pct": 80.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.9844270000248798,
+            "p95": 214.1473470001074,
+            "min": 0.3810809998867626,
+            "max": 429.48996499990244,
+            "mean": 38.328417599987006
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 51,
+          "valid_pct": 51.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8615389999704348,
+            "p95": 42.05514699992818,
+            "min": 0.33700200015118753,
+            "max": 470.79323999992084,
+            "mean": 10.55786020001051
+          }
+        }
+      }
+    },
+    {
+      "package_name": "requests",
+      "github_url": "https://github.com/psf/requests",
+      "ranking": 49,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.166044999848964,
+            "p95": 150.00376600005438,
+            "min": 0.9863620000487572,
+            "max": 1997.58062900014,
+            "mean": 57.08560814001203
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.5264380001317477,
+            "p95": 106.29694499994002,
+            "min": 0.44283700003688864,
+            "max": 228.94623000001957,
+            "mean": 12.838994120006646
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6084669998926984,
+            "p95": 15.826379999907658,
+            "min": 0.3510249998726067,
+            "max": 208.15260600011243,
+            "mean": 4.237976019999223
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.49527500004842295,
+            "p95": 31.602213999804007,
+            "min": 0.2972649999719579,
+            "max": 65.32071699984954,
+            "mean": 3.6952132099895607
+          }
+        }
+      }
+    },
+    {
+      "package_name": "rich",
+      "github_url": "https://github.com/Textualize/rich",
+      "ranking": 50,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.356520000101227,
+            "p95": 103.86188199981916,
+            "min": 0.9911499998906947,
+            "max": 958.770942000001,
+            "mean": 34.607721999998375
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.6278360001015244,
+            "p95": 19.156833000124607,
+            "min": 0.4448390000106883,
+            "max": 151.23247900010028,
+            "mean": 5.760827560027337
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7158670000535494,
+            "p95": 11.768485000175133,
+            "min": 0.3775850000238279,
+            "max": 98.37227999992137,
+            "mean": 3.0843293700036156
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4847770001106255,
+            "p95": 46.26269699997465,
+            "min": 0.29379900001913484,
+            "max": 173.58023699989644,
+            "mean": 7.0470043899877055
+          }
+        }
+      }
+    },
+    {
+      "package_name": "salt",
+      "github_url": "https://github.com/saltstack/salt",
+      "ranking": 51,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 10.785578000195528,
+            "p95": 732.4163499997667,
+            "min": 0.8864559999892663,
+            "max": 1904.9874980000823,
+            "mean": 93.26287451997814
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.572086000123818,
+            "p95": 105.16456400000607,
+            "min": 0.4147139998167404,
+            "max": 262.91032499966605,
+            "mean": 13.20277099001487
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 86,
+          "found_pct": 86.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.5509900003489747,
+            "p95": 257.9393199998776,
+            "min": 0.3716639998856408,
+            "max": 428.67510800033415,
+            "mean": 30.179327439982444
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.0015029999740364,
+            "p95": 86.63094099983937,
+            "min": 0.3460860002633126,
+            "max": 972.6826189998974,
+            "mean": 23.700244999999995
+          }
+        }
+      }
+    },
+    {
+      "package_name": "scikit-learn",
+      "github_url": "https://github.com/scikit-learn/scikit-learn",
+      "ranking": 52,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 55,
+          "found_pct": 55.0,
+          "valid_count": 55,
+          "valid_pct": 55.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.978276999940135,
+            "p95": 262.4507900000026,
+            "min": 0.9735270000419405,
+            "max": 963.6550079999324,
+            "mean": 51.61491681634771
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 62,
+          "found_pct": 62.0,
+          "valid_count": 56,
+          "valid_pct": 56.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.291990000026999,
+            "p95": 50.44633599982262,
+            "min": 0.4449729999578267,
+            "max": 206.2974719997328,
+            "mean": 10.702142819982328
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 76,
+          "found_pct": 76.0,
+          "valid_count": 56,
+          "valid_pct": 56.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7931909999570053,
+            "p95": 63.001570999858814,
+            "min": 0.3116220000265457,
+            "max": 638.7279150003451,
+            "mean": 14.957888350018038
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 76,
+          "found_pct": 76.0,
+          "valid_count": 56,
+          "valid_pct": 56.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5514049998964765,
+            "p95": 81.27008200017372,
+            "min": 0.3273420002187777,
+            "max": 424.5673559998977,
+            "mean": 15.122683889990185
+          }
+        }
+      }
+    },
+    {
+      "package_name": "scipy",
+      "github_url": "https://github.com/scipy/scipy",
+      "ranking": 53,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 97,
+          "ok_pct": 97.0,
+          "found_count": 41,
+          "found_pct": 41.0,
+          "valid_count": 41,
+          "valid_pct": 41.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.483536000359891,
+            "p95": 85.72013599996353,
+            "min": 0.9438279998903454,
+            "max": 1866.139712000404,
+            "mean": 52.68681821648569
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 53,
+          "found_pct": 53.0,
+          "valid_count": 43,
+          "valid_pct": 43.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.5387239996016433,
+            "p95": 174.49052400024812,
+            "min": 0.4330389997448947,
+            "max": 443.2085109997388,
+            "mean": 27.40325270001449
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 68,
+          "found_pct": 68.0,
+          "valid_count": 43,
+          "valid_pct": 43.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.3231459999806248,
+            "p95": 236.17536100027792,
+            "min": 0.3923900003428571,
+            "max": 848.1918059997042,
+            "mean": 41.77683313002035
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 67,
+          "found_pct": 67.0,
+          "valid_count": 43,
+          "valid_pct": 43.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5247130002317135,
+            "p95": 18.466873999841482,
+            "min": 0.32942500001809094,
+            "max": 136.26265100037926,
+            "mean": 4.576400958370641
+          }
+        }
+      }
+    },
+    {
+      "package_name": "scrapy",
+      "github_url": "https://github.com/scrapy/scrapy",
+      "ranking": 54,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.095988999983092,
+            "p95": 154.53366500014454,
+            "min": 0.9852399998635519,
+            "max": 1603.3224560001145,
+            "mean": 38.53513732002284
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.570486999957211,
+            "p95": 29.75492099994881,
+            "min": 0.3925720002371236,
+            "max": 126.48501800003942,
+            "mean": 7.234803370024565
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6371089998538082,
+            "p95": 27.491444000133924,
+            "min": 0.36438100005398155,
+            "max": 98.44564700006231,
+            "mean": 5.55514621999464
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4864380002800317,
+            "p95": 100.40936799987321,
+            "min": 0.29911899991930113,
+            "max": 639.2343110001093,
+            "mean": 22.840314819973173
+          }
+        }
+      }
+    },
+    {
+      "package_name": "sentry-sdk",
+      "github_url": "https://github.com/getsentry/sentry-python",
+      "ranking": 55,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.465338000045449,
+            "p95": 72.12461000017356,
+            "min": 0.9950270000445016,
+            "max": 1017.1944110002187,
+            "mean": 23.942763444463505
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.1761050002169213,
+            "p95": 64.64259199992739,
+            "min": 0.435052000284486,
+            "max": 363.54753199975676,
+            "mean": 13.107702960001006
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7412140002998058,
+            "p95": 40.331035000235715,
+            "min": 0.3994759999841335,
+            "max": 114.53407700037133,
+            "mean": 6.5752695400078665
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.49068099997384707,
+            "p95": 44.948002000182896,
+            "min": 0.3142360001220368,
+            "max": 660.4543390003528,
+            "mean": 15.154894240022259
+          }
+        }
+      }
+    },
+    {
+      "package_name": "setuptools",
+      "github_url": "https://github.com/pypa/setuptools",
+      "ranking": 56,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 12.193473000024824,
+            "p95": 100.33424100038246,
+            "min": 1.9484750000628992,
+            "max": 1459.4182299997556,
+            "mean": 53.164509424222516
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 86,
+          "valid_pct": 86.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.365107000059652,
+            "p95": 24.750990999564237,
+            "min": 0.5363790000956214,
+            "max": 117.37948700010747,
+            "mean": 5.804412479997154
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.8626409999124007,
+            "p95": 42.931648999910976,
+            "min": 0.42191900001853355,
+            "max": 121.78149800001847,
+            "mean": 6.490132070002801
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7771119999233633,
+            "p95": 56.279957000242575,
+            "min": 0.3339429999869026,
+            "max": 172.09687700005816,
+            "mean": 7.462824279969027
+          }
+        }
+      }
+    },
+    {
+      "package_name": "sqlalchemy",
+      "github_url": "https://github.com/sqlalchemy/sqlalchemy",
+      "ranking": 59,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 46,
+          "found_pct": 46.0,
+          "valid_count": 46,
+          "valid_pct": 46.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.376829000098951,
+            "p95": 96.22043499985011,
+            "min": 1.1564999999791326,
+            "max": 363.66612799974973,
+            "mean": 22.843772385423716
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.144130000440782,
+            "p95": 433.3100399999239,
+            "min": 0.464517999716918,
+            "max": 732.900729999983,
+            "mean": 71.0049666599798
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 94,
+          "found_pct": 94.0,
+          "valid_count": 48,
+          "valid_pct": 48.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.4485980000245036,
+            "p95": 364.93102499980523,
+            "min": 0.40865299979486736,
+            "max": 1604.942327000117,
+            "mean": 73.07775998001034
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 0,
+          "ok_pct": 0.0,
+          "found_count": 0,
+          "found_pct": 0.0,
+          "valid_count": 0,
+          "valid_pct": 0.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "mean": null
+          }
+        }
+      }
+    },
+    {
+      "package_name": "starlette",
+      "github_url": "https://github.com/encode/starlette",
+      "ranking": 61,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.356035999990127,
+            "p95": 83.83731000003536,
+            "min": 1.1399479999454343,
+            "max": 1129.2070270001204,
+            "mean": 25.424834630002806
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.474207999966893,
+            "p95": 41.619420000188256,
+            "min": 0.4510419998950965,
+            "max": 165.24290400002428,
+            "mean": 8.694919780027703
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 88,
+          "valid_pct": 88.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6733000000167522,
+            "p95": 8.710580999832018,
+            "min": 0.4174599998805206,
+            "max": 37.740961000054085,
+            "mean": 1.9529417400008242
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4853959999309154,
+            "p95": 7.869639999626088,
+            "min": 0.30907699965609936,
+            "max": 571.3675160000093,
+            "mean": 8.327749859990945
+          }
+        }
+      }
+    },
+    {
+      "package_name": "streamlit",
+      "github_url": "https://github.com/streamlit/streamlit",
+      "ranking": 62,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 62,
+          "found_pct": 62.0,
+          "valid_count": 62,
+          "valid_pct": 62.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.7352189998928225,
+            "p95": 100.21147199995539,
+            "min": 1.0631149998516776,
+            "max": 1037.156413000048,
+            "mean": 34.5384040202001
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 72,
+          "found_pct": 72.0,
+          "valid_count": 41,
+          "valid_pct": 41.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.6047890000882035,
+            "p95": 16.27482300000338,
+            "min": 0.4963619999216462,
+            "max": 212.17971199985186,
+            "mean": 6.7459319200133905
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 78,
+          "valid_pct": 78.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.588766000168107,
+            "p95": 92.97782100020413,
+            "min": 0.3921889997400285,
+            "max": 291.02703599983215,
+            "mean": 15.84493621999627
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 89,
+          "found_pct": 89.0,
+          "valid_count": 64,
+          "valid_pct": 64.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.481059000321693,
+            "p95": 64.23470800018549,
+            "min": 0.29784599973936565,
+            "max": 958.9327039998352,
+            "mean": 21.94465401000798
+          }
+        }
+      }
+    },
+    {
+      "package_name": "sympy",
+      "github_url": "https://github.com/sympy/sympy",
+      "ranking": 63,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 95,
+          "ok_pct": 95.0,
+          "found_count": 92,
+          "found_pct": 92.0,
+          "valid_count": 92,
+          "valid_pct": 92.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 8.559905999845796,
+            "p95": 73.00540999995064,
+            "min": 1.0564330000306654,
+            "max": 1926.6047869996328,
+            "mean": 42.38355002107231
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.221707000193419,
+            "p95": 230.44219100029295,
+            "min": 0.4519539998000255,
+            "max": 307.7993090000746,
+            "mean": 30.645040809963575
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.8535880001072655,
+            "p95": 408.30415600021297,
+            "min": 0.46790399983365205,
+            "max": 947.4336709999989,
+            "mean": 70.50744473001942
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.074177999929816,
+            "p95": 77.24165499985247,
+            "min": 0.37981900004524505,
+            "max": 1166.571345000193,
+            "mean": 40.78421857000194
+          }
+        }
+      }
+    },
+    {
+      "package_name": "tensorflow",
+      "github_url": "https://github.com/tensorflow/tensorflow",
+      "ranking": 64,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 73,
+          "found_pct": 73.0,
+          "valid_count": 73,
+          "valid_pct": 73.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 7.489930000247114,
+            "p95": 135.47284399965065,
+            "min": 1.3182299999243696,
+            "max": 1466.8614170000183,
+            "mean": 58.98834820834509
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 78,
+          "found_pct": 78.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.8996929998138512,
+            "p95": 100.80684300010034,
+            "min": 0.4419259998940106,
+            "max": 347.15083899982346,
+            "mean": 19.281468360013605
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 76,
+          "valid_pct": 76.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.4341529999437626,
+            "p95": 185.54677000020092,
+            "min": 0.3869019997182477,
+            "max": 812.4216060000435,
+            "mean": 32.3565901299753
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 85,
+          "found_pct": 85.0,
+          "valid_count": 75,
+          "valid_pct": 75.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 1.537140999971598,
+            "p95": 65.87447799984147,
+            "min": 0.3480599998511025,
+            "max": 1521.1743460004072,
+            "mean": 33.66876549000608
+          }
+        }
+      }
+    },
+    {
+      "package_name": "transformers",
+      "github_url": "https://github.com/huggingface/transformers",
+      "ranking": 69,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 96,
+          "ok_pct": 96.0,
+          "found_count": 46,
+          "found_pct": 46.0,
+          "valid_count": 46,
+          "valid_pct": 46.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 5.131435999828682,
+            "p95": 54.65048800033401,
+            "min": 0.9865030001492414,
+            "max": 916.7515659996752,
+            "mean": 21.87002671873491
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 99,
+          "ok_pct": 99.0,
+          "found_count": 65,
+          "found_pct": 65.0,
+          "valid_count": 57,
+          "valid_pct": 57.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.4105010002131166,
+            "p95": 115.3002569999444,
+            "min": 0.4293709998819395,
+            "max": 153.52751000000353,
+            "mean": 14.206314363633798
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 84,
+          "found_pct": 84.0,
+          "valid_count": 70,
+          "valid_pct": 70.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.5645569999142026,
+            "p95": 523.1037919998016,
+            "min": 0.37552099956883467,
+            "max": 1986.626761000025,
+            "mean": 78.25798156998644
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 97,
+          "ok_pct": 97.0,
+          "found_count": 72,
+          "found_pct": 72.0,
+          "valid_count": 58,
+          "valid_pct": 58.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5651960000250256,
+            "p95": 39.136812000378995,
+            "min": 0.4215890003251843,
+            "max": 1825.3751860002012,
+            "mean": 23.510787525767753
+          }
+        }
+      }
+    },
+    {
+      "package_name": "trio",
+      "github_url": "https://github.com/python-trio/trio",
+      "ranking": 70,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 83,
+          "found_pct": 83.0,
+          "valid_count": 83,
+          "valid_pct": 83.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.109610000294197,
+            "p95": 62.303452000378456,
+            "min": 1.0495080000509915,
+            "max": 1658.9913149996391,
+            "mean": 32.20415946002504
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.7494820001265907,
+            "p95": 18.774759999814705,
+            "min": 0.42960300015693065,
+            "max": 254.02722799981348,
+            "mean": 7.262394690005749
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 94,
+          "valid_pct": 94.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6267520002438687,
+            "p95": 8.052966999912314,
+            "min": 0.3811229998973431,
+            "max": 60.25190999980623,
+            "mean": 2.63395839997429
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4950439997628564,
+            "p95": 8.57427099981578,
+            "min": 0.32920500007094233,
+            "max": 57.20786499978203,
+            "mean": 2.2102782399815624
+          }
+        }
+      }
+    },
+    {
+      "package_name": "typer",
+      "github_url": "https://github.com/tiangolo/typer",
+      "ranking": 71,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.4033060001092963,
+            "p95": 86.21978800010766,
+            "min": 1.1696350002239342,
+            "max": 1124.155895000058,
+            "mean": 24.795730520008874
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.4940180001067347,
+            "p95": 12.458973999855516,
+            "min": 0.47863300005701603,
+            "max": 151.93244900001446,
+            "mean": 4.808935859982739
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 97,
+          "valid_pct": 97.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.780717999987246,
+            "p95": 11.045930000364024,
+            "min": 0.39710099963485845,
+            "max": 19.13073000014265,
+            "mean": 1.9442644200444192
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.43131600023116334,
+            "p95": 28.66171799996664,
+            "min": 0.2996700000039709,
+            "max": 150.07931899981486,
+            "mean": 5.789827759995205
+          }
+        }
+      }
+    },
+    {
+      "package_name": "urllib3",
+      "github_url": "https://github.com/urllib3/urllib3",
+      "ranking": 73,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 90,
+          "found_pct": 90.0,
+          "valid_count": 90,
+          "valid_pct": 90.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 6.3575549997949565,
+            "p95": 99.36068399974829,
+            "min": 1.0259969999424357,
+            "max": 1573.479091000081,
+            "mean": 34.05338613998538
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.0263929998000094,
+            "p95": 33.86673900013193,
+            "min": 0.42254899972249405,
+            "max": 296.68713899991417,
+            "mean": 10.078965269999571
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.7010389999777544,
+            "p95": 13.369040000270616,
+            "min": 0.3879939999933413,
+            "max": 113.52307500010284,
+            "mean": 4.592257170006633
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.4953050001859083,
+            "p95": 24.632298000142328,
+            "min": 0.31480799998462317,
+            "max": 382.991691999905,
+            "mean": 6.805877480001072
+          }
+        }
+      }
+    },
+    {
+      "package_name": "uvicorn",
+      "github_url": "https://github.com/encode/uvicorn",
+      "ranking": 74,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 3.9755059997332864,
+            "p95": 112.76056499991682,
+            "min": 1.0100169997713238,
+            "max": 1498.2928730000822,
+            "mean": 32.04423351000969
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 91,
+          "found_pct": 91.0,
+          "valid_count": 89,
+          "valid_pct": 89.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.5328310002805665,
+            "p95": 21.48232600029587,
+            "min": 0.37128400026631425,
+            "max": 334.19108700036304,
+            "mean": 8.812892320015635
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 97,
+          "found_pct": 97.0,
+          "valid_count": 91,
+          "valid_pct": 91.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6832960002611799,
+            "p95": 9.911440999985643,
+            "min": 0.40178100016419194,
+            "max": 34.57150599979286,
+            "mean": 2.368006939996121
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.5133390000082727,
+            "p95": 8.280618000299,
+            "min": 0.2934879998974793,
+            "max": 412.0382259998223,
+            "mean": 5.922633939999287
+          }
+        }
+      }
+    },
+    {
+      "package_name": "wheel",
+      "github_url": "https://github.com/pypa/wheel",
+      "ranking": 75,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 93,
+          "found_pct": 93.0,
+          "valid_count": 93,
+          "valid_pct": 93.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.885809999952471,
+            "p95": 82.9445700001088,
+            "min": 0.9587810000084573,
+            "max": 1472.2370559998126,
+            "mean": 32.499670219986
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 95,
+          "found_pct": 95.0,
+          "valid_count": 95,
+          "valid_pct": 95.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.7243690001341747,
+            "p95": 20.863421000285598,
+            "min": 0.4170389997852908,
+            "max": 272.30827999983376,
+            "mean": 7.514461189998656
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.6933050003681274,
+            "p95": 30.421932000081142,
+            "min": 0.3517879999890283,
+            "max": 47.844610000083776,
+            "mean": 4.891139160004059
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 100,
+          "found_pct": 100.0,
+          "valid_count": 100,
+          "valid_pct": 100.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.47382499997183913,
+            "p95": 22.6248270000724,
+            "min": 0.30743400020583067,
+            "max": 84.70322000039232,
+            "mean": 3.6412936800161333
+          }
+        }
+      }
+    },
+    {
+      "package_name": "yt-dlp",
+      "github_url": "https://github.com/yt-dlp/yt-dlp",
+      "ranking": 78,
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 98,
+          "ok_pct": 98.0,
+          "found_count": 98,
+          "found_pct": 98.0,
+          "valid_count": 98,
+          "valid_pct": 98.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 4.02392099977078,
+            "p95": 35.43548500010729,
+            "min": 1.9360190003681055,
+            "max": 112.48313800024334,
+            "mean": 8.992193836738064
+          }
+        },
+        "pyrefly": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 99,
+          "found_pct": 99.0,
+          "valid_count": 99,
+          "valid_pct": 99.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 2.0594459997482772,
+            "p95": 22.304351999991923,
+            "min": 0.47788300025786157,
+            "max": 290.2813140003673,
+            "mean": 8.52681549000863
+          }
+        },
+        "ty": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 100,
+          "ok_pct": 100.0,
+          "found_count": 96,
+          "found_pct": 96.0,
+          "valid_count": 96,
+          "valid_pct": 96.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": 0.795113000094716,
+            "p95": 18.78324600011183,
+            "min": 0.47336400029962533,
+            "max": 278.7793820002662,
+            "mean": 6.423923470033515
+          }
+        },
+        "zuban": {
+          "ok": true,
+          "runs": 100,
+          "ok_count": 0,
+          "ok_pct": 0.0,
+          "found_count": 0,
+          "found_pct": 0.0,
+          "valid_count": 0,
+          "valid_pct": 0.0,
+          "errors": 0,
+          "latency_ms": {
+            "p50": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "mean": null
+          }
+        }
+      }
+    }
+  ],
+  "os": "ubuntu"
+}
