@@ -31,8 +31,19 @@ class TestProcessTiming:
         assert 1 <= result["execution_time_s"] < 5
 
     def test_waits_without_timeout(self, tmp_path: Path) -> None:
+        import os
         import subprocess
         from unittest.mock import patch
+
+        if sys.platform == "linux":
+            with patch("os.wait4", wraps=os.wait4) as wait4:
+                run_process_with_timeout(
+                    [sys.executable, "-S", "-c", "pass"],
+                    cwd=tmp_path, timeout=30, capture_output=False,
+                )
+            wait4.assert_called_once()
+            assert wait4.call_args.args[1] == 0  # Blocking wait.
+            return
 
         real_popen = subprocess.Popen
         wait_calls: list[object] = []
