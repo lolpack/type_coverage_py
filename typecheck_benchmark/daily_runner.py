@@ -670,7 +670,7 @@ def run_checker(
     """Run a single type checker and return timing metrics only.
 
     When *capture_output* is False, output is discarded (no pipe overhead)
-    and error detection is skipped — caller must have done a capture pass first.
+    and output-based error detection is skipped. Exit codes are always checked.
 
     When *venv* is given, every checker is pointed at that environment
     explicitly (and ``VIRTUAL_ENV`` is set), so third-party imports resolve
@@ -756,15 +756,7 @@ def run_checker(
             "error_message": msg,
         }
 
-    if not capture_output:
-        return {
-            "ok": True,
-            "execution_time_s": result["execution_time_s"],
-            "peak_memory_mb": result.get("peak_memory_mb", 0.0),
-        }
-
-    # Detect fatal errors: mypy exits with code 2 for fatal errors (code 1 = type errors found).
-    # Also check for "errors prevented further checking" which means mypy bailed out early.
+    # Also detect mypy errors that prevent it from completing the check.
     stderr = result.get("stderr", "")
     stdout = result.get("stdout", "")
     combined_output = stderr + stdout
@@ -777,8 +769,10 @@ def run_checker(
             "error_message": "Fatal: errors prevented further checking",
         }
 
-    # mypy return code 2 = fatal error (not type errors)
-    if checker == "mypy" and result.get("returncode", 0) == 2:
+    # All supported checkers use 0 for success and 1 for diagnostics.
+    # Other codes indicate an incomplete check, a crash, or a killed process.
+    returncode = result["returncode"]
+    if returncode not in (0, 1):
         # Extract first error line from output for context
         first_error = ""
         for line in combined_output.splitlines():
@@ -789,7 +783,8 @@ def run_checker(
             "ok": False,
             "execution_time_s": result["execution_time_s"],
             "peak_memory_mb": result.get("peak_memory_mb", 0.0),
-            "error_message": first_error or "Fatal error (exit code 2)",
+            "error_message": f"Fatal error (exit code {returncode})"
+            + (f": {first_error}" if first_error else ""),
         }
 
     return {
