@@ -21,6 +21,7 @@ const CHECKER_NAMES = {
 };
 let benchmarkData = null;
 let currentOs = 'ubuntu';
+let packageNotes = {};
 // ---------------------------------------------------------------------------
 // URL helpers
 // ---------------------------------------------------------------------------
@@ -80,6 +81,30 @@ async function loadBenchmarkData(date, os) {
     benchmarkData = getDemoData();
     return benchmarkData;
 }
+// Notes are optional: if the file is missing or malformed the table renders without them.
+async function loadPackageNotes() {
+    try {
+        const response = await fetch('./package_notes.json');
+        if (!response.ok)
+            return;
+        const raw = await response.json();
+        if (!raw || typeof raw !== 'object')
+            return;
+        const notes = {};
+        for (const [pkg, list] of Object.entries(raw)) {
+            if (!Array.isArray(list))
+                continue;
+            const valid = list.filter((n) => typeof n?.text === 'string' && Array.isArray(n.checkers)
+                && (n.link === undefined || (typeof n.link === 'string' && n.link.startsWith('https://'))));
+            if (valid.length)
+                notes[pkg] = valid;
+        }
+        packageNotes = notes;
+    }
+    catch (e) {
+        console.warn('Failed to load package notes:', e);
+    }
+}
 function getDemoData() {
     return {
         timestamp: new Date().toISOString(),
@@ -115,7 +140,7 @@ async function init() {
         if (osSelect)
             osSelect.value = currentOs;
         const urlDate = getDateFromUrl();
-        await loadBenchmarkData(urlDate, currentOs);
+        await Promise.all([loadBenchmarkData(urlDate, currentOs), loadPackageNotes()]);
         renderAll();
         setupFilters();
         setupDateSelector();
@@ -400,6 +425,32 @@ function okTimes(r, checkers) {
     return checkers.map(c => r.metrics?.[c]).filter(m => m?.ok && m.execution_time_s != null)
         .map(m => m.execution_time_s);
 }
+function noteId(pkg) {
+    return `note-${pkg.replace(/[^A-Za-z0-9_-]/g, '-')}`;
+}
+function checkerList(checkers) {
+    const names = checkers.map(c => CHECKER_NAMES[c] || c);
+    return names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join('');
+}
+// One native popover per package holds all of its notes; the button after the
+// package name and the markers in affected cells all open it.
+function notePopover(pkg, notes) {
+    const body = notes.map(n => `<p>${escapeHtml(n.text)}</p>
+        <p class="note-meta">Affects ${escapeHtml(checkerList(n.checkers))}.${n.link
+        ? ` <a href="${escapeHtml(n.link)}" target="_blank" rel="noopener">Source</a>` : ''}</p>`).join('');
+    return `<button type="button" class="note-button" popovertarget="${noteId(pkg)}"
+            aria-label="Note on how checkers differ on ${escapeHtml(pkg)}">&#9432;</button>
+        <div popover id="${noteId(pkg)}" class="note-popover">
+            <h4>${escapeHtml(pkg)}</h4>${body}
+            <button type="button" class="note-close" popovertarget="${noteId(pkg)}" popovertargetaction="hide">Close</button>
+        </div>`;
+}
+function noteMarker(pkg, checker) {
+    if (!packageNotes[pkg]?.some(n => n.checkers.includes(checker)))
+        return '';
+    return `<button type="button" class="note-marker" popovertarget="${noteId(pkg)}"
+        aria-label="Note on how ${escapeHtml(CHECKER_NAMES[checker] || checker)} differs on ${escapeHtml(pkg)}">&#9432;</button>`;
+}
 function populateResultsTable(filterText, sortBy) {
     if (!benchmarkData)
         return;
@@ -430,15 +481,17 @@ function populateResultsTable(filterText, sortBy) {
             const m = r.metrics?.[c];
             if (!m?.ok || m.execution_time_s == null) {
                 const reason = m?.error_message || r.error || 'Failed';
-                return `<td class="fail-text" title="${escapeHtml(reason)}">&#9888; ${shortReason(reason)}</td>`;
+                return `<td class="fail-text" title="${escapeHtml(reason)}">&#9888; ${shortReason(reason)}${noteMarker(r.package_name, c)}</td>`;
             }
             const t = m.execution_time_s;
             const mem = m.peak_memory_mb ? `, ${Math.round(m.peak_memory_mb)} MB` : '';
+            const marker = noteMarker(r.package_name, c);
             if (withinNoise(t, best))
-                return `<td class="best" title="${formatTime(t)}${mem}">${formatTime(t)}</td>`;
-            return `<td title="${formatTime(t)}${mem}">${formatTime(t)}<span class="times-slower">${(t / best).toFixed(1)}&times;</span></td>`;
+                return `<td class="best" title="${formatTime(t)}${mem}">${formatTime(t)}${marker}</td>`;
+            return `<td title="${formatTime(t)}${mem}">${formatTime(t)}${marker}<span class="times-slower">${(t / best).toFixed(1)}&times;</span></td>`;
         }).join('');
-        return `<tr><td>${escapeHtml(r.package_name)}</td>${cells}</tr>`;
+        const notes = packageNotes[r.package_name];
+        return `<tr><td>${escapeHtml(r.package_name)}${notes ? notePopover(r.package_name, notes) : ''}</td>${cells}</tr>`;
     }).join('') || `<tr><td colspan="${checkers.length + 1}" class="loading-row">No packages match.</td></tr>`;
 }
 function setupFilters() {

@@ -154,6 +154,7 @@ jobs:
 
           # Copy site files
           cp typecheck_benchmark/index.html /tmp/deploy/typecheck_benchmark/
+          cp typecheck_benchmark/package_notes.json /tmp/deploy/typecheck_benchmark/
           mkdir -p /tmp/deploy/typecheck_benchmark/scripts
           cp typecheck_benchmark/scripts/typecheck-benchmark.js /tmp/deploy/typecheck_benchmark/scripts/
           mkdir -p /tmp/deploy/typecheck_benchmark/styles
@@ -173,6 +174,7 @@ jobs:
           git add \
             typecheck_benchmark/results/ \
             typecheck_benchmark/index.html \
+            typecheck_benchmark/package_notes.json \
             typecheck_benchmark/scripts/typecheck-benchmark.js \
             typecheck_benchmark/styles/typecheck-benchmark.css \
             assets/styles/tokens.css assets/styles/site.css

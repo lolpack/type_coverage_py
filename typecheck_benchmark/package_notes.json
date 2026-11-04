@@ -1,0 +1,9 @@
+{
+  "pydantic": [
+    {
+      "checkers": ["mypy", "zuban"],
+      "text": "pydantic-core defines CoreSchema, used throughout pydantic, as a large union of TypedDicts, but only when MYPY is false. Mypy and Zuban treat MYPY as true and see Mapping[str, Any] instead, a much simpler type to check. Pyright, Pyrefly and ty check the full union, so their times on this package include work Mypy and Zuban skip.",
+      "link": "https://github.com/pydantic/pydantic/blob/b09325b0a41d9a957df9a530e5c6a7836799df1e/pydantic-core/python/pydantic_core/core_schema.py#L4474-L4540"
+    }
+  ]
+}

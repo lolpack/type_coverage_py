@@ -77,6 +77,7 @@ jobs:
 
           mkdir -p /tmp/deploy/typecheck_benchmark
           cp typecheck_benchmark/index.html /tmp/deploy/typecheck_benchmark/
+          cp typecheck_benchmark/package_notes.json /tmp/deploy/typecheck_benchmark/
           mkdir -p /tmp/deploy/typecheck_benchmark/scripts
           cp typecheck_benchmark/scripts/typecheck-benchmark.js /tmp/deploy/typecheck_benchmark/scripts/
           mkdir -p /tmp/deploy/typecheck_benchmark/styles
@@ -94,7 +95,7 @@ jobs:
             historical_data/scripts/ prioritized/historical_data/scripts/ \
             historical_data/graph.css prioritized/historical_data/graph.css \
             lsp/benchmark/index.html lsp/benchmark/scripts/lsp-benchmark.js lsp/benchmark/styles/lsp-benchmark.css \
-            typecheck_benchmark/index.html typecheck_benchmark/scripts/typecheck-benchmark.js typecheck_benchmark/styles/typecheck-benchmark.css
+            typecheck_benchmark/index.html typecheck_benchmark/package_notes.json typecheck_benchmark/scripts/typecheck-benchmark.js typecheck_benchmark/styles/typecheck-benchmark.css
           git diff --staged --quiet && echo "No changes to deploy" && exit 0
           git commit -m "Deploy site update from main [skip ci]"
           for i in 1 2 3 4 5; do
