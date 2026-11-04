@@ -578,7 +578,7 @@ def install_deps(
 # To ensure consistent benchmarking across packages, we write minimal config files
 # that embed the check_paths (from install_envs.json) directly into each checker's
 # native config format, then pass the config via CLI flag to override package-level
-# config.  This means paths are NOT passed as CLI arguments — they live in the config:
+# config. Paths live in the config:
 #
 #   pyright  -- pyrightconfig.json with "include": [paths] (written in-place)
 #   mypy     -- [mypy] section with files = path1, path2 via --config-file
@@ -651,11 +651,12 @@ def _write_dummy_zuban_config(
     package_path: Path, check_paths: list[str] | None = None,
 ) -> Path:
     """Write minimal mypy-style config for zuban benchmarking."""
-    config_path = package_path / "mypy.benchmark.ini"
+    config_path = package_path / "zuban.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
         f.write("[mypy]\n")
         if check_paths:
             f.write(f"files = {', '.join(check_paths)}\n")
+        f.write("check_untyped_defs = True\n")
     return config_path
 
 
@@ -722,15 +723,12 @@ def run_checker(
             cmd.append(str(package_path))
         cwd = package_path
     elif checker == "zuban":
-        # zuban ignores files= from --config-file, so we must always pass
-        # check paths as explicit positional arguments.
-        cmd = ["zuban", "check"]
+        config_path = _write_dummy_zuban_config(package_path, rel_paths)
+        cmd = ["zuban", "check", "--config-file", str(config_path)]
         if python:
             cmd.extend(["--python-executable", python])
-        if rel_paths:
-            cmd.extend(rel_paths)
-        else:
-            cmd.append(".")
+        if not rel_paths:
+            cmd.append(str(package_path))
         cwd = package_path
     else:
         return {
