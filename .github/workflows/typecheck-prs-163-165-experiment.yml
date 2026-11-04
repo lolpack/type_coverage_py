@@ -1,0 +1,103 @@
+name: Typecheck Benchmark PRs 163-165 Experiment
+
+# Measures PRs #163 (exit codes), #164 (zuban config) and #165 (wait4 peak
+# RSS) together against main's runner, paired on the same runner and venv.
+#
+# Experiment only: uploads artifacts and a job summary, never publishes.
+
+on:
+  push:
+    branches: [benchmark-prs-163-165-experiment]
+    paths:
+      - '.github/workflows/typecheck-prs-163-165-experiment.yml'
+      - 'typecheck_benchmark/**'
+
+jobs:
+  experiment:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python Dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Node.js (for Pyright)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Same installation as typecheck-benchmark.yml.
+      - name: Install Type Checkers
+        shell: bash
+        run: |
+          npm install -g pyright
+          pip install --upgrade pyrefly ty mypy zuban
+          pyright --version; pyrefly --version; ty --version; zuban --version
+          python -m mypy --version
+
+      - name: Run experiment
+        shell: bash
+        run: |
+          python -m typecheck_benchmark.experiments.compare_prs \
+            --shard "${{ matrix.shard }}" --shards 4 \
+            --pairs 2 \
+            --checkers pyright pyrefly ty mypy zuban \
+            --output "experiment-results/prs-${{ matrix.shard }}.json"
+
+      - name: Upload shard results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prs-163-165-${{ matrix.shard }}
+          path: experiment-results/
+          retention-days: 30
+
+  summarize:
+    needs: experiment
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download shard results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: prs-163-165-*
+          path: experiment-results
+          merge-multiple: true
+
+      - name: Summarize
+        shell: bash
+        run: |
+          python -m typecheck_benchmark.experiments.summarize_prs experiment-results/*.json > report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: prs-163-165-report
+          path: |
+            report.md
+            experiment-results/
+          retention-days: 30
