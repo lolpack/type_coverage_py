@@ -124,39 +124,34 @@ class ProcessResult(TypedDict, total=False):
 # ---------------------------------------------------------------------------
 
 
-def _monitor_memory_linux(
-    pid: int,
-    peak_kb: list[int],
-    stop_event: threading.Event,
-    memory_limit_kb: int = 0,
-    killed: list[bool] | None = None,
-) -> None:
-    """Poll /proc/{pid}/status for VmHWM (peak RSS) on Linux."""
-    status_path = f"/proc/{pid}/status"
-    while not stop_event.is_set():
-        try:
-            vm_hwm = 0
-            vm_rss = 0
-            with open(status_path) as f:
-                for line in f:
-                    if line.startswith("VmHWM:"):
-                        vm_hwm = int(line.split()[1])
-                    elif line.startswith("VmRSS:"):
-                        vm_rss = int(line.split()[1])
-            if vm_hwm > peak_kb[0]:
-                peak_kb[0] = vm_hwm
-            if memory_limit_kb > 0 and vm_rss > memory_limit_kb:
-                if killed is not None:
+if sys.platform == "linux":
+
+    def _enforce_memory_limit_linux(
+        pid: int,
+        stop_event: threading.Event,
+        memory_limit_kb: int,
+        killed: list[bool],
+    ) -> None:
+        """Poll /proc/{pid}/status for VmRSS (current RSS) on Linux.
+
+        Kill the process group if RSS exceeds the limit.
+        """
+        status_path = f"/proc/{pid}/status"
+        while not stop_event.is_set():
+            try:
+                vm_rss = 0
+                with open(status_path) as f:
+                    for line in f:
+                        if line.startswith("VmRSS:"):
+                            vm_rss = int(line.split()[1])
+                            break
+                if vm_rss > memory_limit_kb:
+                    os.killpg(os.getpgid(pid), signal.SIGKILL)
                     killed[0] = True
-                try:
-                    if sys.platform == "linux":
-                        os.killpg(os.getpgid(pid), signal.SIGKILL)
-                except (ProcessLookupError, OSError):
-                    pass
+                    break
+            except OSError:
                 break
-        except (FileNotFoundError, ProcessLookupError, OSError):
-            break
-        stop_event.wait(0.01)
+            stop_event.wait(0.01)
 
 
 def _parse_macos_time_stderr(stderr: str) -> tuple[float, str]:
@@ -227,15 +222,13 @@ def run_process_with_timeout(
     process = subprocess.Popen(actual_cmd, **kwargs)
 
     # Memory monitoring thread (Linux only — macOS uses /usr/bin/time -l)
-    peak_kb: list[int] = [0]
     killed: list[bool] = [False]
     stop_event = threading.Event()
     monitor_thread: threading.Thread | None = None
-    if sys.platform == "linux":
-        memory_limit_kb = memory_limit_mb * 1024 if memory_limit_mb > 0 else 0
+    if sys.platform == "linux" and memory_limit_mb > 0:
         monitor_thread = threading.Thread(
-            target=_monitor_memory_linux,
-            args=(process.pid, peak_kb, stop_event, memory_limit_kb, killed),
+            target=_enforce_memory_limit_linux,
+            args=(process.pid, stop_event, memory_limit_mb * 1024, killed),
             daemon=True,
         )
         monitor_thread.start()
@@ -257,7 +250,7 @@ def run_process_with_timeout(
     reader_out = _make_reader(process.stdout, stdout_chunks) if capture_output else None
     reader_err = _make_reader(process.stderr, stderr_chunks) if need_stderr_pipe else None
 
-    # Block in wait() with no timeout: it returns as soon as the child is
+    # Block with no timeout: the wait returns as soon as the child is
     # reaped, so the measured time is exact.  (Popen.wait(timeout=...) polls
     # with sleeps of up to 50ms, which quantizes the measurement.)  The
     # timeout is enforced from a timer thread instead.  An OOM kill from the
@@ -277,9 +270,19 @@ def run_process_with_timeout(
     timer = threading.Timer(timeout, _on_timeout)
     timer.daemon = True
     timer.start()
-    process.wait()
+    peak_kb = 0
+    if sys.platform == "linux":
+        _, status, usage = os.wait4(process.pid, 0)
+        process.returncode = os.waitstatus_to_exitcode(status)
+        peak_kb = usage.ru_maxrss
+    else:
+        process.wait()
     execution_time = time.perf_counter() - start_time
     timer.cancel()
+
+    stop_event.set()
+    if monitor_thread is not None:
+        monitor_thread.join(timeout=2)
 
     oom_killed = killed[0]
     timed_out = timer_fired.is_set() and not oom_killed
@@ -292,15 +295,6 @@ def run_process_with_timeout(
             except OSError:
                 pass
 
-    try:
-        process.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        pass
-
-    stop_event.set()
-    if monitor_thread is not None:
-        monitor_thread.join(timeout=2)
-
     if reader_out is not None:
         reader_out.join(timeout=5)
     if reader_err is not None:
@@ -309,7 +303,7 @@ def run_process_with_timeout(
     # Compute peak memory
     raw_stderr = stderr_chunks[0] if stderr_chunks else ""
     if sys.platform == "linux":
-        peak_memory_mb = round(peak_kb[0] / 1024, 1)
+        peak_memory_mb = round(peak_kb / 1024, 1)
         clean_stderr = raw_stderr
     elif use_macos_time:
         peak_memory_mb, clean_stderr = _parse_macos_time_stderr(raw_stderr)
