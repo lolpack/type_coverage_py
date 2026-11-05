@@ -17,6 +17,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from typecheck_benchmark.daily_runner import (
+    DEFAULT_TYPE_CHECKERS,
     _benchmark_package,
     create_package_venv,
     install_deps,
@@ -36,6 +37,27 @@ def _ok_result(**_: object) -> dict[str, object]:
         "peak_memory_mb": 10.0,
         "oom_killed": False,
     }
+
+
+@pytest.mark.parametrize("checker", DEFAULT_TYPE_CHECKERS)
+@pytest.mark.parametrize("capture_output", [True, False])
+@pytest.mark.parametrize(
+    ("returncode", "expected_ok"),
+    [(0, True), (1, True), (2, False), (101, False), (-9, False)],
+)
+def test_checker_exit_code(
+    checker: str, capture_output: bool, returncode: int, expected_ok: bool, tmp_path: Path
+) -> None:
+    process_result = _ok_result()
+    process_result["returncode"] = returncode
+    with patch(
+        "typecheck_benchmark.daily_runner.run_process_with_timeout", return_value=process_result
+    ):
+        result = run_checker(checker, tmp_path, None, timeout=60, capture_output=capture_output)
+
+    assert result["ok"] is expected_ok
+    if not expected_ok:
+        assert f"exit code {returncode}" in (result.get("error_message") or "")
 
 
 # ---------------------------------------------------------------------------
