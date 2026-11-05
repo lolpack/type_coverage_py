@@ -141,11 +141,13 @@ class TestWriteDummyZubanConfig:
         content = path.read_text()
         assert "[mypy]\n" in content
         assert "files" not in content
+        assert "check_untyped_defs = True\n" in content
 
     def test_check_paths_in_files(self, tmp_path: Path) -> None:
         path = _write_dummy_zuban_config(tmp_path, ["src", "lib"])
         content = path.read_text()
         assert "files = src, lib\n" in content
+        assert "check_untyped_defs = True\n" in content
 
     def test_returns_benchmark_ini_path(self, tmp_path: Path) -> None:
         path = _write_dummy_zuban_config(tmp_path)
