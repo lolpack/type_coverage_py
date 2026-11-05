@@ -58,6 +58,16 @@ jobs:
         with:
           node-version: '20'
 
+      # The runner measures peak memory on Linux with GNU time (/usr/bin/time).
+      # The runner image ships it today; installing it keeps a future image
+      # without it from making every checker fail to launch.
+      - name: Install GNU time
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          sudo apt-get install -y time
+          /usr/bin/time --version
+
       - name: Install Type Checkers
         shell: bash
         run: |
