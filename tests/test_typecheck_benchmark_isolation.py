@@ -117,10 +117,11 @@ class TestRunCheckerVenv:
         idx = cmd.index("--python")
         assert cmd[idx + 1] == str(venv)
 
-    def test_zuban_flag_precedes_paths(self, tmp_path: Path) -> None:
+    def test_zuban_config_and_interpreter_flags(self, tmp_path: Path) -> None:
         venv = tmp_path / "venv"
         cmd, _ = self._run("zuban", tmp_path, venv)
-        assert cmd == ["zuban", "check", "--python-executable", str(venv_python(venv)), "."]
+        assert cmd == ["zuban", "check", "--config-file", str(tmp_path / "zuban.benchmark.ini"),
+                       "--python-executable", str(venv_python(venv)), str(tmp_path)]
 
     @pytest.mark.parametrize("checker", ["pyright", "pyrefly", "ty", "mypy", "zuban"])
     def test_virtual_env_set(self, checker: str, tmp_path: Path) -> None:
