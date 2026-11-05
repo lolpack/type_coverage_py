@@ -143,6 +143,7 @@ async function init() {
         await Promise.all([loadBenchmarkData(urlDate, currentOs), loadPackageNotes()]);
         renderAll();
         setupFilters();
+        setupNotes();
         setupDateSelector();
     }
     catch (error) {
@@ -433,23 +434,96 @@ function checkerList(checkers) {
     return names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join('');
 }
 // One native popover per package holds all of its notes; the button after the
-// package name and the markers in affected cells all open it.
+// package name and the markers in affected cells all show it (see setupNotes).
 function notePopover(pkg, notes) {
     const body = notes.map(n => `<p>${escapeHtml(n.text)}</p>
         <p class="note-meta">Affects ${escapeHtml(checkerList(n.checkers))}.${n.link
         ? ` <a href="${escapeHtml(n.link)}" target="_blank" rel="noopener">Source</a>` : ''}</p>`).join('');
-    return `<button type="button" class="note-button" popovertarget="${noteId(pkg)}"
-            aria-label="Note on how checkers differ on ${escapeHtml(pkg)}">&#9432;</button>
+    return `<button type="button" class="note-button" data-note="${noteId(pkg)}" aria-controls="${noteId(pkg)}"
+            aria-expanded="false" aria-label="Note on how checkers differ on ${escapeHtml(pkg)}">&#9432;</button>
         <div popover id="${noteId(pkg)}" class="note-popover">
             <h4>${escapeHtml(pkg)}</h4>${body}
-            <button type="button" class="note-close" popovertarget="${noteId(pkg)}" popovertargetaction="hide">Close</button>
         </div>`;
 }
 function noteMarker(pkg, checker) {
     if (!packageNotes[pkg]?.some(n => n.checkers.includes(checker)))
         return '';
-    return `<button type="button" class="note-marker" popovertarget="${noteId(pkg)}"
-        aria-label="Note on how ${escapeHtml(CHECKER_NAMES[checker] || checker)} differs on ${escapeHtml(pkg)}">&#9432;</button>`;
+    return `<button type="button" class="note-marker" data-note="${noteId(pkg)}" aria-controls="${noteId(pkg)}"
+        aria-expanded="false" aria-label="Note on how ${escapeHtml(CHECKER_NAMES[checker] || checker)} differs on ${escapeHtml(pkg)}">&#9432;</button>`;
+}
+const NOTE_TRIGGER = '.note-button, .note-marker';
+// Long enough to move the pointer from the trigger onto the note (to reach its link).
+const NOTE_HIDE_DELAY_MS = 200;
+let noteHideTimer;
+let openNoteTrigger = null;
+function showNote(trigger) {
+    window.clearTimeout(noteHideTimer);
+    const pop = document.getElementById(trigger.dataset.note || '');
+    if (!pop)
+        return;
+    if (openNoteTrigger && openNoteTrigger !== trigger)
+        openNoteTrigger.setAttribute('aria-expanded', 'false');
+    if (!pop.matches(':popover-open'))
+        pop.showPopover();
+    openNoteTrigger = trigger;
+    trigger.setAttribute('aria-expanded', 'true');
+    // Place below the trigger, or above it if there is no room, kept inside the viewport.
+    const t = trigger.getBoundingClientRect();
+    const p = pop.getBoundingClientRect();
+    const top = t.bottom + 6 + p.height <= window.innerHeight ? t.bottom + 6 : Math.max(8, t.top - 6 - p.height);
+    const left = Math.min(Math.max(8, t.left), window.innerWidth - p.width - 8);
+    pop.style.top = `${top}px`;
+    pop.style.left = `${left}px`;
+}
+function hideNote() {
+    window.clearTimeout(noteHideTimer);
+    document.querySelectorAll('.note-popover:popover-open').forEach(p => p.hidePopover());
+}
+function scheduleHideNote() {
+    window.clearTimeout(noteHideTimer);
+    noteHideTimer = window.setTimeout(hideNote, NOTE_HIDE_DELAY_MS);
+}
+// Within a trigger or an open note, so moving between them keeps the note up.
+function inNote(el) {
+    return el instanceof Element && !!el.closest(`${NOTE_TRIGGER}, .note-popover`);
+}
+// Delegated from the document because the table re-renders on every filter change.
+function setupNotes() {
+    document.addEventListener('mouseover', e => {
+        const trigger = e.target.closest(NOTE_TRIGGER);
+        if (trigger)
+            showNote(trigger);
+        else if (inNote(e.target))
+            window.clearTimeout(noteHideTimer);
+    });
+    document.addEventListener('mouseout', e => {
+        if (inNote(e.target) && !inNote(e.relatedTarget))
+            scheduleHideNote();
+    });
+    document.addEventListener('focusin', e => {
+        const trigger = e.target.closest(NOTE_TRIGGER);
+        if (trigger)
+            showNote(trigger);
+    });
+    document.addEventListener('focusout', e => {
+        if (inNote(e.target) && !inNote(e.relatedTarget))
+            scheduleHideNote();
+    });
+    // Touch has no hover: a tap shows the note, and tapping elsewhere dismisses it.
+    document.addEventListener('click', e => {
+        const trigger = e.target.closest(NOTE_TRIGGER);
+        if (trigger)
+            showNote(trigger);
+    });
+    document.addEventListener('toggle', e => {
+        // Toggle events arrive asynchronously, so only reset if the note that closed is still the current one.
+        if (e.newState === 'closed' && openNoteTrigger
+            && e.target.id === openNoteTrigger.dataset.note) {
+            openNoteTrigger.setAttribute('aria-expanded', 'false');
+            openNoteTrigger = null;
+        }
+    }, true);
+    window.addEventListener('scroll', hideNote, { passive: true });
 }
 function populateResultsTable(filterText, sortBy) {
     if (!benchmarkData)
