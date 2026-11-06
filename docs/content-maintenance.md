@@ -52,24 +52,19 @@ later edit cannot drop it silently.
 - **`<details>` for depth.** If an entry needs more than two sentences, the extra
   goes in a collapsible block rather than expanding the card.
 
-## Publishing the 2026 survey
-
-The 2026 card is deliberately inert: no results, no report URL, no release date,
-and no disabled button. `tests/test_homepage.py::TestSurveys` fails if any of
-those appear.
-
-When the real report is out:
+## Adding a survey year
 
 1. Verify the official report URL in a browser.
-2. Replace the `card--forthcoming` article with one shaped like the 2025 card.
-3. Add the publication date, the report link, and a one- or two-sentence summary.
-4. Add a statistic **only** with its population and its caveat, in a
-   `<span class="stat__caveat">` next to the number, not behind a hover.
-5. Add a matching timeline entry.
-6. Update `tests/test_homepage.py`: move the year out of the forthcoming
-   assertions and add the new report URL.
+2. Add a card shaped like the existing survey cards, with the publication date,
+   the report link, and a one- or two-sentence summary.
+3. Add a statistic **only** with its population and its caveat, in a
+   `<span class="stat__caveat">` next to the number, not behind a hover. If a
+   figure comes from a single question, check its denominator; not every
+   question was answered by every respondent.
+4. Add a matching timeline entry, and update the survey count in the intro.
+5. Update `tests/test_homepage.py`: add the report URL and the stat count.
 
-Do not turn three self-selected annual samples into a longitudinal population
+Do not turn the self-selected annual samples into a longitudinal population
 study. They are separate samples of people who chose to answer a survey about
 typing, and the page says so.
 

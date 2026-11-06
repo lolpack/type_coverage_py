@@ -141,7 +141,7 @@
             <h2>Every Package</h2>
             <p class="chart-description">
                 Time per checker. <span class="best-marker" aria-hidden="true">&#9650;</span> marks the
-                fastest, along with any checker within run-to-run noise of it (10&nbsp;ms or 5%).
+                fastest, along with any checker within a fixed tolerance of it (10&nbsp;ms or 5%).
                 The small number is how many times slower than the fastest.
                 &#9432; marks a note on how checkers differ on that package.
             </p>
@@ -191,9 +191,11 @@
                         Timeouts and OOM kills are recorded as failures.
                     </p>
                     <p class="method-note">
-                        <strong>Memory:</strong> On Linux, peak memory is tracked via
-                        <code>/proc/{pid}/status</code> (VmHWM). On macOS,
-                        <code>getrusage</code> is used.
+                        <strong>Memory:</strong> On Linux, peak RSS is reported by GNU
+                        <code>/usr/bin/time</code> using <code>%M</code>. On macOS, it comes
+                        from <code>/usr/bin/time -l</code>. Separately, on Linux the runner
+                        polls <code>/proc/{pid}/status</code> (VmRSS) to enforce the memory
+                        limit; that polling is not the reported peak.
                     </p>
                 </div>
                 <div class="method-card">
@@ -230,7 +232,7 @@
                         <li><strong>Mypy:</strong> <code>[mypy]</code> with <code>files = paths</code> and <code>check_untyped_defs = True</code> via <code>--config-file</code></li>
                         <li><strong>ty:</strong> <code>[src] include = [paths]</code> in <code>ty.benchmark.toml</code> via <code>--config-file</code></li>
                         <li><strong>Pyrefly:</strong> <code>project_includes = [paths]</code> in <code>pyrefly.benchmark.toml</code> via <code>--config</code></li>
-                        <li><strong>Zuban:</strong> <code>[mypy]</code> with <code>files = paths</code> via <code>--config-file</code></li>
+                        <li><strong>Zuban:</strong> <code>[mypy]</code> with <code>files = paths</code> and <code>check_untyped_defs = True</code> via <code>--config-file</code></li>
                     </ul>
                     <p class="method-note">
                         This means every checker sees exactly the same target paths and
@@ -240,8 +242,7 @@
                         <strong>Mypy note:</strong> By default, mypy skips the bodies of
                         functions that lack type annotations. The other four checkers all
                         analyze unannotated code. We enable <code>check_untyped_defs = True</code>
-                        so that mypy checks the same amount of code as the other tools,
-                        making the comparison fair.
+                        so that mypy checks the same amount of code as the other tools.
                     </p>
                 </div>
                 <div class="method-card">
@@ -312,7 +313,7 @@
                     <div class="legend-info">
                         <strong>Zuban</strong>
                         <span class="legend-version" id="version-zuban"></span>
-                        <span>Type checker for Python by the creator of Jedi LSP</span>
+                        <span>Type checker for Python by the creator of Jedi</span>
                     </div>
                 </div>
             </div>

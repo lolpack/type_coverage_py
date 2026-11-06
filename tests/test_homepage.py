@@ -3,7 +3,7 @@
 The homepage is hand-authored static HTML. These tests are the safety net that
 makes that safe: they pin the required narrative sections, the curated
 milestones that carry the story, the survey links, and the editorial rules the
-page must not break, in particular that the 2026 survey stays unpublished and
+page must not break, in particular that survey statistics keep their caveats and
 that every factual claim keeps a source link.
 
 Parsing uses html.parser from the standard library, so there is no new
@@ -31,6 +31,10 @@ SURVEY_2024_URL = (
 SURVEY_2025_URL = (
     "https://engineering.fb.com/2025/12/22/developer-tools/"
     "python-typing-survey-2025-code-quality-flexibility-typing-adoption/"
+)
+SURVEY_2026_URL = (
+    "https://engineering.fb.com/2026/10/27/developer-tools/"
+    "python-typing-survey-2026-ai-tools-checker-landscape/"
 )
 
 
@@ -188,9 +192,11 @@ class TestTimeline:
         "Pyrefly's public alpha",
         "ZubanLS reaches public alpha",
         "pytype winds down feature development",
+        "Annotations are evaluated lazily by default",  # PEP 649/749, Python 3.14
         "ty reaches beta",
         "The 2025 survey",
         "Pyrefly reaches version 1.0",
+        "The 2026 survey",
         "What are types for in an agentic world?",   # 2026, open question
     ]
 
@@ -317,6 +323,18 @@ class TestTimeline:
         assert "August 20, 2025" in joined         # pytype FAQ
         assert "December 16, 2025" in joined       # ty beta
         assert "May 12, 2026" in joined                # Pyrefly 1.0
+        assert "October 27, 2026" in joined        # 2026 survey
+
+    def test_zuban_credits_jedi_not_jedi_language_server(self, text: str) -> None:
+        """Jedi and jedi-language-server are separate projects."""
+        assert "from the creator of Jedi," in text
+        assert "Jedi language server" not in text
+
+    def test_pytype_is_not_framed_as_inference_versus_annotations(
+        self, text: str
+    ) -> None:
+        assert "converged on reading annotations" not in text
+        assert "Other checkers also combine annotations with inference" in text
 
 
 class TestSurveys:
@@ -326,30 +344,23 @@ class TestSurveys:
     def test_2025_report_is_linked(self, page: PageParser) -> None:
         assert SURVEY_2025_URL in page.links
 
-    def test_2026_is_labelled_coming_soon(self, html: str) -> None:
-        assert "Results coming soon" in html
+    def test_2026_report_is_linked(self, page: PageParser) -> None:
+        assert SURVEY_2026_URL in page.links
 
-    def test_2026_has_no_fabricated_results(self, html: str) -> None:
-        card = html.split('card--forthcoming')[1].split("</article>")[0]
-        assert "%" not in card, "no invented statistic for an unpublished survey"
-        assert "2026" in card
-        for fabricated in ("engineering.fb.com/2026", "survey-2026"):
-            assert fabricated not in card
-
-    def test_2026_card_has_no_dead_or_disabled_button(self, html: str) -> None:
-        card = html.split('card--forthcoming')[1].split("</article>")[0]
-        assert "<button" not in card, "a coming-soon card should contain text, not a dead control"
-        assert "disabled" not in card
+    def test_no_forthcoming_placeholder_remains(self, html: str) -> None:
+        assert "Results coming soon" not in html
+        assert "card--forthcoming" not in html
 
     def test_statistics_carry_their_self_selection_caveat(self, html: str) -> None:
         """The caveat sits next to the number, not behind a hover."""
         stats = re.findall(r'<p class="stat">.*?</p>', html, re.S)
-        assert len(stats) == 2
+        assert len(stats) == 3
         for stat in stats:
             assert "Self-selected sample" in stat
 
-    def test_two_samples_are_not_presented_as_a_trend(self, html: str) -> None:
+    def test_samples_are_not_presented_as_a_trend(self, html: str) -> None:
         assert "should not be read as a trend line" in html
+        assert "these are not longitudinal results" in html
 
 
 class TestEcosystemHandoff:
@@ -428,7 +439,7 @@ class TestContributeSection:
 
     def test_pyrefly_is_framed_as_one_option(self, text: str) -> None:
         assert "Pyrefly is one" in text
-        assert "other checkers offer comparable" in text
+        assert "related typing metrics with different definitions" in text
 
     def test_pyrefly_docs_are_linked(self, page: PageParser) -> None:
         assert "https://pyrefly.org/en/docs/report/" in page.links
@@ -450,6 +461,11 @@ class TestFutureSection:
     def test_no_fabricated_productivity_numbers(self, html: str) -> None:
         future = html.split('id="future"')[1].split("</section>")[0]
         assert not re.search(r"\d+\s*%", future), "no invented agent-success statistic"
+
+    def test_ai_use_is_not_presented_as_a_proven_benefit(self, html: str) -> None:
+        future = html.split('id="future"')[1].split("</section>")[0]
+        assert SURVEY_2026_URL in future
+        assert "does not establish" in re.sub(r"\s+", " ", future)
 
     def test_states_that_type_checking_is_not_correctness(self, text: str) -> None:
         assert "passing a type checker has never meant a program is correct" in text.lower()
