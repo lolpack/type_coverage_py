@@ -125,36 +125,43 @@ class ProcessResult(TypedDict, total=False):
 
 
 def _monitor_memory_linux(
-    pid: int,
-    peak_kb: list[int],
+    gnu_time_pid: int,
     stop_event: threading.Event,
-    memory_limit_kb: int = 0,
-    killed: list[bool] | None = None,
+    memory_limit_kb: int,
+    killed: list[bool],
 ) -> None:
-    """Poll /proc/{pid}/status for VmHWM (peak RSS) on Linux."""
-    status_path = f"/proc/{pid}/status"
+    """Poll /proc/{pid}/status for VmRSS of GNU time's child.
+
+    Kill the process group if RSS exceeds the limit.
+    """
+    if sys.platform != "linux":
+        return
+
+    from os import killpg
+    from signal import SIGKILL
+
+    children_path = Path(f"/proc/{gnu_time_pid}/task/{gnu_time_pid}/children")
+    status_path: str | None = None
     while not stop_event.is_set():
         try:
-            vm_hwm = 0
+            if status_path is None:
+                children = children_path.read_text().split()
+                if not children:
+                    stop_event.wait(0.01)
+                    continue
+                status_path = f"/proc/{children[0]}/status"
+
             vm_rss = 0
             with open(status_path) as f:
                 for line in f:
-                    if line.startswith("VmHWM:"):
-                        vm_hwm = int(line.split()[1])
-                    elif line.startswith("VmRSS:"):
+                    if line.startswith("VmRSS:"):
                         vm_rss = int(line.split()[1])
-            if vm_hwm > peak_kb[0]:
-                peak_kb[0] = vm_hwm
-            if memory_limit_kb > 0 and vm_rss > memory_limit_kb:
-                if killed is not None:
-                    killed[0] = True
-                try:
-                    if sys.platform == "linux":
-                        os.killpg(os.getpgid(pid), signal.SIGKILL)
-                except (ProcessLookupError, OSError):
-                    pass
+                        break
+            if vm_rss > memory_limit_kb:
+                killpg(gnu_time_pid, SIGKILL)
+                killed[0] = True
                 break
-        except (FileNotFoundError, ProcessLookupError, OSError):
+        except OSError:
             break
         stop_event.wait(0.01)
 
@@ -203,6 +210,27 @@ def run_process_with_timeout(
 
     *env* replaces the child's environment when given.
     """
+    if sys.platform == "linux":
+        with tempfile.NamedTemporaryFile(mode="r") as rss_file:
+            actual_cmd = ["/usr/bin/time", "-q", "-f", "%M", "-o", rss_file.name, "--", *cmd]
+            result = _run_process_with_timeout(actual_cmd, cwd, timeout, memory_limit_mb, capture_output, env)
+            if not result["oom_killed"]:
+                peak_kb = rss_file.read().strip()
+                if peak_kb.isdecimal():
+                    result["peak_memory_mb"] = round(int(peak_kb) / 1024, 1)
+            return result
+
+    return _run_process_with_timeout(cmd, cwd, timeout, memory_limit_mb, capture_output, env)
+
+
+def _run_process_with_timeout(
+    cmd: list[str],
+    cwd: Path,
+    timeout: int,
+    memory_limit_mb: int,
+    capture_output: bool,
+    env: dict[str, str] | None,
+) -> ProcessResult:
     start_time = time.perf_counter()
 
     # On macOS, wrap with /usr/bin/time -l to get peak RSS from stderr
@@ -227,15 +255,13 @@ def run_process_with_timeout(
     process = subprocess.Popen(actual_cmd, **kwargs)
 
     # Memory monitoring thread (Linux only — macOS uses /usr/bin/time -l)
-    peak_kb: list[int] = [0]
     killed: list[bool] = [False]
     stop_event = threading.Event()
     monitor_thread: threading.Thread | None = None
-    if sys.platform == "linux":
-        memory_limit_kb = memory_limit_mb * 1024 if memory_limit_mb > 0 else 0
+    if sys.platform == "linux" and memory_limit_mb > 0:
         monitor_thread = threading.Thread(
             target=_monitor_memory_linux,
-            args=(process.pid, peak_kb, stop_event, memory_limit_kb, killed),
+            args=(process.pid, stop_event, memory_limit_mb * 1024, killed),
             daemon=True,
         )
         monitor_thread.start()
@@ -281,6 +307,10 @@ def run_process_with_timeout(
     execution_time = time.perf_counter() - start_time
     timer.cancel()
 
+    stop_event.set()
+    if monitor_thread is not None:
+        monitor_thread.join(timeout=2)
+
     oom_killed = killed[0]
     timed_out = timer_fired.is_set() and not oom_killed
 
@@ -292,15 +322,6 @@ def run_process_with_timeout(
             except OSError:
                 pass
 
-    try:
-        process.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        pass
-
-    stop_event.set()
-    if monitor_thread is not None:
-        monitor_thread.join(timeout=2)
-
     if reader_out is not None:
         reader_out.join(timeout=5)
     if reader_err is not None:
@@ -308,25 +329,24 @@ def run_process_with_timeout(
 
     # Compute peak memory
     raw_stderr = stderr_chunks[0] if stderr_chunks else ""
-    if sys.platform == "linux":
-        peak_memory_mb = round(peak_kb[0] / 1024, 1)
-        clean_stderr = raw_stderr
-    elif use_macos_time:
+    if use_macos_time:
         peak_memory_mb, clean_stderr = _parse_macos_time_stderr(raw_stderr)
     else:
         peak_memory_mb = 0.0
         clean_stderr = raw_stderr
 
     if oom_killed or timed_out:
-        return {
+        failure: ProcessResult = {
             "stdout": "",
             "stderr": "",
             "returncode": -1,
             "timed_out": timed_out,
             "execution_time_s": round(execution_time, 3),
-            "peak_memory_mb": peak_memory_mb,
             "oom_killed": oom_killed,
         }
+        if not oom_killed:
+            failure["peak_memory_mb"] = peak_memory_mb
+        return failure
 
     return {
         "stdout": stdout_chunks[0] if stdout_chunks else "",
@@ -742,17 +762,16 @@ def run_checker(
         cmd, cwd=cwd, timeout=timeout, capture_output=capture_output, env=env,
     )
 
-    if result["timed_out"] or result.get("oom_killed"):
-        msg = "OOM killed" if result.get("oom_killed") else "Timeout"
-        peak = result.get("peak_memory_mb", 0)
-        if result.get("oom_killed") and peak > 0:
-            msg = f"OOM killed ({peak:.0f}MB)"
-        return {
+    oom_killed = result.get("oom_killed", False)
+    if result["timed_out"] or oom_killed:
+        failure: TimingMetrics = {
             "ok": False,
             "execution_time_s": result["execution_time_s"],
-            "peak_memory_mb": result.get("peak_memory_mb", 0.0),
-            "error_message": msg,
+            "error_message": "OOM killed" if oom_killed else "Timeout",
         }
+        if not oom_killed:
+            failure["peak_memory_mb"] = result.get("peak_memory_mb", 0.0)
+        return failure
 
     # Also detect mypy errors that prevent it from completing the check.
     stderr = result.get("stderr", "")
