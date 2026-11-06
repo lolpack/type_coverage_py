@@ -47,6 +47,13 @@ interface TimingBenchmarkData {
     results: TimingBenchmarkResult[];
 }
 
+/** Hand-written explanation of how checkers differ on one package. */
+interface PackageNote {
+    checkers: string[];
+    text: string;
+    link?: string;
+}
+
 interface ErrorAction {
     text: string;
     onClick: () => void;
@@ -74,6 +81,7 @@ const CHECKER_NAMES: Record<string, string> = {
 
 let benchmarkData: TimingBenchmarkData | null = null;
 let currentOs = 'ubuntu';
+let packageNotes: Record<string, PackageNote[]> = {};
 
 // ---------------------------------------------------------------------------
 // URL helpers
@@ -137,6 +145,27 @@ async function loadBenchmarkData(date: string | null, os: string): Promise<Timin
     return benchmarkData;
 }
 
+// Notes are optional: if the file is missing or malformed the table renders without them.
+async function loadPackageNotes(): Promise<void> {
+    try {
+        const response = await fetch('./package_notes.json');
+        if (!response.ok) return;
+        const raw: unknown = await response.json();
+        if (!raw || typeof raw !== 'object') return;
+        const notes: Record<string, PackageNote[]> = {};
+        for (const [pkg, list] of Object.entries(raw as Record<string, unknown>)) {
+            if (!Array.isArray(list)) continue;
+            const valid = list.filter((n): n is PackageNote =>
+                typeof n?.text === 'string' && Array.isArray(n.checkers)
+                && (n.link === undefined || (typeof n.link === 'string' && n.link.startsWith('https://'))));
+            if (valid.length) notes[pkg] = valid;
+        }
+        packageNotes = notes;
+    } catch (e) {
+        console.warn('Failed to load package notes:', e);
+    }
+}
+
 function getDemoData(): TimingBenchmarkData {
     return {
         timestamp: new Date().toISOString(),
@@ -174,9 +203,10 @@ async function init(): Promise<void> {
         if (osSelect) osSelect.value = currentOs;
 
         const urlDate = getDateFromUrl();
-        await loadBenchmarkData(urlDate, currentOs);
+        await Promise.all([loadBenchmarkData(urlDate, currentOs), loadPackageNotes()]);
         renderAll();
         setupFilters();
+        setupNotes();
         setupDateSelector();
     } catch (error) {
         console.error('Failed to init:', error);
@@ -490,6 +520,109 @@ function okTimes(r: TimingBenchmarkResult, checkers: string[]): number[] {
         .map(m => m!.execution_time_s as number);
 }
 
+function noteId(pkg: string): string {
+    return `note-${pkg.replace(/[^A-Za-z0-9_-]/g, '-')}`;
+}
+
+function checkerList(checkers: string[]): string {
+    const names = checkers.map(c => CHECKER_NAMES[c] || c);
+    return names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join('');
+}
+
+// One native popover per package holds all of its notes; the button after the
+// package name and the markers in affected cells all show it (see setupNotes).
+function notePopover(pkg: string, notes: PackageNote[]): string {
+    const body = notes.map(n => `<p>${escapeHtml(n.text)}</p>
+        <p class="note-meta">Affects ${escapeHtml(checkerList(n.checkers))}.${n.link
+            ? ` <a href="${escapeHtml(n.link)}" target="_blank" rel="noopener">Source</a>` : ''}</p>`).join('');
+    return `<button type="button" class="note-button" data-note="${noteId(pkg)}" aria-controls="${noteId(pkg)}"
+            aria-expanded="false" aria-label="Note on how checkers differ on ${escapeHtml(pkg)}">&#9432;</button>
+        <div popover id="${noteId(pkg)}" class="note-popover">
+            <h4>${escapeHtml(pkg)}</h4>${body}
+        </div>`;
+}
+
+function noteMarker(pkg: string, checker: string): string {
+    if (!packageNotes[pkg]?.some(n => n.checkers.includes(checker))) return '';
+    return `<button type="button" class="note-marker" data-note="${noteId(pkg)}" aria-controls="${noteId(pkg)}"
+        aria-expanded="false" aria-label="Note on how ${escapeHtml(CHECKER_NAMES[checker] || checker)} differs on ${escapeHtml(pkg)}">&#9432;</button>`;
+}
+
+const NOTE_TRIGGER = '.note-button, .note-marker';
+// Long enough to move the pointer from the trigger onto the note (to reach its link).
+const NOTE_HIDE_DELAY_MS = 200;
+let noteHideTimer: number | undefined;
+let openNoteTrigger: HTMLElement | null = null;
+
+function showNote(trigger: HTMLElement): void {
+    window.clearTimeout(noteHideTimer);
+    const pop = document.getElementById(trigger.dataset.note || '');
+    if (!pop) return;
+    if (openNoteTrigger && openNoteTrigger !== trigger) openNoteTrigger.setAttribute('aria-expanded', 'false');
+    if (!pop.matches(':popover-open')) pop.showPopover();
+    openNoteTrigger = trigger;
+    trigger.setAttribute('aria-expanded', 'true');
+    // Place below the trigger, or above it if there is no room, kept inside the viewport.
+    const t = trigger.getBoundingClientRect();
+    const p = pop.getBoundingClientRect();
+    const top = t.bottom + 6 + p.height <= window.innerHeight ? t.bottom + 6 : Math.max(8, t.top - 6 - p.height);
+    const left = Math.min(Math.max(8, t.left), window.innerWidth - p.width - 8);
+    pop.style.top = `${top}px`;
+    pop.style.left = `${left}px`;
+}
+
+function hideNote(): void {
+    window.clearTimeout(noteHideTimer);
+    document.querySelectorAll<HTMLElement>('.note-popover:popover-open').forEach(p => p.hidePopover());
+}
+
+function scheduleHideNote(): void {
+    window.clearTimeout(noteHideTimer);
+    noteHideTimer = window.setTimeout(() => {
+        if (inNote(document.activeElement)
+            || document.querySelector('.note-button:hover, .note-marker:hover, .note-popover:hover')) return;
+        hideNote();
+    }, NOTE_HIDE_DELAY_MS);
+}
+
+// Within a trigger or an open note, so moving between them keeps the note up.
+function inNote(el: EventTarget | null): boolean {
+    return el instanceof Element && !!el.closest(`${NOTE_TRIGGER}, .note-popover`);
+}
+
+// Delegated from the document because the table re-renders on every filter change.
+function setupNotes(): void {
+    document.addEventListener('mouseover', e => {
+        const trigger = (e.target as Element).closest<HTMLElement>(NOTE_TRIGGER);
+        if (trigger) showNote(trigger);
+        else if (inNote(e.target)) window.clearTimeout(noteHideTimer);
+    });
+    document.addEventListener('mouseout', e => {
+        if (inNote(e.target) && !inNote(e.relatedTarget)) scheduleHideNote();
+    });
+    document.addEventListener('focusin', e => {
+        const trigger = (e.target as Element).closest<HTMLElement>(NOTE_TRIGGER);
+        if (trigger) showNote(trigger);
+    });
+    document.addEventListener('focusout', e => {
+        if (inNote(e.target) && !inNote(e.relatedTarget)) scheduleHideNote();
+    });
+    // Touch has no hover: a tap shows the note, and tapping elsewhere dismisses it.
+    document.addEventListener('click', e => {
+        const trigger = (e.target as Element).closest<HTMLElement>(NOTE_TRIGGER);
+        if (trigger) showNote(trigger);
+    });
+    document.addEventListener('toggle', e => {
+        // Toggle events arrive asynchronously, so only reset if the note that closed is still the current one.
+        if ((e as ToggleEvent).newState === 'closed' && openNoteTrigger
+            && (e.target as Element).id === openNoteTrigger.dataset.note) {
+            openNoteTrigger.setAttribute('aria-expanded', 'false');
+            openNoteTrigger = null;
+        }
+    }, true);
+    window.addEventListener('scroll', hideNote, { passive: true });
+}
+
 function populateResultsTable(filterText?: string, sortBy?: string): void {
     if (!benchmarkData) return;
     const head = document.getElementById('resultsHead');
@@ -518,14 +651,16 @@ function populateResultsTable(filterText?: string, sortBy?: string): void {
             const m = r.metrics?.[c];
             if (!m?.ok || m.execution_time_s == null) {
                 const reason = m?.error_message || r.error || 'Failed';
-                return `<td class="fail-text" title="${escapeHtml(reason)}">&#9888; ${shortReason(reason)}</td>`;
+                return `<td class="fail-text" title="${escapeHtml(reason)}">&#9888; ${shortReason(reason)}${noteMarker(r.package_name, c)}</td>`;
             }
             const t = m.execution_time_s;
             const mem = m.peak_memory_mb ? `, ${Math.round(m.peak_memory_mb)} MB` : '';
-            if (withinNoise(t, best)) return `<td class="best" title="${formatTime(t)}${mem}">${formatTime(t)}</td>`;
-            return `<td title="${formatTime(t)}${mem}">${formatTime(t)}<span class="times-slower">${(t / best).toFixed(1)}&times;</span></td>`;
+            const marker = noteMarker(r.package_name, c);
+            if (withinNoise(t, best)) return `<td class="best" title="${formatTime(t)}${mem}">${formatTime(t)}${marker}</td>`;
+            return `<td title="${formatTime(t)}${mem}">${formatTime(t)}${marker}<span class="times-slower">${(t / best).toFixed(1)}&times;</span></td>`;
         }).join('');
-        return `<tr><td>${escapeHtml(r.package_name)}</td>${cells}</tr>`;
+        const notes = packageNotes[r.package_name];
+        return `<tr><td>${escapeHtml(r.package_name)}${notes ? notePopover(r.package_name, notes) : ''}</td>${cells}</tr>`;
     }).join('') || `<tr><td colspan="${checkers.length + 1}" class="loading-row">No packages match.</td></tr>`;
 }
 

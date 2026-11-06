@@ -46,6 +46,7 @@ OWNED = (
     "tests/",
     "lsp/benchmark/index.html",
     "typecheck_benchmark/index.html",
+    "typecheck_benchmark/package_notes.json",
 )
 
 #: Predates this convention and is not user-facing copy.
