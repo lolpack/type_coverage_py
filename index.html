@@ -101,10 +101,11 @@
                 <h2>What type annotations do, and don't do</h2>
                 <div class="section__intro">
                     <p>
-                        A Python annotation records what a name is expected to be. Nothing
-                        reads it at runtime by default; it is information for <em>tools</em>.
-                        Type checkers use it to find mistakes before the program runs, and
-                        editors use it for navigation, completion and refactoring.
+                        A Python annotation records what a name is expected to be. Python
+                        does not automatically enforce type annotations. Static checkers use
+                        them to find mistakes before the program runs, editors use them for
+                        navigation, completion and refactoring, and runtime consumers such as
+                        dataclasses and validation frameworks can inspect and act on them.
                     </p>
                     <p>
                         Adoption is gradual by design. You can annotate one function, one
@@ -114,6 +115,7 @@
                     </p>
                     <p class="sources">
                         <a href="https://typing.python.org/en/latest/">Python typing documentation</a>
+                        <a href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a>
                         <a href="https://peps.python.org/pep-0484/">PEP 484</a>
                     </p>
                 </div>
@@ -245,7 +247,17 @@
                             an optimisation. This is its public-release milestone; work on
                             it had been under way internally beforehand.
                         </p>
-                        <p class="sources"><a href="https://developers.facebook.com/blog/post/2021/05/10/eli5-pyre-fast-error-flagging-python-codebases/">Meta engineering: Pyre retrospective</a></p>
+                        <details>
+                            <summary>Current status</summary>
+                            <p>
+                                Pyre has since been replaced by Pyrefly, and its repository
+                                is archived.
+                            </p>
+                        </details>
+                        <p class="sources">
+                            <a href="https://developers.facebook.com/blog/post/2021/05/10/eli5-pyre-fast-error-flagging-python-codebases/">Meta engineering: Pyre retrospective</a>
+                            <a href="https://github.com/facebook/pyre-check">facebook/pyre-check</a>
+                        </p>
                     </li>
 
                     <li class="timeline__item timeline__item--ecosystem">
@@ -302,8 +314,7 @@
                         </div>
                         <h3>Everyday annotations get shorter</h3>
                         <p>
-                            A run of changes made ordinary annotations less noisy, which did
-                            more for adoption than any single large feature:
+                            A run of changes made ordinary annotations less noisy:
                             <code>list[str]</code> instead of importing
                             <code>List</code>, <code>X | None</code> instead of
                             <code>Optional[X]</code>, and <code>Self</code> for methods that
@@ -393,8 +404,9 @@
                         </div>
                         <h3>ZubanLS reaches public alpha</h3>
                         <p>
-                            A Rust-based type checker and language server from the author of
-                            the Jedi language server, aiming at mypy-compatible behaviour.
+                            A Rust-based type checker and language server from the creator of
+                            Jedi, the Python auto-completion and static-analysis library, aiming
+                            at mypy-compatible behaviour.
                         </p>
                         <details>
                             <summary>Later milestones</summary>
@@ -424,16 +436,34 @@
                             <summary>Why this one matters to the story</summary>
                             <p>
                                 pytype opened this timeline in 2012 and closes a chapter of it
-                                here. It was the most prominent inference-first checker: it
-                                aimed to be useful on code that had no annotations at all,
-                                where the rest of the ecosystem converged on reading
-                                annotations developers write. Neither approach is universally
-                                better, and the trade-off it explored has not gone away.
+                                here. pytype emphasized inference on unannotated code and
+                                later adopted inline annotations while retaining its inference
+                                engine. Other checkers also combine annotations with inference,
+                                differing in how much they infer and where explicit
+                                annotations are needed.
                             </p>
                         </details>
                         <p class="sources">
                             <a href="https://github.com/google/pytype/blob/main/README.md">pytype README</a>
                             <a href="https://github.com/google/pytype/issues/1925">pytype FAQ</a>
+                        </p>
+                    </li>
+
+                    <li class="timeline__item timeline__item--language">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">October 7, 2025 · Python 3.14</span>
+                            <span class="timeline__tag">Language</span>
+                        </div>
+                        <h3>Annotations are evaluated lazily by default</h3>
+                        <p>
+                            PEPs 649 and 749 made deferred evaluation of annotations the
+                            default, and added the <code>annotationlib</code> module for
+                            inspecting them.
+                        </p>
+                        <p class="sources">
+                            <a href="https://peps.python.org/pep-0649/">PEP 649</a>
+                            <a href="https://peps.python.org/pep-0749/">PEP 749</a>
+                            <a href="https://docs.python.org/3/library/annotationlib.html">annotationlib</a>
                         </p>
                     </li>
 
@@ -477,6 +507,21 @@
                         <p class="sources"><a href="https://pyrefly.org/blog/v1.0/">Pyrefly 1.0</a></p>
                     </li>
 
+                    <li class="timeline__item timeline__item--ecosystem">
+                        <div class="timeline__meta">
+                            <span class="timeline__date">October 27, 2026</span>
+                            <span class="timeline__tag">Ecosystem</span>
+                        </div>
+                        <h3>The 2026 survey examines AI tools and a shifting checker landscape</h3>
+                        <p>
+                            The 2026 survey examines AI-assisted typing and a shifting checker
+                            landscape. Missing library type information remains the leading
+                            reported difficulty.
+                            <a href="#surveys">See the survey section below.</a>
+                        </p>
+                        <p class="sources"><a href="https://engineering.fb.com/2026/10/27/developer-tools/python-typing-survey-2026-ai-tools-checker-landscape/">Python typing survey 2026</a></p>
+                    </li>
+
                     <li class="timeline__item timeline__item--open">
                         <div class="timeline__meta">
                             <span class="timeline__date">2026</span>
@@ -513,8 +558,8 @@
                 <h2>Useful types. An unfinished ecosystem.</h2>
                 <div class="section__intro">
                     <p>
-                        Two annual surveys now ask Python developers how typing is working
-                        for them. Both are self-selected samples of people who chose to
+                        Three annual surveys now ask Python developers how typing is working
+                        for them. All three are self-selected samples of people who chose to
                         respond to a survey about typing, so read them as signal about that
                         population, not as a measurement of all Python developers.
                     </p>
@@ -546,7 +591,7 @@
                             <span class="stat__caveat">Self-selected sample of survey respondents, not a measurement of all Python developers. The two years are separate samples and should not be read as a trend line.</span>
                         </p>
                         <p>
-                            The same theme returned, more sharply: incomplete or incorrect
+                            The same theme returned: incomplete or incorrect
                             annotations in third-party libraries, and a continuing request for
                             better library coverage.
                         </p>
@@ -555,17 +600,23 @@
                         </div>
                     </article>
 
-                    <article class="card card--forthcoming">
-                        <span class="card__year">2026</span>
-                        <span class="badge">Results coming soon</span>
+                    <article class="card">
+                        <span class="card__year">Published October 27, 2026</span>
                         <h3>The 2026 typing survey</h3>
+                        <p class="stat">85.5%
+                            <span class="stat__label">of respondents said they always or often use type hints</span>
+                            <span class="stat__caveat">Self-selected sample of survey respondents, not a measurement of all Python developers. Each year surveyed a different group; these are not longitudinal results.</span>
+                        </p>
                         <p>
-                            Not published yet. When the results are out, they will be linked
-                            here. Until then there is nothing to report: no preview numbers,
-                            no date.
+                            The 1,794-response survey again identified missing library type
+                            information as the leading difficulty. Checker choices shifted,
+                            with roughly half of respondents reporting checker use selecting
+                            multiple tools. AI tools are now part of typing workflows, but
+                            which interactions actually help developers remains an open
+                            empirical question.
                         </p>
                         <div class="card__actions">
-                            <a class="link-button link-button--secondary" href="https://discuss.python.org/c/typing/32">Join the typing discussion</a>
+                            <a class="link-button link-button--secondary" href="https://engineering.fb.com/2026/10/27/developer-tools/python-typing-survey-2026-ai-tools-checker-landscape/">Read the 2026 Python Typing Survey</a>
                         </div>
                     </article>
                 </div>
@@ -579,14 +630,15 @@
                 <h2>Your types are only as good as your dependencies'</h2>
                 <div class="section__intro">
                     <p>
-                        You can annotate your own code carefully and still get little out of
-                        it. The moment a call crosses into a dependency that ships no types,
-                        or ships types that are wrong, the checker loses the thread. Values
-                        become <code>Any</code>, errors stop being caught, and completion in
-                        your editor goes quiet.
+                        You can annotate your own code carefully and still get less out of
+                        it than you expect once a call crosses into a dependency. Missing
+                        library type information can reduce useful checking and editor
+                        support. Checkers may still infer types from library source or use
+                        separately installed stubs; incorrect annotations can produce
+                        misleading diagnostics.
                     </p>
                     <p>
-                        This is what both surveys keep surfacing, and it is why this site
+                        This is what these surveys keep surfacing, and it is why this site
                         existed in the first place: it measured type-annotation coverage
                         across popular PyPI packages to make the gap visible.
                     </p>
@@ -624,7 +676,8 @@
                         <h3>Type checker performance</h3>
                         <p>
                             Wall-clock execution time and peak memory when checking
-                            open-source Python projects from a cold start.
+                            open-source Python projects, measured on a fresh checker process
+                            after a discarded warmup run.
                         </p>
                         <p class="card__checkers">Measures: mypy · Pyright · Pyrefly · ty · Zuban</p>
                         <div class="card__actions">
@@ -694,9 +747,11 @@
                     <article class="card">
                         <h3>2. Improve shared stubs</h3>
                         <p>
-                            When a package can't ship its own types, typeshed carries them for
-                            the whole ecosystem. A fix there reaches every checker and every
-                            downstream user at once.
+                            When a package can't ship its own types, typeshed can carry stubs
+                            for it, subject to its contribution and publication rules; not
+                            every untyped package is covered. A fix there benefits users as
+                            they install updated stub packages or update their checker's
+                            bundled stubs.
                         </p>
                         <div class="card__actions">
                             <a class="link-button link-button--secondary" href="https://github.com/python/typeshed/blob/main/CONTRIBUTING.md">Typeshed contributing guide</a>
@@ -708,8 +763,11 @@
                         <p>
                             Annotation coverage tends to drift back down unless something in
                             CI notices. A threshold check is a cheap ratchet. Pyrefly is one
-                            tool that reports coverage; other checkers offer comparable
-                            reporting.
+                            tool that reports coverage, counting annotation slots. Other
+                            checkers report related typing metrics with different definitions
+                            and scopes: Pyright's <code>--verifytypes</code> reports known
+                            public-interface symbols, and mypy offers expression, function and
+                            line-based reports.
                         </p>
                         <div class="code-block"><code># Example annotation-coverage gate. Pick a threshold that
 # reflects where your project is today, then raise it.
@@ -761,6 +819,14 @@ pyrefly coverage check src/ --fail-under 80</code></div>
                         configuration, and, again, the quality of the annotations involved.
                         We don't have a number for it, and we would rather say so than invent
                         one.
+                    </p>
+                    <p>
+                        The <a href="https://engineering.fb.com/2026/10/27/developer-tools/python-typing-survey-2026-ai-tools-checker-landscape/">2026 typing survey</a>
+                        found AI tools are now part of many respondents' typing workflows,
+                        writing type hints and responding to checker errors. That is reported
+                        use, not evidence of improved outcomes: the survey does not establish
+                        a causal productivity or correctness benefit, and its authors call
+                        which interactions actually help an open empirical question.
                     </p>
                     <p>
                         And passing a type checker has never meant a program is correct. It
