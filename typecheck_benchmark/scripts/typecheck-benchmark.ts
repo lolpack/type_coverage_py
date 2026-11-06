@@ -578,7 +578,11 @@ function hideNote(): void {
 
 function scheduleHideNote(): void {
     window.clearTimeout(noteHideTimer);
-    noteHideTimer = window.setTimeout(hideNote, NOTE_HIDE_DELAY_MS);
+    noteHideTimer = window.setTimeout(() => {
+        if (inNote(document.activeElement)
+            || document.querySelector('.note-button:hover, .note-marker:hover, .note-popover:hover')) return;
+        hideNote();
+    }, NOTE_HIDE_DELAY_MS);
 }
 
 // Within a trigger or an open note, so moving between them keeps the note up.
