@@ -39,8 +39,9 @@ Runs daily at 03:00 UTC on Ubuntu, and on demand. Measures the
 `textDocument/definition` request against Pyright, Pyrefly, ty, and Zuban.
 
 It reports request latency, how often a request completed without error, and
-whether the returned location is structurally valid. **A location that exists is
-not necessarily the semantically correct definition.** This is a performance
+whether the returned location passes basic structural checks. **The runner does
+not verify that the file exists, or that the location is the semantically correct
+definition.** This is a performance
 and liveness measurement, not a correctness one.
 
 ### Type checker timing benchmark (`typecheck-benchmark.yml`)

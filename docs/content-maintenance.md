@@ -78,7 +78,8 @@ These are not style preferences; they are what keeps the page trustworthy.
   measure correctness, conformance, or fitness for a project.
 - **Don't relabel the LSP benchmark.** It measures `textDocument/definition`.
   Not completions, not hover, not diagnostics, not "editor responsiveness". A
-  returned location that exists is not necessarily the right definition.
+  returned location that passes basic structural checks is not necessarily the
+  right definition, and the runner does not verify that the file exists.
 - **Agents are an open question.** No productivity or success-rate numbers.
 - **Coverage is not quality.** Annotation coverage is not test coverage, not type
   completeness, and not correctness.
