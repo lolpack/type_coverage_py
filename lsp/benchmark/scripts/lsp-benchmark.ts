@@ -723,7 +723,7 @@ function createSuccessChart(): void {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Success Rate (%)',
+                label: 'Location-validity rate (%)',
                 data: data,
                 backgroundColor: colors,
                 borderRadius: 6,

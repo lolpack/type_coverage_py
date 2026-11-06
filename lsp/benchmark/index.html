@@ -42,7 +42,7 @@
             <h1>🚀 LSP Performance Benchmarks</h1>
             <p class="subtitle">Daily performance analysis of Python language servers</p>
             <p class="description">
-                Measuring <code>textDocument/definition</code> (Go to Definition) latency and accuracy 
+                Measuring <code>textDocument/definition</code> (Go to Definition) latency and location validity
                 across popular Python packages
             </p>
             <div class="date-selector">
@@ -137,7 +137,7 @@
                     <canvas id="okChart"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h3>Success Rate (%)</h3>
+                    <h3>Location-validity rate (%)</h3>
                     <p class="chart-description">Higher is better - valid definitions found</p>
                     <canvas id="successChart"></canvas>
                 </div>
@@ -160,7 +160,7 @@
                     <option value="ranking">Sort by Ranking</option>
                     <option value="name">Sort by Name</option>
                     <option value="latency">Sort by Latency</option>
-                    <option value="success">Sort by Success Rate</option>
+                    <option value="success">Sort by location-validity rate</option>
                 </select>
             </div>
 
@@ -174,7 +174,7 @@
                             <th>P50 Latency</th>
                             <th>P95 Latency</th>
                             <th>OK %</th>
-                            <th>Success %</th>
+                            <th>Valid location %</th>
                         </tr>
                     </thead>
                     <tbody id="resultsBody">
@@ -229,7 +229,7 @@
                         <li><strong>Latency:</strong> Time (ms) from request to response (excludes timeouts)</li>
                         <li><strong>P50/P95:</strong> 50th/95th percentile latencies</li>
                         <li><strong>OK Rate:</strong> Percentage of requests that completed without timeout or error (indicates reliability)</li>
-                        <li><strong>Success Rate:</strong> Percentage of requests that returned a valid definition location pointing to a real file (indicates accuracy)</li>
+                        <li><strong>Location-validity rate:</strong> Requests returning a structurally valid location pointing to an existing file. This does not verify that the location is the correct definition.</li>
                     </ul>
                 </div>
             </div>
@@ -268,7 +268,7 @@
                     <div class="legend-info">
                         <strong>Zuban</strong>
                         <span class="legend-version" id="version-zuban"></span>
-                        <span>Type checker and language server for Python by the creator of Jedi LSP</span>
+                        <span>Type checker and language server for Python by the creator of Jedi</span>
                     </div>
                 </div>
             </div>
