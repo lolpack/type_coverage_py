@@ -1,0 +1,2123 @@
+{
+  "timestamp": "2026-11-17T07:22:20.146755+00:00",
+  "date": "2026-11-17",
+  "type_checkers": [
+    "pyright",
+    "pyrefly",
+    "ty",
+    "mypy",
+    "zuban"
+  ],
+  "type_checker_versions": {
+    "pyright": "1.1.414",
+    "pyrefly": "1.4.1",
+    "ty": "0.0.104",
+    "mypy": "2.4.1",
+    "zuban": "0.10.2"
+  },
+  "package_count": 53,
+  "runs_per_package": 1,
+  "warmup_runs": 1,
+  "aggregate": {
+    "pyright": {
+      "packages_tested": 46,
+      "packages_failed": 7,
+      "avg_execution_time_s": 26.371,
+      "p50_execution_time_s": 13.134,
+      "p90_execution_time_s": 54.114,
+      "p95_execution_time_s": 87.444,
+      "max_execution_time_s": 266.413,
+      "total_execution_time_s": 1213.047,
+      "avg_peak_memory_mb": 1015.1,
+      "p90_peak_memory_mb": 2371.8,
+      "p95_peak_memory_mb": 2860.0,
+      "max_peak_memory_mb": 3992.2
+    },
+    "pyrefly": {
+      "packages_tested": 53,
+      "packages_failed": 0,
+      "avg_execution_time_s": 3.934,
+      "p50_execution_time_s": 0.838,
+      "p90_execution_time_s": 10.768,
+      "p95_execution_time_s": 13.058,
+      "max_execution_time_s": 50.788,
+      "total_execution_time_s": 208.488,
+      "avg_peak_memory_mb": 314.9,
+      "p90_peak_memory_mb": 744.4,
+      "p95_peak_memory_mb": 948.3,
+      "max_peak_memory_mb": 1222.3
+    },
+    "ty": {
+      "packages_tested": 53,
+      "packages_failed": 0,
+      "avg_execution_time_s": 2.535,
+      "p50_execution_time_s": 0.755,
+      "p90_execution_time_s": 7.205,
+      "p95_execution_time_s": 8.297,
+      "max_execution_time_s": 36.718,
+      "total_execution_time_s": 134.379,
+      "avg_peak_memory_mb": 401.7,
+      "p90_peak_memory_mb": 930.7,
+      "p95_peak_memory_mb": 1548.6,
+      "max_peak_memory_mb": 1799.1
+    },
+    "mypy": {
+      "packages_tested": 47,
+      "packages_failed": 6,
+      "avg_execution_time_s": 13.273,
+      "p50_execution_time_s": 4.431,
+      "p90_execution_time_s": 47.52,
+      "p95_execution_time_s": 62.476,
+      "max_execution_time_s": 73.339,
+      "total_execution_time_s": 623.842,
+      "avg_peak_memory_mb": 429.4,
+      "p90_peak_memory_mb": 901.8,
+      "p95_peak_memory_mb": 1397.2,
+      "max_peak_memory_mb": 2006.5
+    },
+    "zuban": {
+      "packages_tested": 52,
+      "packages_failed": 1,
+      "avg_execution_time_s": 1.998,
+      "p50_execution_time_s": 0.72,
+      "p90_execution_time_s": 6.962,
+      "p95_execution_time_s": 8.073,
+      "max_execution_time_s": 8.938,
+      "total_execution_time_s": 103.887,
+      "avg_peak_memory_mb": 199.4,
+      "p90_peak_memory_mb": 519.1,
+      "p95_peak_memory_mb": 671.7,
+      "max_peak_memory_mb": 952.1
+    }
+  },
+  "results": [
+    {
+      "package_name": "aiohttp",
+      "github_url": "https://github.com/aio-libs/aiohttp",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 6.705,
+          "peak_memory_mb": 376.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.358,
+          "peak_memory_mb": 121.1,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.282,
+          "peak_memory_mb": 119.8,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 2.096,
+          "peak_memory_mb": 177.4,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.235,
+          "peak_memory_mb": 58.0,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "airflow",
+      "github_url": "https://github.com/apache/airflow",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 18.153,
+          "peak_memory_mb": 956.6,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.831,
+          "peak_memory_mb": 173.6,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.801,
+          "peak_memory_mb": 239.0,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 7.205,
+          "peak_memory_mb": 320.0,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.743,
+          "peak_memory_mb": 122.8,
+          "runs": 1
+        }
+      },
+      "install_ok": false
+    },
+    {
+      "package_name": "ansible",
+      "github_url": "https://github.com/ansible/ansible",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 20.87,
+          "peak_memory_mb": 999.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.95,
+          "peak_memory_mb": 199.8,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.98,
+          "peak_memory_mb": 274.4,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 6.053,
+          "peak_memory_mb": 306.9,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.835,
+          "peak_memory_mb": 121.5,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "black",
+      "github_url": "https://github.com/psf/black",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 5.147,
+          "peak_memory_mb": 359.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.416,
+          "peak_memory_mb": 140.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.209,
+          "peak_memory_mb": 109.8,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 2.377,
+          "peak_memory_mb": 200.5,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.236,
+          "peak_memory_mb": 64.1,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "boto3",
+      "github_url": "https://github.com/boto/boto3",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 2.403,
+          "peak_memory_mb": 269.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.201,
+          "peak_memory_mb": 85.7,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.072,
+          "peak_memory_mb": 67.6,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 0.857,
+          "peak_memory_mb": 112.3,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.161,
+          "peak_memory_mb": 53.1,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "botocore",
+      "github_url": "https://github.com/boto/botocore",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 5.04,
+          "peak_memory_mb": 393.9,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.356,
+          "peak_memory_mb": 126.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.229,
+          "peak_memory_mb": 111.7,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.872,
+          "peak_memory_mb": 170.3,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.249,
+          "peak_memory_mb": 64.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "celery",
+      "github_url": "https://github.com/celery/celery",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 8.722,
+          "peak_memory_mb": 529.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.532,
+          "peak_memory_mb": 153.3,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.349,
+          "peak_memory_mb": 147.0,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 3.315,
+          "peak_memory_mb": 230.3,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.395,
+          "peak_memory_mb": 78.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "ComfyUI",
+      "github_url": "https://github.com/comfyanonymous/ComfyUI",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 91.344,
+          "peak_memory_mb": 3274.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 10.998,
+          "peak_memory_mb": 840.3,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 3.636,
+          "peak_memory_mb": 882.9,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": false,
+          "execution_time_s": 0.133,
+          "peak_memory_mb": 54.9,
+          "error_message": "Fatal error (exit code 2)",
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 6.987,
+          "peak_memory_mb": 524.9,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "cryptography",
+      "github_url": "https://github.com/pyca/cryptography",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 10.211,
+          "peak_memory_mb": 577.3,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.63,
+          "peak_memory_mb": 131.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.391,
+          "peak_memory_mb": 133.4,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 3.9,
+          "peak_memory_mb": 238.8,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.424,
+          "peak_memory_mb": 76.2,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "dask",
+      "github_url": "https://github.com/dask/dask",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 53.541,
+          "peak_memory_mb": 2304.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 5.823,
+          "peak_memory_mb": 561.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 2.399,
+          "peak_memory_mb": 578.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 26.306,
+          "peak_memory_mb": 647.5,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 3.766,
+          "peak_memory_mb": 366.1,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "django",
+      "github_url": "https://github.com/django/django",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 20.514,
+          "peak_memory_mb": 1154.6,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 1.139,
+          "peak_memory_mb": 226.4,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.996,
+          "peak_memory_mb": 294.6,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 6.115,
+          "peak_memory_mb": 325.5,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.945,
+          "peak_memory_mb": 145.0,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "fastapi",
+      "github_url": "https://github.com/fastapi/fastapi",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 6.009,
+          "peak_memory_mb": 385.2,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.627,
+          "peak_memory_mb": 155.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.213,
+          "peak_memory_mb": 116.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 2.147,
+          "peak_memory_mb": 193.1,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.218,
+          "peak_memory_mb": 64.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "flask",
+      "github_url": "https://github.com/pallets/flask",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 3.218,
+          "peak_memory_mb": 296.7,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.277,
+          "peak_memory_mb": 123.5,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.159,
+          "peak_memory_mb": 97.6,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.989,
+          "peak_memory_mb": 185.5,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.214,
+          "peak_memory_mb": 60.5,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "gradio",
+      "github_url": "https://github.com/gradio-app/gradio",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 15.493,
+          "peak_memory_mb": 1001.9,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.995,
+          "peak_memory_mb": 328.4,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.74,
+          "peak_memory_mb": 318.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 8.176,
+          "peak_memory_mb": 461.7,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 1.263,
+          "peak_memory_mb": 204.4,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "homeassistant",
+      "github_url": "https://github.com/home-assistant/core",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "execution_time_s": 180.253,
+          "error_message": "OOM killed",
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 8.484,
+          "peak_memory_mb": 942.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 8.599,
+          "peak_memory_mb": 1758.1,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 68.64,
+          "peak_memory_mb": 1965.0,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 8.883,
+          "peak_memory_mb": 830.6,
+          "runs": 1
+        }
+      },
+      "install_ok": false
+    },
+    {
+      "package_name": "httpcore",
+      "github_url": "https://github.com/encode/httpcore",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 1.932,
+          "peak_memory_mb": 207.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.198,
+          "peak_memory_mb": 82.4,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.067,
+          "peak_memory_mb": 62.5,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 0.952,
+          "peak_memory_mb": 116.6,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.1,
+          "peak_memory_mb": 42.4,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "httpx",
+      "github_url": "https://github.com/encode/httpx",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 2.487,
+          "peak_memory_mb": 238.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.217,
+          "peak_memory_mb": 97.1,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.107,
+          "peak_memory_mb": 73.9,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.5,
+          "peak_memory_mb": 153.2,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.125,
+          "peak_memory_mb": 46.2,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "jinja2",
+      "github_url": "https://github.com/pallets/jinja",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 4.69,
+          "peak_memory_mb": 306.5,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.291,
+          "peak_memory_mb": 102.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.197,
+          "peak_memory_mb": 96.7,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.661,
+          "peak_memory_mb": 153.7,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.236,
+          "peak_memory_mb": 54.3,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "langchain",
+      "github_url": "https://github.com/langchain-ai/langchain",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 16.623,
+          "peak_memory_mb": 846.5,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.838,
+          "peak_memory_mb": 222.6,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.755,
+          "peak_memory_mb": 238.9,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 9.097,
+          "peak_memory_mb": 401.0,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.751,
+          "peak_memory_mb": 132.2,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "langflow",
+      "github_url": "https://github.com/langflow-ai/langflow",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 33.796,
+          "peak_memory_mb": 1750.3,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 1.858,
+          "peak_memory_mb": 408.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 1.391,
+          "peak_memory_mb": 400.3,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 16.482,
+          "peak_memory_mb": 628.7,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 1.722,
+          "peak_memory_mb": 233.3,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "luigi",
+      "github_url": "https://github.com/spotify/luigi",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 6.051,
+          "peak_memory_mb": 385.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.386,
+          "peak_memory_mb": 116.4,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.234,
+          "peak_memory_mb": 111.8,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 2.172,
+          "peak_memory_mb": 177.4,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.241,
+          "peak_memory_mb": 60.9,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "manim",
+      "github_url": "https://github.com/ManimCommunity/manim",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 20.51,
+          "peak_memory_mb": 850.9,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 1.421,
+          "peak_memory_mb": 230.5,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.908,
+          "peak_memory_mb": 259.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 11.076,
+          "peak_memory_mb": 348.7,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 1.001,
+          "peak_memory_mb": 123.9,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "markitdown",
+      "github_url": "https://github.com/microsoft/markitdown",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 2.718,
+          "peak_memory_mb": 251.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.233,
+          "peak_memory_mb": 94.9,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.106,
+          "peak_memory_mb": 73.8,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.577,
+          "peak_memory_mb": 156.9,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.119,
+          "peak_memory_mb": 48.2,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "matplotlib",
+      "github_url": "https://github.com/matplotlib/matplotlib",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 54.687,
+          "peak_memory_mb": 2145.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 3.403,
+          "peak_memory_mb": 395.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 2.277,
+          "peak_memory_mb": 480.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 16.505,
+          "peak_memory_mb": 445.4,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 1.813,
+          "peak_memory_mb": 183.5,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "networkx",
+      "github_url": "https://github.com/networkx/networkx",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 27.71,
+          "peak_memory_mb": 1392.4,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 11.739,
+          "peak_memory_mb": 435.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 1.154,
+          "peak_memory_mb": 273.9,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 9.04,
+          "peak_memory_mb": 392.2,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 2.758,
+          "peak_memory_mb": 226.8,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "numpy",
+      "github_url": "https://github.com/numpy/numpy",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "execution_time_s": 300.001,
+          "error_message": "Timeout",
+          "peak_memory_mb": 0.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 50.788,
+          "peak_memory_mb": 1151.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 36.718,
+          "peak_memory_mb": 1589.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": false,
+          "execution_time_s": 300.001,
+          "error_message": "Timeout",
+          "peak_memory_mb": 0.0,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": false,
+          "execution_time_s": 300.001,
+          "error_message": "Timeout",
+          "peak_memory_mb": 0.0,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "open-webui",
+      "github_url": "https://github.com/open-webui/open-webui",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 28.799,
+          "peak_memory_mb": 1628.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 1.582,
+          "peak_memory_mb": 328.7,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 1.357,
+          "peak_memory_mb": 360.6,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": false,
+          "execution_time_s": 15.059,
+          "peak_memory_mb": 504.2,
+          "error_message": "Fatal error (exit code 2): backend/open_webui/models/functions.py:260: error: INTERNAL ERROR -- Please try using mypy master on GitHub:",
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 1.409,
+          "peak_memory_mb": 198.4,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "openai",
+      "github_url": "https://github.com/openai/openai-python",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 22.596,
+          "peak_memory_mb": 1230.1,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 1.59,
+          "peak_memory_mb": 335.1,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 1.001,
+          "peak_memory_mb": 298.4,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 15.883,
+          "peak_memory_mb": 545.2,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 2.901,
+          "peak_memory_mb": 149.2,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "pandas",
+      "github_url": "https://github.com/pandas-dev/pandas",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "execution_time_s": 300.001,
+          "error_message": "Timeout",
+          "peak_memory_mb": 0.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 9.848,
+          "peak_memory_mb": 484.1,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 6.288,
+          "peak_memory_mb": 850.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 64.158,
+          "peak_memory_mb": 996.7,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 7.754,
+          "peak_memory_mb": 466.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "prefect",
+      "github_url": "https://github.com/PrefectHQ/prefect",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 75.743,
+          "peak_memory_mb": 2784.3,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 4.004,
+          "peak_memory_mb": 649.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 2.252,
+          "peak_memory_mb": 671.1,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": false,
+          "execution_time_s": 0.147,
+          "peak_memory_mb": 60.6,
+          "error_message": "Fatal: errors prevented further checking",
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 2.865,
+          "peak_memory_mb": 369.1,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "pydantic",
+      "github_url": "https://github.com/pydantic/pydantic",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 13.074,
+          "peak_memory_mb": 385.7,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 2.807,
+          "peak_memory_mb": 159.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.99,
+          "peak_memory_mb": 131.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.715,
+          "peak_memory_mb": 149.6,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.179,
+          "peak_memory_mb": 54.4,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "pytest",
+      "github_url": "https://github.com/pytest-dev/pytest",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 13.195,
+          "peak_memory_mb": 763.7,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.689,
+          "peak_memory_mb": 151.3,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.57,
+          "peak_memory_mb": 182.8,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 4.431,
+          "peak_memory_mb": 266.4,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.526,
+          "peak_memory_mb": 91.2,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "ray",
+      "github_url": "https://github.com/ray-project/ray",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "execution_time_s": 300.003,
+          "error_message": "Timeout",
+          "peak_memory_mb": 0.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 15.036,
+          "peak_memory_mb": 1222.3,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 8.933,
+          "peak_memory_mb": 1799.1,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": false,
+          "execution_time_s": 1.68,
+          "peak_memory_mb": 793.2,
+          "error_message": "Fatal: errors prevented further checking",
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 8.938,
+          "peak_memory_mb": 952.1,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "requests",
+      "github_url": "https://github.com/psf/requests",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 2.33,
+          "peak_memory_mb": 229.1,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.233,
+          "peak_memory_mb": 97.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.089,
+          "peak_memory_mb": 72.2,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.264,
+          "peak_memory_mb": 133.9,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.104,
+          "peak_memory_mb": 44.0,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "rich",
+      "github_url": "https://github.com/Textualize/rich",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 6.459,
+          "peak_memory_mb": 392.6,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.322,
+          "peak_memory_mb": 100.7,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.197,
+          "peak_memory_mb": 96.6,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.616,
+          "peak_memory_mb": 142.0,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.206,
+          "peak_memory_mb": 60.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "salt",
+      "github_url": "https://github.com/saltstack/salt",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 48.403,
+          "peak_memory_mb": 2439.7,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 3.055,
+          "peak_memory_mb": 403.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 3.722,
+          "peak_memory_mb": 640.6,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": false,
+          "execution_time_s": 19.054,
+          "peak_memory_mb": 643.2,
+          "error_message": "Fatal error (exit code 2): error: INTERNAL ERROR -- Please try using mypy master on GitHub:",
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 2.881,
+          "peak_memory_mb": 279.6,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "scikit-learn",
+      "github_url": "https://github.com/scikit-learn/scikit-learn",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 140.805,
+          "peak_memory_mb": 2885.2,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 7.991,
+          "peak_memory_mb": 485.8,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 4.491,
+          "peak_memory_mb": 586.8,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 45.308,
+          "peak_memory_mb": 740.3,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 4.66,
+          "peak_memory_mb": 275.9,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "scipy",
+      "github_url": "https://github.com/scipy/scipy",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "execution_time_s": 300.003,
+          "error_message": "Timeout",
+          "peak_memory_mb": 0.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 21.478,
+          "peak_memory_mb": 549.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 7.298,
+          "peak_memory_mb": 789.3,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 73.339,
+          "peak_memory_mb": 838.5,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 7.805,
+          "peak_memory_mb": 406.3,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "scrapy",
+      "github_url": "https://github.com/scrapy/scrapy",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 15.11,
+          "peak_memory_mb": 824.7,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.787,
+          "peak_memory_mb": 164.4,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.658,
+          "peak_memory_mb": 218.9,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 5.862,
+          "peak_memory_mb": 286.8,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.634,
+          "peak_memory_mb": 106.8,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "sentry-sdk",
+      "github_url": "https://github.com/getsentry/sentry-python",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 9.085,
+          "peak_memory_mb": 537.9,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.553,
+          "peak_memory_mb": 122.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.377,
+          "peak_memory_mb": 137.7,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 3.108,
+          "peak_memory_mb": 198.8,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.407,
+          "peak_memory_mb": 79.2,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "setuptools",
+      "github_url": "https://github.com/pypa/setuptools",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 15.255,
+          "peak_memory_mb": 752.9,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.777,
+          "peak_memory_mb": 174.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.642,
+          "peak_memory_mb": 194.5,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 4.592,
+          "peak_memory_mb": 261.8,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.697,
+          "peak_memory_mb": 106.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "sqlalchemy",
+      "github_url": "https://github.com/sqlalchemy/sqlalchemy",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 28.448,
+          "peak_memory_mb": 1291.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 1.408,
+          "peak_memory_mb": 214.8,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 1.532,
+          "peak_memory_mb": 372.8,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 8.075,
+          "peak_memory_mb": 339.6,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 1.156,
+          "peak_memory_mb": 129.0,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "starlette",
+      "github_url": "https://github.com/encode/starlette",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 5.207,
+          "peak_memory_mb": 349.9,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.316,
+          "peak_memory_mb": 102.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.192,
+          "peak_memory_mb": 94.9,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 2.063,
+          "peak_memory_mb": 170.0,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.194,
+          "peak_memory_mb": 53.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "streamlit",
+      "github_url": "https://github.com/streamlit/streamlit",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 30.168,
+          "peak_memory_mb": 1664.2,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 1.329,
+          "peak_memory_mb": 235.0,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 1.523,
+          "peak_memory_mb": 393.5,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 13.206,
+          "peak_memory_mb": 511.7,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 1.447,
+          "peak_memory_mb": 197.4,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "sympy",
+      "github_url": "https://github.com/sympy/sympy",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "execution_time_s": 300.001,
+          "error_message": "Timeout",
+          "peak_memory_mb": 0.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 7.322,
+          "peak_memory_mb": 546.1,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 4.865,
+          "peak_memory_mb": 942.7,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 35.439,
+          "peak_memory_mb": 1465.7,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 6.687,
+          "peak_memory_mb": 540.4,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "tensorflow",
+      "github_url": "https://github.com/tensorflow/tensorflow",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 266.413,
+          "peak_memory_mb": 3992.2,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 11.731,
+          "peak_memory_mb": 768.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 6.834,
+          "peak_memory_mb": 1194.7,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 50.838,
+          "peak_memory_mb": 1237.4,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 8.401,
+          "peak_memory_mb": 663.3,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "transformers",
+      "github_url": "https://github.com/huggingface/transformers",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": false,
+          "execution_time_s": 300.001,
+          "error_message": "Timeout",
+          "peak_memory_mb": 0.0,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 8.47,
+          "peak_memory_mb": 957.5,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 7.572,
+          "peak_memory_mb": 1521.6,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 58.552,
+          "peak_memory_mb": 2006.5,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 6.742,
+          "peak_memory_mb": 682.0,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "trio",
+      "github_url": "https://github.com/python-trio/trio",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 8.231,
+          "peak_memory_mb": 508.5,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.492,
+          "peak_memory_mb": 135.1,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.369,
+          "peak_memory_mb": 135.8,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 3.617,
+          "peak_memory_mb": 235.0,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.374,
+          "peak_memory_mb": 75.4,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "typer",
+      "github_url": "https://github.com/tiangolo/typer",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 3.636,
+          "peak_memory_mb": 306.1,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.272,
+          "peak_memory_mb": 115.3,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.137,
+          "peak_memory_mb": 88.5,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.792,
+          "peak_memory_mb": 169.4,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.196,
+          "peak_memory_mb": 61.8,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "urllib3",
+      "github_url": "https://github.com/urllib3/urllib3",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 6.557,
+          "peak_memory_mb": 432.6,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.423,
+          "peak_memory_mb": 134.1,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.253,
+          "peak_memory_mb": 124.7,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 3.017,
+          "peak_memory_mb": 217.8,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.346,
+          "peak_memory_mb": 75.9,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "uvicorn",
+      "github_url": "https://github.com/encode/uvicorn",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 2.711,
+          "peak_memory_mb": 252.8,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.247,
+          "peak_memory_mb": 95.9,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.108,
+          "peak_memory_mb": 75.7,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 1.622,
+          "peak_memory_mb": 144.4,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.125,
+          "peak_memory_mb": 46.5,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "wheel",
+      "github_url": "https://github.com/pypa/wheel",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 1.824,
+          "peak_memory_mb": 209.5,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 0.187,
+          "peak_memory_mb": 83.5,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 0.064,
+          "peak_memory_mb": 59.3,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 0.918,
+          "peak_memory_mb": 118.0,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 0.09,
+          "peak_memory_mb": 42.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    },
+    {
+      "package_name": "yt-dlp",
+      "github_url": "https://github.com/yt-dlp/yt-dlp",
+      "error": null,
+      "metrics": {
+        "pyright": {
+          "ok": true,
+          "execution_time_s": 30.424,
+          "peak_memory_mb": 1578.1,
+          "runs": 1
+        },
+        "pyrefly": {
+          "ok": true,
+          "execution_time_s": 1.55,
+          "peak_memory_mb": 231.2,
+          "runs": 1
+        },
+        "ty": {
+          "ok": true,
+          "execution_time_s": 8.096,
+          "peak_memory_mb": 346.0,
+          "runs": 1
+        },
+        "mypy": {
+          "ok": true,
+          "execution_time_s": 12.317,
+          "peak_memory_mb": 496.8,
+          "runs": 1
+        },
+        "zuban": {
+          "ok": true,
+          "execution_time_s": 1.743,
+          "peak_memory_mb": 173.7,
+          "runs": 1
+        }
+      },
+      "install_ok": true
+    }
+  ],
+  "os": "ubuntu"
+}
