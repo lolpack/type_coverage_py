@@ -37,7 +37,7 @@
 
     <div class="hero">
         <div class="container">
-            <h1>Type Checker Timing Benchmarks <a class="timing-asterisk" href="#interpreter-query-details" aria-label="Timing caveat: interpreter queries are included">*</a></h1>
+            <h1>Type Checker Timing Benchmarks</h1>
             <p class="subtitle">Daily performance analysis of Python type checkers</p>
             <p class="description">
                 Measuring wall-clock execution time and peak memory usage
@@ -95,7 +95,7 @@
             <h2>Type Checker Comparison</h2>
 
             <div class="summary-card-panel">
-                <h3>Typical time to check a package <a class="timing-asterisk" href="#interpreter-query-details" aria-label="Timings include interpreter queries">*</a></h3>
+                <h3>Typical time to check a package</h3>
                 <p class="chart-description" id="speedDescription"></p>
                 <div class="metric-tabs" role="group" aria-label="Summary statistic">
                     <button type="button" data-metric="geomean" aria-pressed="true">Geometric mean</button>
@@ -249,13 +249,13 @@
                 <div class="method-card">
                     <h3>Metrics Explained</h3>
                     <ul>
-                        <li><strong>Time (s)*:</strong> Full-process wall-clock execution time, including startup and any interpreter queries, to the millisecond. No interpreter-query cost is subtracted.</li>
+                        <li><strong>Time (s):</strong> Full-process wall-clock execution time, including startup and any interpreter queries, to the millisecond. No interpreter-query cost is subtracted.</li>
                         <li><strong>Memory (MB):</strong> Peak resident set size in megabytes</li>
                         <li><strong>Didn't finish:</strong> Timed out, hit the memory limit, or crashed</li>
                     </ul>
                 </div>
                 <div class="method-card" id="interpreter-query-details">
-                    <h3>* Interpreter queries: locally verified November 19, 2026</h3>
+                    <h3>Interpreter queries: locally verified November 19, 2026</h3>
                     <p>
                         <strong>Why query Python?</strong> A checker needs to locate installed packages
                         and select types for the target Python version and platform. Asking the selected
