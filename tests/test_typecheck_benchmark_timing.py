@@ -7,6 +7,9 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+from unittest.mock import patch
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -14,13 +17,22 @@ from typecheck_benchmark.daily_runner import run_process_with_timeout
 
 
 class TestProcessTiming:
-    def test_fast_process_not_rounded_up_to_poll_interval(self, tmp_path: Path) -> None:
-        # The old 100ms polling loop could never report less than 0.1s.
-        result = run_process_with_timeout(
-            [sys.executable, "-S", "-c", "pass"], cwd=tmp_path, timeout=30, capture_output=False,
-        )
+    @pytest.mark.parametrize("elapsed_s", [0.025, 0.11])
+    def test_process_duration_preserves_millisecond_precision(
+        self, tmp_path: Path, elapsed_s: float,
+    ) -> None:
+        # Process startup and scheduling can exceed 100ms on a busy runner.
+        # Control the clock to test precision independently of machine speed;
+        # test_waits_without_timeout checks that waiting does not poll.
+        with patch(
+            "typecheck_benchmark.daily_runner.time.perf_counter",
+            side_effect=[10.0, 10.0 + elapsed_s],
+        ):
+            result = run_process_with_timeout(
+                [sys.executable, "-S", "-c", "pass"], cwd=tmp_path, timeout=30, capture_output=False,
+            )
         assert result["returncode"] == 0
-        assert 0 < result["execution_time_s"] < 0.1
+        assert result["execution_time_s"] == elapsed_s
 
     def test_timeout_still_enforced(self, tmp_path: Path) -> None:
         result = run_process_with_timeout(
@@ -32,7 +44,6 @@ class TestProcessTiming:
 
     def test_waits_without_timeout(self, tmp_path: Path) -> None:
         import subprocess
-        from unittest.mock import patch
 
         real_popen = subprocess.Popen
         wait_calls: list[object] = []
