@@ -419,6 +419,21 @@ function checkerLabel(checker: string): string {
     return `<span class="checker-swatch" style="background:${CHECKER_COLORS[checker] || '#888'}"></span>${CHECKER_NAMES[checker] || checker}`;
 }
 
+function interpreterNotePopover(checker: string): string {
+    if (checker !== 'ty' && checker !== 'zuban') return '';
+    const id = `interpreter-note-${checker}`;
+    return `<button type="button" class="note-button" data-note="${id}" aria-controls="${id}"
+            aria-expanded="false" aria-label="Interpreter query timing note for ${CHECKER_NAMES[checker]}">&#9432;</button>
+        <div popover id="${id}" class="note-popover">
+            <h4>Interpreter query timing</h4>
+            <p>ty and Zuban discover this benchmark's environment without launching Python.
+                Pyrefly, Pyright and mypy query its interpreter for details such as import paths,
+                Python version or platform.</p>
+            <p>Times include this overhead, which can be a substantial share of a small package's time.</p>
+            <p><a href="#interpreter-query-details">Methodology and configuration details</a></p>
+        </div>`;
+}
+
 function renderStats(): void {
     const grid = document.getElementById('statGrid');
     if (!grid || !benchmarkData) return;
@@ -444,7 +459,8 @@ function renderBars(containerId: string, rows: { checker: string; value: number;
     el.innerHTML = sorted.map(r => {
         const pct = (r.value / max) * 78;
         const rel = r.value === best ? 'lowest' : `${(r.value / best).toFixed(1)}&times; the lowest`;
-        return `<div class="bar-name">${checkerLabel(r.checker)}</div>
+        const note = containerId === 'speedBars' ? interpreterNotePopover(r.checker) : '';
+        return `<div class="bar-name">${checkerLabel(r.checker)}${note}</div>
             <div class="bar-track" title="${escapeHtml(CHECKER_NAMES[r.checker] || r.checker)}: ${r.label} (${rel.replace('&times;', 'x')})">
                 <div class="bar-fill" style="width:${pct}%;background:${CHECKER_COLORS[r.checker] || '#888'}"></div>
                 <span class="bar-value" style="left:calc(${pct}% + 8px)">${r.label}</span>
