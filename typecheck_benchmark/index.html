@@ -37,7 +37,7 @@
 
     <div class="hero">
         <div class="container">
-            <h1>Type Checker Timing Benchmarks</h1>
+            <h1>Type Checker Timing Benchmarks <a class="timing-asterisk" href="#interpreter-query-details" aria-label="Timing caveat: interpreter queries are included">*</a></h1>
             <p class="subtitle">Daily performance analysis of Python type checkers</p>
             <p class="description">
                 Measuring wall-clock execution time and peak memory usage
@@ -95,7 +95,7 @@
             <h2>Type Checker Comparison</h2>
 
             <div class="summary-card-panel">
-                <h3>Typical time to check a package</h3>
+                <h3>Typical time to check a package <a class="timing-asterisk" href="#interpreter-query-details" aria-label="Timings include interpreter queries">*</a></h3>
                 <p class="chart-description" id="speedDescription"></p>
                 <div class="metric-tabs" role="group" aria-label="Summary statistic">
                     <button type="button" data-metric="geomean" aria-pressed="true">Geometric mean</button>
@@ -140,7 +140,8 @@
         <section id="packages" class="section">
             <h2>Every Package</h2>
             <p class="chart-description">
-                Time per checker. <span class="best-marker" aria-hidden="true">&#9650;</span> marks the
+                Time per checker <a class="timing-asterisk" href="#interpreter-query-details" aria-label="Timings include interpreter queries">*</a>.
+                <span class="best-marker" aria-hidden="true">&#9650;</span> marks the
                 fastest, along with any checker within a fixed tolerance of it (10&nbsp;ms or 5%).
                 The small number is how many times slower than the fastest.
                 &#9432; marks a note on how checkers differ on that package.
@@ -248,10 +249,50 @@
                 <div class="method-card">
                     <h3>Metrics Explained</h3>
                     <ul>
-                        <li><strong>Time (s):</strong> Wall-clock execution time, to the millisecond</li>
+                        <li><strong>Time (s)*:</strong> Full-process wall-clock execution time, including startup and any interpreter queries, to the millisecond. No interpreter-query cost is subtracted.</li>
                         <li><strong>Memory (MB):</strong> Peak resident set size in megabytes</li>
                         <li><strong>Didn't finish:</strong> Timed out, hit the memory limit, or crashed</li>
                     </ul>
+                </div>
+                <div class="method-card" id="interpreter-query-details">
+                    <h3>* Interpreter queries: locally verified November 19, 2026</h3>
+                    <p>
+                        <strong>Why query Python?</strong> A checker needs to locate installed packages
+                        and select types for the target Python version and platform. Asking the selected
+                        interpreter gives it environment details directly, including Python's import search paths.
+                        Which details are queried varies by checker.
+                    </p>
+                    <p class="method-note">
+                        <strong>The tradeoff:</strong> Launching Python adds latency, included in these timings.
+                        Reading environment files, such as a virtual environment's <code>pyvenv.cfg</code>,
+                        can avoid that launch cost, but relies on recognizing the environment layout.
+                        Unusual installations or search paths may need explicit configuration.
+                        Both approaches can discover a standard virtual environment successfully;
+                        query counts alone do not establish correctness.
+                    </p>
+                    <p>
+                        With Python 3.12 on macOS, a fresh package virtual environment,
+                        and this runner's generated configs and interpreter flags, we observed:
+                    </p>
+                    <ul>
+                        <li><strong>Pyrefly 1.5.0:</strong> One query for version, platform, and import paths.
+                            <a href="https://pyrefly.org/en/docs/configuration/#skip-interpreter-query">Pyrefly configuration</a>.</li>
+                        <li><strong>Pyright 1.1.414:</strong> Two queries with <code>--pythonpath</code>, for version and import paths.
+                            <a href="https://github.com/microsoft/pyright/blob/main/docs/import-resolution.md#configuring-your-python-environment">Pyright environment discovery</a>.</li>
+                        <li><strong>mypy 2.4.1:</strong> One query with <code>--python-executable</code> pointing to the separate package environment.
+                            Using mypy's own interpreter can avoid this extra process.
+                            <a href="https://mypy.readthedocs.io/en/stable/command_line.html#cmdoption-mypy-python-executable">mypy import discovery</a>.</li>
+                        <li><strong>ty 0.0.107:</strong> No interpreter launch observed with <code>--python</code> pointing to the virtual-environment directory.
+                            <a href="https://docs.astral.sh/ty/modules/#python-environment">ty environment discovery</a>.</li>
+                        <li><strong>Zuban 0.10.2:</strong> No interpreter launch observed with <code>--python-executable</code> pointing into that virtual environment.
+                            <a href="https://docs.zubanls.com/en/latest/usage.html">Zuban configuration</a>.</li>
+                    </ul>
+                    <p class="method-note">
+                        Query counts depend on versions and configuration. This local audit does not establish
+                        counts for every historical result or platform, and its injected delay is not an estimate
+                        of normal query overhead. A discarded warmup does not remove queries in subsequent fresh processes.
+                        <a href="https://github.com/lolpack/type_coverage_py/blob/main/BENCHMARKS.md#interpreter-query-audit">Reproduce the audit</a>.
+                    </p>
                 </div>
                 <div class="method-card">
                     <h3>Summary Statistics</h3>
@@ -297,7 +338,7 @@
                     <div class="legend-info">
                         <strong>ty</strong>
                         <span class="legend-version" id="version-ty"></span>
-                        <span>Type checker for Python by Astral</span>
+                        <span>Type checker for Python by OpenAI</span>
                     </div>
                 </div>
                 <div class="legend-item mypy">
