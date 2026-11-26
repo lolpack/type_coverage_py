@@ -417,3 +417,36 @@ code {
 ::-webkit-scrollbar-track { background: var(--color-bg-secondary); }
 ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* Return type inference: hollow glyph and hatched bar for off, filled for on */
+[hidden] { display: none !important; }
+.rti-glyph { display: inline-block; width: 1em; margin-right: 4px; text-align: center; font-size: 0.8em; color: var(--color-text-muted); }
+.rti-glyph.rti-on { color: var(--color-text-bright); }
+.rti-tag { display: inline-flex; align-items: center; margin-left: 8px; color: var(--color-text-muted); font-size: 0.8rem; }
+.rti-unsupported, .rti-unsupported .bar-value { color: var(--color-text-muted); opacity: 0.55; }
+.chart-description a { color: var(--color-accent); }
+.tab-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; margin-bottom: 16px; }
+.tab-row .metric-tabs { margin-bottom: 0; }
+.tab-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--color-text-muted); }
+.bar-fill { background: var(--bar-color); }
+.rti-paired .bar-fill.rti-bar-off {
+    background: repeating-linear-gradient(135deg, var(--bar-color) 0 3px, transparent 3px 6px);
+    box-shadow: inset 0 0 0 1px var(--bar-color);
+}
+.summary-bars.rti-paired { grid-template-columns: 170px 1fr 180px; row-gap: 4px; }
+.summary-bars.rti-paired .bar-name { justify-content: space-between; }
+.summary-bars.rti-paired .rti-group-start,
+.summary-bars.rti-paired .rti-group-start + .bar-track,
+.summary-bars.rti-paired .rti-group-start + .bar-track + * { margin-top: 12px; }
+.rti-bar-checker { display: inline-flex; align-items: center; }
+.rti-default { display: block; font-size: 0.65rem; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--color-text-muted); }
+.package-table.rti-stacked td { padding-top: 8px; padding-bottom: 8px; }
+.rti-line { white-space: nowrap; line-height: 1.5; }
+.rti-line.best { color: var(--color-text-bright); font-weight: 600; }
+.rti-line.best .rti-time::before { content: "\25B2 "; color: var(--color-success); font-size: 0.7em; }
+.times-slower.inline { display: inline; margin-left: 6px; }
+.package-table th.rti-group, .package-table td.rti-group { border-left: 1px solid var(--color-border); }
+.package-table th.rti-group { text-align: center; }
+.package-table th.rti-subhead { text-transform: none; text-align: right; }
+.package-table.rti-columns th { position: static; }
+.filter-bar .inference-tabs { margin-bottom: 0; }

@@ -93,15 +93,31 @@
         <!-- Comparison -->
         <section id="comparison" class="section">
             <h2>Type Checker Comparison</h2>
-
+            <p class="chart-description rti-only" hidden>
+                <strong>Return type inference</strong> means inferring the return type of a
+                function without a return annotation from its body. Pyright, Pyrefly and Zuban
+                do it by default; ty and mypy don't. Pyrefly, ty and Zuban can switch it, so they
+                are measured both ways; Pyright can't turn it off, and mypy doesn't support it.
+                <a href="#return-type-inference-details">Configuration details</a>.
+            </p>
             <div class="summary-card-panel">
                 <h3>Typical time to check a package</h3>
                 <p class="chart-description" id="speedDescription"></p>
-                <div class="metric-tabs" role="group" aria-label="Summary statistic">
-                    <button type="button" data-metric="geomean" aria-pressed="true">Geometric mean</button>
-                    <button type="button" data-metric="median" aria-pressed="false">Median</button>
-                    <button type="button" data-metric="mean" aria-pressed="false">Average</button>
-                    <button type="button" data-metric="total" aria-pressed="false">Total</button>
+                <div class="tab-row">
+                    <div class="metric-tabs" role="group" aria-label="Summary statistic">
+                        <button type="button" data-metric="geomean" aria-pressed="true">Geometric mean</button>
+                        <button type="button" data-metric="median" aria-pressed="false">Median</button>
+                        <button type="button" data-metric="mean" aria-pressed="false">Average</button>
+                        <button type="button" data-metric="total" aria-pressed="false">Total</button>
+                    </div>
+                    <div class="rti-only tab-label" hidden>
+                        <span>Return type inference</span>
+                        <div class="metric-tabs inference-tabs" role="group" aria-label="Return type inference">
+                            <button type="button" data-view="both" aria-pressed="true">Both</button>
+                            <button type="button" data-view="off" aria-pressed="false"><span class="rti-glyph rti-off" aria-hidden="true">&#9675;</span> Off</button>
+                            <button type="button" data-view="on" aria-pressed="false"><span class="rti-glyph rti-on" aria-hidden="true">&#9679;</span> On</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="summary-bars" id="speedBars"></div>
                 <p class="summary-note" id="speedNote"></p>
@@ -146,8 +162,19 @@
                 The small number is how many times slower than the fastest.
                 &#9432; marks a note on how checkers differ on that package.
             </p>
-
+            <p class="chart-description rti-only" hidden>
+                <span class="rti-glyph rti-off" aria-hidden="true">&#9675;</span>Return type inference off,
+                <span class="rti-glyph rti-on" aria-hidden="true">&#9679;</span>on. Each setting is compared
+                only with the same setting; n/a marks a setting the checker doesn't have.
+            </p>
             <div class="filter-bar">
+                <div class="rti-only" hidden>
+                    <div class="metric-tabs inference-tabs" role="group" aria-label="Return type inference">
+                        <button type="button" data-view="both" aria-pressed="true">Both</button>
+                        <button type="button" data-view="off" aria-pressed="false"><span class="rti-glyph rti-off" aria-hidden="true">&#9675;</span> Off</button>
+                        <button type="button" data-view="on" aria-pressed="false"><span class="rti-glyph rti-on" aria-hidden="true">&#9679;</span> On</button>
+                    </div>
+                </div>
                 <input type="text" id="packageSearch" placeholder="Search packages..." class="search-input" aria-label="Search packages">
                 <select id="sortBy" class="filter-select" aria-label="Sort packages">
                     <option value="name">Sort by name</option>
@@ -244,6 +271,30 @@
                         functions that lack type annotations. The other four checkers all
                         analyze unannotated code. We enable <code>check_untyped_defs = True</code>
                         so that mypy checks the same amount of code as the other tools.
+                    </p>
+                </div>
+                <div class="method-card" id="return-type-inference-details">
+                    <h3>Return Type Inference</h3>
+                    <p>
+                        Checkers differ on whether they infer the return type of a function that
+                        has no return annotation. Pyright, Pyrefly and Zuban do by default; ty and
+                        mypy don't. Inferring return types means analyzing more function bodies,
+                        including bodies in installed dependencies, so it can take more time.
+                    </p>
+                    <p>
+                        Every checker runs in its default setting. A checker that can switch the
+                        setting also runs with the opposite one, written to the same generated config:
+                    </p>
+                    <ul>
+                        <li><strong>Pyrefly:</strong> <code>infer-return-types = "never"</code> turns it off</li>
+                        <li><strong>ty:</strong> <code>[analysis] return-type-inference = "always"</code> turns it on</li>
+                        <li><strong>Zuban:</strong> <code>untyped_function_return_mode = any</code> turns it off</li>
+                    </ul>
+                    <p class="method-note">
+                        Pyright has no setting to turn return type inference off
+                        (<code>analyzeUnannotatedFunctions = false</code> also stops checking those
+                        functions), and mypy never infers return types, so each is measured in one
+                        setting only.
                     </p>
                 </div>
                 <div class="method-card">
