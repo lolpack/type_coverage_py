@@ -49,7 +49,17 @@ python -m typecheck_benchmark --runs 3 --warmup 1
 
 # Benchmark a local project directory
 python -m typecheck_benchmark --local /path/to/your/project --checkers pyrefly
+
+# Skip the runs with the opposite return type inference setting
+python -m typecheck_benchmark --no-alternate-inference
 ```
+
+Each checker runs in its default configuration. Pyrefly, ty and Zuban can switch
+return type inference, so each of them also runs with the opposite of its default:
+Pyrefly and Zuban with it off, ty with it on. Pyright can't turn it off, and mypy
+never infers return types. In the results JSON, `metrics` holds the default
+configurations, `alternate_metrics` the opposite setting, and
+`return_type_inference_default` says which setting each checker's default is.
 
 **Dashboard:** [https://python-type-checking.com/typecheck_benchmark/](https://python-type-checking.com/typecheck_benchmark/)
 
@@ -161,3 +171,4 @@ python -m lsp.benchmark.daily_runner --output lsp/benchmark/results/local-myplat
 | `--os-name NAME` | Y | Y | OS label for output filename |
 | `--timeout N` | Y | N | Timeout per checker in seconds |
 | `--local PATH` | Y | N | Benchmark a local directory |
+| `--no-alternate-inference` | Y | N | Skip the runs with the opposite return type inference setting |

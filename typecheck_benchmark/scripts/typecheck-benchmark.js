@@ -30,6 +30,21 @@ function getOsFromUrl() {
     const os = params.get('os');
     return (os && ['ubuntu', 'macos', 'windows'].includes(os)) ? os : 'ubuntu';
 }
+function getInferenceViewFromUrl() {
+    const view = new URLSearchParams(window.location.search).get('inference');
+    return view === 'off' || view === 'on' ? view : 'both';
+}
+function getCellLayoutFromUrl() {
+    return new URLSearchParams(window.location.search).get('cells') === 'columns' ? 'columns' : 'stacked';
+}
+function updateUrlParam(name, value) {
+    const url = new URL(window.location.href);
+    if (value)
+        url.searchParams.set(name, value);
+    else
+        url.searchParams.delete(name);
+    window.history.replaceState({}, '', url.toString());
+}
 function getDateFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const date = params.get('date');
@@ -136,6 +151,8 @@ function getDemoData() {
 async function init() {
     try {
         currentOs = getOsFromUrl();
+        inferenceView = getInferenceViewFromUrl();
+        cellLayout = getCellLayoutFromUrl();
         const osSelect = document.getElementById('osSelect');
         if (osSelect)
             osSelect.value = currentOs;
@@ -153,6 +170,7 @@ async function init() {
 }
 function renderAll() {
     updateTimestamp();
+    renderInferenceControls();
     renderStats();
     renderSpeed();
     renderMemory();
@@ -268,6 +286,67 @@ function updateTimestamp() {
         }
     }
 }
+let inferenceView = 'both';
+let cellLayout = 'stacked';
+/** True when these results time some checkers both with and without return type inference. */
+function hasInferenceVariants() {
+    return !!benchmarkData?.return_type_inference_default
+        && (benchmarkData.results || []).some(r => Object.keys(r.alternate_metrics || {}).length > 0);
+}
+function inferenceDefault(checker) {
+    return benchmarkData?.return_type_inference_default?.[checker];
+}
+function hasAlternate(checker) {
+    return (benchmarkData?.results || []).some(r => r.alternate_metrics?.[checker]);
+}
+/** Why a checker has no measurement with return type inference set to `on`, or null if it has one. */
+function unsupportedReason(checker, on) {
+    const def = inferenceDefault(checker);
+    if (def === on || hasAlternate(checker))
+        return null;
+    return on ? "Doesn't infer return types" : 'No setting to turn it off';
+}
+/** Every configuration with measurements, in table order: per checker, off before on. */
+function allConfigs() {
+    const checkers = benchmarkData?.type_checkers || [];
+    if (!hasInferenceVariants())
+        return checkers.map(checker => ({ checker, on: null }));
+    return checkers.flatMap(checker => [false, true]
+        .filter(on => unsupportedReason(checker, on) === null)
+        .map(on => ({ checker, on })));
+}
+/** The configurations the current view shows. */
+function visibleConfigs() {
+    return allConfigs().filter(c => c.on === null || inferenceView === 'both' || c.on === (inferenceView === 'on'));
+}
+function configMetrics(r, c) {
+    if (c.on === null || c.on === inferenceDefault(c.checker))
+        return r.metrics?.[c.checker];
+    return r.alternate_metrics?.[c.checker];
+}
+function configTime(r, c) {
+    const m = configMetrics(r, c);
+    return m?.ok && m.execution_time_s != null ? m.execution_time_s : null;
+}
+function modeName(on) {
+    return on ? 'on' : 'off';
+}
+/** A small marker for the setting: hollow for off, filled for on. */
+function modeGlyph(on) {
+    return `<span class="rti-glyph rti-${modeName(on)}" aria-hidden="true">${on ? '&#9679;' : '&#9675;'}</span>`;
+}
+function configTitle(c) {
+    const name = CHECKER_NAMES[c.checker] || c.checker;
+    if (c.on === null)
+        return name;
+    const isDefault = c.on === inferenceDefault(c.checker) ? ', default' : '';
+    return `${name} (return type inference ${modeName(c.on)}${isDefault})`;
+}
+function configLabel(c) {
+    if (c.on === null)
+        return checkerLabel(c.checker);
+    return `${checkerLabel(c.checker)}<span class="rti-tag">${modeGlyph(c.on)}${modeName(c.on)}</span>`;
+}
 let currentMetric = 'geomean';
 function geometricMean(values) {
     if (values.length === 0)
@@ -282,25 +361,25 @@ function median(values) {
     const mid = Math.floor(v.length / 2);
     return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
 }
+// Every configuration, not just the visible ones, so switching views keeps the same packages.
 function finishedByAll() {
     if (!benchmarkData)
         return [];
-    const checkers = benchmarkData.type_checkers || [];
-    return (benchmarkData.results || []).filter(r => checkers.every(c => r.metrics?.[c]?.ok && r.metrics[c].execution_time_s != null));
+    const configs = allConfigs();
+    return (benchmarkData.results || []).filter(r => configs.every(c => configTime(r, c) !== null));
 }
-function summarize() {
+function summarize(configs) {
     if (!benchmarkData)
         return [];
-    const checkers = benchmarkData.type_checkers || [];
     const common = finishedByAll();
-    return checkers.map(checker => {
-        const times = common.map(r => r.metrics[checker].execution_time_s);
-        const mems = common.map(r => r.metrics[checker].peak_memory_mb || 0);
+    return configs.map(config => {
+        const times = common.map(r => configTime(r, config));
+        const mems = common.map(r => configMetrics(r, config)?.peak_memory_mb || 0);
         const failures = (benchmarkData.results || [])
-            .filter(r => !r.metrics?.[checker]?.ok)
-            .map(r => ({ pkg: r.package_name, reason: r.metrics?.[checker]?.error_message || r.error || 'Failed' }));
+            .filter(r => configTime(r, config) === null)
+            .map(r => ({ pkg: r.package_name, reason: configMetrics(r, config)?.error_message || r.error || 'Failed' }));
         return {
-            checker,
+            config,
             geomean: geometricMean(times),
             median: median(times),
             mean: times.length ? times.reduce((s, v) => s + v, 0) / times.length : 0,
@@ -354,34 +433,69 @@ function renderStats() {
     const grid = document.getElementById('statGrid');
     if (!grid || !benchmarkData)
         return;
-    const summaries = summarize();
-    const failed = summaries.reduce((n, s) => n + s.failures.length, 0);
+    const failed = summarize(allConfigs()).reduce((n, s) => n + s.failures.length, 0);
     const stats = [
         [benchmarkData.results?.length || 0, 'Packages tested'],
-        [finishedByAll().length, 'Finished by every checker (summarized below)'],
+        [finishedByAll().length, hasInferenceVariants()
+                ? 'Finished by every checker and setting (summarized below)'
+                : 'Finished by every checker (summarized below)'],
         [(benchmarkData.type_checkers || []).length, 'Type checkers'],
         [failed, "Runs that didn't finish"],
     ];
     grid.innerHTML = stats.map(([v, l]) => `<div class="stat-card"><div class="stat-value">${v}</div><div class="stat-label">${l}</div></div>`).join('');
 }
+function barHtml(row, max, best, name, trailing, nameClass = '') {
+    const pct = (row.value / max) * 78;
+    const rel = row.value === best ? 'lowest' : `${(row.value / best).toFixed(1)}&times; the lowest`;
+    const mode = row.config.on === null ? '' : ` rti-bar-${modeName(row.config.on)}`;
+    return `<div class="bar-name${nameClass}">${name}</div>
+        <div class="bar-track" title="${escapeHtml(configTitle(row.config))}: ${row.label} (${rel.replace('&times;', 'x')})">
+            <div class="bar-fill${mode}" style="width:${pct}%;--bar-color:${CHECKER_COLORS[row.config.checker] || '#888'}"></div>
+            <span class="bar-value" style="left:calc(${pct}% + 8px)">${row.label}</span>
+        </div>
+        ${trailing}`;
+}
+function unsupportedBarHtml(checker, on, name, nameClass = '') {
+    return `<div class="bar-name${nameClass}">${name}</div>
+        <div class="bar-track rti-unsupported"><span class="bar-value" style="left:0">n/a</span></div>
+        <span class="bar-trailing rti-unsupported">${escapeHtml(unsupportedReason(checker, on) || '')}</span>`;
+}
+/**
+ * Bars for the visible configurations, fastest first. Each setting is compared
+ * only with the same setting. In the "both" view, each checker's two settings
+ * sit together, ordered by its default configuration.
+ */
 function renderBars(containerId, rows, trailing) {
     const el = document.getElementById(containerId);
     if (!el)
         return;
-    const sorted = [...rows].sort((a, b) => a.value - b.value);
-    const max = Math.max(...sorted.map(r => r.value), 0) || 1;
-    const best = sorted[0]?.value || 0;
-    el.innerHTML = sorted.map(r => {
-        const pct = (r.value / max) * 78;
-        const rel = r.value === best ? 'lowest' : `${(r.value / best).toFixed(1)}&times; the lowest`;
-        const note = containerId === 'speedBars' ? interpreterNotePopover(r.checker) : '';
-        return `<div class="bar-name">${checkerLabel(r.checker)}${note}</div>
-            <div class="bar-track" title="${escapeHtml(CHECKER_NAMES[r.checker] || r.checker)}: ${r.label} (${rel.replace('&times;', 'x')})">
-                <div class="bar-fill" style="width:${pct}%;background:${CHECKER_COLORS[r.checker] || '#888'}"></div>
-                <span class="bar-value" style="left:calc(${pct}% + 8px)">${r.label}</span>
-            </div>
-            ${trailing(r.checker)}`;
-    }).join('');
+    const max = Math.max(...rows.map(r => r.value), 0) || 1;
+    const bestFor = (c) => Math.min(...rows.filter(r => r.config.on === c.on).map(r => r.value));
+    const note = (checker) => containerId === 'speedBars' ? interpreterNotePopover(checker) : '';
+    el.classList.toggle('rti-paired', hasInferenceVariants() && inferenceView === 'both');
+    if (!hasInferenceVariants()) {
+        el.innerHTML = [...rows].sort((a, b) => a.value - b.value).map(r => barHtml(r, max, bestFor(r.config), `${checkerLabel(r.config.checker)}${note(r.config.checker)}`, trailing(r.config))).join('');
+        return;
+    }
+    const checkers = benchmarkData?.type_checkers || [];
+    if (inferenceView !== 'both') {
+        const on = inferenceView === 'on';
+        const measured = rows.filter(r => r.config.on === on).sort((a, b) => a.value - b.value);
+        const missing = checkers.filter(c => unsupportedReason(c, on) !== null);
+        el.innerHTML = measured.map(r => barHtml(r, max, bestFor(r.config), `${checkerLabel(r.config.checker)}${note(r.config.checker)}`, trailing(r.config))).join('')
+            + missing.map(c => unsupportedBarHtml(c, on, `<span class="rti-unsupported">${checkerLabel(c)}</span>`)).join('');
+        return;
+    }
+    const defaultValue = (checker) => rows.find(r => r.config.checker === checker && r.config.on === inferenceDefault(checker))?.value ?? Infinity;
+    el.innerHTML = [...checkers].sort((a, b) => defaultValue(a) - defaultValue(b)).map(checker => [false, true].map((on, i) => {
+        const row = rows.find(r => r.config.checker === checker && r.config.on === on);
+        const name = `<span class="rti-bar-checker">${i === 0 ? `${checkerLabel(checker)}${note(checker)}` : ''}</span>`
+            + `<span class="rti-tag${row ? '' : ' rti-unsupported'}">${modeGlyph(on)}${modeName(on)}</span>`;
+        const nameClass = i === 0 ? ' rti-group-start' : '';
+        return row
+            ? barHtml(row, max, bestFor(row.config), name, trailing(row.config), nameClass)
+            : unsupportedBarHtml(checker, on, name, nameClass);
+    }).join('')).join('');
 }
 const METRIC_DESCRIPTIONS = {
     geomean: 'Geometric mean of the time per package. Every package counts equally whether it takes 0.1 s or 100 s, so one huge package can\'t dominate.',
@@ -392,16 +506,18 @@ const METRIC_DESCRIPTIONS = {
 function renderSpeed() {
     if (!benchmarkData)
         return;
-    const summaries = summarize();
-    const byChecker = new Map(summaries.map(s => [s.checker, s]));
-    document.querySelectorAll('.metric-tabs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.metric === currentMetric)));
+    const summaries = summarize(visibleConfigs());
+    document.querySelectorAll('.metric-tabs button[data-metric]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.metric === currentMetric)));
     const desc = document.getElementById('speedDescription');
+    const which = hasInferenceVariants() ? 'checker and setting' : 'checker';
     if (desc)
-        desc.textContent = `${METRIC_DESCRIPTIONS[currentMetric]} Lower is better. Computed over the ${finishedByAll().length} packages every checker finished.`;
-    renderBars('speedBars', summaries.map(s => ({ checker: s.checker, value: s[currentMetric], label: formatTime(s[currentMetric]) })), checker => {
-        const f = byChecker.get(checker)?.failures || [];
+        desc.textContent = `${METRIC_DESCRIPTIONS[currentMetric]} Lower is better. Computed over the ${finishedByAll().length} packages every ${which} finished.`;
+    renderBars('speedBars', summaries.map(s => ({ config: s.config, value: s[currentMetric], label: formatTime(s[currentMetric]) })), config => {
+        const f = summaries.find(s => s.config === config)?.failures || [];
+        // Paired bars only call out failures, so the column isn't a wall of repeats.
+        const paired = hasInferenceVariants() && inferenceView === 'both';
         if (!f.length)
-            return `<span class="bar-trailing">Finished all ${benchmarkData.results.length}</span>`;
+            return `<span class="bar-trailing">${paired ? '' : `Finished all ${benchmarkData.results.length}`}</span>`;
         const list = f.map(x => `${x.pkg}: ${shortReason(x.reason)}`).join('\n');
         return `<span class="bar-trailing"><span class="fail-chip" tabindex="0" title="${escapeHtml(list)}"><span class="fail-icon" aria-hidden="true">&#9888;</span>${f.length} didn't finish</span></span>`;
     });
@@ -418,7 +534,7 @@ function renderSpeed() {
     }
 }
 function renderMemory() {
-    const summaries = summarize();
+    const summaries = summarize(visibleConfigs());
     const el = document.getElementById('memoryBars');
     if (!el)
         return;
@@ -426,22 +542,26 @@ function renderMemory() {
         el.innerHTML = '<p class="summary-note">Peak memory wasn\'t recorded for this run.</p>';
         return;
     }
-    renderBars('memoryBars', summaries.map(s => ({ checker: s.checker, value: s.memGeomean, label: `${Math.round(s.memGeomean)} MB` })), () => '<span></span>');
+    renderBars('memoryBars', summaries.map(s => ({ config: s.config, value: s.memGeomean, label: `${Math.round(s.memGeomean)} MB` })), () => '<span></span>');
 }
 function renderFailures() {
     const tbody = document.getElementById('failureBody');
     if (!tbody)
         return;
-    const rows = summarize().flatMap(s => s.failures.map(f => `<tr><td>${checkerLabel(s.checker)}</td><td>${escapeHtml(f.pkg)}</td><td class="fail-text" title="${escapeHtml(f.reason)}">&#9888; ${shortReason(f.reason)}</td></tr>`));
+    const rows = summarize(visibleConfigs()).flatMap(s => s.failures.map(f => `<tr><td>${configLabel(s.config)}</td><td>${escapeHtml(f.pkg)}</td><td class="fail-text" title="${escapeHtml(f.reason)}">&#9888; ${shortReason(f.reason)}</td></tr>`));
     tbody.innerHTML = rows.join('') || '<tr><td colspan="3">Every checker finished every package.</td></tr>';
+}
+// ---------------------------------------------------------------------------
+// Return type inference controls
+// ---------------------------------------------------------------------------
+function renderInferenceControls() {
+    const show = hasInferenceVariants();
+    document.querySelectorAll('.rti-only').forEach(el => { el.hidden = !show; });
+    document.querySelectorAll('.inference-tabs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === inferenceView)));
 }
 // ---------------------------------------------------------------------------
 // Per-package table
 // ---------------------------------------------------------------------------
-function okTimes(r, checkers) {
-    return checkers.map(c => r.metrics?.[c]).filter(m => m?.ok && m.execution_time_s != null)
-        .map(m => m.execution_time_s);
-}
 function noteId(pkg) {
     return `note-${pkg.replace(/[^A-Za-z0-9_-]/g, '-')}`;
 }
@@ -546,6 +666,31 @@ function setupNotes() {
     }, true);
     window.addEventListener('scroll', hideNote, { passive: true });
 }
+/** Fastest time among the visible configurations with return type inference `on`. */
+function fastest(r, configs, on) {
+    const times = configs.filter(c => c.on === on).map(c => configTime(r, c)).filter((t) => t !== null);
+    return times.length ? Math.min(...times) : 0;
+}
+/** One checker's time on one package with one setting, compared with the fastest checker at that setting. */
+function timeCell(r, checker, on, best, inline) {
+    const reason = on === null ? null : unsupportedReason(checker, on);
+    if (reason)
+        return { cls: 'rti-unsupported', html: `<span title="${escapeHtml(reason)}">n/a</span>` };
+    const config = { checker, on };
+    const m = configMetrics(r, config);
+    const t = configTime(r, config);
+    if (t === null) {
+        const failure = m?.error_message || r.error || 'Failed';
+        return { cls: 'fail-text', html: `<span title="${escapeHtml(failure)}">&#9888; ${shortReason(failure)}</span>` };
+    }
+    const mem = m?.peak_memory_mb ? `, ${Math.round(m.peak_memory_mb)} MB` : '';
+    const title = `${escapeHtml(configTitle(config))}: ${formatTime(t)}${mem}`;
+    const time = `<span class="rti-time" title="${title}">${formatTime(t)}</span>`;
+    if (withinNoise(t, best))
+        return { cls: 'best', html: time };
+    const slower = `<span class="times-slower${inline ? ' inline' : ''}">${(t / best).toFixed(1)}&times;</span>`;
+    return { cls: '', html: `${time}${slower}` };
+}
 function populateResultsTable(filterText, sortBy) {
     if (!benchmarkData)
         return;
@@ -554,11 +699,13 @@ function populateResultsTable(filterText, sortBy) {
     if (!head || !tbody)
         return;
     const checkers = benchmarkData.type_checkers || [];
+    const configs = visibleConfigs();
     const f = (filterText || '').toLowerCase();
     let results = (benchmarkData.results || []).filter(r => r.package_name.toLowerCase().includes(f));
-    const slowest = (r) => Math.max(0, ...okTimes(r, checkers));
+    const okTimes = (r) => configs.map(c => configTime(r, c)).filter((t) => t !== null);
+    const slowest = (r) => Math.max(0, ...okTimes(r));
     const spread = (r) => {
-        const t = okTimes(r, checkers);
+        const t = okTimes(r);
         return t.length ? Math.max(...t) / Math.max(Math.min(...t), 0.001) : 0;
     };
     results = [...results].sort((a, b) => {
@@ -568,26 +715,57 @@ function populateResultsTable(filterText, sortBy) {
             return spread(b) - spread(a);
         return a.package_name.toLowerCase().localeCompare(b.package_name.toLowerCase());
     });
-    head.innerHTML = `<tr><th>Package</th>${checkers.map(c => `<th>${checkerLabel(c)}</th>`).join('')}</tr>`;
+    const variants = hasInferenceVariants();
+    const settings = !variants ? [null]
+        : inferenceView === 'both' ? [false, true] : [inferenceView === 'on'];
+    const paired = settings.length === 2;
+    const columns = paired && cellLayout === 'columns';
+    const table = head.closest('table');
+    table?.classList.toggle('rti-stacked', paired && !columns);
+    table?.classList.toggle('rti-columns', columns);
+    const defaultNote = (c) => variants
+        ? `<span class="rti-default">default: ${modeName(inferenceDefault(c))}</span>` : '';
+    const unsupportedHead = (c) => !paired && settings[0] !== null && unsupportedReason(c, settings[0]) ? ' class="rti-unsupported"' : '';
+    if (columns) {
+        head.innerHTML = `<tr><th rowspan="2">Package</th>${checkers.map(c => `<th colspan="2" class="rti-group">${checkerLabel(c)}${defaultNote(c)}</th>`).join('')}</tr>
+            <tr>${checkers.map(() => settings.map(on => `<th class="rti-subhead">${modeGlyph(on)}${modeName(on)}</th>`).join('')).join('')}</tr>`;
+    }
+    else {
+        head.innerHTML = `<tr><th>Package</th>${checkers.map(c => `<th${unsupportedHead(c)}>${checkerLabel(c)}${defaultNote(c)}</th>`).join('')}</tr>`;
+    }
+    const colCount = 1 + checkers.length * (columns ? 2 : 1);
     tbody.innerHTML = results.map(r => {
-        const times = okTimes(r, checkers);
-        const best = times.length ? Math.min(...times) : 0;
+        const best = new Map(settings.map(on => [on, fastest(r, configs, on)]));
         const cells = checkers.map(c => {
-            const m = r.metrics?.[c];
-            if (!m?.ok || m.execution_time_s == null) {
-                const reason = m?.error_message || r.error || 'Failed';
-                return `<td class="fail-text" title="${escapeHtml(reason)}">&#9888; ${shortReason(reason)}${noteMarker(r.package_name, c)}</td>`;
-            }
-            const t = m.execution_time_s;
-            const mem = m.peak_memory_mb ? `, ${Math.round(m.peak_memory_mb)} MB` : '';
             const marker = noteMarker(r.package_name, c);
-            if (withinNoise(t, best))
-                return `<td class="best" title="${formatTime(t)}${mem}">${formatTime(t)}${marker}</td>`;
-            return `<td title="${formatTime(t)}${mem}">${formatTime(t)}${marker}<span class="times-slower">${(t / best).toFixed(1)}&times;</span></td>`;
+            if (columns) {
+                return settings.map((on, i) => {
+                    const cell = timeCell(r, c, on, best.get(on), false);
+                    return `<td class="${cell.cls}${i === 0 ? ' rti-group' : ''}">${cell.html}${i === 0 ? marker : ''}</td>`;
+                }).join('');
+            }
+            if (paired) {
+                const lines = settings.map(on => {
+                    const cell = timeCell(r, c, on, best.get(on), true);
+                    return `<div class="rti-line ${cell.cls}">${modeGlyph(on)}${cell.html}</div>`;
+                }).join('');
+                return `<td>${lines}${marker}</td>`;
+            }
+            const cell = timeCell(r, c, settings[0], best.get(settings[0]), false);
+            return `<td class="${cell.cls}">${cell.html}${marker}</td>`;
         }).join('');
         const notes = packageNotes[r.package_name];
         return `<tr><td>${escapeHtml(r.package_name)}${notes ? notePopover(r.package_name, notes) : ''}</td>${cells}</tr>`;
-    }).join('') || `<tr><td colspan="${checkers.length + 1}" class="loading-row">No packages match.</td></tr>`;
+    }).join('') || `<tr><td colspan="${colCount}" class="loading-row">No packages match.</td></tr>`;
+}
+function refreshViews() {
+    renderInferenceControls();
+    renderSpeed();
+    renderMemory();
+    renderFailures();
+    const searchInput = document.getElementById('packageSearch');
+    const sortSelect = document.getElementById('sortBy');
+    populateResultsTable(searchInput?.value || '', sortSelect?.value || 'name');
 }
 function setupFilters() {
     const searchInput = document.getElementById('packageSearch');
@@ -595,9 +773,14 @@ function setupFilters() {
     const refresh = () => populateResultsTable(searchInput?.value || '', sortSelect?.value || 'name');
     searchInput?.addEventListener('input', refresh);
     sortSelect?.addEventListener('change', refresh);
-    document.querySelectorAll('.metric-tabs button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.metric-tabs button[data-metric]').forEach(b => b.addEventListener('click', () => {
         currentMetric = b.dataset.metric || 'geomean';
         renderSpeed();
+    }));
+    document.querySelectorAll('.inference-tabs button').forEach(b => b.addEventListener('click', () => {
+        inferenceView = b.dataset.view || 'both';
+        updateUrlParam('inference', inferenceView === 'both' ? null : inferenceView);
+        refreshViews();
     }));
 }
 document.addEventListener('DOMContentLoaded', init);

@@ -31,6 +31,21 @@ ROOT_DIR: Path = Path(__file__).parent
 # The 5 type checkers to benchmark
 DEFAULT_TYPE_CHECKERS: list[str] = ["pyright", "pyrefly", "ty", "mypy", "zuban"]
 
+# Whether each checker infers the return types of functions without a return
+# annotation in its default configuration.
+INFERS_RETURN_TYPES_BY_DEFAULT: dict[str, bool] = {
+    "pyright": True,
+    "pyrefly": True,
+    "ty": False,
+    "mypy": False,
+    "zuban": True,
+}
+
+# Checkers whose return type inference can be switched by configuration. Each
+# of them also runs with the opposite of its default setting. Pyright has no
+# option to turn return type inference off, and mypy never infers return types.
+RETURN_TYPE_INFERENCE_CONFIGURABLE: frozenset[str] = frozenset({"pyrefly", "ty", "zuban"})
+
 # Timeout per type checker invocation (seconds)
 DEFAULT_TIMEOUT: int = 300
 
@@ -71,7 +86,11 @@ class PackageResult(TypedDict, total=False):
     package_name: str
     github_url: str | None
     error: str | None
+    # Each checker in its default configuration.
     metrics: dict[str, TimingMetrics]
+    # Checkers in RETURN_TYPE_INFERENCE_CONFIGURABLE, run with the opposite
+    # of their default return type inference setting.
+    alternate_metrics: dict[str, TimingMetrics]
     # False when any dependency install step failed, so some third-party
     # imports may not resolve for this package.
     install_ok: bool
@@ -103,7 +122,11 @@ class BenchmarkOutput(TypedDict, total=False):
     type_checker_versions: dict[str, str]
     package_count: int
     runs_per_package: int
+    # Whether each checker's default configuration, measured in `metrics`,
+    # infers return types. `alternate_metrics` has the opposite setting.
+    return_type_inference_default: dict[str, bool]
     aggregate: dict[str, AggregateStats]
+    alternate_aggregate: dict[str, AggregateStats]
     results: list[PackageResult]
 
 
@@ -605,6 +628,13 @@ def install_deps(
 #   ty       -- [src] include = [paths] in ty.benchmark.toml via --config-file
 #   pyrefly  -- project_includes = [paths] in pyrefly.benchmark.toml via --config
 #   zuban    -- [mypy] section with files = path1, path2 via --config-file
+#
+# A checker in RETURN_TYPE_INFERENCE_CONFIGURABLE also runs with the opposite of
+# its default return type inference setting, written to the same config:
+#
+#   pyrefly  -- infer-return-types = "never"
+#   ty       -- [analysis] return-type-inference = "always"
+#   zuban    -- untyped_function_return_mode = any
 # ---------------------------------------------------------------------------
 
 
@@ -643,40 +673,67 @@ def _write_dummy_mypy_config(
 
 
 def _write_dummy_ty_config(
-    package_path: Path, check_paths: list[str] | None = None,
+    package_path: Path,
+    check_paths: list[str] | None = None,
+    infer_return_types: bool | None = None,
 ) -> Path:
-    """Write minimal ty.toml for consistent benchmarking."""
+    """Write minimal ty.toml for consistent benchmarking.
+
+    *infer_return_types* sets return type inference explicitly; None leaves
+    ty's default.
+    """
     config_path = package_path / "ty.benchmark.toml"
     with open(config_path, "w", encoding="utf-8") as f:
         if check_paths:
             f.write("[src]\n")
             paths_toml = ", ".join(f'"{p}"' for p in check_paths)
             f.write(f"include = [{paths_toml}]\n")
+        if infer_return_types is not None:
+            mode = "always" if infer_return_types else "never"
+            f.write(f'[analysis]\nreturn-type-inference = "{mode}"\n')
     return config_path
 
 
 def _write_dummy_pyrefly_config(
-    package_path: Path, check_paths: list[str] | None = None,
+    package_path: Path,
+    check_paths: list[str] | None = None,
+    infer_return_types: bool | None = None,
 ) -> Path:
-    """Write minimal pyrefly.toml for consistent benchmarking."""
+    """Write minimal pyrefly.toml for consistent benchmarking.
+
+    *infer_return_types* sets return type inference explicitly; None leaves
+    Pyrefly's default.
+    """
     config_path = package_path / "pyrefly.benchmark.toml"
     with open(config_path, "w", encoding="utf-8") as f:
         if check_paths:
             paths_toml = ", ".join(f'"{p}"' for p in check_paths)
             f.write(f"project_includes = [{paths_toml}]\n")
+        if infer_return_types is not None:
+            mode = "checked" if infer_return_types else "never"
+            f.write(f'infer-return-types = "{mode}"\n')
     return config_path
 
 
 def _write_dummy_zuban_config(
-    package_path: Path, check_paths: list[str] | None = None,
+    package_path: Path,
+    check_paths: list[str] | None = None,
+    infer_return_types: bool | None = None,
 ) -> Path:
-    """Write minimal mypy-style config for zuban benchmarking."""
+    """Write minimal mypy-style config for zuban benchmarking.
+
+    *infer_return_types* sets return type inference explicitly; None leaves
+    Zuban's default.
+    """
     config_path = package_path / "zuban.benchmark.ini"
     with open(config_path, "w", encoding="utf-8") as f:
         f.write("[mypy]\n")
         if check_paths:
             f.write(f"files = {', '.join(check_paths)}\n")
         f.write("check_untyped_defs = True\n")
+        if infer_return_types is not None:
+            mode = "inferred" if infer_return_types else "any"
+            f.write(f"untyped_function_return_mode = {mode}\n")
     return config_path
 
 
@@ -687,8 +744,12 @@ def run_checker(
     timeout: int,
     capture_output: bool = True,
     venv: Path | None = None,
+    infer_return_types: bool | None = None,
 ) -> TimingMetrics:
     """Run a single type checker and return timing metrics only.
+
+    *infer_return_types* overrides the checker's default return type
+    inference; only checkers in RETURN_TYPE_INFERENCE_CONFIGURABLE accept it.
 
     When *capture_output* is False, output is discarded (no pipe overhead)
     and output-based error detection is skipped. Exit codes are always checked.
@@ -713,6 +774,10 @@ def run_checker(
         env = os.environ.copy()
         env["VIRTUAL_ENV"] = str(venv)
 
+    assert infer_return_types is None or checker in RETURN_TYPE_INFERENCE_CONFIGURABLE, (
+        f"{checker} has no return type inference setting"
+    )
+
     if checker == "pyright":
         _write_dummy_pyright_config(package_path, rel_paths)
         cmd = ["pyright", "--outputjson"]
@@ -720,13 +785,13 @@ def run_checker(
             cmd.extend(["--pythonpath", python])
         cwd = package_path
     elif checker == "pyrefly":
-        config_path = _write_dummy_pyrefly_config(package_path, rel_paths)
+        config_path = _write_dummy_pyrefly_config(package_path, rel_paths, infer_return_types)
         cmd = ["pyrefly", "check", "--config", str(config_path)]
         if python:
             cmd.extend(["--python-interpreter-path", python])
         cwd = package_path
     elif checker == "ty":
-        config_path = _write_dummy_ty_config(package_path, rel_paths)
+        config_path = _write_dummy_ty_config(package_path, rel_paths, infer_return_types)
         cmd = ["ty", "check", "--config-file", str(config_path)]
         if venv is not None:
             cmd.extend(["--python", str(venv)])
@@ -743,7 +808,7 @@ def run_checker(
             cmd.append(str(package_path))
         cwd = package_path
     elif checker == "zuban":
-        config_path = _write_dummy_zuban_config(package_path, rel_paths)
+        config_path = _write_dummy_zuban_config(package_path, rel_paths, infer_return_types)
         cmd = ["zuban", "check", "--config-file", str(config_path)]
         if python:
             cmd.extend(["--python-executable", python])
@@ -844,8 +909,13 @@ def compute_run_stats(values: list[float]) -> RunStats:
 def compute_aggregate_stats(
     results: list[PackageResult],
     type_checkers: list[str],
+    alternate: bool = False,
 ) -> dict[str, AggregateStats]:
-    """Compute aggregate timing statistics across all packages."""
+    """Compute aggregate timing statistics across all packages.
+
+    With *alternate*, summarize the runs with the opposite return type
+    inference setting instead of the default configurations.
+    """
     stats: dict[str, AggregateStats] = {}
 
     for checker in type_checkers:
@@ -857,7 +927,10 @@ def compute_aggregate_stats(
         for result in results:
             if result.get("error"):
                 continue
-            metrics = result.get("metrics", {}).get(checker)
+            if alternate:
+                metrics = result.get("alternate_metrics", {}).get(checker)
+            else:
+                metrics = result.get("metrics", {}).get(checker)
             if not metrics:
                 continue
             if not metrics.get("ok"):
@@ -903,6 +976,7 @@ def run_benchmark(
     runs: int = 1,
     local_dir: Path | None = None,
     warmup: int = 1,
+    alternate_inference: bool = True,
 ) -> Path:
     """Run the full benchmark suite.
 
@@ -917,6 +991,9 @@ def run_benchmark(
         runs: Number of runs per checker per package.
         local_dir: Path to a local directory to benchmark directly.
         warmup: Number of warmup runs to discard before measured runs.
+        alternate_inference: Also time each checker in
+            RETURN_TYPE_INFERENCE_CONFIGURABLE with the opposite of its default
+            return type inference setting.
 
     Returns:
         Path to the dated output JSON file.
@@ -930,7 +1007,7 @@ def run_benchmark(
     if local_dir is not None:
         return _run_local_benchmark(
             local_dir, type_checkers, timeout, output_dir, os_name, runs,
-            warmup,
+            warmup, alternate_inference,
         )
 
     # Load packages
@@ -968,15 +1045,21 @@ def run_benchmark(
     print()
 
     # Run benchmarks
-    all_results = _run_all(packages, type_checkers, timeout, runs, warmup)
+    all_results = _run_all(
+        packages, type_checkers, timeout, runs, warmup, alternate_inference,
+    )
 
     # Aggregate
     aggregate = compute_aggregate_stats(all_results, type_checkers)
+    alternate_aggregate = compute_aggregate_stats(
+        all_results, _alternate_checkers(type_checkers, alternate_inference),
+        alternate=True,
+    )
 
     # Save
     output_file = _save_results(
-        all_results, aggregate, type_checkers, versions, len(packages),
-        output_dir, os_name, runs, warmup,
+        all_results, aggregate, alternate_aggregate, type_checkers, versions,
+        len(packages), output_dir, os_name, runs, warmup,
     )
 
     # Print summary
@@ -984,6 +1067,9 @@ def run_benchmark(
     print("Benchmark Complete!")
     print("=" * 70)
     _print_summary(aggregate, type_checkers)
+    if alternate_aggregate:
+        print("\nWith the opposite return type inference setting:")
+        _print_summary(alternate_aggregate, list(alternate_aggregate))
     print(f"\nResults saved to: {output_file}")
 
     return output_file
@@ -997,6 +1083,7 @@ def _run_local_benchmark(
     os_name: str | None,
     runs: int,
     warmup: int = 1,
+    alternate_inference: bool = True,
 ) -> Path:
     """Run benchmark against a local directory (no clone/install)."""
     local_dir = local_dir.resolve()
@@ -1027,15 +1114,21 @@ def _run_local_benchmark(
 
     # Run checkers
     print(f"\n[1/1] {name} (local)")
-    result = _benchmark_local_dir(local_dir, type_checkers, timeout, runs, warmup)
+    result = _benchmark_local_dir(
+        local_dir, type_checkers, timeout, runs, warmup, alternate_inference,
+    )
     all_results = [result]
 
     # Aggregate
     aggregate = compute_aggregate_stats(all_results, type_checkers)
+    alternate_aggregate = compute_aggregate_stats(
+        all_results, _alternate_checkers(type_checkers, alternate_inference),
+        alternate=True,
+    )
 
     # Save
     output_file = _save_results(
-        all_results, aggregate, type_checkers, versions, 1,
+        all_results, aggregate, alternate_aggregate, type_checkers, versions, 1,
         output_dir, os_name, runs, warmup,
     )
 
@@ -1044,6 +1137,9 @@ def _run_local_benchmark(
     print("Benchmark Complete!")
     print("=" * 70)
     _print_summary(aggregate, type_checkers)
+    if alternate_aggregate:
+        print("\nWith the opposite return type inference setting:")
+        _print_summary(alternate_aggregate, list(alternate_aggregate))
     print(f"\nResults saved to: {output_file}")
 
     return output_file
@@ -1055,86 +1151,21 @@ def _benchmark_local_dir(
     timeout: int,
     runs: int = 1,
     warmup: int = 1,
+    alternate_inference: bool = True,
 ) -> PackageResult:
     """Benchmark a local directory: run checkers without clone/install."""
     name = local_dir.name
-
-    metrics: dict[str, TimingMetrics] = {}
-    for checker in type_checkers:
-        if not is_type_checker_available(checker):
-            print(f"    Skipping {checker}: not installed")
-            metrics[checker] = {
-                "ok": False,
-                "execution_time_s": 0.0,
-                "peak_memory_mb": 0.0,
-                "error_message": "Not installed",
-            }
-            continue
-
-        # First warmup captures output for error detection; rest use DEVNULL.
-        effective_warmup = max(1, warmup)
-        total = effective_warmup + runs
-        print(f"    Running {checker}... ({effective_warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
-        times: list[float] = []
-        memories: list[float] = []
-        failed_metric: TimingMetrics | None = None
-
-        for run_idx in range(total):
-            is_warmup = run_idx < effective_warmup
-            capture = run_idx == 0
-            if is_warmup:
-                label = "Check" if warmup == 0 else f"Warmup {run_idx + 1}/{effective_warmup}"
-            else:
-                label = f"Run {run_idx - effective_warmup + 1}/{runs}"
-            print(f"      {label}...", end=" ")
-            m = run_checker(
-                checker, local_dir, None, timeout,
-                capture_output=capture,
-            )
-            if not m.get("ok"):
-                print(f"Failed: {m.get('error_message', 'Unknown')}")
-                failed_metric = m
-                break
-            peak = m.get("peak_memory_mb", 0)
-            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
-            if is_warmup:
-                print(f"{m['execution_time_s']:.3f}s{mem_str} (discarded)")
-            else:
-                times.append(m["execution_time_s"])
-                memories.append(m.get("peak_memory_mb", 0.0))
-                print(f"{m['execution_time_s']:.3f}s{mem_str}")
-
-        if failed_metric is not None:
-            failed_metric["runs"] = len(times) + 1
-            metrics[checker] = failed_metric
-        else:
-            result_metric: TimingMetrics = {
-                "ok": True,
-                "execution_time_s": round(statistics.mean(times), 3),
-                "peak_memory_mb": round(statistics.mean(memories), 2),
-                "runs": runs,
-            }
-            if runs > 1:
-                result_metric["execution_time_stats"] = compute_run_stats(times)
-                result_metric["peak_memory_stats"] = compute_run_stats(memories)
-
-            metrics[checker] = result_metric
-            peak = result_metric["peak_memory_mb"]
-            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
-            if runs > 1:
-                time_stats = result_metric["execution_time_stats"]
-                print(
-                    f"      Mean: {result_metric['execution_time_s']:.3f}s{mem_str} "
-                    f"(stddev: {time_stats['stddev']:.2f}s)"
-                )
-            else:
-                print(f"      {result_metric['execution_time_s']:.3f}s{mem_str}")
+    metrics, alternate_metrics = _measure_checkers(
+        type_checkers, local_dir, None, timeout, runs, warmup, None,
+        alternate_inference,
+    )
 
     return {
         "package_name": name,
         "github_url": None,
         "error": None,
         "metrics": metrics,
+        "alternate_metrics": alternate_metrics,
     }
 
 
@@ -1144,6 +1175,7 @@ def _run_all(
     timeout: int,
     runs: int = 1,
     warmup: int = 1,
+    alternate_inference: bool = True,
 ) -> list[PackageResult]:
     """Run benchmarks for all packages."""
     all_results: list[PackageResult] = []
@@ -1159,10 +1191,133 @@ def _run_all(
 
             result = _benchmark_package(
                 pkg, temp_path, type_checkers, timeout, runs, warmup,
+                alternate_inference,
             )
             all_results.append(result)
 
     return all_results
+
+
+def _measure_checker(
+    checker: str,
+    package_path: Path,
+    check_paths: list[Path] | None,
+    timeout: int,
+    runs: int,
+    warmup: int,
+    venv: Path | None,
+    infer_return_types: bool | None = None,
+) -> TimingMetrics:
+    """Time one checker configuration: warmups, then *runs* measured runs."""
+    # First warmup captures output for error detection; rest use DEVNULL.
+    effective_warmup = max(1, warmup)
+    total = effective_warmup + runs
+    variant = ""
+    if infer_return_types is not None:
+        variant = f" (return type inference {'on' if infer_return_types else 'off'})"
+    print(f"    Running {checker}{variant}... ({effective_warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
+    times: list[float] = []
+    memories: list[float] = []
+
+    for run_idx in range(total):
+        is_warmup = run_idx < effective_warmup
+        capture = run_idx == 0
+        if is_warmup:
+            label = "Check" if warmup == 0 else f"Warmup {run_idx + 1}/{effective_warmup}"
+        else:
+            label = f"Run {run_idx - effective_warmup + 1}/{runs}"
+        print(f"      {label}...", end=" ")
+        m = run_checker(
+            checker, package_path, check_paths, timeout,
+            capture_output=capture, venv=venv,
+            infer_return_types=infer_return_types,
+        )
+        if not m.get("ok"):
+            print(f"Failed: {m.get('error_message', 'Unknown')}")
+            m["runs"] = len(times) + 1
+            return m
+        peak = m.get("peak_memory_mb", 0)
+        mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+        if is_warmup:
+            print(f"{m['execution_time_s']:.3f}s{mem_str} (discarded)")
+        else:
+            times.append(m["execution_time_s"])
+            memories.append(m.get("peak_memory_mb", 0.0))
+            print(f"{m['execution_time_s']:.3f}s{mem_str}")
+
+    result_metric: TimingMetrics = {
+        "ok": True,
+        "execution_time_s": round(statistics.mean(times), 3),
+        "peak_memory_mb": round(statistics.mean(memories), 2),
+        "runs": runs,
+    }
+    if runs > 1:
+        result_metric["execution_time_stats"] = compute_run_stats(times)
+        result_metric["peak_memory_stats"] = compute_run_stats(memories)
+
+    peak = result_metric["peak_memory_mb"]
+    mem_str = f", {peak:.0f}MB" if peak > 0 else ""
+    if runs > 1:
+        time_stats = result_metric["execution_time_stats"]
+        print(
+            f"      Mean: {result_metric['execution_time_s']:.3f}s{mem_str} "
+            f"(stddev: {time_stats['stddev']:.2f}s)"
+        )
+    else:
+        print(f"      {result_metric['execution_time_s']:.3f}s{mem_str}")
+    return result_metric
+
+
+def _alternate_checkers(type_checkers: list[str], alternate_inference: bool) -> list[str]:
+    """The checkers that also run with their non-default return type inference."""
+    if not alternate_inference:
+        return []
+    return [c for c in type_checkers if c in RETURN_TYPE_INFERENCE_CONFIGURABLE]
+
+
+def _measure_checkers(
+    type_checkers: list[str],
+    package_path: Path,
+    check_paths: list[Path] | None,
+    timeout: int,
+    runs: int,
+    warmup: int,
+    venv: Path | None,
+    alternate_inference: bool,
+) -> tuple[dict[str, TimingMetrics], dict[str, TimingMetrics]]:
+    """Time every checker in its default configuration.
+
+    Returns ``(metrics, alternate_metrics)``. With *alternate_inference*, each
+    checker in RETURN_TYPE_INFERENCE_CONFIGURABLE is also timed with the
+    opposite of its default return type inference setting.
+    """
+    metrics: dict[str, TimingMetrics] = {}
+    alternate_metrics: dict[str, TimingMetrics] = {}
+    alternates = _alternate_checkers(type_checkers, alternate_inference)
+    for checker in type_checkers:
+        alternate = checker in alternates
+        if not is_type_checker_available(checker):
+            print(f"    Skipping {checker}: not installed")
+            missing: TimingMetrics = {
+                "ok": False,
+                "execution_time_s": 0.0,
+                "peak_memory_mb": 0.0,
+                "error_message": "Not installed",
+            }
+            metrics[checker] = missing
+            if alternate:
+                alternate_metrics[checker] = missing.copy()
+            continue
+
+        metrics[checker] = _measure_checker(
+            checker, package_path, check_paths, timeout, runs, warmup, venv,
+        )
+        if alternate:
+            alternate_metrics[checker] = _measure_checker(
+                checker, package_path, check_paths, timeout, runs, warmup, venv,
+                infer_return_types=not INFERS_RETURN_TYPES_BY_DEFAULT[checker],
+            )
+    return metrics, alternate_metrics
 
 
 def _benchmark_package(
@@ -1172,6 +1327,7 @@ def _benchmark_package(
     timeout: int,
     runs: int = 1,
     warmup: int = 1,
+    alternate_inference: bool = True,
 ) -> PackageResult:
     """Benchmark a single package: clone, install deps, run checkers."""
     name = pkg["name"]
@@ -1226,76 +1382,10 @@ def _benchmark_package(
             resolved_paths = None
 
     # Run type checkers
-    metrics: dict[str, TimingMetrics] = {}
-    for checker in type_checkers:
-        if not is_type_checker_available(checker):
-            print(f"    Skipping {checker}: not installed")
-            metrics[checker] = {
-                "ok": False,
-                "execution_time_s": 0.0,
-                "peak_memory_mb": 0.0,
-                "error_message": "Not installed",
-            }
-            continue
-
-        # First warmup captures output for error detection; rest use DEVNULL.
-        effective_warmup = max(1, warmup)
-        total = effective_warmup + runs
-        print(f"    Running {checker}... ({effective_warmup} warmup + {runs} run{'s' if runs > 1 else ''})")
-        times: list[float] = []
-        memories: list[float] = []
-        failed_metric: TimingMetrics | None = None
-
-        for run_idx in range(total):
-            is_warmup = run_idx < effective_warmup
-            capture = run_idx == 0
-            if is_warmup:
-                label = "Check" if warmup == 0 else f"Warmup {run_idx + 1}/{effective_warmup}"
-            else:
-                label = f"Run {run_idx - effective_warmup + 1}/{runs}"
-            print(f"      {label}...", end=" ")
-            m = run_checker(
-                checker, package_path, resolved_paths, timeout,
-                capture_output=capture, venv=venv_dir,
-            )
-            if not m.get("ok"):
-                print(f"Failed: {m.get('error_message', 'Unknown')}")
-                failed_metric = m
-                break
-            peak = m.get("peak_memory_mb", 0)
-            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
-            if is_warmup:
-                print(f"{m['execution_time_s']:.3f}s{mem_str} (discarded)")
-            else:
-                times.append(m["execution_time_s"])
-                memories.append(m.get("peak_memory_mb", 0.0))
-                print(f"{m['execution_time_s']:.3f}s{mem_str}")
-
-        if failed_metric is not None:
-            failed_metric["runs"] = len(times) + 1
-            metrics[checker] = failed_metric
-        else:
-            result_metric: TimingMetrics = {
-                "ok": True,
-                "execution_time_s": round(statistics.mean(times), 3),
-                "peak_memory_mb": round(statistics.mean(memories), 2),
-                "runs": runs,
-            }
-            if runs > 1:
-                result_metric["execution_time_stats"] = compute_run_stats(times)
-                result_metric["peak_memory_stats"] = compute_run_stats(memories)
-
-            metrics[checker] = result_metric
-            peak = result_metric["peak_memory_mb"]
-            mem_str = f", {peak:.0f}MB" if peak > 0 else ""
-            if runs > 1:
-                time_stats = result_metric["execution_time_stats"]
-                print(
-                    f"      Mean: {result_metric['execution_time_s']:.3f}s{mem_str} "
-                    f"(stddev: {time_stats['stddev']:.2f}s)"
-                )
-            else:
-                print(f"      {result_metric['execution_time_s']:.3f}s{mem_str}")
+    metrics, alternate_metrics = _measure_checkers(
+        type_checkers, package_path, resolved_paths, timeout, runs, warmup,
+        venv_dir, alternate_inference,
+    )
 
     # Cleanup cloned repo and its environment
     shutil.rmtree(package_path, ignore_errors=True)
@@ -1306,6 +1396,7 @@ def _benchmark_package(
         "github_url": github_url,
         "error": None,
         "metrics": metrics,
+        "alternate_metrics": alternate_metrics,
         "install_ok": install_ok,
     }
 
@@ -1313,6 +1404,7 @@ def _benchmark_package(
 def _save_results(
     results: list[PackageResult],
     aggregate: dict[str, AggregateStats],
+    alternate_aggregate: dict[str, AggregateStats],
     type_checkers: list[str],
     versions: dict[str, str],
     package_count: int,
@@ -1340,7 +1432,12 @@ def _save_results(
         "package_count": package_count,
         "runs_per_package": runs,
         "warmup_runs": warmup,
+        "return_type_inference_default": {
+            c: INFERS_RETURN_TYPES_BY_DEFAULT[c]
+            for c in type_checkers if c in INFERS_RETURN_TYPES_BY_DEFAULT
+        },
         "aggregate": aggregate,
+        "alternate_aggregate": alternate_aggregate,
         "results": results,
     }
     if os_name:
@@ -1428,6 +1525,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Number of warmup runs to discard before measured runs (default: 1)",
     )
     parser.add_argument(
+        "--no-alternate-inference", dest="alternate_inference",
+        action="store_false",
+        help="Only run each checker's default configuration, skipping the runs "
+        "with the opposite return type inference setting",
+    )
+    parser.add_argument(
         "--local", type=Path, default=None,
         help="Path to a local directory to benchmark instead of cloning from GitHub",
     )
@@ -1448,6 +1551,7 @@ def main(argv: list[str] | None = None) -> int:
         runs=args.runs,
         local_dir=args.local,
         warmup=args.warmup,
+        alternate_inference=args.alternate_inference,
     )
     return 0
 
